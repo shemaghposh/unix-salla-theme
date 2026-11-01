@@ -1,10 +1,10 @@
 /*
- * UNIX blog «من عالم UNIX» (ROADMAP 2.8 · SPEC §4.12 · DS §8.12)
+ * UNIX blog «من عالم UNIX» (ROADMAP 2.8 · SPEC §4.12 · DS §8.17)
  * Layout follows unix.sa's featured-blog `section-grid-slider`:
  *   < 576  : title / track / full-width button (arrows hidden, swipe; a peek of the next card shows it scrolls)
  *   ≥ 576  : title · arrows · button in one row, track below
  * Cards per view 1 / 2 / 3 / 4 at xs / sm / md / lg (DS §3.3), gap = --gutter.
- * The track is a native scroll-snap list; arrows come from js/partials/unix-blog.js (DS §12).
+ * The track is a native scroll-snap list; arrows come from js/partials/unix-blog.js (DS §13.2).
  */
 
 .unix-blog {
@@ -136,7 +136,7 @@
   }
 }
 
-// ── Card (DS §8.12): text-first, flat, hairline on top; the whole card is one link ──
+// ── Card (DS §8.17): text-first, flat, hairline on top; the whole card is one link ──
 .unix-blog-card {
   position: relative;
   display: flex;

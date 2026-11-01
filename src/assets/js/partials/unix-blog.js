@@ -1,5 +1,5 @@
 /**
- * UNIX blog carousel arrows (ROADMAP 2.8 · SPEC §4.12 · DS §8.12, §12).
+ * UNIX blog carousel arrows (ROADMAP 2.8 · SPEC §4.12 · DS §8.17, §13.2).
  * The track in views/components/home/unix-blog.twig is a native scroll-snap list, so touch,
  * trackpad and keyboard scrolling work with no JS. This adds the prev/next arrows, like
  * unix.sa's featured-blog: one page (the visible cards) per click, shown only when the
