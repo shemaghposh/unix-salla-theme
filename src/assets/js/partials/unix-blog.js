@@ -2,8 +2,8 @@
  * UNIX blog carousel arrows (ROADMAP 2.8 · SPEC §4.12 · DS §8.17, §13.2).
  * The track in views/components/home/unix-blog.twig is a native scroll-snap list, so touch,
  * trackpad and keyboard scrolling work with no JS. This adds the prev/next arrows, like
- * unix.sa's featured-blog: one page (the visible cards) per click, shown only when the
- * cards overflow, and disabled at either end. Smooth scrolling comes from CSS and is
+ * unix.sa's featured-blog: one page (the visible cards) per click, visible only when the
+ * cards overflow (the column is reserved from the start), and aria-disabled at either end. Smooth scrolling comes from CSS and is
  * off under prefers-reduced-motion. RTL: scrollLeft runs from 0 to negative values.
  */
 export default function initUnixBlog(root = document) {
@@ -27,25 +27,29 @@ export default function initUnixBlog(root = document) {
       return perPage * step;
     };
 
+    // aria-disabled (not [disabled]) keeps a focused arrow focused at either end;
+    // the click handler ignores it instead.
+    const setDisabled = (button, off) => button.setAttribute('aria-disabled', off ? 'true' : 'false');
+    const isDisabled = button => button.getAttribute('aria-disabled') === 'true';
+
     const update = () => {
       const max = track.scrollWidth - track.clientWidth;
       const overflows = max > 1;
-      nav.hidden = !overflows;
+      // The nav column is reserved by CSS; it only becomes visible once an overflow is measured.
+      nav.dataset.overflow = overflows ? 'true' : 'false';
       const progress = Math.abs(track.scrollLeft);
-      prev.disabled = !overflows || progress <= 1;
-      next.disabled = !overflows || progress >= max - 1;
-      // a disabled button drops keyboard focus to <body>; hand it to the other arrow instead
-      if (document.activeElement === next && next.disabled && !prev.disabled) prev.focus();
-      if (document.activeElement === prev && prev.disabled && !next.disabled) next.focus();
+      setDisabled(prev, !overflows || progress <= 1);
+      setDisabled(next, !overflows || progress >= max - 1);
     };
 
-    const go = direction => {
+    const go = (button, direction) => {
+      if (isDisabled(button)) return;
       const delta = pageSize() * direction * (isRtl() ? -1 : 1);
       track.scrollBy({ left: delta });
     };
 
-    prev.addEventListener('click', () => go(-1));
-    next.addEventListener('click', () => go(1));
+    prev.addEventListener('click', () => go(prev, -1));
+    next.addEventListener('click', () => go(next, 1));
 
     let frame = 0;
     const schedule = () => {

@@ -3,7 +3,7 @@
   Matches unix.sa (reference/shopify-theme/templates/index.json → featured_blog, sections/featured-blog.liquid,
   snippets/article-card.liquid, assets/featured-blog.js): Cream section, heading + prev/next arrows + primary
   «تصفّحي المقالات» button in one row, then a carousel of text cards (date, title, excerpt; no image),
-  1 / 2 / 3 / 4 per view, up to 7 posts (3 on mobile). On mobile the arrows hide and the button moves under
+  1 / 2 / 3 / 4 per view at <576 / 576 / 750 / 1200 (unix.sa's breakpoints, DS §13.2), up to 7 posts (3 on mobile). On mobile the arrows hide and the button moves under
   the cards, full width. The carousel is a native scroll-snap track (no Swiper, DS §13.2); the arrows are a
   progressive enhancement from src/assets/js/partials/unix-blog.js.
 
@@ -56,13 +56,14 @@
 {% set posts = [] %}
 {% for article in component.articles %}
   {% set post_title = article.title|default(article.name|default('')) %}
-  {% if posts|length < limit_all and post_title and article.url %}
+  {% if posts|length < limit_all and post_title and article.url is defined and article.url %}
     {% set posts = posts|merge([article]) %}
   {% endif %}
 {% endfor %}
 
 {% if posts|length %}
-<section component-id="{{ componentId }}" class="unix-blog" data-unix-blog
+<section component-id="{{ componentId }}"
+         class="unix-blog{{ title ? '' : ' unix-blog--no-title' }}{{ show_button ? '' : ' unix-blog--no-cta' }}" data-unix-blog
          {% if title %}aria-labelledby="{{ uid }}-title"{% else %}aria-label="{{ trans('blocks.unix.blog.label') }}"{% endif %}>
   <div class="unix-container">
     <div class="unix-blog__inner">
@@ -70,8 +71,9 @@
         <h2 class="unix-blog__title" id="{{ uid }}-title">{{ title }}</h2>
       {% endif %}
 
-      <div class="unix-blog__nav" data-unix-blog-nav hidden>
-        <button type="button" class="unix-blog__arrow" data-unix-blog-prev
+      {# visibility:hidden (column reserved) until unix-blog.js measures and sets data-overflow #}
+      <div class="unix-blog__nav" data-unix-blog-nav>
+        <button type="button" class="unix-blog__arrow" data-unix-blog-prev aria-disabled="true"
                 aria-controls="{{ uid }}-track" aria-label="{{ trans('blocks.unix.blog.prev') }}">
           <svg class="icon-dir" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -94,7 +96,11 @@
       <ul class="unix-blog__track" id="{{ uid }}-track" data-unix-blog-track role="list">
         {% for article in posts %}
           {% set post_title = article.title|default(article.name|default('')) %}
+          {# first 150 characters, like unix.sa's `truncate: 150` (CSS also clamps to 3 lines) #}
           {% set excerpt = article.summary|default(article.description|default(''))|striptags|trim %}
+          {% if excerpt|length > 150 %}
+            {% set excerpt = excerpt|slice(0, 150)|trim ~ '…' %}
+          {% endif %}
           {% set image = article.image.url is defined ? article.image.url : article.image %}
           {% set item_classes = [
             loop.index > limit_mobile ? 'is-hidden-mobile' : '',
@@ -103,12 +109,12 @@
           <li class="unix-blog__item {{ item_classes }}">
             <article class="unix-blog-card" aria-labelledby="{{ uid }}-post-{{ loop.index }}">
               {% if component.show_image and image is not iterable and image and not (image|is_placeholder) %}
+                {# decorative: the title link names the card, so the image stays silent #}
                 <div class="unix-blog-card__media">
-                  <img src="{{ image }}" alt="{{ article.image.alt is defined and article.image.alt ? article.image.alt : post_title }}"
-                       width="400" height="500" loading="lazy" decoding="async">
+                  <img src="{{ image }}" alt="" width="400" height="500" loading="lazy" decoding="async">
                 </div>
               {% endif %}
-              {% if article.created_at %}
+              {% if article.created_at is defined and article.created_at %}
                 <time class="unix-blog-card__date" datetime="{{ article.created_at|date('Y-m-d') }}">{{ article.created_at|date }}</time>
               {% endif %}
               <h3 class="unix-blog-card__title" id="{{ uid }}-post-{{ loop.index }}">

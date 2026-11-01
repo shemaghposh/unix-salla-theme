@@ -3,15 +3,25 @@
  * Layout follows unix.sa's featured-blog `section-grid-slider`:
  *   < 576  : title / track / full-width button (arrows hidden, swipe; a peek of the next card shows it scrolls)
  *   ≥ 576  : title · arrows · button in one row, track below
- * Cards per view 1 / 2 / 3 / 4 at xs / sm / md / lg (DS §3.3), gap = --gutter.
+ * Cards per view 1 / 2 / 3 / 4 at <576 / 576 / 750 / 1200, gap = --gutter. The 750 / 1200 points are
+ * unix.sa's featured-blog.js breakpoints: a component-level exception to the DS §3.3 grid (DS §13.2).
+ * Padding = unix.sa preset `l`: --section-sm under 750, --section-md from 750 (DS §3.2 note, §8.17).
  * The track is a native scroll-snap list; arrows come from js/partials/unix-blog.js (DS §13.2).
  */
 
+// unix.sa breakpoints for this component only (featured-blog.js / section-padding.liquid)
+$unix-blog-bp-md: 750px;
+$unix-blog-bp-lg: 1200px;
+
 .unix-blog {
-  padding-block: var(--section-md);
+  padding-block: var(--section-sm);
   background-color: var(--c-bg);
   color: var(--c-text);
   overflow: clip;
+
+  @media (min-width: $unix-blog-bp-md) {
+    padding-block: var(--section-md);
+  }
 
   &__inner {
     display: grid;
@@ -24,6 +34,11 @@
     align-items: center;
   }
 
+  // No empty grid rows (and no stray row gap) when the title or the button is switched off
+  &--no-title &__inner { grid-template-areas: "track" "cta"; }
+  &--no-cta &__inner { grid-template-areas: "title" "track"; }
+  &--no-title.unix-blog--no-cta &__inner { grid-template-areas: "track"; }
+
   & &__title {
     grid-area: title;
     margin: 0;
@@ -32,10 +47,14 @@
   }
 
   // ── Arrows ─────────────────────────────────────
+  // Hidden on mobile (swipe only, like unix.sa). From 576 the column is always laid out, but stays
+  // invisible (and out of the tab order) until unix-blog.js measures an overflow: no layout shift.
   &__nav {
     grid-area: nav;
     display: none;
     gap: var(--s-2);
+
+    &:not([data-overflow="true"]) { visibility: hidden; }
   }
 
   &__arrow {
@@ -61,7 +80,8 @@
     &:active { background-color: var(--c-press-tint); transform: translateY(var(--press-y)); }
     &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
 
-    &:disabled {
+    // aria-disabled (not [disabled]) so a focused arrow keeps focus at either end
+    &[aria-disabled="true"] {
       opacity: var(--o-disabled);
       cursor: default;
       background-color: transparent;
@@ -106,7 +126,8 @@
   }
 
   @media (min-width: 576px) {
-    &__inner {
+    &__inner,
+    &--no-title &__inner {
       grid-template-columns: minmax(0, 1fr) auto auto;
       grid-template-areas:
         "title nav cta"
@@ -115,7 +136,16 @@
       row-gap: var(--s-6);
     }
 
-    &__nav:not([hidden]) { display: flex; }
+    // the arrows keep the head row alive without a title; without a button the row is title · arrows
+    &--no-cta &__inner,
+    &--no-title.unix-blog--no-cta &__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        "title nav"
+        "track track";
+    }
+
+    &__nav { display: flex; }
     &__cta { inline-size: auto; }
 
     &__track { --_cols: 2; --_peek: 0px; }
@@ -123,11 +153,11 @@
     &__item.is-hidden-desktop { display: none; }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: $unix-blog-bp-md) {
     &__track { --_cols: 3; }
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: $unix-blog-bp-lg) {
     &__track { --_cols: 4; }
   }
 
@@ -149,7 +179,7 @@
   &__media {
     order: -1;
     margin-block-end: var(--s-2);
-    aspect-ratio: 4 / 5;
+    aspect-ratio: var(--ratio-card);
     border-radius: var(--r-md);
     overflow: hidden;
     background-color: var(--c-surface-muted);
@@ -217,8 +247,9 @@
     overflow: hidden;
   }
 
+  // unix.sa uses .8; no token for it, so --o-muted (.7) (DS §13.2)
   &:hover &__title { opacity: var(--o-muted); }
-  &:hover &__media img { transform: scale(1.04); }
+  &:hover &__media img { transform: scale(var(--zoom-hover)); }
   &:active &__title { opacity: 1; }
 }
 
