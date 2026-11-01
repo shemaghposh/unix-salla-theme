@@ -102,6 +102,8 @@
 | Body / UI | **IBM Plex Sans Arabic** (300/400/500/700) | Open Sans (400/600) |
 | أرقام وأسعار | IBM Plex Sans Arabic، مع `font-variant-numeric: tabular-nums` | نفسه |
 
+- Somar بيتحمّل بـ `font-display: swap` و `unicode-range` على الحروف العربي بس، فالحروف اللاتيني في العناوين بتروح للخط اللي بعده.
+
 ### 2.2 المقياس (fluid، الأساس 16px، النسبة 1.25)
 
 | Token | الحجم (mobile → desktop) | Line-height | الاستخدام |

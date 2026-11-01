@@ -6,13 +6,16 @@
  * The dashboard color picker is ignored: the `color` feature is off in twilight.json.
  */
 
-/* Somar Bold for Arabic headings: put the licensed file at src/assets/fonts/Somar-Bold.woff2.
-   Until it's there, headings fall back to IBM Plex Sans Arabic 700. */
+/* Somar Bold for Arabic headings: src/assets/fonts/Somar-Bold.woff2 (taken from the unix.sa
+   Shopify theme, reference/shopify-theme/assets). The build copies it to public/fonts/.
+   If it fails to load, headings fall back to IBM Plex Sans Arabic 700. */
 @font-face {
   font-family: "Somar";
   src: url("fonts/Somar-Bold.woff2") format("woff2");
-  font-weight: 600 800;
+  font-weight: 700 800;
   font-display: swap;
+  /* Arabic blocks only (DS §2.1): Latin heading glyphs fall through to the next family. */
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
 }
 
 :root {
