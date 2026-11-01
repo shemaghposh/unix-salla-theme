@@ -1,5 +1,5 @@
 /**
- * UNIX video tiles (ROADMAP 2.7 · DS §8.12).
+ * UNIX video tiles (ROADMAP 2.7 · DS §8.18).
  * Like unix.sa's banner-grid.js, each video plays only while its tile is visible (also when it is
  * swiped out of the mobile scroller) and pauses otherwise. Added here:
  * - Lazy: the MP4 src is set only when the tile nears the viewport (the section is below the fold).

@@ -161,16 +161,30 @@
   :root { --d-fast: 0ms; --d-base: 0ms; --d-slow: 0ms; --d-reveal: 0ms; --d-announce-slide: 0ms; }
 }
 
-/* ── Phase 2 · 2.7 / 2.9 (DS §15) ─────────────────
- * Video tiles and FAQ. Kept in one block so merges stay easy; folded into the sections above
- * when Phase 2 closes. */
+/* ── Phase 2 additions (DS §13.1) ──────────────────
+ * Kept in one block so merges stay easy; folded into the sections above when Phase 2 closes. */
 :root {
-  --tile-ratio: 3 / 4;                         /* video tile (unix.sa banner-grid media ratio 3/4) (2.7) */
-  --c-tile-overlay: rgb(36 30 26 / .2);        /* light overlay on video tiles (unix.sa overlay_opacity .2) (2.7) */
-  --media-hover-scale: 1.04;                   /* DS §5 "Image hover" scale (2.7) */
-  --faq-max: 908px;                            /* FAQ column from lg (unix.sa collapsible-content__wrapper 90.8rem) (2.9) */
-  --o-teaser: .3;                              /* faded 4th question while collapsed (unix.sa item--opacity) (2.9) */
+  --c-hero-bg: var(--unix-sand-300);   /* hero backdrop before/without media (2.1); text on it = --c-text */
+  --c-hero-scrim: linear-gradient(to top, rgb(36 30 26 / .55), rgb(36 30 26 / .3) 50%, transparent 85%); /* covers the text on 2:3 mobile */
+  --hero-ratio: 2 / 3;                 /* hero, mobile (unix.sa mobile_image_ratio) */
+  --hero-ratio-wide: 16 / 9;           /* hero, ≥576px (unix.sa desktop_image_ratio) */
+  --hero-min-h: 560px;
+  --hero-max-h: 920px;
+  --hero-cta-line: .55;                /* underline CTA length on hover (unix.sa scaleX(.55)) */
+  --d-stagger: 60ms;                   /* reveal stagger step (DS §5) */
+  --d-hint: 2s;                        /* scroll-indicator bob cycle */
+
+  /* Phase 2 · 2.7 / 2.9: video tiles and FAQ */
+  --tile-ratio: 3 / 4;                 /* video tile (unix.sa banner-grid media ratio 3/4) (2.7) */
+  --c-tile-overlay: rgb(36 30 26 / .2); /* light overlay on video tiles (unix.sa overlay_opacity .2) (2.7) */
+  --media-hover-scale: 1.04;           /* DS §5 "Image hover" scale (2.7) */
+  --faq-max: 908px;                    /* FAQ column from lg (unix.sa collapsible-content__wrapper 90.8rem) (2.9) */
+  --o-teaser: .3;                      /* faded 4th question while collapsed (unix.sa item--opacity) (2.9) */
   --c-teaser-fade: linear-gradient(to bottom, color-mix(in srgb, var(--c-bg) 30%, transparent) 20%, var(--c-bg)); /* fade over the teaser (2.9) */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --d-stagger: 0ms; }
 }
 
 /* ── Base ─────────────────────────────────────── */
