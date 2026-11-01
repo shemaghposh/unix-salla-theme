@@ -556,6 +556,30 @@
             "required": false,
             "value": false,
             "selected": false
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "أداة «اعرفي مقاسك» في صفحة المنتج",
+            "description": "تظهر تحت اختيار المقاس في المنتجات اللي فيها خيار اسمه «مقاس» أو Size.",
+            "id": "unix_size_finder_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "بيانات أداة المقاس (JSON، اختياري)",
+            "description": "اتركيه فاضي لاستخدام جداول unix.sa. أي مفتاح تكتبينه يستبدل الجدول نفسه بس: BODY و COMFY (مقاسات الجسم بالسم من XS إلى XL)، BRANDS، W، BMI_PTS، HEIGHT_C، WEIGHT_C، BRA_BAND، BRA_CUP، SHAPE، CATS، PREF_SHIFT، COMFY_SHIFT. ولكل منتج: {\"PRODUCTS\": {\"رقم المنتج\": {\"cat\": \"leggings\", \"chart\": \"comfy\", \"delta\": 0.33}}}. الفئات: bra، topFitted، leggings، hoodie، wide.",
+            "id": "unix_size_finder_data",
+            "format": "textarea",
+            "required": false,
+            "value": null,
+            "placeholder": "{\"PRODUCTS\": {\"123456\": {\"cat\": \"leggings\"}}}",
+            "minLength": 0,
+            "maxLength": 20000
         }
     ],
     "components": [

@@ -1,0 +1,59 @@
+{#
+  UNIX Size Finder (ROADMAP 3.3 · DS §8.11 · SPEC §8.1)
+  Port of unix.sa snippets/unix-size-finder.liquid + assets/unix-size-finder.js.
+
+  Usage: include ONCE on the product page, directly under the product options
+  (pages/partials/product/options.twig is rendered inside the product form):
+    {% include 'components/product/unix-size-finder.twig' %}
+
+  Renders only when the product has a size option (name contains «مقاس» / "size",
+  same test as the original) and the setting `unix_size_finder_enabled` is on.
+  The trigger is server-rendered; the finder JS (model + UI) is a separate chunk
+  loaded on first open (src/assets/js/partials/unix-size-finder.js).
+  Merchant data override: theme setting `unix_size_finder_data` (JSON, empty = unix.sa data).
+#}
+{% set sf_has_size = false %}
+{% for option in product.options %}
+  {% set sf_name = option.name|lower %}
+  {% if 'مقاس' in sf_name or 'size' in sf_name %}
+    {% set sf_has_size = true %}
+  {% endif %}
+{% endfor %}
+
+{% if sf_has_size and theme.settings.get('unix_size_finder_enabled', true) %}
+  {% set sf_id = 'unix-sf-' ~ product.id %}
+  <div class="unix-sf" data-unix-sf
+       data-product-id="{{ product.id }}"
+       data-product-name="{{ product.name }}">
+    <script type="application/json" data-sf-config>{{ theme.settings.get('unix_size_finder_data')|default('')|json_encode|raw }}</script>
+
+    <button type="button" class="unix-sf__open" data-sf-open
+            aria-haspopup="dialog" aria-expanded="false" aria-controls="{{ sf_id }}">
+      <span class="unix-sf__ico" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2.5" y="8" width="19" height="8" rx="1"/><path d="M6 8v3M9.5 8v2M13 8v3M16.5 8v2M20 8v3"/></svg>
+      </span>
+      <span class="unix-sf__txt">
+        <span class="unix-sf__t1" data-sf-t1>{{ trans('blocks.unix.size_finder.open_new') }}</span>
+        <span class="unix-sf__t2" data-sf-t2>{{ trans('blocks.unix.size_finder.open_new_sub') }}</span>
+      </span>
+      <svg class="unix-sf__chev icon-dir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+
+    <dialog class="unix-sf__dialog" id="{{ sf_id }}" data-sf-dialog aria-labelledby="{{ sf_id }}-title">
+      <div class="unix-sf__head">
+        <span class="unix-sf__step" data-sf-step></span>
+        <button type="button" class="unix-sf__close" data-sf-close aria-label="{{ trans('blocks.unix.size_finder.close') }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="unix-sf__bar" data-sf-bar aria-hidden="true"></div>
+      <div class="unix-sf__body" data-sf-body>
+        <h2 class="unix-sf__q" id="{{ sf_id }}-title" tabindex="-1">{{ trans('blocks.unix.size_finder.open_new') }}</h2>
+        <div class="unix-sf__think" role="status">
+          <p>{{ trans('blocks.unix.size_finder.loading') }}</p>
+          <span class="unix-sf__line" aria-hidden="true"></span>
+        </div>
+      </div>
+    </dialog>
+  </div>
+{% endif %}

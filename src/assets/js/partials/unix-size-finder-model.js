@@ -73,9 +73,26 @@ export const DEFAULTS = {
   // START: how far each fit preference moves the target, in size steps.
   PREF_SHIFT: { firm: -0.4, regular: 0, easy: 0.4 },
   COMFY_SHIFT: [-0.3, 0, 0.4],
-  // Fit-note shift used when a product has no learned delta (snippet logic).
-  FIT_NOTE_DELTA: 0.33,
+  // Per-product overrides, keyed by Salla product id (replaces the Shopify
+  // metafields: product.type, size_chart handle, fit_delta / size_fit_style).
+  //   { "123": { "cat": "leggings", "chart": "comfy", "delta": 0.33 } }
+  // "delta" may also be "small" (+0.33) or "large" (-0.33), like size_fit_style.
+  PRODUCTS: {},
 };
+
+const FIT_NOTE_DELTA = 0.33;
+
+/** Resolve one product's { cat, comfy, delta }: merchant override first, then name keywords. */
+export function productProfile(cfg, id, name) {
+  const o = (cfg.PRODUCTS && cfg.PRODUCTS[String(id)]) || {};
+  const cat = (o.cat && cfg.CATS[o.cat]) ? o.cat : baseCatFromText(name);
+  const comfy = o.chart ? o.chart === 'comfy' : /comfy|كومفي/i.test(name || '');
+  let delta = 0;
+  if (typeof o.delta === 'number') delta = o.delta;
+  else if (/small/i.test(o.delta || '')) delta = FIT_NOTE_DELTA;
+  else if (/large/i.test(o.delta || '')) delta = -FIT_NOTE_DELTA;
+  return { cat, comfy, delta };
+}
 
 /** Merge merchant JSON (string or object) over DEFAULTS, key by key. */
 export function buildConfig(override) {
