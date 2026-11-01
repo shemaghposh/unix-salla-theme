@@ -1,275 +1,303 @@
+/**
+ * UNIX main menu (ROADMAP 1.3 · DS §8.7, §8.9). Based on Theme Raed's <custom-main-menu>.
+ *
+ * Data: salla.api.component.getMenus() (the store's header menu, with Salla's mega-menu fields:
+ * children, image from the "menu-images" feature, and products).
+ *
+ * Renders:
+ * - Desktop (≥ lg): an inline list. A root item with children opens a full-width mega panel:
+ *   a links column (children and their children) plus up to two large images taken from the
+ *   children that have a menu image. Without images, Raed's selected-products strip is kept.
+ *   Items that don't fit move into a "More" dropdown (setting enable_more_menu).
+ * - Mobile (< lg): an accordion (<details>) inside the #mobile-menu drawer (unix-drawer.js).
+ */
+const DESKTOP_QUERY = '(min-width: 1024px)';
+const MAX_MEGA_IMAGES = 2; // DS §8.7: "column of links and two large images"
+
+const escapeAttr = value => String(value ?? '')
+  .replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
 class NavigationMenu extends HTMLElement {
-    connectedCallback() {
-        // Seed a skeleton placeholder shown until the menu data is fetched
-        // and render() replaces this innerHTML with the real menu.
-        this.innerHTML = `
-            <div class="main-menu-skel" aria-hidden="true">
-                <span class="header-skel-item header-skel-item--menu" style="width:80px"></span>
-                <span class="header-skel-item header-skel-item--menu" style="width:60px"></span>
-                <span class="header-skel-item header-skel-item--menu" style="width:90px"></span>
-                <span class="header-skel-item header-skel-item--menu" style="width:70px"></span>
-                <span class="header-skel-item header-skel-item--menu" style="width:80px"></span>
-            </div>`;
+  connectedCallback() {
+    // Skeleton shown until the menu data arrives.
+    this.innerHTML = `
+      <div class="main-menu-skel" aria-hidden="true">
+        <span class="header-skel-item"></span>
+        <span class="header-skel-item"></span>
+        <span class="header-skel-item"></span>
+        <span class="header-skel-item"></span>
+      </div>`;
 
-        salla.onReady()
-            .then(() => salla.lang.onLoaded())
-            .then(() => {
-                this.menus = [];
-                this.displayAllText = salla.lang.get('blocks.home.display_all');
-                this.moreText = salla.lang.get('common.titles.more');
-                this.visibleMenus = [];
-                this.overflowMenus = [];
-
-                return salla.api.component.getMenus()
-                .then(({ data }) => {
-                    this.menus = data;
-                    return this.render()
-                }).then(() => {
-                    this.initializeResponsiveMenu();
-                }).catch((error) => salla.logger.error('salla-menu::Error fetching menus', error));
-            });
-    }
-
-    /** 
-    * Check if the menu has children
-    * @param {Object} menu
-    * @returns {Boolean}
-    */
-    hasChildren(menu) {
-        return menu?.children?.length > 0;
-    }
-
-    /**
-    * Check if the menu has products
-    * @param {Object} menu
-    * @returns {Boolean}
-    */
-    hasProducts(menu) {
-        return menu?.products?.length > 0;
-    }
-
-    /**
-    * Get the classes for desktop menu
-    * @param {Object} menu
-    * @param {Boolean} isRootMenu
-    * @returns {String}
-    */
-    getDesktopClasses(menu, isRootMenu) {
-        return `!hidden lg:!block ${isRootMenu ? 'root-level lg:!inline-block' : 'relative'} ${menu.products ? ' mega-menu' : ''}
-        ${this.hasChildren(menu) ? ' has-children' : ''}`
-    }
-
-    /**
-    * Get the mobile menu
-    * @param {Object} menu
-    * @param {String} displayAllText
-    * @returns {String}
-    */
-    getMobileMenu(menu, displayAllText) {
-        const menuImage = menu.image ? `<img src="${menu.image}" class="rounded-full" width="48" height="48" alt="${menu.title}" />` : '';
-
-        return `
-        <li class="lg:hidden text-sm font-bold" ${menu.attrs}>
-            ${!this.hasChildren(menu) ? `
-                <a href="${menu.url}" aria-label="${menu.title || 'category'}" class="text-gray-500 ${menu.image ? '!py-3' : ''}" ${menu.link_attrs}>
-                    ${menuImage}
-                    <span>${menu.title || ''}</span>
-                </a>` :
-                `
-                <span class="${menu.image ? '!py-3' : ''}">
-                    ${menuImage}
-                    ${menu.title}
-                </span>
-                <ul>
-                    <li class="text-sm font-bold">
-                        <a href="${menu.url}" class="text-gray-500">${displayAllText}</a>
-                    </li>
-                    ${menu.children.map((subMenu) => this.getMobileMenu(subMenu, displayAllText)).join('')}
-                </ul>
-            `}
-        </li>`;
-    }
-
-    /**
-    * Get the desktop menu
-    * @param {Object} menu
-    * @param {Boolean} isRootMenu
-    * @param {String} additionalClasses
-    * @returns {String}
-    */
-    getDesktopMenu(menu, isRootMenu, additionalClasses = '') {
-        return `
-        <li class="${this.getDesktopClasses(menu, isRootMenu)} ${additionalClasses}" ${menu.attrs} data-menu-item>
-            <a href="${menu.url}" aria-label="${menu.title || 'category'}" ${menu.link_attrs}>
-                <span>${menu.title}</span>
-            </a>
-            ${this.hasChildren(menu) ? `
-                <div class="sub-menu ${this.hasProducts(menu) ? 'w-full left-0 flex' : 'w-56'}">
-                    <ul class="${this.hasProducts(menu) ? 'w-56 shrink-0 m-8 rtl:ml-0 ltr:mr-0' : ''}">
-                        ${menu.children.map((subMenu) => this.getDesktopMenu(subMenu, false)).join('\n')}
-                    </ul>
-                    ${this.hasProducts(menu) ? `
-                    <salla-products-list
-                    source="selected"
-                    shadow-on-hover
-                    source-value="[${menu.products}]" />` : ''}
-                </div>` : ''}
-        </li>`;
-    }
-
-    /**
-    * Get the menus
-    * @returns {String}
-    */
-    getMenus() {
-        return this.menus.map((menu) => `
-            ${this.getMobileMenu(menu, this.displayAllText)}
-            ${this.getDesktopMenu(menu, true)}
-        `).join('\n');
-    }
-
-    /**
-    * Create More dropdown menu
-    * @returns {String}
-    */
-    createMoreDropdown() {
-        if (this.overflowMenus.length === 0) return '';
-
-        return `
-        <li class="!hidden lg:!block root-level lg:!inline-block has-children relative" id="more-menu-dropdown">
-            <a href="#" aria-label="${this.moreText}">
-                <span>${this.moreText}</span>
-            </a>
-            <div class="sub-menu w-56">
-                <ul>
-                    ${this.overflowMenus.map((menu) => this.getDesktopMenu(menu, false)).join('\n')}
-                </ul>
-            </div>
-        </li>`;
-    }
-
-    /*
-    * Initialize responsive menu functionality
-    */
-    initializeResponsiveMenu() {
-        if (window.innerWidth < 1024) return; // Only for desktop
-
-        const mainMenu = this.querySelector('.main-menu');
-        if (!mainMenu) return;
-
-        // Check if more menu is enabled from global window variable set in master.twig
-        const isMoreMenuEnabled = window.enable_more_menu;
-        if (!isMoreMenuEnabled) {
-            // If disabled, keep the menu behavior as original (no More dropdown / overflow handling)
-            return;
-        }
-
-        this.checkMenuOverflow();
-
-        // Re-check on window resize
-        const resizeHandler = this.debounce(() => {
-            this.checkMenuOverflow();
-        }, 250);
-
-        window.addEventListener('resize', resizeHandler);
-    }
-
-    /**
-    * Check if menu items overflow and move them to More dropdown
-    */
-    checkMenuOverflow() {
-        const mainMenu = this.querySelector('.main-menu');
-        if (!mainMenu) return;
-
-        const container = mainMenu.closest('.container');
-        if (!container) return;
-
-        // Reset menus
-        this.visibleMenus = [...this.menus];
+    salla.onReady()
+      .then(() => salla.lang.onLoaded())
+      .then(() => {
+        this.menus = [];
+        this.displayAllText = this.dataset.displayAll || salla.lang.get('blocks.home.display_all');
+        this.moreText = this.dataset.more || salla.lang.get('common.titles.more');
         this.overflowMenus = [];
 
-        // Remove existing more dropdown
-        const existingMore = mainMenu.querySelector('#more-menu-dropdown');
-        if (existingMore) {
-            existingMore.remove();
-        }
+        return salla.api.component.getMenus()
+          .then(({ data }) => {
+            this.menus = data || [];
+            this.render();
+            this.renderMobile();
+            this.bindDesktop();
+            this.initializeResponsiveMenu();
+          })
+          .catch(error => salla.logger.error('salla-menu::Error fetching menus', error));
+      });
+  }
 
-        // Show all menu items first
-        const menuItems = mainMenu.querySelectorAll('.root-level[data-menu-item]');
-        menuItems.forEach(item => {
-            item.style.display = '';
-        });
+  hasChildren(menu) {
+    return menu?.children?.length > 0;
+  }
 
-        // Calculate available width
-        const containerWidth = container.offsetWidth;
-        const otherElements = container.querySelector('.flex').children;
-        let usedWidth = 0;
+  hasProducts(menu) {
+    return menu?.products?.length > 0;
+  }
 
-        // Calculate width used by logo and other elements
-        Array.from(otherElements).forEach(element => {
-            if (!element.contains(mainMenu)) {
-                usedWidth += element.offsetWidth;
-            }
-        });
+  // ── Desktop ───────────────────────────────────
 
-        const availableWidth = containerWidth - usedWidth - 300; // 300px buffer for More dropdown
-        let currentWidth = 0;
-        let visibleCount = 0;
+  getMegaImages(menu) {
+    return menu.children.filter(child => child.image).slice(0, MAX_MEGA_IMAGES);
+  }
 
-        // Check each menu item
-        menuItems.forEach((item, index) => {
-            const itemWidth = item.offsetWidth;
+  getMegaLinks(menu) {
+    return menu.children.map(child => `
+      <li class="unix-mega__group">
+        <a class="unix-mega__heading" href="${child.url}" ${child.link_attrs || ''}>${child.title || ''}</a>
+        ${this.hasChildren(child) ? `
+          <ul class="unix-mega__sublist">
+            ${child.children.map(grandChild => `
+              <li><a class="unix-mega__link" href="${grandChild.url}" ${grandChild.link_attrs || ''}>${grandChild.title || ''}</a></li>
+            `).join('')}
+          </ul>` : ''}
+      </li>`).join('');
+  }
 
-            if (currentWidth + itemWidth <= availableWidth && index < this.menus.length) {
-                currentWidth += itemWidth;
-                visibleCount++;
-            } else {
-                // Hide overflow items
-                item.style.setProperty('display', 'none', 'important');
-                if (index < this.menus.length) {
-                    this.overflowMenus.push(this.menus[index]);
-                }
-            }
-        });
+  getMegaPanel(menu) {
+    const images = this.getMegaImages(menu);
+    const media = images.length
+      ? `<div class="unix-mega__media">
+          ${images.map(child => `
+            <a class="unix-mega__tile" href="${child.url}" tabindex="-1">
+              <span class="unix-mega__frame">
+                <img class="unix-mega__img" src="${child.image}" alt="${escapeAttr(child.title)}" width="400" height="500" loading="lazy">
+              </span>
+              <span class="unix-mega__caption">${child.title || ''}</span>
+            </a>`).join('')}
+        </div>`
+      : (this.hasProducts(menu)
+        ? `<div class="unix-mega__products">
+            <salla-products-list source="selected" source-value="[${menu.products}]"></salla-products-list>
+          </div>`
+        : '');
 
-        // Update visible menus
-        this.visibleMenus = this.menus.slice(0, visibleCount);
+    return `
+      <div class="sub-menu unix-mega${media ? ' has-media' : ''}">
+        <div class="unix-container unix-mega__inner">
+          <div class="unix-mega__nav">
+            <a class="unix-mega__all" href="${menu.url}">${this.displayAllText}</a>
+            <ul class="unix-mega__links">${this.getMegaLinks(menu)}</ul>
+          </div>
+          ${media}
+        </div>
+      </div>`;
+  }
 
-        // Add More dropdown if needed
-        if (this.overflowMenus.length > 0) {
-            mainMenu.insertAdjacentHTML('beforeend', this.createMoreDropdown());
-        }
+  getDesktopMenu(menu, index) {
+    const children = this.hasChildren(menu);
+    return `
+      <li class="root-level unix-nav__item${children ? ' has-children' : ''}" ${menu.attrs || ''} data-menu-item data-index="${index}">
+        <a class="unix-nav__link" href="${menu.url}" ${menu.link_attrs || ''}${children ? ' aria-expanded="false"' : ''}>
+          <span>${menu.title || ''}</span>
+        </a>
+        ${children ? this.getMegaPanel(menu) : ''}
+      </li>`;
+  }
+
+  createMoreDropdown() {
+    if (this.overflowMenus.length === 0) return '';
+    return `
+      <li class="root-level unix-nav__item unix-nav__more has-children" id="more-menu-dropdown">
+        <button type="button" class="unix-nav__link" aria-expanded="false">
+          <span>${this.moreText}</span>
+        </button>
+        <div class="sub-menu unix-dropdown">
+          <ul>
+            ${this.overflowMenus.map(menu => `
+              <li><a class="unix-dropdown__link" href="${menu.url}" ${menu.link_attrs || ''}>${menu.title || ''}</a></li>
+            `).join('')}
+          </ul>
+        </div>
+      </li>`;
+  }
+
+  render() {
+    this.innerHTML = `
+      <nav class="unix-nav" aria-label="${escapeAttr(this.dataset.label || 'menu')}">
+        <ul class="main-menu unix-nav__list">
+          ${this.menus.map((menu, index) => this.getDesktopMenu(menu, index)).join('')}
+        </ul>
+      </nav>`;
+  }
+
+  /**
+   * Hover opens a panel through CSS; this adds keyboard, touch and ARIA on top:
+   * - aria-expanded mirrors the open state,
+   * - Esc closes the open panel and returns focus to its root link,
+   * - on touch-only screens the first tap on a root link opens its panel instead of navigating.
+   */
+  bindDesktop() {
+    const list = this.querySelector('.unix-nav__list');
+    if (!list) return;
+    const touchOnly = window.matchMedia('(hover: none)');
+
+    const setOpen = (item, open) => {
+      item.classList.toggle('is-open', open);
+      item.querySelector(':scope > .unix-nav__link')?.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+
+    const closeAll = except => list.querySelectorAll(':scope > .has-children.is-open')
+      .forEach(item => item !== except && setOpen(item, false));
+
+    list.addEventListener('mouseover', event => {
+      const item = event.target.closest('.unix-nav__list > .has-children');
+      if (!item) return;
+      item.classList.remove('is-dismissed');
+      item.querySelector(':scope > .unix-nav__link')?.setAttribute('aria-expanded', 'true');
+    });
+
+    list.addEventListener('mouseout', event => {
+      const item = event.target.closest('.unix-nav__list > .has-children');
+      if (!item || item.contains(event.relatedTarget)) return;
+      if (!item.classList.contains('is-open') && !item.matches(':focus-within')) {
+        item.querySelector(':scope > .unix-nav__link')?.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    list.addEventListener('focusin', event => {
+      const item = event.target.closest('.unix-nav__list > .has-children');
+      closeAll(item);
+      if (item && !item.classList.contains('is-dismissed')) {
+        item.querySelector(':scope > .unix-nav__link')?.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    list.addEventListener('focusout', event => {
+      const item = event.target.closest('.unix-nav__list > .has-children');
+      if (!item || item.contains(event.relatedTarget)) return;
+      item.classList.remove('is-dismissed');
+      setOpen(item, false);
+    });
+
+    list.addEventListener('keydown', event => {
+      if (event.key !== 'Escape') return;
+      const item = event.target.closest('.unix-nav__list > .has-children');
+      if (!item) return;
+      setOpen(item, false);
+      item.classList.add('is-dismissed');
+      item.querySelector(':scope > .unix-nav__link')?.focus();
+    });
+
+    list.addEventListener('click', event => {
+      const link = event.target.closest('.unix-nav__list > .has-children > .unix-nav__link');
+      if (!link) return;
+      const item = link.parentElement;
+      // "More" is a button: always toggles. Root links toggle only on touch-only screens.
+      if (link.tagName === 'BUTTON' || (touchOnly.matches && !item.classList.contains('is-open'))) {
+        event.preventDefault();
+        item.classList.remove('is-dismissed');
+        const open = !item.classList.contains('is-open');
+        closeAll(item);
+        setOpen(item, open);
+      }
+    });
+
+    document.addEventListener('click', event => {
+      if (!this.contains(event.target)) closeAll();
+    });
+  }
+
+  initializeResponsiveMenu() {
+    if (!window.enable_more_menu) return;
+
+    const desktop = window.matchMedia(DESKTOP_QUERY);
+    const run = () => desktop.matches && this.checkMenuOverflow();
+    run();
+    window.addEventListener('resize', this.debounce(run, 250));
+  }
+
+  /**
+   * Hide the root items that don't fit the start column, from the end, and list them under "More".
+   */
+  checkMenuOverflow() {
+    const nav = this.querySelector('.unix-nav');
+    const list = this.querySelector('.unix-nav__list');
+    if (!nav || !list) return;
+
+    list.querySelector('#more-menu-dropdown')?.remove();
+    const items = Array.from(list.querySelectorAll(':scope > [data-menu-item]'));
+    items.forEach(item => { item.hidden = false; });
+    this.overflowMenus = [];
+
+    const overflowing = () => list.scrollWidth > nav.clientWidth + 1;
+    if (!overflowing()) return;
+
+    // Reserve the "More" slot first, then drop items from the end until everything fits.
+    this.overflowMenus = [{ title: this.moreText, url: '#' }];
+    list.insertAdjacentHTML('beforeend', this.createMoreDropdown());
+    this.overflowMenus = [];
+
+    for (let i = items.length - 1; i >= 0 && overflowing(); i--) {
+      items[i].hidden = true;
+      this.overflowMenus.unshift(this.menus[Number(items[i].dataset.index)]);
     }
 
-    /**
-    * Debounce function to limit resize event calls
-    * @param {Function} func
-    * @param {Number} wait
-    * @returns {Function}
-    */
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
+    list.querySelector('#more-menu-dropdown')?.remove();
+    list.insertAdjacentHTML('beforeend', this.createMoreDropdown());
+  }
+
+  debounce(func, wait) {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  }
+
+  // ── Mobile accordion (inside the drawer) ──────
+
+  getMobileMenu(menu, depth = 0) {
+    if (!this.hasChildren(menu)) {
+      return `
+        <li class="unix-mmenu__item">
+          <a class="unix-mmenu__link" href="${menu.url}" ${menu.link_attrs || ''}>${menu.title || ''}</a>
+        </li>`;
     }
 
-    /**
-    * Render the header menu
-    */
-    render() {
-        this.innerHTML =  `
-        <nav id="mobile-menu" class="mobile-menu">
-            <ul class="main-menu">${this.getMenus()}</ul>
-            <button class="btn--close close-mobile-menu sicon-cancel lg:hidden"></button>
-        </nav>
-        <button class="btn--close-sm close-mobile-menu sicon-cancel hidden"></button>`;
-    }
+    return `
+      <li class="unix-mmenu__item">
+        <details class="unix-mmenu__group" data-depth="${depth}">
+          <summary class="unix-mmenu__summary">
+            <span>${menu.title || ''}</span>
+            <span class="unix-mmenu__icon" aria-hidden="true"></span>
+          </summary>
+          <ul class="unix-mmenu__panel">
+            <li class="unix-mmenu__item">
+              <a class="unix-mmenu__link unix-mmenu__link--all" href="${menu.url}">${this.displayAllText}</a>
+            </li>
+            ${menu.children.map(child => this.getMobileMenu(child, depth + 1)).join('')}
+          </ul>
+        </details>
+      </li>`;
+  }
+
+  renderMobile() {
+    const target = document.querySelector('#mobile-menu [data-drawer-menu]');
+    if (!target) return;
+    target.innerHTML = this.menus.map(menu => this.getMobileMenu(menu)).join('');
+  }
 }
 
 customElements.define('custom-main-menu', NavigationMenu);

@@ -1,0 +1,454 @@
+/*
+ * UNIX menus (ROADMAP 1.3 · DS §8.7 mega menu, §8.9 drawer, §8.10 accordion)
+ * Markup: src/assets/js/partials/main-menu.js (desktop list + mobile accordion)
+ *         src/views/components/header/header.twig (drawer shell)
+ * Behaviour: src/assets/js/partials/unix-drawer.js
+ */
+
+// ── Desktop inline menu ──────────────────────────
+custom-main-menu {
+  display: none;
+  align-self: stretch;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+
+  @screen lg { display: flex; }
+}
+
+.unix-header__start { align-self: stretch; }
+
+.unix-nav {
+  display: flex;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  block-size: 100%;
+}
+
+.unix-nav__list {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  block-size: 100%;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.unix-nav__item {
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+
+  &[hidden] { display: none; }
+}
+
+.unix-nav__more { position: relative; }
+
+.unix-nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  min-block-size: var(--tap);
+  padding-inline: var(--s-3);
+  color: inherit;
+  font-size: var(--t-small);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: opacity var(--d-fast) var(--ease-out);
+
+  // Underline grows from the start side (DS §8.2 link pattern).
+  &::after {
+    content: "";
+    position: absolute;
+    inset-inline: var(--s-3);
+    inset-block-end: calc(50% - var(--s-4));
+    block-size: var(--line-w);
+    background: currentColor;
+    transform: scaleX(0);
+    transition: transform var(--d-base) var(--ease-out);
+  }
+
+  [dir="rtl"] &::after { transform-origin: 100% 50%; }
+  [dir="ltr"] &::after { transform-origin: 0 50%; }
+
+  &:hover::after,
+  &[aria-expanded="true"]::after { transform: scaleX(1); }
+  &:active { opacity: var(--o-muted); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+
+  .has-children > & > span::after {
+    content: "\e96e"; // sallaicons chevron-down
+    display: inline-block;
+    margin-inline-start: var(--s-1);
+    font-family: "sallaicons";
+    font-size: var(--t-micro);
+    opacity: var(--o-muted);
+    transition: transform var(--d-base) var(--ease-out);
+  }
+
+  .has-children > &[aria-expanded="true"] > span::after { transform: scaleY(-1); }
+}
+
+// ── Panels (mega + "More" dropdown): fade in --d-base ─
+.unix-mega,
+.unix-dropdown {
+  position: absolute;
+  z-index: var(--z-dropdown);
+  background: var(--c-surface);
+  color: var(--c-text);
+  box-shadow: var(--e-2);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--d-base) var(--ease-out), visibility 0s linear var(--d-base);
+}
+
+.unix-nav__item.has-children:hover:not(.is-dismissed) > .sub-menu,
+.unix-nav__item.has-children:focus-within:not(.is-dismissed) > .sub-menu,
+.unix-nav__item.has-children.is-open > .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+// Mega panel spans the whole bar (root items are position: static).
+.unix-mega {
+  inset-inline: 0;
+  inset-block-start: 100%;
+  max-block-size: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  border-block-start: var(--line-w) solid var(--c-border);
+  overscroll-behavior: contain;
+
+  &__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-7);
+    padding-block: var(--s-7);
+  }
+
+  &.has-media &__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-4);
+  }
+
+  &__all {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tap);
+    color: var(--c-accent-text);
+    font-size: var(--t-small);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: var(--line-w);
+    text-underline-offset: var(--s-1);
+    &:hover { color: var(--c-text); }
+  }
+
+  &__links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(var(--s-10) + var(--s-8)), 1fr));
+    gap: var(--s-5) var(--s-6);
+    inline-size: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__sublist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__heading,
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tap);
+    transition: color var(--d-fast) var(--ease-out);
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: 0; border-radius: var(--r-sm); }
+  }
+
+  &__heading {
+    color: var(--c-text);
+    font-size: var(--t-body);
+    font-weight: 500;
+    &:hover { color: var(--c-accent-text); }
+  }
+
+  &__link {
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+    &:hover { color: var(--c-text); }
+    &:active { opacity: var(--o-muted); }
+  }
+
+  &__media {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-5);
+    max-inline-size: calc(var(--s-10) * 5);
+    justify-self: end;
+    inline-size: 100%;
+  }
+
+  &__tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    color: var(--c-text);
+  }
+
+  &__frame {
+    display: block;
+    overflow: hidden;
+    border-radius: var(--r-md);
+    aspect-ratio: 4 / 5;
+    background: var(--c-surface-muted);
+  }
+
+  &__img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: transform var(--d-reveal) var(--ease-out);
+  }
+
+  &__tile:hover &__img { transform: scale(1.04); }
+
+  &__caption {
+    font-size: var(--t-small);
+    font-weight: 500;
+  }
+
+  &__products {
+    min-inline-size: 0;
+    .s-product-card-entry { box-shadow: var(--e-0); }
+  }
+}
+
+// "More" dropdown
+.unix-dropdown {
+  inset-block-start: 100%;
+  inset-inline-start: 0;
+  min-inline-size: calc(var(--s-10) * 2);
+  max-block-size: calc(100vh - var(--header-h) * 2);
+  overflow-y: auto;
+  padding-block: var(--s-2);
+  border-radius: var(--r-md);
+
+  ul { margin: 0; padding: 0; list-style: none; }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--tap);
+    padding-inline: var(--s-5);
+    color: var(--c-text);
+    font-size: var(--t-small);
+    transition: background-color var(--d-fast) var(--ease-out);
+    &:hover { background: var(--c-surface-muted); }
+    &:active { opacity: var(--o-muted); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+  }
+}
+
+// ── Drawer (DS §8.9) ─────────────────────────────
+body.unix-drawer-open { overflow: hidden; }
+
+.unix-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-drawer);
+
+  &[hidden] { display: none; }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--c-backdrop);
+    backdrop-filter: blur(var(--blur-backdrop));
+    opacity: 0;
+    transition: opacity var(--d-slow) var(--ease-in-out);
+  }
+
+  &__panel {
+    position: absolute;
+    inset-block: 0;
+    display: flex;
+    flex-direction: column;
+    inline-size: var(--drawer-w);
+    background: var(--c-surface);
+    color: var(--c-text);
+    box-shadow: var(--e-2);
+    transition: transform var(--d-slow) var(--ease-in-out);
+    outline: none;
+  }
+
+  // Enters from the inline-start side: the right edge in RTL, the left edge in LTR.
+  &--start &__panel {
+    inset-inline-start: 0;
+    border-start-end-radius: var(--r-lg);
+    border-end-end-radius: var(--r-lg);
+  }
+
+  [dir="rtl"] &--start &__panel { transform: translateX(100%); }
+  [dir="ltr"] &--start &__panel { transform: translateX(-100%); }
+
+  [dir] &.is-open &__panel { transform: none; }
+  &.is-open &__backdrop { opacity: 1; }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    min-block-size: var(--header-h);
+    padding-inline: var(--s-5) var(--s-3);
+    border-block-end: var(--line-w) solid var(--c-border);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--t-h4);
+    line-height: 1.4;
+  }
+
+  &__close { color: var(--c-action); }
+
+  &__body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-inline: var(--s-5);
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    padding: var(--s-4) var(--s-5);
+    border-block-start: var(--line-w) solid var(--c-border);
+  }
+
+  &__account {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-block-size: var(--tap);
+    color: var(--c-text);
+    font-size: var(--t-small);
+    font-weight: 500;
+    transition: color var(--d-fast) var(--ease-out);
+
+    i { font-size: var(--icon-sm); }
+    &:hover { color: var(--c-accent-text); }
+    &:active { opacity: var(--o-muted); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); border-radius: var(--r-sm); }
+  }
+}
+
+// ── Mobile accordion menu (DS §8.10) ─────────────
+.unix-mmenu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding-block: var(--s-5);
+  }
+
+  &__item { border-block-end: var(--line-w) solid var(--c-border); }
+
+  &__link,
+  &__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    min-block-size: calc(var(--tap) + var(--s-3));
+    color: var(--c-text);
+    font-size: var(--t-h4);
+    font-weight: 500;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: color var(--d-fast) var(--ease-out);
+
+    &:hover { color: var(--c-accent-text); }
+    &:active { opacity: var(--o-muted); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); border-radius: var(--r-sm); }
+  }
+
+  &__summary {
+    list-style: none;
+    &::-webkit-details-marker { display: none; }
+  }
+
+  // "+" that turns into "×"
+  &__icon {
+    position: relative;
+    flex-shrink: 0;
+    inline-size: var(--s-4);
+    block-size: var(--s-4);
+    transition: transform var(--d-base) var(--ease-out);
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      inset-block-start: calc(50% - var(--line-w-strong) / 2);
+      block-size: var(--line-w-strong);
+      background: currentColor;
+    }
+
+    &::after { transform: rotate(90deg); }
+  }
+
+  &__group[open] > &__summary &__icon { transform: rotate(45deg); }
+
+  &__panel {
+    margin: 0;
+    padding: 0 0 var(--s-3);
+    padding-inline-start: var(--s-4);
+    list-style: none;
+
+    .unix-mmenu__item { border-block-end: 0; }
+
+    .unix-mmenu__link,
+    .unix-mmenu__summary {
+      min-block-size: var(--tap);
+      color: var(--c-text-muted);
+      font-size: var(--t-body);
+      font-weight: 400;
+      &:hover { color: var(--c-text); }
+    }
+
+    .unix-mmenu__link--all { color: var(--c-accent-text); font-weight: 500; }
+  }
+
+  &__group[open] > &__panel { animation: unix-menu-fade var(--d-base) var(--ease-out); }
+}
+
+@keyframes unix-menu-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-drawer__panel,
+  .unix-nav__link::after,
+  .unix-mmenu__icon,
+  .unix-mega__img { transition: none; }
+}
