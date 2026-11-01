@@ -95,6 +95,266 @@
             "variant": "h6"
         },
         {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "إظهار شريط الإعلانات",
+            "description": "شريط بارتفاع 40px أعلى الهيدر، تتبدل رسائله كل 4 ثوانٍ وتتوقف عند مرور المؤشر أو التركيز عليها",
+            "id": "announcement_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "شريط الإعلانات: الرسالة 1",
+            "multilanguage": true,
+            "id": "announcement_message_1",
+            "value": "وصلت مجموعتنا الجديدة: Sailor وHalo Back وSoft Angle",
+            "required": false,
+            "format": "text",
+            "description": "سطر واحد في المنتصف. اتركي الحقل فارغاً لإخفاء الرسالة",
+            "placeholder": "أدخل النص هنا...",
+            "minLength": 0,
+            "maxLength": 100
+        },
+        {
+            "type": "items",
+            "icon": "sicon-link",
+            "label": "شريط الإعلانات: رابط الرسالة 1 (اختياري)",
+            "id": "announcement_link_1",
+            "value": null,
+            "description": null,
+            "required": false,
+            "format": "variable-list",
+            "searchable": true,
+            "source": "custom",
+            "sources": [
+                {
+                    "label": "منتج",
+                    "key": "products",
+                    "value": "products"
+                },
+                {
+                    "label": "منتجات مع وسم",
+                    "key": "products_tags",
+                    "value": "products_tags"
+                },
+                {
+                    "label": "تصنيف",
+                    "key": "categories",
+                    "value": "categories"
+                },
+                {
+                    "label": "ماركة تجارية",
+                    "key": "brands",
+                    "value": "brands"
+                },
+                {
+                    "label": "صفحة تعريفية",
+                    "key": "pages",
+                    "value": "pages"
+                },
+                {
+                    "label": "مقالة",
+                    "key": "blog_articles",
+                    "value": "blog_articles"
+                },
+                {
+                    "label": "تصنيف ضمن المدونة",
+                    "key": "blog_categories",
+                    "value": "blog_categories"
+                },
+                {
+                    "label": "التخفيضات",
+                    "key": "offers_link",
+                    "value": "offers_link"
+                },
+                {
+                    "label": "الماركات التجارية",
+                    "key": "brands_link",
+                    "value": "brands_link"
+                },
+                {
+                    "label": "المدونة",
+                    "key": "blog_link",
+                    "value": "blog_link"
+                },
+                {
+                    "label": "رابط خارجي",
+                    "key": "custom",
+                    "value": "custom"
+                }
+            ]
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "شريط الإعلانات: الرسالة 2",
+            "multilanguage": true,
+            "id": "announcement_message_2",
+            "value": "شحن مجاني داخل السعودية للطلبات فوق 500 ر.س",
+            "required": false,
+            "format": "text",
+            "description": null,
+            "placeholder": "أدخل النص هنا...",
+            "minLength": 0,
+            "maxLength": 100
+        },
+        {
+            "type": "items",
+            "icon": "sicon-link",
+            "label": "شريط الإعلانات: رابط الرسالة 2 (اختياري)",
+            "id": "announcement_link_2",
+            "value": null,
+            "description": null,
+            "required": false,
+            "format": "variable-list",
+            "searchable": true,
+            "source": "custom",
+            "sources": [
+                {
+                    "label": "منتج",
+                    "key": "products",
+                    "value": "products"
+                },
+                {
+                    "label": "منتجات مع وسم",
+                    "key": "products_tags",
+                    "value": "products_tags"
+                },
+                {
+                    "label": "تصنيف",
+                    "key": "categories",
+                    "value": "categories"
+                },
+                {
+                    "label": "ماركة تجارية",
+                    "key": "brands",
+                    "value": "brands"
+                },
+                {
+                    "label": "صفحة تعريفية",
+                    "key": "pages",
+                    "value": "pages"
+                },
+                {
+                    "label": "مقالة",
+                    "key": "blog_articles",
+                    "value": "blog_articles"
+                },
+                {
+                    "label": "تصنيف ضمن المدونة",
+                    "key": "blog_categories",
+                    "value": "blog_categories"
+                },
+                {
+                    "label": "التخفيضات",
+                    "key": "offers_link",
+                    "value": "offers_link"
+                },
+                {
+                    "label": "الماركات التجارية",
+                    "key": "brands_link",
+                    "value": "brands_link"
+                },
+                {
+                    "label": "المدونة",
+                    "key": "blog_link",
+                    "value": "blog_link"
+                },
+                {
+                    "label": "رابط خارجي",
+                    "key": "custom",
+                    "value": "custom"
+                }
+            ]
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "شريط الإعلانات: الرسالة 3",
+            "multilanguage": true,
+            "id": "announcement_message_3",
+            "value": null,
+            "required": false,
+            "format": "text",
+            "description": null,
+            "placeholder": "أدخل النص هنا...",
+            "minLength": 0,
+            "maxLength": 100
+        },
+        {
+            "type": "items",
+            "icon": "sicon-link",
+            "label": "شريط الإعلانات: رابط الرسالة 3 (اختياري)",
+            "id": "announcement_link_3",
+            "value": null,
+            "description": null,
+            "required": false,
+            "format": "variable-list",
+            "searchable": true,
+            "source": "custom",
+            "sources": [
+                {
+                    "label": "منتج",
+                    "key": "products",
+                    "value": "products"
+                },
+                {
+                    "label": "منتجات مع وسم",
+                    "key": "products_tags",
+                    "value": "products_tags"
+                },
+                {
+                    "label": "تصنيف",
+                    "key": "categories",
+                    "value": "categories"
+                },
+                {
+                    "label": "ماركة تجارية",
+                    "key": "brands",
+                    "value": "brands"
+                },
+                {
+                    "label": "صفحة تعريفية",
+                    "key": "pages",
+                    "value": "pages"
+                },
+                {
+                    "label": "مقالة",
+                    "key": "blog_articles",
+                    "value": "blog_articles"
+                },
+                {
+                    "label": "تصنيف ضمن المدونة",
+                    "key": "blog_categories",
+                    "value": "blog_categories"
+                },
+                {
+                    "label": "التخفيضات",
+                    "key": "offers_link",
+                    "value": "offers_link"
+                },
+                {
+                    "label": "الماركات التجارية",
+                    "key": "brands_link",
+                    "value": "brands_link"
+                },
+                {
+                    "label": "المدونة",
+                    "key": "blog_link",
+                    "value": "blog_link"
+                },
+                {
+                    "label": "رابط خارجي",
+                    "key": "custom",
+                    "value": "custom"
+                }
+            ]
+        },
+        {
             "id": "header_is_sticky",
             "label": "تثبت القائمة الرئيسية أعلى الصفحة عند التمرير لأسفل",
             "description": "يُنصح بالغاء تفعيلها في حالة وجود عناصر كثيرة في القائمة المنسدلة",

@@ -1,0 +1,46 @@
+{#
+| Announcement bar (ROADMAP 1.1 · DS §8.6 · SPEC §2)
+| Source: twilight.json → settings
+|   announcement_enabled            boolean  show/hide the bar
+|   announcement_message_{1..3}     string   multilanguage, one line, empty = skipped
+|   announcement_link_{1..3}        link     optional, empty = plain text (Shopify default)
+| Rotation (2+ messages) is driven by src/assets/js/partials/announcement-bar.js.
+#}
+{% if theme.settings.get('announcement_enabled', true) %}
+  {% set messages = [] %}
+  {% for i in 1..3 %}
+    {% set text = theme.settings.get('announcement_message_' ~ i) %}
+    {# multilanguage values may arrive as {ar, en}; resolve to the current language #}
+    {% if text is iterable %}
+      {% set text = text[language.code]|default('') %}
+    {% endif %}
+    {% set url = theme.settings.get('announcement_link_' ~ i) %}
+    {% if url is iterable %}
+      {% set url = url.url|default('') %}
+    {% endif %}
+    {% if text|trim %}
+      {% set messages = messages|merge([{ text: text|trim, url: url|trim }]) %}
+    {% endif %}
+  {% endfor %}
+
+  {% if messages|length %}
+    {% set rotates = messages|length > 1 %}
+    <section class="unix-announce"
+             aria-label="{{ trans('blocks.header.announcements') }}"
+             {% if rotates %}data-unix-announce tabindex="0"{% endif %}>
+      <div class="unix-container">
+        <ul class="unix-announce__track" role="list">
+          {% for message in messages %}
+            <li class="unix-announce__item{{ loop.first ? ' is-active' : '' }}">
+              {% if message.url %}
+                <a class="unix-announce__link" href="{{ message.url }}">{{ message.text }}</a>
+              {% else %}
+                {{ message.text }}
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+  {% endif %}
+{% endif %}

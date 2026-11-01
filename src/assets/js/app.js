@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import Anime from './partials/anime';
 import initTootTip from './partials/tooltip';
 import AppHelpers from "./app-helpers";
+import initAnnouncementBar from "./partials/announcement-bar";
 
 class App extends AppHelpers {
   constructor() {
@@ -11,6 +12,7 @@ class App extends AppHelpers {
   }
 
   loadTheApp() {
+    initAnnouncementBar();
     this.commonThings();
     this.initiateNotifier();
     this.initiateMobileMenu();
