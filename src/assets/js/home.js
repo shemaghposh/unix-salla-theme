@@ -2,11 +2,13 @@ import "lite-youtube-embed";
 import BasePage from "./base-page";
 import Lightbox from "fslightbox";
 import initVideoTiles from "./partials/unix-video-tiles";
+import initFaqs from "./partials/unix-faq";
 window.fslightbox = Lightbox;
 
 class Home extends BasePage {
     onReady() {
         initVideoTiles();
+        initFaqs();
         this.initFeaturedTabs();
     }
 

@@ -1,0 +1,138 @@
+{#
+  UNIX FAQ (ROADMAP 2.9 · DS §8.10, §15 · SPEC §4.18).
+  Matches unix.sa (reference/shopify-theme/sections/collapsible-content.liquid,
+  assets/section-collapsible-content.css, assets/collapsible-content.js, templates/index.json →
+  collapsible-content): centered heading + text, bordered rows, one answer open at a time
+  (native <details name>), plus → minus icon, «عرض المزيد / عرض أقل»: with more than 3 questions
+  the 4th is a faded teaser and the rest are hidden until «عرض المزيد». FAQPage JSON-LD.
+
+  Fields (twilight.json → components → home.unix-faq):
+    title, text            string (multilanguage). null = not saved yet → translated default
+                           (blocks.unix.faq.default_title / default_text); '' = cleared on purpose.
+    items                  collection: items.question, items.answer (multilanguage), items.opened.
+                           Empty (never saved) → the 7 unix.sa questions from the locale files
+                           (blocks.unix.faq.default_q1…q7 / default_a1…a7); answer 2 takes the
+                           free-shipping threshold setting (unix_free_shipping_threshold, D1).
+    show_more              boolean  «عرض المزيد» collapse (unix.sa buttons_show), on until saved
+    schema                 boolean  FAQPage JSON-LD (unix.sa enable_data_schema), on until saved
+  Merchant answers are plain text (escaped, line breaks kept); the locale defaults carry a little
+  trusted HTML (<p>, <strong>, mailto link) and are printed raw.
+  The collapse is driven by src/assets/js/partials/unix-faq.js; hidden questions use
+  hidden="until-found", so find-in-page still reaches them.
+#}
+{% set faq = {} %}
+{% for key in ['title', 'text'] %}
+  {% set value = attribute(component, key) %}
+  {# multilanguage values may arrive as {ar, en}; resolve to the current language #}
+  {% if value is iterable %}
+    {% set value = value[language.code] is defined ? value[language.code] : null %}
+  {% endif %}
+  {% if value is null %}
+    {% set value = trans('blocks.unix.faq.default_' ~ key) %}
+  {% endif %}
+  {% set faq = faq|merge({ (key): value|default('')|trim }) %}
+{% endfor %}
+
+{% set items = [] %}
+{% if component.items is not empty %}
+  {% for item in component.items %}
+    {% set row = {} %}
+    {% for key in ['question', 'answer'] %}
+      {% set value = attribute(item, key) %}
+      {% if value is iterable %}
+        {% set value = value[language.code] is defined ? value[language.code] : null %}
+      {% endif %}
+      {% set row = row|merge({ (key): value|default('')|trim }) %}
+    {% endfor %}
+    {% if row.question %}
+      {% set items = items|merge([row|merge({ 'opened': item.opened ? true : false, 'html': false })]) %}
+    {% endif %}
+  {% endfor %}
+{% else %}
+  {% set threshold = theme.settings.get('unix_free_shipping_threshold', 500)|default(500) %}
+  {% for i in 1..7 %}
+    {% set items = items|merge([{
+      'question': trans('blocks.unix.faq.default_q' ~ i),
+      'answer': trans('blocks.unix.faq.default_a' ~ i, {'amount': threshold|number_format(0, '.', ',')}),
+      'opened': i == 1,
+      'html': true
+    }]) %}
+  {% endfor %}
+{% endif %}
+
+{% set show_more = (component.show_more is null or component.show_more) and items|length > 3 %}
+{% set with_schema = component.schema is null or component.schema %}
+{% set uid = 'unix-faq-' ~ componentId %}
+
+{% if items|length %}
+  <section component-id="{{ componentId }}"
+           class="unix-faq"
+           data-unix-faq
+           {% if faq.title %}aria-labelledby="{{ uid }}-title"{% else %}aria-label="{{ trans('blocks.unix.faq.label')|e('html_attr') }}"{% endif %}>
+    <div class="unix-container">
+      <div class="unix-faq__inner">
+        {% if faq.title or faq.text %}
+          <header class="unix-faq__head">
+            {% if faq.title %}
+              <h2 class="unix-faq__title" id="{{ uid }}-title">{{ faq.title }}</h2>
+            {% endif %}
+            {% if faq.text %}
+              <p class="unix-faq__text">{{ faq.text }}</p>
+            {% endif %}
+          </header>
+        {% endif %}
+
+        <div class="unix-faq__list" id="{{ uid }}-list">
+          {% for row in items %}
+            {% if show_more and loop.index == 5 %}
+              <div class="unix-faq__extra" hidden="until-found" data-unix-faq-extra>
+            {% endif %}
+            {% set is_teaser = show_more and loop.index == 4 %}
+            <details class="unix-faq__item{{ is_teaser ? ' is-teaser' }}"
+                     name="{{ uid }}"
+                     {% if row.opened and not is_teaser %}open{% endif %}
+                     {% if is_teaser %}inert data-unix-faq-teaser{% endif %}>
+              <summary class="unix-faq__summary">
+                <span class="unix-faq__question">{{ row.question }}</span>
+                <svg class="unix-faq__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+                     fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                  <path d="M5 12h14"/>
+                  <path class="unix-faq__icon-v" d="M12 5v14"/>
+                </svg>
+              </summary>
+              {% if row.answer %}
+                <div class="unix-faq__answer">
+                  <div class="unix-faq__answer-inner">
+                    {% if row.html %}{{ row.answer|raw }}{% else %}<p>{{ row.answer|nl2br }}</p>{% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            </details>
+            {% if show_more and loop.index >= 5 and loop.last %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if show_more %}
+          <button type="button" class="unix-btn unix-faq__more" data-unix-faq-more
+                  aria-expanded="false" aria-controls="{{ uid }}-list"
+                  data-label-more="{{ trans('blocks.unix.faq.show_more')|e('html_attr') }}"
+                  data-label-less="{{ trans('blocks.unix.faq.show_less')|e('html_attr') }}">{{ trans('blocks.unix.faq.show_more') }}</button>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if with_schema %}
+      {% set schema_items = [] %}
+      {% for row in items %}
+        {% set schema_items = schema_items|merge([{
+          '@type': 'Question',
+          'name': row.question|striptags|trim,
+          'acceptedAnswer': { '@type': 'Answer', 'text': row.answer|striptags|trim }
+        }]) %}
+      {% endfor %}
+      <script type="application/ld+json">{{ { '@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': schema_items }|json_encode|raw }}</script>
+    {% endif %}
+  </section>
+{% endif %}

@@ -49,6 +49,27 @@
         "default_link_label": "Shop now",
         "pause_video": "Pause video",
         "play_video": "Play video"
+      },
+      "faq": {
+        "label": "Frequently asked questions",
+        "show_more": "Show more",
+        "show_less": "Show less",
+        "default_title": "Answers to every detail",
+        "default_text": "We gathered the questions we hear most, so you can shop with confidence and ease",
+        "default_q1": "How do I find my size?",
+        "default_a1": "<p>Every product page has a <strong>“Find my size”</strong> tool: a few quick questions about your height, your usual size and the fit you like, and we suggest the best size for that exact piece. Your size is saved, so it is ready on every other piece.</p><p>If you prefer to compare yourself, the size chart in centimetres is right below it.</p>",
+        "default_q2": "Do you offer free shipping?",
+        "default_a2": "<p>Yes, shipping is free on all orders over SAR :amount within Saudi Arabia.</p>",
+        "default_q3": "What fabrics do you use?",
+        "default_a3": "<p>Our activewear is made from premium nylon and spandex designed for support and breathability, and our loungewear from soft cotton-blend fabrics. To keep the quality, wash in cold water with similar colours, avoid fabric softener and air-dry whenever possible.</p>",
+        "default_q4": "Where do you ship, and how long does delivery take?",
+        "default_a4": "<p>We ship across Saudi Arabia, the GCC and worldwide. Standard delivery within Saudi Arabia takes 1 to 4 business days. Once your order ships, you receive a tracking link by email and SMS.</p>",
+        "default_q5": "What is your return policy?",
+        "default_a5": "<p>Return or exchange requests are made within 24 hours of receiving your order, for unused items in their original condition with tags attached. Sale items cannot be returned. To start, contact us at <a href=\"mailto:info@unix.sa\">info@unix.sa</a> with your order number.</p>",
+        "default_q6": "Which payment methods do you accept?",
+        "default_a6": "<p>We accept mada, Visa, Mastercard, Tabby and Tamara. All transactions are secure and encrypted.</p>",
+        "default_q7": "Can I pay in instalments?",
+        "default_a7": "<p>Yes, you can pay in instalments with Tabby and Tamara at checkout, for more flexible shopping.</p>"
       }
     }
   },

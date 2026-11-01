@@ -1,0 +1,161 @@
+/*
+ * UNIX FAQ (ROADMAP 2.9 · DS §8.10, §15 · SPEC §4.18)
+ * unix.sa collapsible-content, layout "border": centered head, rows with a bottom border (and a
+ * top border on the first), column max --faq-max from lg, plus → minus icon in a --tap box,
+ * answers in --c-text-muted. Native <details name> (one open at a time); the open/close motion
+ * is grid-template-rows 0fr → 1fr on ::details-content where supported (instant elsewhere).
+ */
+.unix-faq {
+  padding-block: var(--section-md);
+  background-color: var(--c-bg);
+}
+
+.unix-faq__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  inline-size: 100%;
+
+  @screen lg {
+    max-inline-size: var(--faq-max);
+    margin-inline: auto;
+  }
+}
+
+.unix-faq__head {
+  margin-block-end: var(--s-5);
+  text-align: center;
+}
+
+.theme-unix .unix-faq__title {
+  margin: 0;
+  font-size: var(--t-h2);
+  line-height: 1.3;
+}
+
+.theme-unix .unix-faq__text {
+  margin-block: var(--s-2) 0;
+  margin-inline: auto;
+  color: var(--c-text-muted);
+  font-size: var(--t-body);
+  line-height: 1.7;
+}
+
+// ── Rows ────────────────────────────────────────
+.unix-faq__item {
+  padding-block: var(--s-4) var(--s-2);
+  border-block-end: var(--line-w) solid var(--c-border);
+  transition: opacity var(--d-fast) var(--ease-out);
+
+  .unix-faq__list > &:first-child { border-block-start: var(--line-w) solid var(--c-border); }
+
+  // Open/close motion (DS §8.10). Unsupported browsers drop the whole rule and open instantly.
+  &::details-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--d-base) var(--ease-out),
+                content-visibility var(--d-base) allow-discrete;
+  }
+  &[open]::details-content { grid-template-rows: 1fr; }
+}
+
+// unix.sa: closed rows dim on hover (desktop pointers only)
+@media (hover: hover) and (min-width: 1024px) {
+  .unix-faq__item:not([open]):not(.is-teaser):hover { opacity: var(--o-muted); }
+}
+
+.unix-faq__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  min-block-size: var(--tap);
+  padding-block-end: var(--s-2);
+  list-style: none;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+
+  &::-webkit-details-marker { display: none; }
+  &::marker { content: ""; }
+
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  &:active .unix-faq__question { opacity: var(--o-muted); }
+}
+
+.unix-faq__question {
+  font-family: var(--f-heading);
+  font-size: var(--t-h4);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--c-text);
+  text-align: start;
+}
+
+// Plus → minus: the vertical bar turns flat (unix.sa crossfades icon-plus / icon-minus)
+.unix-faq__icon {
+  flex: none;
+  box-sizing: content-box;
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+  padding: calc((var(--tap) - var(--icon-sm)) / 2);
+  color: var(--c-text-muted);
+}
+
+.unix-faq__icon-v {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform var(--d-base) var(--ease-out);
+
+  .unix-faq__item[open] & { transform: rotate(90deg); }
+}
+
+.unix-faq__answer {
+  min-block-size: 0;
+  overflow: hidden;
+}
+
+.unix-faq__answer-inner {
+  padding-block-end: var(--s-2);
+  color: var(--c-text-muted);
+  font-size: var(--t-body);
+  line-height: 1.7;
+
+  p { margin: 0; }
+  p + p { margin-block-start: var(--s-2); }
+  strong { color: var(--c-text); font-weight: 500; }
+  a {
+    color: var(--c-accent-text);
+    text-decoration: underline;
+    text-underline-offset: var(--s-1);
+    &:hover { color: var(--c-text); }
+  }
+}
+
+// ── Collapsed state (unix.sa item--opacity / item--hidden) ──
+.unix-faq__item.is-teaser {
+  position: relative;
+  opacity: var(--o-teaser);
+  pointer-events: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--c-teaser-fade);
+  }
+}
+
+// ── Show more / less (primary ↔ secondary via .unix-btn--secondary) ──
+.unix-faq__more {
+  inline-size: 100%;
+
+  @screen lg {
+    inline-size: auto;
+    align-self: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-faq__item::details-content { transition: none; }
+  .unix-faq__icon-v { transition: none; }
+}

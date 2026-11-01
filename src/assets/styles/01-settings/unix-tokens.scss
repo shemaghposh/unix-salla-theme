@@ -168,6 +168,9 @@
   --tile-ratio: 3 / 4;                         /* video tile (unix.sa banner-grid media ratio 3/4) (2.7) */
   --c-tile-overlay: rgb(36 30 26 / .2);        /* light overlay on video tiles (unix.sa overlay_opacity .2) (2.7) */
   --media-hover-scale: 1.04;                   /* DS §5 "Image hover" scale (2.7) */
+  --faq-max: 908px;                            /* FAQ column from lg (unix.sa collapsible-content__wrapper 90.8rem) (2.9) */
+  --o-teaser: .3;                              /* faded 4th question while collapsed (unix.sa item--opacity) (2.9) */
+  --c-teaser-fade: linear-gradient(to bottom, color-mix(in srgb, var(--c-bg) 30%, transparent) 20%, var(--c-bg)); /* fade over the teaser (2.9) */
 }
 
 /* ── Base ─────────────────────────────────────── */
