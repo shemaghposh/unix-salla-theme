@@ -105,6 +105,13 @@
         "list_label": "Collection categories, scroll sideways to see more",
         "prev": "Previous categories",
         "next": "Next categories"
+      },
+      "blog": {
+        "title": "From the world of UNIX",
+        "label": "From the blog",
+        "cta": "Browse the articles",
+        "prev": "Previous articles",
+        "next": "Next articles"
       }
     }
   },

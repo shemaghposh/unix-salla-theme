@@ -1836,6 +1836,170 @@
             ]
         },
         {
+            "key": "7c1e2b8a-28a0-4b6e-9f3d-5a1b0c2d8e01",
+            "title": {
+                "en": "UNIX · From the world of UNIX (blog)",
+                "ar": "يونكس · من عالم UNIX (المدونة)"
+            },
+            "icon": "sicon-list-play",
+            "path": "home.unix-blog",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/main-links.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-blog-preview",
+                    "value": "<div><h6>معاينة العنصر</h6><p>يعرض المقالات المختارة كبطاقات نصية (التاريخ والعنوان والمقتطف) في شريط متحرك، مع أسهم وزر «تصفّحي المقالات» بجانب العنوان. (صورة المعاينة مؤقتة.)</p></div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "يظهر «من عالم UNIX» إذا لم يُحفظ عنوان. إذا مسحتِ العنوان وحفظتِ، يُخفى.",
+                    "placeholder": "من عالم UNIX",
+                    "minLength": 0,
+                    "maxLength": 100
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-keyboard_arrow_down",
+                    "label": "المقالات",
+                    "id": "articles",
+                    "format": "dropdown-list",
+                    "description": "اختاري المقالات بالترتيب الذي تظهر به. لا يظهر القسم إذا لم تُختر مقالات.",
+                    "selected": [],
+                    "options": [],
+                    "required": true,
+                    "multichoice": true,
+                    "searchable": true,
+                    "source": "blog_articles",
+                    "minLength": 1,
+                    "maxLength": 12,
+                    "value": []
+                },
+                {
+                    "type": "number",
+                    "icon": "sicon-pencil-ruler",
+                    "label": "عدد المقالات (تابلت وديسكتوب)",
+                    "id": "post_limit",
+                    "format": "integer",
+                    "description": null,
+                    "placeholder": "7",
+                    "value": 7,
+                    "required": false,
+                    "minimum": 1,
+                    "maximum": 12
+                },
+                {
+                    "type": "number",
+                    "icon": "sicon-pencil-ruler",
+                    "label": "عدد المقالات (موبايل)",
+                    "id": "post_limit_mobile",
+                    "format": "integer",
+                    "description": null,
+                    "placeholder": "3",
+                    "value": 3,
+                    "required": false,
+                    "minimum": 1,
+                    "maximum": 12
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-image",
+                    "label": "إظهار صورة المقالة",
+                    "description": "مُطفأ افتراضيًا كما في unix.sa. عند التفعيل تظهر الصورة بنسبة 4:5 فوق النص.",
+                    "id": "show_image",
+                    "format": "switch",
+                    "required": false,
+                    "value": false,
+                    "selected": false
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "إظهار زر «تصفّحي المقالات»",
+                    "description": null,
+                    "id": "show_button",
+                    "format": "switch",
+                    "required": false,
+                    "value": true,
+                    "selected": true
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "نص الزر",
+                    "multilanguage": true,
+                    "id": "button_label",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "إذا كان فارغًا يظهر «تصفّحي المقالات».",
+                    "placeholder": "تصفّحي المقالات",
+                    "minLength": 0,
+                    "maxLength": 40,
+                    "conditions": [
+                        {
+                            "id": "show_button",
+                            "operation": "=",
+                            "value": true
+                        }
+                    ]
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-link",
+                    "label": "رابط الزر",
+                    "id": "button_link",
+                    "value": [],
+                    "description": "إذا كان فارغًا يفتح الزر صفحة المدونة.",
+                    "required": false,
+                    "format": "variable-list",
+                    "searchable": true,
+                    "source": "custom",
+                    "sources": [
+                        {
+                            "label": "المدونة",
+                            "key": "blog_link",
+                            "value": "blog_link"
+                        },
+                        {
+                            "label": "تصنيف ضمن المدونة",
+                            "key": "blog_categories",
+                            "value": "blog_categories"
+                        },
+                        {
+                            "label": "مقالة",
+                            "key": "blog_articles",
+                            "value": "blog_articles"
+                        },
+                        {
+                            "label": "صفحة تعريفية",
+                            "key": "pages",
+                            "value": "pages"
+                        },
+                        {
+                            "label": "رابط خارجي",
+                            "key": "custom",
+                            "value": "custom"
+                        }
+                    ],
+                    "conditions": [
+                        {
+                            "id": "show_button",
+                            "operation": "=",
+                            "value": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "key": "25f6cf26-a53f-4954-9b32-739b311b32c7",
             "title": {
                 "en": "Brands",
