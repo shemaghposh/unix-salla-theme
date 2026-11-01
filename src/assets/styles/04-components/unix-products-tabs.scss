@@ -1,0 +1,195 @@
+/*
+ * UNIX products tabs «المفضلة دائما» (ROADMAP 2.3 · DS §8.15).
+ * Card look lives in unix-product-card.scss (shared). This file: heading, tab pills,
+ * panels, the pre-render skeleton and the bottom button.
+ */
+
+.unix-ptabs {
+  --per-view: 2;
+
+  padding-block: var(--section-sm);
+  overflow-x: clip;
+
+  @media (min-width: 768px) { --per-view: 3; }
+  @media (min-width: 1024px) { --per-view: 4; }
+}
+
+// Layout like unix.sa (section-top + navigation + button in one row from 576px):
+// <576: title / tabs / panels / full-width button.  ≥576: title · arrows · button, then tabs, panels.
+.unix-ptabs__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "title" "tabs" "panels" "cta";
+  align-items: center;
+
+  @media (min-width: 576px) {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "title nav cta"
+      "tabs  tabs tabs"
+      "panels panels panels";
+    column-gap: var(--s-4);
+  }
+}
+
+.unix-ptabs__title {
+  grid-area: title;
+  margin: 0;
+  text-align: center;
+
+  @media (min-width: 576px) { text-align: start; }
+}
+
+.unix-ptabs__nav {
+  grid-area: nav;
+  display: flex;
+  gap: var(--s-2);
+
+  @media (max-width: 575px) { display: none; }
+}
+
+// The theme drives the slider from the heading row; salla-slider's own arrow bar is not used
+.unix-ptabs .s-slider-block__title { display: none; }
+
+// ── Tabs (pills that scroll sideways) ───────────
+.unix-ptabs__tablist {
+  grid-area: tabs;
+  display: flex;
+  margin-block-start: var(--s-5);
+  align-items: center;
+  gap: var(--s-2);
+  margin-block-end: var(--s-5);
+  margin-inline: calc(-1 * var(--page-margin));
+  padding-block: var(--ring-w) calc(var(--ring-w) * 2);
+  padding-inline: var(--page-margin);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--page-margin);
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-border) transparent;
+}
+
+.unix-ptabs__tab {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--tap);
+  padding-inline: var(--s-5);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--c-text);
+  box-shadow: inset 0 0 0 var(--line-w) var(--c-border);
+  font-family: var(--f-body);
+  font-size: var(--t-small);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out),
+              transform var(--d-fast) var(--ease-out);
+
+  &:hover { background: var(--c-surface-muted); }
+  &:active { transform: translateY(var(--press-y)); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  &:disabled { opacity: var(--o-disabled); cursor: default; }
+
+  &[aria-selected="true"] {
+    background: var(--c-action);
+    color: var(--c-text-inverse);
+    box-shadow: none;
+    cursor: default;
+
+    &:hover { background: var(--c-action-hover); }
+  }
+}
+
+// ── Panels ──────────────────────────────────────
+.unix-ptabs__panels {
+  grid-area: panels;
+  min-inline-size: 0;
+  margin-block-start: var(--s-5);
+}
+
+.unix-ptabs__tablist + .unix-ptabs__panels { margin-block-start: 0; }
+
+.unix-ptabs__panel {
+  position: relative;
+  border-radius: var(--r-md);
+
+  &[hidden] { display: none; }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+}
+
+// Before Swiper initialises, lay the cards out at their final width (no reflow on init)
+.unix-ptabs .swiper:not(.swiper-initialized) .swiper-wrapper {
+  display: flex;
+  gap: var(--gutter);
+  overflow: hidden;
+}
+
+.unix-ptabs .swiper:not(.swiper-initialized) .swiper-slide {
+  flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gutter)) / var(--per-view));
+}
+
+// ── Skeleton: same columns, ratio and text lines as a real card ──
+.unix-products__skeleton {
+  display: grid;
+  grid-template-columns: repeat(var(--per-view), minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+.unix-products__skel-card {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--t-body);
+  line-height: 1.7; // must match .s-product-card-content (unix-product-card.scss)
+
+  &:nth-child(n + 3) { display: none; }
+
+  @media (min-width: 768px) { &:nth-child(3) { display: flex; } }
+  @media (min-width: 1024px) { &:nth-child(4) { display: flex; } }
+}
+
+.unix-products__skel-media {
+  display: block;
+  aspect-ratio: var(--ratio-card);
+  margin-block-end: var(--s-3);
+  border-radius: var(--r-md);
+  background: var(--c-surface-muted);
+}
+
+.unix-products__skel-line {
+  display: block;
+  block-size: 1lh;
+  padding-block: var(--s-1);
+  border-radius: var(--r-sm);
+  background: var(--c-surface-muted);
+  background-clip: content-box;
+
+  &--short { inline-size: min(100%, var(--s-10)); }
+}
+
+// Hide the skeleton once cards exist, or once JS saw the slider finish loading (data-loaded is set
+// from componentOnReady, which resolves after the products fetch, so an empty source clears it too).
+.unix-ptabs__panel[data-loaded] .unix-products__skeleton,
+.unix-ptabs__panel:has(.s-product-card-entry) .unix-products__skeleton { display: none; }
+
+// ── Button: heading row from 576px, full width at the bottom below ──
+.unix-ptabs__cta {
+  grid-area: cta;
+  display: flex;
+  margin-block-start: var(--s-6);
+
+  .unix-btn { inline-size: 100%; }
+
+  @media (min-width: 576px) {
+    margin-block-start: 0;
+
+    .unix-btn { inline-size: auto; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-ptabs__tab:active { transform: none; }
+}

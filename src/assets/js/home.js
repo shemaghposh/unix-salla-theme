@@ -2,12 +2,16 @@ import "lite-youtube-embed";
 import BasePage from "./base-page";
 import Lightbox from "fslightbox";
 import initHeroes from "./partials/unix-hero";
+import initProductsTabs from "./partials/unix-products-tabs";
+import initFeaturedProducts from "./partials/unix-featured-products";
 window.fslightbox = Lightbox;
 
 class Home extends BasePage {
     onReady() {
         initHeroes();
         this.initFeaturedTabs();
+        initProductsTabs();
+        initFeaturedProducts();
     }
 
     /**
