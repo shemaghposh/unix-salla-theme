@@ -560,6 +560,221 @@
     ],
     "components": [
         {
+            "key": "7c1e4b2a-9f3d-4e6a-b8c5-2d1f0a9e3b71",
+            "title": {
+                "en": "UNIX hero",
+                "ar": "يونكس: الواجهة الرئيسية (Hero)"
+            },
+            "icon": "sicon-image",
+            "path": "home.unix-hero",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-hero-desc",
+                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>واجهة بعرض الشاشة: فيديو أو صورة، وتدرّج غامق تحت النص، وعنوان وزر. ضعيها أول عنصر في الصفحة الرئيسية. اتركي أي نص فارغاً لعرض النص الافتراضي، أو امسحيه لإخفائه.</small></div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "عنوان صغير فوق العنوان",
+                    "multilanguage": true,
+                    "id": "eyebrow",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: UNIX NEW COLLECTION",
+                    "placeholder": "UNIX NEW COLLECTION",
+                    "minLength": 0,
+                    "maxLength": 60
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان الرئيسي",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: تحركي بثقة.",
+                    "placeholder": "تحركي بثقة.",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-typography",
+                    "label": "نص قصير",
+                    "multilanguage": true,
+                    "id": "text",
+                    "value": null,
+                    "required": false,
+                    "format": "textarea",
+                    "description": "الافتراضي: ملابس رياضية و بيجامات صُممت لكل لحظة في يومك",
+                    "placeholder": "أدخلي النص هنا...",
+                    "minLength": 0,
+                    "maxLength": 200
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "نص الزر",
+                    "multilanguage": true,
+                    "id": "cta_label",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: اكتشفي المجموعة",
+                    "placeholder": "اكتشفي المجموعة",
+                    "minLength": 0,
+                    "maxLength": 40
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-link",
+                    "label": "رابط الزر",
+                    "id": "cta_link",
+                    "value": null,
+                    "description": "في الأصل: تصنيف المجموعة الجديدة. بدون رابط لا يظهر الزر",
+                    "required": false,
+                    "format": "variable-list",
+                    "searchable": true,
+                    "source": "custom",
+                    "sources": [
+                        { "label": "منتج", "key": "products", "value": "products" },
+                        { "label": "منتجات مع وسم", "key": "products_tags", "value": "products_tags" },
+                        { "label": "تصنيف", "key": "categories", "value": "categories" },
+                        { "label": "ماركة تجارية", "key": "brands", "value": "brands" },
+                        { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
+                        { "label": "مقالة", "key": "blog_articles", "value": "blog_articles" },
+                        { "label": "تصنيف ضمن المدونة", "key": "blog_categories", "value": "blog_categories" },
+                        { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
+                        { "label": "الماركات التجارية", "key": "brands_link", "value": "brands_link" },
+                        { "label": "المدونة", "key": "blog_link", "value": "blog_link" },
+                        { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                    ]
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "زر بإطار (Ghost) بدل الخط السفلي",
+                    "description": "الأصل: نص بخط سفلي وسهم",
+                    "id": "cta_ghost",
+                    "format": "switch",
+                    "required": false,
+                    "value": false,
+                    "selected": false
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-image",
+                    "value": null,
+                    "label": "صورة الديسكتوب",
+                    "id": "image_desktop",
+                    "format": "image",
+                    "required": false,
+                    "placeholder": null,
+                    "description": "16:9، المقاس المناسب 1920×1080 بكسل (WebP أقل من 300KB). تظهر قبل تشغيل الفيديو وبدلاً منه",
+                    "settings": {
+                        "width": 1920,
+                        "height": 1080
+                    }
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-image",
+                    "value": null,
+                    "label": "صورة الجوال",
+                    "id": "image_mobile",
+                    "format": "image",
+                    "required": false,
+                    "placeholder": null,
+                    "description": "2:3، المقاس المناسب 1080×1620 بكسل (WebP أقل من 200KB)",
+                    "settings": {
+                        "width": 1080,
+                        "height": 1620
+                    }
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "وصف الصورة (لقارئ الشاشة)",
+                    "multilanguage": true,
+                    "id": "image_alt",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "اختياري. اتركيه فارغاً إذا كانت الصورة خلفية زخرفية",
+                    "placeholder": "مثال: عارضة ترتدي طقم يونكس الرياضي",
+                    "minLength": 0,
+                    "maxLength": 150
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-link",
+                    "label": "رابط فيديو الديسكتوب (MP4)",
+                    "multilanguage": false,
+                    "id": "video_desktop",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "رابط مباشر لملف MP4 (16:9، أقل من 6MB، بدون صوت). يبدأ بعد تحميل الصفحة، ولا يعمل عند تفعيل تقليل الحركة",
+                    "placeholder": "https://.../hero.mp4",
+                    "minLength": 0,
+                    "maxLength": 500
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-link",
+                    "label": "رابط فيديو الجوال (MP4)",
+                    "multilanguage": false,
+                    "id": "video_mobile",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "رابط مباشر لملف MP4 عمودي (2:3، أقل من 4MB). فارغ = يستخدم فيديو الديسكتوب",
+                    "placeholder": "https://.../hero-mobile.mp4",
+                    "minLength": 0,
+                    "maxLength": 500
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "ملء الشاشة بالكامل",
+                    "description": "الأصل: ارتفاع حسب نسبة الصورة (2:3 للجوال و16:9 للديسكتوب)",
+                    "id": "full_height",
+                    "format": "switch",
+                    "required": false,
+                    "value": false,
+                    "selected": false
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "هيدر شفاف فوق الواجهة",
+                    "description": "يعمل مع خيار الهيدر الشفاف في إعدادات الثيم",
+                    "id": "header_overlay",
+                    "format": "switch",
+                    "required": false,
+                    "value": true,
+                    "selected": true
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "سهم الانتقال للأسفل",
+                    "description": null,
+                    "id": "show_scroll_indicator",
+                    "format": "switch",
+                    "required": false,
+                    "value": true,
+                    "selected": true
+                }
+            ]
+        },
+        {
             "key": "186b3f4f-25cf-4d3c-abca-cef7eed6f0ab",
             "title": {
                 "en": "Enhances Animated Images",
