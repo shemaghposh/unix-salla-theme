@@ -63,7 +63,7 @@
     flex-direction: column;
     gap: var(--s-3);
 
-    &:empty { display: none; }
+    &:not(:has(*)) { display: none; } // no title and nothing from the newsletter hook
   }
 
   &__newsletter-title {
@@ -77,7 +77,8 @@
 
     &:last-child { border-block-end: var(--line-w) solid var(--c-border); }
 
-    @screen md {
+    // Borders go away where the columns stop being accordions (unix-footer.js opens them from lg).
+    @screen lg {
       border: 0;
       &:last-child { border: 0; }
     }
@@ -139,7 +140,7 @@
     @screen lg { padding-block-end: 0; }
   }
 
-  // Salla menus / contacts / social inside the columns
+  // Salla menus / contacts inside the columns
   salla-menu {
     display: block;
 
@@ -181,27 +182,6 @@
     i, .s-contacts-icon { font-size: var(--icon-sm); color: var(--c-action); }
   }
 
-  &__social {
-    display: block;
-    margin-block-start: var(--s-3);
-
-    ul { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
-    h3, .s-social-title { display: none; }
-
-    a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-inline-size: var(--tap);
-      min-block-size: var(--tap);
-      border: var(--line-w) solid var(--c-border);
-      border-radius: var(--r-pill);
-      color: var(--c-action);
-      font-size: var(--icon-sm);
-
-      &:hover { background: var(--c-surface-muted); }
-    }
-  }
 }
 
 // ── Trust strip ──────────────────────────────────
@@ -327,6 +307,21 @@
   }
 }
 
+// Accordion motion (DS §8.10), same as the mobile menu.
+@supports selector(::details-content) {
+  .unix-footer__col::details-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition:
+      grid-template-rows var(--d-base) var(--ease-out),
+      content-visibility var(--d-base) allow-discrete;
+  }
+
+  .unix-footer__col[open]::details-content { grid-template-rows: 1fr; }
+  .unix-footer__content { min-block-size: 0; overflow: hidden; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .unix-footer__icon { transition: none; }
+  .unix-footer__col::details-content { transition: none; }
 }

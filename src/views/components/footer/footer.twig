@@ -18,6 +18,9 @@
 {% set instagram = theme.settings.get('unix_social_instagram')|default(store.social.instagram)|trim %}
 {% set tiktok = theme.settings.get('unix_social_tiktok')|default(store.social.tiktok)|trim %}
 {% set whatsapp_url = whatsapp starts with 'http' ? whatsapp : 'https://wa.me/' ~ whatsapp|replace({'+': '', ' ': '', '-': ''}) %}
+{# Accept a bare handle ("unix_theclub" or "@unix_theclub") as well as a full URL. #}
+{% set instagram_url = instagram starts with 'http' ? instagram : 'https://instagram.com/' ~ instagram|trim('@', 'left') %}
+{% set tiktok_url = tiktok starts with 'http' ? tiktok : 'https://www.tiktok.com/@' ~ tiktok|trim('@', 'left') %}
 {% set phone_url = 'tel:' ~ phone|replace({' ': '', '-': ''}) %}
 
 {% set cr_number = theme.settings.get('unix_cr_number')|trim %}
@@ -40,7 +43,8 @@
         {% if newsletter_title|trim %}
           <h3 class="unix-footer__newsletter-title">{{ newsletter_title }}</h3>
         {% endif %}
-        {# Salla has no built-in newsletter web component: newsletter apps inject their form here. #}
+        {# Salla has no built-in newsletter web component. Custom hook slot for a newsletter app; the provider
+           is open decision D6 (docs/ROADMAP.md). Renders nothing until something is registered on it. #}
         {% hook 'footer:newsletter' %}
       </div>
     </div>
@@ -74,8 +78,8 @@
         <span class="unix-footer__icon" aria-hidden="true"></span>
       </summary>
       <div class="unix-footer__content">
+        {# Social links live once, in the trust strip tiles below. #}
         <salla-contacts data-testid="store-footer-contacts"></salla-contacts>
-        <salla-social data-testid="store-footer-social" class="unix-footer__social"></salla-social>
       </div>
     </details>
   </div>
@@ -102,14 +106,14 @@
           {% endif %}
           {% if instagram %}
             <li>
-              <a class="unix-trust__icon" href="{{ instagram }}" target="_blank" rel="noopener" aria-label="{{ trans('blocks.unix.footer.instagram') }}">
+              <a class="unix-trust__icon" href="{{ instagram_url }}" target="_blank" rel="noopener" aria-label="{{ trans('blocks.unix.footer.instagram') }}">
                 <i class="sicon-instagram" aria-hidden="true"></i>
               </a>
             </li>
           {% endif %}
           {% if tiktok %}
             <li>
-              <a class="unix-trust__icon" href="{{ tiktok }}" target="_blank" rel="noopener" aria-label="{{ trans('blocks.unix.footer.tiktok') }}">
+              <a class="unix-trust__icon" href="{{ tiktok_url }}" target="_blank" rel="noopener" aria-label="{{ trans('blocks.unix.footer.tiktok') }}">
                 <i class="sicon-tiktok" aria-hidden="true"></i>
               </a>
             </li>
