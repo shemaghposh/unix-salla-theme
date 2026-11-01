@@ -775,6 +775,116 @@
             ]
         },
         {
+            "key": "e3a95d40-6b2c-4f18-9a7e-5c0d8b1f2a64",
+            "title": {
+                "en": "UNIX offer strip",
+                "ar": "يونكس: شريط العرض"
+            },
+            "icon": "sicon-format-text-alt",
+            "path": "home.unix-offer-strip",
+            "image": "https://cdn.salla.network/images/themes/raed/main-links-with-bg.jpg?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-offer-desc",
+                    "value": "<div><small>شريط عرض بعرض الصفحة بلون البراند، يوضع بعد الواجهة الرئيسية مباشرة. لا يظهر للزوار إلا بعد كتابة العنوان.</small></div>"
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "إظهار الشريط",
+                    "description": "أخفي الشريط مؤقتاً دون مسح النصوص",
+                    "id": "enabled",
+                    "format": "switch",
+                    "required": false,
+                    "value": true,
+                    "selected": true
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "عنوان صغير فوق العنوان (اختياري)",
+                    "multilanguage": true,
+                    "id": "eyebrow",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": null,
+                    "placeholder": "عرض لفترة محدودة",
+                    "minLength": 0,
+                    "maxLength": 60
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "بدون عنوان لا يظهر الشريط",
+                    "placeholder": "قطعتين أو أكثر بخصم 20%",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-typography",
+                    "label": "نص قصير (اختياري)",
+                    "multilanguage": true,
+                    "id": "text",
+                    "value": null,
+                    "required": false,
+                    "format": "textarea",
+                    "description": null,
+                    "placeholder": "أدخلي النص هنا...",
+                    "minLength": 0,
+                    "maxLength": 200
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "نص الزر (اختياري)",
+                    "multilanguage": true,
+                    "id": "cta_label",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "يظهر فقط عند اختيار رابط",
+                    "placeholder": "تسوقي العرض",
+                    "minLength": 0,
+                    "maxLength": 40
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-link",
+                    "label": "الرابط",
+                    "id": "link",
+                    "value": null,
+                    "description": "عند اختيار رابط يصبح الشريط كله قابلاً للضغط",
+                    "required": false,
+                    "format": "variable-list",
+                    "searchable": true,
+                    "source": "custom",
+                    "sources": [
+                        { "label": "منتج", "key": "products", "value": "products" },
+                        { "label": "منتجات مع وسم", "key": "products_tags", "value": "products_tags" },
+                        { "label": "تصنيف", "key": "categories", "value": "categories" },
+                        { "label": "ماركة تجارية", "key": "brands", "value": "brands" },
+                        { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
+                        { "label": "مقالة", "key": "blog_articles", "value": "blog_articles" },
+                        { "label": "تصنيف ضمن المدونة", "key": "blog_categories", "value": "blog_categories" },
+                        { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
+                        { "label": "الماركات التجارية", "key": "brands_link", "value": "brands_link" },
+                        { "label": "المدونة", "key": "blog_link", "value": "blog_link" },
+                        { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                    ]
+                }
+            ]
+        },
+        {
             "key": "186b3f4f-25cf-4d3c-abca-cef7eed6f0ab",
             "title": {
                 "en": "Enhances Animated Images",
