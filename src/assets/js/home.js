@@ -1,11 +1,13 @@
 import "lite-youtube-embed";
 import BasePage from "./base-page";
 import Lightbox from "fslightbox";
+import initUnixBlog from "./partials/unix-blog";
 window.fslightbox = Lightbox;
 
 class Home extends BasePage {
     onReady() {
         this.initFeaturedTabs();
+        initUnixBlog(); // views/components/home/unix-blog.twig (ROADMAP 2.8)
     }
 
     /**

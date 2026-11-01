@@ -1,0 +1,127 @@
+{#
+  UNIX blog «من عالم UNIX» (ROADMAP 2.8 · SPEC §4.12 · DS §8.12).
+  Matches unix.sa (reference/shopify-theme/templates/index.json → featured_blog, sections/featured-blog.liquid,
+  snippets/article-card.liquid, assets/featured-blog.js): Cream section, heading + prev/next arrows + primary
+  «تصفّحي المقالات» button in one row, then a carousel of text cards (date, title, excerpt; no image),
+  1 / 2 / 3 / 4 per view, up to 7 posts (3 on mobile). On mobile the arrows hide and the button moves under
+  the cards, full width. The carousel is a native scroll-snap track (no Swiper, DS §12); the arrows are a
+  progressive enhancement from src/assets/js/partials/unix-blog.js.
+
+| Variable                     | Type             | Description                                                          |
+|------------------------------|------------------|----------------------------------------------------------------------|
+| component.title              | ?string|object   | multilanguage; null (never saved) → blocks.unix.blog.title           |
+| component.articles           | Article[]        | dropdown-list, source blog_articles @see views/pages/blog/single.twig |
+| component.post_limit         | ?int             | posts on tablet/desktop (unix.sa post_limit 7)                       |
+| component.post_limit_mobile  | ?int             | posts under 576px (unix.sa post_limit_mobile 3)                      |
+| component.show_image         | ?bool            | article image 4:5 above the text (off, like unix.sa)                 |
+| component.show_button        | ?bool            | null (never saved) → shown                                           |
+| component.button_label       | ?string|object   | multilanguage; null/empty → blocks.unix.blog.cta                     |
+| component.button_link        | ?string|object   | link picker; empty or '#' → the blog index (link('blog'))            |
+| position                     | int              | sorting number, starts from zero                                     |
+#}
+{% set uid = 'unix-blog-' ~ position %}
+
+{# Title: null = never saved → translated default; '' = cleared on purpose → no heading #}
+{% set title = component.title %}
+{% if title is iterable %}
+  {% set title = title[language.code] is defined ? title[language.code] : null %}
+{% endif %}
+{% if title is null %}
+  {% set title = trans('blocks.unix.blog.title') %}
+{% endif %}
+{% set title = title|trim %}
+
+{# Limits (Salla applies twilight.json values only after a save, so fall back to unix.sa's 7 / 3) #}
+{% set limit = (component.post_limit ?: 7) + 0 %}
+{% set limit_mobile = (component.post_limit_mobile ?: 3) + 0 %}
+{% set limit_all = max(limit, limit_mobile) %}
+
+{# CTA #}
+{% set show_button = component.show_button is null or component.show_button %}
+{% set cta_label = component.button_label %}
+{% if cta_label is iterable %}
+  {% set cta_label = cta_label[language.code] is defined ? cta_label[language.code] : null %}
+{% endif %}
+{% set cta_label = cta_label|trim ?: trans('blocks.unix.blog.cta') %}
+{% set cta_url = component.button_link %}
+{% if cta_url is iterable %}
+  {% set cta_url = cta_url.url|default('') %}
+{% endif %}
+{% set cta_url = cta_url|default('')|trim %}
+{% if not cta_url or cta_url == '#' %}
+  {% set cta_url = link('blog') %}
+{% endif %}
+
+{# Collect the renderable articles once (a title and a link are required) #}
+{% set posts = [] %}
+{% for article in component.articles %}
+  {% set post_title = article.title|default(article.name|default('')) %}
+  {% if posts|length < limit_all and post_title and article.url %}
+    {% set posts = posts|merge([article]) %}
+  {% endif %}
+{% endfor %}
+
+{% if posts|length %}
+<section component-id="{{ componentId }}" class="unix-blog" data-unix-blog
+         {% if title %}aria-labelledby="{{ uid }}-title"{% else %}aria-label="{{ trans('blocks.unix.blog.label') }}"{% endif %}>
+  <div class="unix-container">
+    <div class="unix-blog__inner">
+      {% if title %}
+        <h2 class="unix-blog__title" id="{{ uid }}-title">{{ title }}</h2>
+      {% endif %}
+
+      <div class="unix-blog__nav" data-unix-blog-nav hidden>
+        <button type="button" class="unix-blog__arrow" data-unix-blog-prev
+                aria-controls="{{ uid }}-track" aria-label="{{ trans('blocks.unix.blog.prev') }}">
+          <svg class="icon-dir" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M15 6l-6 6 6 6"/>
+          </svg>
+        </button>
+        <button type="button" class="unix-blog__arrow" data-unix-blog-next
+                aria-controls="{{ uid }}-track" aria-label="{{ trans('blocks.unix.blog.next') }}">
+          <svg class="icon-dir" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M9 6l6 6-6 6"/>
+          </svg>
+        </button>
+      </div>
+
+      {% if show_button %}
+        <a class="unix-btn unix-blog__cta" href="{{ cta_url }}">{{ cta_label }}</a>
+      {% endif %}
+
+      <ul class="unix-blog__track" id="{{ uid }}-track" data-unix-blog-track role="list">
+        {% for article in posts %}
+          {% set post_title = article.title|default(article.name|default('')) %}
+          {% set excerpt = article.summary|default(article.description|default(''))|striptags|trim %}
+          {% set image = article.image.url is defined ? article.image.url : article.image %}
+          {% set item_classes = [
+            loop.index > limit_mobile ? 'is-hidden-mobile' : '',
+            loop.index > limit ? 'is-hidden-desktop' : ''
+          ]|join(' ')|trim %}
+          <li class="unix-blog__item {{ item_classes }}">
+            <article class="unix-blog-card" aria-labelledby="{{ uid }}-post-{{ loop.index }}">
+              {% if component.show_image and image is not iterable and image and not (image|is_placeholder) %}
+                <div class="unix-blog-card__media">
+                  <img src="{{ image }}" alt="{{ article.image.alt is defined and article.image.alt ? article.image.alt : post_title }}"
+                       width="400" height="500" loading="lazy" decoding="async">
+                </div>
+              {% endif %}
+              {% if article.created_at %}
+                <time class="unix-blog-card__date" datetime="{{ article.created_at|date('Y-m-d') }}">{{ article.created_at|date }}</time>
+              {% endif %}
+              <h3 class="unix-blog-card__title" id="{{ uid }}-post-{{ loop.index }}">
+                <a class="unix-blog-card__link" href="{{ article.url }}">{{ post_title }}</a>
+              </h3>
+              {% if excerpt %}
+                <p class="unix-blog-card__excerpt">{{ excerpt }}</p>
+              {% endif %}
+            </article>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+{% endif %}

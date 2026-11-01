@@ -1,0 +1,229 @@
+/*
+ * UNIX blog «من عالم UNIX» (ROADMAP 2.8 · SPEC §4.12 · DS §8.12)
+ * Layout follows unix.sa's featured-blog `section-grid-slider`:
+ *   < 576  : title / track / full-width button (arrows hidden, swipe; a peek of the next card shows it scrolls)
+ *   ≥ 576  : title · arrows · button in one row, track below
+ * Cards per view 1 / 2 / 3 / 4 at xs / sm / md / lg (DS §3.3), gap = --gutter.
+ * The track is a native scroll-snap list; arrows come from js/partials/unix-blog.js (DS §12).
+ */
+
+.unix-blog {
+  padding-block: var(--section-md);
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  overflow: clip;
+
+  &__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "title"
+      "track"
+      "cta";
+    gap: var(--s-5);
+    align-items: center;
+  }
+
+  & &__title {
+    grid-area: title;
+    margin: 0;
+    font-size: var(--t-h2);
+    line-height: 1.3;
+  }
+
+  // ── Arrows ─────────────────────────────────────
+  &__nav {
+    grid-area: nav;
+    display: none;
+    gap: var(--s-2);
+  }
+
+  &__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--tap);
+    block-size: var(--tap);
+    padding: 0;
+    border: var(--line-w) solid var(--c-border);
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--c-action);
+    cursor: pointer;
+    transition: background-color var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out);
+
+    svg {
+      inline-size: var(--icon-sm);
+      block-size: var(--icon-sm);
+    }
+
+    &:hover { background-color: var(--c-hover-tint); }
+    &:active { background-color: var(--c-press-tint); transform: translateY(var(--press-y)); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+
+    &:disabled {
+      opacity: var(--o-disabled);
+      cursor: default;
+      background-color: transparent;
+      transform: none;
+    }
+  }
+
+  // ── CTA ────────────────────────────────────────
+  &__cta {
+    grid-area: cta;
+    inline-size: 100%;
+  }
+
+  // ── Track ──────────────────────────────────────
+  &__track {
+    --_cols: 1;
+    --_peek: var(--s-7);
+
+    grid-area: track;
+    display: flex;
+    gap: var(--gutter);
+    margin: 0;
+    // room for the card focus ring inside the scroll box, without moving the cards off the grid
+    margin-inline: calc(var(--s-1) * -1);
+    padding: var(--s-1);
+    scroll-padding-inline: var(--s-1);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  &__item {
+    flex: 0 0 calc((100% - (var(--_cols) - 1) * var(--gutter) - var(--_peek)) / var(--_cols));
+    min-inline-size: 0;
+    scroll-snap-align: start;
+
+    &.is-hidden-mobile { display: none; }
+  }
+
+  @media (min-width: 576px) {
+    &__inner {
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      grid-template-areas:
+        "title nav cta"
+        "track track track";
+      column-gap: var(--s-5);
+      row-gap: var(--s-6);
+    }
+
+    &__nav:not([hidden]) { display: flex; }
+    &__cta { inline-size: auto; }
+
+    &__track { --_cols: 2; --_peek: 0px; }
+    &__item.is-hidden-mobile { display: block; }
+    &__item.is-hidden-desktop { display: none; }
+  }
+
+  @media (min-width: 768px) {
+    &__track { --_cols: 3; }
+  }
+
+  @media (min-width: 1024px) {
+    &__track { --_cols: 4; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    &__track { scroll-behavior: smooth; }
+  }
+}
+
+// ── Card (DS §8.12): text-first, flat, hairline on top; the whole card is one link ──
+.unix-blog-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  block-size: 100%;
+  padding-block-start: var(--s-4);
+  border-block-start: var(--line-w) solid var(--c-border);
+
+  &__media {
+    order: -1;
+    margin-block-end: var(--s-2);
+    aspect-ratio: 4 / 5;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    background-color: var(--c-surface-muted);
+
+    img {
+      display: block;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+      transition: transform var(--d-reveal) var(--ease-out);
+    }
+  }
+
+  // with an image the hairline would sit above the photo, so it goes
+  &:has(.unix-blog-card__media) {
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+
+  &__date {
+    order: -1;
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+    line-height: 1.6;
+  }
+
+  // `& &__title` (0,2,0) so it beats the global `.theme-unix h3` size (0,1,1)
+  & &__title {
+    margin: 0;
+    font-size: var(--t-h4);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+    transition: opacity var(--d-fast) var(--ease-out);
+  }
+
+  &__link {
+    color: inherit;
+    text-decoration: none;
+
+    // stretched link: the whole card is the target
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: var(--r-sm);
+    }
+
+    &:focus-visible { outline: none; }
+    &:focus-visible::after { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  }
+
+  &__excerpt {
+    margin: 0;
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+
+  &:hover &__title { opacity: var(--o-muted); }
+  &:hover &__media img { transform: scale(1.04); }
+  &:active &__title { opacity: 1; }
+}
+
+// Durations are already 0ms under reduced motion (unix-tokens.scss); this also drops the movement itself.
+@media (prefers-reduced-motion: reduce) {
+  .unix-blog .unix-blog__arrow:active { transform: none; }
+  .unix-blog-card:hover .unix-blog-card__media img { transform: none; }
+}
