@@ -43,6 +43,12 @@
         "cr": "Commercial registration",
         "cr_badge": "Saudi Business Center",
         "tm": "Trademark"
+      },
+      "products_tabs": {
+        "default_title": "Always favourites",
+        "tabs_label": "Browse products by collection",
+        "browse_tab": "Browse :name",
+        "browse_all": "Browse all"
       }
     }
   },

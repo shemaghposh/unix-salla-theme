@@ -1,0 +1,142 @@
+/*
+ * UNIX products tabs «المفضلة دائمًا» (ROADMAP 2.3 · DS §8.12).
+ * Card look lives in unix-product-card.scss (shared). This file: heading, tab pills,
+ * panels, the pre-render skeleton and the bottom button.
+ */
+
+.unix-ptabs {
+  --per-view: 2;
+
+  padding-block: var(--section-sm);
+  overflow-x: clip;
+
+  @media (min-width: 768px) { --per-view: 3; }
+  @media (min-width: 1024px) { --per-view: 4; }
+}
+
+.unix-ptabs__title {
+  margin: 0 0 var(--s-5);
+  text-align: center;
+
+  @media (min-width: 768px) { text-align: start; }
+}
+
+// ── Tabs (pills that scroll sideways) ───────────
+.unix-ptabs__tablist {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-block-end: var(--s-5);
+  margin-inline: calc(-1 * var(--page-margin));
+  padding-block: var(--ring-w) calc(var(--ring-w) * 2);
+  padding-inline: var(--page-margin);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--page-margin);
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-border) transparent;
+}
+
+.unix-ptabs__tab {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--tap);
+  padding-inline: var(--s-5);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--c-text);
+  box-shadow: inset 0 0 0 var(--line-w) var(--c-border);
+  font-family: var(--f-body);
+  font-size: var(--t-small);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out),
+              transform var(--d-fast) var(--ease-out);
+
+  &:hover { background: var(--c-surface-muted); }
+  &:active { transform: translateY(var(--press-y)); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  &:disabled { opacity: var(--o-disabled); cursor: default; }
+
+  &[aria-selected="true"] {
+    background: var(--c-action);
+    color: var(--c-text-inverse);
+    box-shadow: none;
+    cursor: default;
+
+    &:hover { background: var(--c-action-hover); }
+  }
+}
+
+// ── Panels ──────────────────────────────────────
+.unix-ptabs__panel {
+  position: relative;
+  border-radius: var(--r-md);
+
+  &[hidden] { display: none; }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+}
+
+// Before Swiper initialises, lay the cards out at their final width (no reflow on init)
+.unix-ptabs .swiper:not(.swiper-initialized) .swiper-wrapper {
+  display: flex;
+  gap: var(--gutter);
+  overflow: hidden;
+}
+
+.unix-ptabs .swiper:not(.swiper-initialized) .swiper-slide {
+  flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gutter)) / var(--per-view));
+}
+
+// ── Skeleton: same columns, ratio and text lines as a real card ──
+.unix-products__skeleton {
+  display: grid;
+  grid-template-columns: repeat(var(--per-view), minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+.unix-products__skel-card {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--t-body);
+  line-height: 1.7; // must match .s-product-card-content (unix-product-card.scss)
+
+  &:nth-child(n + 3) { display: none; }
+
+  @media (min-width: 768px) { &:nth-child(3) { display: flex; } }
+  @media (min-width: 1024px) { &:nth-child(4) { display: flex; } }
+}
+
+.unix-products__skel-media {
+  display: block;
+  aspect-ratio: var(--ratio-card);
+  margin-block-end: var(--s-3);
+  border-radius: var(--r-md);
+  background: var(--c-surface-muted);
+}
+
+.unix-products__skel-line {
+  display: block;
+  block-size: 1lh;
+  padding-block: var(--s-1);
+  border-radius: var(--r-sm);
+  background: var(--c-surface-muted);
+  background-clip: content-box;
+
+  &--short { inline-size: min(100%, var(--s-10)); }
+}
+
+// Hide the skeleton once the slider has fetched and rendered (or come back empty)
+.unix-ptabs__panel:has(salla-products-slider.hydrated) .unix-products__skeleton,
+.unix-ptabs__panel:has(.s-product-card-entry) .unix-products__skeleton { display: none; }
+
+// ── Bottom button ───────────────────────────────
+.unix-ptabs__cta {
+  display: flex;
+  justify-content: center;
+  margin-block-start: var(--s-6);
+}

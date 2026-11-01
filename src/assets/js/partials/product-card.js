@@ -117,6 +117,20 @@ class ProductCard extends HTMLElement {
     return salla.lang.get('pages.products.donation_exceed');
   }
 
+  /**
+   * Second product image for the hover crossfade (DS §8.3). Only present when the listing asked
+   * the API for images (e.g. salla-products-slider includes='["images"]' in the UNIX home blocks),
+   * so other listings render exactly as before. Decorative: the first image carries the alt.
+   */
+  getSecondaryImage() {
+    const main = this.product?.image?.url;
+    const second = (this.product?.images || []).find(img => img?.url && img.url !== main);
+    if (!second || this.fullImage || this.minimal || this.horizontal) {
+      return '';
+    }
+    return `<img class="s-product-card-image-secondary s-product-card-image-cover" src="${this.escapeHTML(second.url)}" alt="" aria-hidden="true" loading="lazy" />`;
+  }
+
   getProps(){
 
     /**
@@ -193,6 +207,7 @@ class ProductCard extends HTMLElement {
               alt="${this.escapeHTML(this.product?.image?.alt || this.product.name)}"
               loading="lazy"
             />
+            ${this.getSecondaryImage()}
             ${!this.fullImage && !this.minimal ? this.getProductBadge() : ''}
           </a>
           ${this.fullImage ? `<a href="${this.product?.url}" aria-label=${this.product.name} class="s-product-card-overlay"></a>`:''}

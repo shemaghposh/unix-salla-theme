@@ -1,0 +1,177 @@
+{#
+  UNIX products tabs, «المفضلة دائمًا» (ROADMAP 2.3 · DS §8.12, §8.3 · SPEC §4.3).
+  Matches unix.sa: reference/shopify-theme/sections/products-with-tabs.liquid
+  + templates/index.json → products_with_tabs.
+
+  | Variable                     | Type       | Description                                                   |
+  |------------------------------|------------|---------------------------------------------------------------|
+  | component.title              | ?string    | Section heading (falls back to the translated default)        |
+  | component.tabs               | object[]   | One entry per tab                                             |
+  | component.tabs[].label       | string     | Tab label (multilanguage)                                     |
+  | component.tabs[].products    | ?mixed[]   | Hand-picked products; wins over the category when set        |
+  | component.tabs[].category    | ?mixed     | Category source (single)                                      |
+  | component.tabs[].limit       | ?int       | Products to load for a category tab (default 8)               |
+  | component.tabs[].button_label| ?string    | Bottom button label while this tab is active                  |
+  | component.tabs[].button_url  | ?string    | Bottom button link while this tab is active                   |
+  | component.show_button        | bool       | Show the bottom button                                        |
+  | component.button_label       | ?string    | Fallback bottom button label                                  |
+  | component.button_url         | ?string    | Fallback bottom button link (unix.sa: /collections/all-products) |
+  | position                     | int        | Sorting number, starts from zero                              |
+
+  Salla may hand nested `items` fields back as objects ({id, name, url}), as picker rows
+  ({value, label}) or as bare ids, so every source value is normalised below.
+  Product source: selected products → category → latest (so the block is never empty).
+  Only the first panel renders its slider; the rest sit in <template> and mount on first
+  activation (src/assets/js/partials/unix-products-tabs.js).
+#}
+{% set uid = 'unix-ptabs-' ~ position %}
+{% set lang = language.code|default('ar') %}
+
+{% set title = component.title %}
+{% if title is iterable %}{% set title = title[lang]|default('') %}{% endif %}
+{% if title is null %}{% set title = trans('blocks.unix.products_tabs.default_title') %}{% endif %}
+
+{% set fallback_url = component.button_url %}
+{% if fallback_url is iterable %}{% set fallback_url = fallback_url.url|default('') %}{% endif %}
+{% set fallback_label = component.button_label %}
+{% if fallback_label is iterable %}{% set fallback_label = fallback_label[lang]|default('') %}{% endif %}
+{% if not fallback_label|trim %}{% set fallback_label = trans('blocks.unix.products_tabs.browse_all') %}{% endif %}
+{% set show_button = component.show_button is defined ? component.show_button : true %}
+
+{# Swiper config (salla-slider): per-view 2 / 3 / 4 and the DS §3.3 gutters per breakpoint #}
+{% set slider_config = '{"slidesPerView":2,"spaceBetween":12,"breakpoints":{"576":{"slidesPerView":2,"spaceBetween":16},"768":{"slidesPerView":3,"spaceBetween":20},"1024":{"slidesPerView":4,"spaceBetween":24},"1440":{"slidesPerView":4,"spaceBetween":32}}}' %}
+
+{% set tabs = [] %}
+{% for tab in component.tabs|default([]) %}
+  {% set label = tab.label %}
+  {% if label is iterable %}{% set label = label[lang]|default('') %}{% endif %}
+
+  {# hand-picked products → list of ids #}
+  {% set product_ids = [] %}
+  {% for p in tab.products|default([]) %}
+    {% set pid = p.id is defined ? p.id : (p.value is defined ? p.value : p) %}
+    {% if pid %}{% set product_ids = product_ids|merge([pid]) %}{% endif %}
+  {% endfor %}
+
+  {# category → id + url #}
+  {% set cat = tab.category %}
+  {% if cat is iterable and cat[0] is defined %}{% set cat = cat[0] %}{% endif %}
+  {% set cat_id = cat.id is defined ? cat.id : (cat.value is defined ? cat.value : (cat is iterable ? null : cat)) %}
+  {% set cat_url = cat.url is defined ? cat.url : '' %}
+
+  {% set limit = tab.limit|default(8) %}
+  {% if product_ids|length %}
+    {% set source = 'selected' %}
+    {% set source_value = product_ids|json_encode %}
+    {% set limit = product_ids|length %}
+  {% elseif cat_id %}
+    {% set source = 'categories' %}
+    {% set source_value = [cat_id]|json_encode %}
+  {% else %}
+    {% set source = 'latest' %}
+    {% set source_value = '' %}
+  {% endif %}
+
+  {# bottom button for this tab (unix.sa logic) #}
+  {% set btn_url = tab.button_url %}
+  {% if btn_url is iterable %}{% set btn_url = btn_url.url|default('') %}{% endif %}
+  {% set btn_url = btn_url|default('')|trim ?: (cat_url ?: fallback_url|default('')) %}
+  {% set btn_label = tab.button_label %}
+  {% if btn_label is iterable %}{% set btn_label = btn_label[lang]|default('') %}{% endif %}
+  {% set btn_label = btn_label|default('')|trim ?: (label|trim ? trans('blocks.unix.products_tabs.browse_tab', {'name': label|trim}) : fallback_label) %}
+
+  {# unlabeled tabs are skipped (an empty pill is unusable), unless it is the only tab #}
+  {% if label|trim or loop.length == 1 %}
+    {% set tabs = tabs|merge([{
+      'label': label|trim,
+      'source': source,
+      'source_value': source_value,
+      'limit': limit,
+      'btn_url': btn_url,
+      'btn_label': btn_label
+    }]) %}
+  {% endif %}
+{% endfor %}
+
+{% if not tabs|length %}
+  {# nothing configured yet: one latest-products row so the merchant sees the block #}
+  {% set tabs = [{
+    'label': '',
+    'source': 'latest',
+    'source_value': '',
+    'limit': 8,
+    'btn_url': fallback_url|default(''),
+    'btn_label': fallback_label
+  }] %}
+{% endif %}
+{% set has_tabs = tabs|length > 1 %}
+
+<section component-id="{{ componentId }}"
+         class="s-block unix-ptabs unix-products"
+         data-unix-ptabs
+         {% if title|trim %}aria-labelledby="{{ uid }}-title"{% endif %}>
+  <div class="unix-container">
+    {% if title|trim %}
+      <h2 id="{{ uid }}-title" class="unix-ptabs__title">{{ title|trim }}</h2>
+    {% endif %}
+
+    {% if has_tabs %}
+      <div class="unix-ptabs__tablist" role="tablist"
+           {% if title|trim %}aria-labelledby="{{ uid }}-title"{% else %}aria-label="{{ trans('blocks.unix.products_tabs.tabs_label') }}"{% endif %}>
+        {% for tab in tabs %}
+          <button type="button"
+                  class="unix-ptabs__tab"
+                  role="tab"
+                  id="{{ uid }}-tab-{{ loop.index }}"
+                  aria-controls="{{ uid }}-panel-{{ loop.index }}"
+                  aria-selected="{{ loop.first ? 'true' : 'false' }}"
+                  tabindex="{{ loop.first ? '0' : '-1' }}"
+                  data-cta-label="{{ tab.btn_label|e('html_attr') }}"
+                  data-cta-url="{{ tab.btn_url|e('html_attr') }}">{{ tab.label }}</button>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% for tab in tabs %}
+      {% set slider %}
+        <salla-products-slider
+          class="unix-ptabs__slider"
+          source="{{ tab.source }}"
+          {% if tab.source_value %}source-value="{{ tab.source_value }}"{% endif %}
+          limit="{{ tab.limit }}"
+          slider-id="{{ uid }}-slider-{{ loop.index }}"
+          includes='["images"]'
+          slider-config='{{ slider_config|raw }}'></salla-products-slider>
+      {% endset %}
+      <div class="unix-ptabs__panel"
+           id="{{ uid }}-panel-{{ loop.index }}"
+           {% if has_tabs %}role="tabpanel" aria-labelledby="{{ uid }}-tab-{{ loop.index }}" tabindex="0"{% endif %}
+           {% if not loop.first %}hidden{% endif %}>
+        <div class="unix-products__skeleton" aria-hidden="true">
+          {% for n in 1..4 %}
+            <div class="unix-products__skel-card">
+              <span class="unix-products__skel-media"></span>
+              <span class="unix-products__skel-line"></span>
+              <span class="unix-products__skel-line"></span>
+              <span class="unix-products__skel-line unix-products__skel-line--short"></span>
+            </div>
+          {% endfor %}
+        </div>
+        {% if loop.first %}
+          {{ slider|raw }}
+        {% else %}
+          <template data-unix-ptabs-tpl>{{ slider|raw }}</template>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    {% if show_button %}
+      {% set first = tabs|first %}
+      <div class="unix-ptabs__cta">
+        <a class="unix-btn unix-btn--outline"
+           data-unix-ptabs-cta
+           {% if first.btn_url %}href="{{ first.btn_url }}"{% else %}aria-disabled="true"{% endif %}>{{ first.btn_label }}</a>
+      </div>
+    {% endif %}
+  </div>
+</section>

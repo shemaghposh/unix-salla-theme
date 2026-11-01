@@ -134,6 +134,11 @@
   --mega-media-max: 640px;
   --dropdown-min: 256px;
 
+  /* ── 4.2 Component tokens, Phase 2 product sections (DS §4.2) ── */
+  --ratio-card: 4 / 5;        /* product card + featured lifestyle tile image (DS §6) */
+  --zoom-hover: 1.04;         /* image hover scale (DS §5 "Image hover") */
+  --overlay-card-max: 376px;  /* mini product card over a lifestyle image (unix.sa 37.5rem, on the 4px grid) */
+
   /* Salla base theme radius follows ours */
   --s-radius: var(--r-md);
 }
@@ -158,7 +163,7 @@
 @media (min-width: 1440px) { :root { --gutter: 32px; --page-margin: 64px; } }
 
 @media (prefers-reduced-motion: reduce) {
-  :root { --d-fast: 0ms; --d-base: 0ms; --d-slow: 0ms; --d-reveal: 0ms; --d-announce-slide: 0ms; }
+  :root { --d-fast: 0ms; --d-base: 0ms; --d-slow: 0ms; --d-reveal: 0ms; --d-announce-slide: 0ms; --zoom-hover: 1; }
 }
 
 /* ── Base ─────────────────────────────────────── */
