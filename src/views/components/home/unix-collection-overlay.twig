@@ -1,0 +1,103 @@
+{#
+| «جديد من يونكس» — collection overlay (ROADMAP 2.4 · DS §8.13 · SPEC §4.4)
+| Ground truth: reference/shopify-theme/sections/featured-collection.liquid (layout `overlay`).
+|
+| Variable                   | Type      | Description                                                   |
+|----------------------------|-----------|---------------------------------------------------------------|
+| component.subtitle         | ?string   | eyebrow, multilanguage (default «NEW COLLECTION»)             |
+| component.title            | ?string   | section heading, multilanguage (default «جديد من يونكس»)       |
+| component.category         | object[]  | dropdown-list (source categories), first item is used         |
+| component.limit            | ?int      | products in the carousel (default 8)                          |
+| component.image            | ?string   | background image, desktop (falls back to the category image)  |
+| component.image_mobile     | ?string   | background image below 576px (optional, unix.sa switch point) |
+| component.overlay          | ?int      | overlay opacity in % (20–60, default 30 like unix.sa)         |
+| position                   | int       | sorting number, starts from zero                              |
+|
+| Text defaults: null (never saved / empty for this language) falls back to
+| trans('blocks.unix.collection_overlay.default_*'); '' means cleared on purpose.
+#}
+{% set subtitle = component.subtitle %}
+{% if subtitle is iterable %}{% set subtitle = subtitle[language.code] is defined ? subtitle[language.code] : null %}{% endif %}
+{% if subtitle is null %}{% set subtitle = trans('blocks.unix.collection_overlay.default_subtitle') %}{% endif %}
+
+{% set title = component.title %}
+{% if title is iterable %}{% set title = title[language.code] is defined ? title[language.code] : null %}{% endif %}
+{% if title is null %}{% set title = trans('blocks.unix.collection_overlay.default_title') %}{% endif %}
+
+{% set category = component.category %}
+{% if category is iterable and category.id is not defined %}{% set category = category|first %}{% endif %}
+{% set category_id = category and category.id is defined ? category.id : null %}
+
+{% set image = component.image ?: (category and category.image is defined ? category.image : null) %}
+{% set image_mobile = component.image_mobile %}
+
+{% set overlay = component.overlay is null ? 30 : component.overlay %}
+{% set overlay = overlay < 20 ? 20 : (overlay > 60 ? 60 : overlay) %}
+{% set limit = component.limit ?: 8 %}
+{% set heading_id = 'unix-collection-overlay-' ~ position %}
+
+<section class="unix-collection-overlay"
+         component-id="{{ componentId }}"
+         data-testid="unix-collection-overlay"
+         {% if title|trim %}aria-labelledby="{{ heading_id }}"{% endif %}>
+  <div class="unix-collection-overlay__frame">
+    <div class="unix-collection-overlay__inner">
+      {% if image %}
+        <picture class="unix-collection-overlay__media">
+          {% if image_mobile %}
+            <source media="(max-width: 575px)" srcset="{{ image_mobile }}" width="800" height="1000">
+          {% endif %}
+          <img src="{{ image }}" alt="" width="1920" height="1080" loading="lazy" decoding="async">
+        </picture>
+      {% endif %}
+      <span class="unix-collection-overlay__overlay" style="--overlay-opacity: {{ overlay / 100 }}" aria-hidden="true"></span>
+
+      <div class="unix-collection-overlay__content">
+        {# unix.sa grid "info info buttons": heading block, arrows at the end of the same row #}
+        <div class="unix-collection-overlay__head">
+          {% if subtitle|trim or title|trim %}
+            <header class="unix-collection-overlay__header">
+              {% if subtitle|trim %}
+                <p class="unix-collection-overlay__eyebrow">{{ subtitle|trim }}</p>
+              {% endif %}
+              {% if title|trim %}
+                <h2 id="{{ heading_id }}" class="unix-collection-overlay__title">{{ title|trim }}</h2>
+              {% endif %}
+            </header>
+          {% endif %}
+          {% if category_id %}
+            {# shown from lg once the slider is ready (partials/unix-collection-overlay.js) #}
+            <div class="unix-collection-overlay__arrows">
+              <button type="button" class="unix-collection-overlay__arrow" data-unix-arrow="prev" hidden
+                      aria-label="{{ trans('blocks.unix.collection_overlay.prev') }}">
+                <svg class="icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+                     fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 6l-6 6 6 6"/>
+                </svg>
+              </button>
+              <button type="button" class="unix-collection-overlay__arrow" data-unix-arrow="next" hidden
+                      aria-label="{{ trans('blocks.unix.collection_overlay.next') }}">
+                <svg class="icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+                     fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 6l6 6-6 6"/>
+                </svg>
+              </button>
+            </div>
+          {% endif %}
+        </div>
+
+        {% if category_id %}
+          {# .unix-products opts into the shared card styles (unix-product-card.scss, DS §8.3) #}
+          <div class="unix-collection-overlay__products unix-products">
+            <salla-products-slider
+              source="categories"
+              source-value="[{{ category_id }}]"
+              limit="{{ limit }}"
+              slider-id="unix-collection-overlay-slider-{{ position }}"
+            ></salla-products-slider>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>

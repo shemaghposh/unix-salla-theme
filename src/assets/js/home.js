@@ -6,6 +6,8 @@ import initProductsTabs from "./partials/unix-products-tabs";
 import initFeaturedProducts from "./partials/unix-featured-products";
 import initVideoTiles from "./partials/unix-video-tiles";
 import initFaqs from "./partials/unix-faq";
+import initCollectionOverlays from "./partials/unix-collection-overlay";
+import initCollectionsGrids from "./partials/unix-collections-grid";
 window.fslightbox = Lightbox;
 
 class Home extends BasePage {
@@ -13,6 +15,8 @@ class Home extends BasePage {
         initHeroes();
         initVideoTiles();
         initFaqs();
+        initCollectionOverlays();
+        initCollectionsGrids();
         this.initFeaturedTabs();
         initProductsTabs();
         initFeaturedProducts();

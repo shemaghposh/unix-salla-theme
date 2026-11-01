@@ -88,6 +88,23 @@
         "default_a6": "<p>We accept mada, Visa, Mastercard, Tabby and Tamara. All transactions are secure and encrypted.</p>",
         "default_q7": "Can I pay in instalments?",
         "default_a7": "<p>Yes, you can pay in instalments with Tabby and Tamara at checkout, for more flexible shopping.</p>"
+      },
+      "collection_overlay": {
+        "default_subtitle": "NEW COLLECTION",
+        "default_title": "New from UNIX",
+        "prev": "Previous products",
+        "next": "Next products"
+      },
+      "collections_grid": {
+        "default_title": "Move. Train. Unwind.",
+        "default_text": "A collection designed with care to be beautiful and practical at once, taking you from your morning workout to your evening unwind.",
+        "default_button": "Shop now",
+        "default_card_1": "Sets",
+        "default_card_2": "Comfy sets",
+        "default_card_3": "Accessories",
+        "list_label": "Collection categories, scroll sideways to see more",
+        "prev": "Previous categories",
+        "next": "Next categories"
       }
     }
   },

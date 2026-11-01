@@ -2284,6 +2284,290 @@
                     ]
                 }
             ]
+        },
+        {
+            "key": "c7a1e2d4-3b5f-4e8a-9c21-5d4f0a7b2e14",
+            "title": {
+                "en": "UNIX · Collection over image (New from UNIX)",
+                "ar": "يونكس · تصنيف فوق صورة (جديد من يونكس)"
+            },
+            "icon": "sicon-image",
+            "path": "home.unix-collection-overlay",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/slider-products-with-bg.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "static-desc",
+                    "value": "<div>منتجات تصنيف مختار في كاروسيل فوق صورة كبيرة، زي سكشن «جديد من يونكس» في unix.sa. لو سبتي العنوان فاضي من غير حفظ، بيظهر النص الافتراضي.</div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان الصغير (فوق العنوان)",
+                    "multilanguage": true,
+                    "id": "subtitle",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: NEW COLLECTION",
+                    "placeholder": "NEW COLLECTION",
+                    "minLength": 0,
+                    "maxLength": 60
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: جديد من يونكس",
+                    "placeholder": "جديد من يونكس",
+                    "minLength": 0,
+                    "maxLength": 100
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-keyboard_arrow_down",
+                    "label": "التصنيف",
+                    "id": "category",
+                    "format": "dropdown-list",
+                    "description": "منتجات التصنيف ده هي اللي بتظهر في الكاروسيل (في unix.sa: New Collection)",
+                    "selected": [],
+                    "options": [],
+                    "source": "categories",
+                    "multichoice": false,
+                    "searchable": true,
+                    "required": true,
+                    "value": []
+                },
+                {
+                    "type": "number",
+                    "format": "integer",
+                    "icon": "sicon-list",
+                    "label": "عدد المنتجات",
+                    "id": "limit",
+                    "value": 8,
+                    "required": false,
+                    "minimum": 2,
+                    "maximum": 20
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-image",
+                    "label": "صورة الخلفية (ديسكتوب)",
+                    "id": "image",
+                    "format": "image",
+                    "value": null,
+                    "required": false,
+                    "placeholder": null,
+                    "description": "* المقاس المناسب 1920×1080 بكسل (16:9). لو فاضية بنستخدم صورة التصنيف",
+                    "settings": {
+                        "height": 1080,
+                        "width": 1920
+                    }
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-image",
+                    "label": "صورة الخلفية (موبايل)",
+                    "id": "image_mobile",
+                    "format": "image",
+                    "value": null,
+                    "required": false,
+                    "placeholder": null,
+                    "description": "* اختيارية، بتظهر تحت 576px. المقاس المناسب 800×1000 بكسل (4:5)",
+                    "settings": {
+                        "height": 1000,
+                        "width": 800
+                    }
+                },
+                {
+                    "type": "number",
+                    "format": "integer",
+                    "icon": "sicon-sun",
+                    "label": "درجة التعتيم فوق الصورة (%)",
+                    "id": "overlay",
+                    "value": 30,
+                    "required": false,
+                    "minimum": 20,
+                    "maximum": 60,
+                    "description": "من 20 لـ 60. أقل من 20 النص الأبيض ممكن مايبانش على الصور الفاتحة، وفيه تدرّج غامق ثابت تحت العنوان والكروت"
+                }
+            ]
+        },
+        {
+            "key": "e3b9d6f1-8a2c-4f7e-b5d0-1c6a9e4f7b38",
+            "title": {
+                "en": "UNIX · Collections grid (Move. Train. Unwind.)",
+                "ar": "يونكس · كروت التصنيفات (حركة. رياضة. استرخاء.)"
+            },
+            "icon": "sicon-layout-grid-rearrange",
+            "path": "home.unix-collections-grid",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "static-desc",
+                    "value": "<div>عنوان ووصف وزرار، وتحتهم كروت تصنيفات بنسبة 3:4، زي سكشن «حركة. رياضة. استرخاء.» في unix.sa. لو سبتي النصوص فاضية من غير حفظ، بيظهر النص الافتراضي.</div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: حركة. رياضة. استرخاء.",
+                    "placeholder": "حركة. رياضة. استرخاء.",
+                    "minLength": 0,
+                    "maxLength": 100
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-typography",
+                    "label": "الوصف",
+                    "multilanguage": true,
+                    "id": "text",
+                    "value": null,
+                    "required": false,
+                    "format": "textarea",
+                    "description": null,
+                    "placeholder": "مجموعة صُممت بعناية...",
+                    "minLength": 0,
+                    "maxLength": 300
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "نص الزرار",
+                    "multilanguage": true,
+                    "id": "button_label",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: تسوقي الآن",
+                    "placeholder": "تسوقي الآن",
+                    "minLength": 0,
+                    "maxLength": 40
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-link",
+                    "label": "رابط الزرار",
+                    "id": "button_url",
+                    "value": null,
+                    "description": "لو الرابط فاضي، الزرار مابيظهرش. في unix.sa بيودّي لصفحة كل التصنيفات",
+                    "required": false,
+                    "format": "variable-list",
+                    "searchable": true,
+                    "source": "custom",
+                    "sources": [
+                        { "label": "تصنيف", "key": "categories", "value": "categories" },
+                        { "label": "منتج", "key": "products", "value": "products" },
+                        { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
+                        { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
+                        { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                    ]
+                },
+                {
+                    "id": "cards",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "كروت التصنيفات",
+                    "item_label": "كارت",
+                    "icon": "sicon-list-add",
+                    "required": true,
+                    "minLength": 1,
+                    "maxLength": 6,
+                    "value": [
+                        {
+                            "cards.title": null,
+                            "cards.image": null,
+                            "cards.url__type": "categories",
+                            "cards.overlay": 10
+                        },
+                        {
+                            "cards.title": null,
+                            "cards.image": null,
+                            "cards.url__type": "categories",
+                            "cards.overlay": 20
+                        },
+                        {
+                            "cards.title": null,
+                            "cards.image": null,
+                            "cards.url__type": "categories",
+                            "cards.overlay": 20
+                        }
+                    ],
+                    "fields": [
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "اسم التصنيف",
+                            "multilanguage": true,
+                            "id": "cards.title",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "لو فاضي في أول 3 كروت بيظهر الاسم الافتراضي (أطقم رياضية / أطقم كومفي / إكسسوارات) بالعربي والإنجليزي",
+                            "placeholder": "مثلًا: أطقم كومفي",
+                            "minLength": 1,
+                            "maxLength": 60
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-image",
+                            "label": "الصورة",
+                            "id": "cards.image",
+                            "format": "image",
+                            "value": null,
+                            "required": false,
+                            "placeholder": null,
+                            "description": "* المقاس المناسب 600×800 بكسل (3:4)",
+                            "settings": {
+                                "height": 800,
+                                "width": 600
+                            }
+                        },
+                        {
+                            "type": "items",
+                            "icon": "sicon-link",
+                            "label": "الرابط",
+                            "id": "cards.url",
+                            "value": null,
+                            "description": null,
+                            "required": false,
+                            "format": "variable-list",
+                            "searchable": true,
+                            "source": "custom",
+                            "sources": [
+                                { "label": "تصنيف", "key": "categories", "value": "categories" },
+                                { "label": "منتج", "key": "products", "value": "products" },
+                                { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
+                                { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                            ]
+                        },
+                        {
+                            "type": "number",
+                            "format": "integer",
+                            "icon": "sicon-sun",
+                            "label": "درجة التعتيم (%)",
+                            "id": "cards.overlay",
+                            "value": 20,
+                            "required": false,
+                            "minimum": 0,
+                            "maximum": 60
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "support_url": "https://salla.com/",

@@ -39,7 +39,7 @@
 | `--unix-stone-700` | `#6b625b` | الـ placeholder جوه الحقول *(أُضيف في المرحلة 1: stone-600 على input تباينه 4.41)* |
 | `--unix-taupe-700` | `#6f5c44` | الـ accent لما يبقى نص أو لينك |
 | `--unix-taupe-500` | `#8b7355` | الـ accent في الأشكال: النجوم، والـ focus ring، والـ progress |
-| `--unix-sand-300` | `#d8c5b8` | خلفية الهيرو |
+| `--unix-sand-300` | `#d8c5b8` | خلفيات scheme «Sand»: `--c-surface-sand` (التوكن العام)، والهيرو من خلال الـ alias `--c-hero-bg` (§13.1) |
 | `--unix-sand-200` | `#e8e0d5` | سطح ثانوي، و hover للـ tertiary |
 | `--unix-line` | `#ddd3c6` | البوردرات والفواصل |
 | `--unix-input` | `#efeae1` | خلفية الحقول |
@@ -75,6 +75,8 @@
 | `--c-hover-tint` | `color-mix(currentColor 8%, transparent)` *(خلفية الـ hover لأزرار الأيقونات، بتمشي مع الهيدر العادي والشفاف)* |
 | `--c-press-tint` | `color-mix(currentColor 14%, transparent)` *(حالة الـ active لنفس الأزرار)* |
 
+توكنز المرحلة 2 الجديدة (`--c-surface-sand`، و `--c-hero-bg`، و `--c-text-brand`، و `--c-overlay`، و `--c-scrim-top`، و `--c-hero-scrim`) في §13.1.
+
 ### 1.3 التباين (اتقاس بمعادلة WCAG)
 
 | النص / الخلفية | النسبة | الحكم |
@@ -87,6 +89,7 @@
 | ~~stone-600 / input~~ | 4.41 | ❌ مايتستخدمش جوه الحقول |
 | ~~stone-600 / sand-200~~ | 4.0 | ❌ النص الثانوي بيبقى `--c-text` على خلفية الـ hover |
 | announce-text / announce | 10.6 | ✅ AAA |
+| ink-700 / sand-300 (`--c-text-brand` / `--c-surface-sand`) | 7.2 | ✅ AAA |
 | ~~#8a8079 / cream~~ | 3.4 | ❌ اتشال |
 | ~~taupe-500 كنص~~ | 4.0 | ❌ للأشكال بس |
 | أبيض / sand-300 | 1.7 | ❌ **نص الهيرو لازم scrim** (§8.1) |
@@ -223,7 +226,8 @@
 - **نسب الصور:**
   - كارت المنتج **4:5**.
   - صفحة المنتج **4:5**.
-  - بنر التصنيف **16:9** على الديسكتوب و **4:5** على الموبايل.
+  - بنر التصنيف **16:9** على الديسكتوب و **4:5** على الموبايل. في «جديد من يونكس» (§8.13) دي نسبة **أدنى** والتبديل عند 576px زي الأصل: المساحة محجوزة من الأول (مافيش CLS)، والصندوق بيطول لو المحتوى أطول.
+  - كارت التصنيف (§8.14) **3:4** زي الأصل (SPEC §4.5).
   - الهيرو **2:3 على الموبايل و 16:9 على الديسكتوب** زي unix.sa (بين 560 و 920px)، أو `100svh` لو التاجر اختار «ملء الشاشة» (§8.1).
 - **أسلوب الصور:** إضاءة طبيعية، وخلفيات بيج أو رملي، ومن غير فلاتر قوية. ونفس الخلفية لكل صور الكتالوج.
 - `loading="lazy"` لكل الصور ما عدا أول صورة في الهيرو (`fetchpriority="high"`).
@@ -356,7 +360,24 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **CTA:** `span` بالـ classes `.unix-btn.unix-btn--ghost` بلون cream (pill، §12)، مش عنصر تفاعلي لوحده (الشريط هو اللينك). مع الـ hover/focus/active على الشريط بيتملي `--c-text-inverse` والنص `--c-action`، في `--d-base`.
 - **Focus:** حلقة `--ring-w` بلون `--c-text-inverse` جوه الشريط (offset سالب `--s-1`). **Active:** زي الـ hover.
 
-*(§8.13 و §8.14 محجوزين لـ 2.4 و 2.5)*
+### 8.13 Collection Overlay («جديد من يونكس»، `home.unix-collection-overlay`)
+الكومبوننت `home.unix-collection-overlay` (ROADMAP 2.4 · SPEC §4.4 · `reference/shopify-theme/sections/featured-collection.liquid` بـ layout `overlay` و `assets/section-featured-collection.css`). التوكنز في §13.1 والفروقات في §13.2.
+- **الإطار:** على الموبايل full-bleed من غير حواف (زي الأصل). من md وطالع جوه `.unix-container` بحواف `--r-md`. من غير margin فوق ولا تحت (الأصل `no-indent`).
+- **الخلفية:** صورة التاجر `object-fit: cover`، تحتها `--c-surface-sand`. النسبة **أدنى** 4:5 تحت 576px و 16:9 من 576px (§6)، و**صورة الموبايل** (اختيارية) بتتبدل عند نفس الـ 576px، زي الأصل (`--desktop-padding-bottom` من 576px). الصندوق بيطول لو المحتوى أطول (`overflow: clip` مش `hidden`). الصورة `loading="lazy"` و `alt=""` (خلفية، والعنوان هو اللي بيوصف السكشن).
+- **التعتيم:** `--c-overlay` بـ opacity من الحقل (الافتراضي 30% زي الأصل، والحقل من 20 لـ 60) + `--c-scrim-top` تحت العنوان + `--c-scrim` تحت الكروت (§13.2).
+- **المحتوى:** صف فوق فيه eyebrow (`--t-micro`، uppercase و +0.08em في الإنجليزي بس) بعده العنوان (`--t-h2`، h2)، باللون `--c-text-inverse`، **والأسهم في آخر نفس الصف** ناحية النهاية (زي grid الأصل `"info info buttons"`). تحت: كاروسيل منتجات التصنيف المختار بـ `salla-products-slider` (`source="categories"`). الأسهم الأصلية بتاعة `salla-slider` مستخبية، وأسهمنا بتتحكم في نفس الـ Swiper (`swiper.slidePrev/slideNext`).
+- **المسافات (زي الأصل):** padding-block `--s-5` (20) ثم `--s-6` (32) من lg، و padding-inline `--s-5` (20) ثم `--s-8` (64) من lg. بين العنوان والكروت `--s-7` (الأصل 40).
+- **الكروت:** عرض `--card-w-sm` ثم `--card-w-md` من lg، والمسافة بينهم `--s-2` ثم `--s-5` (الأصل 8 / 24)، يعني padding نص المسافة: `--s-1` ثم `--s-3`. الكارت نفسه شفاف، والصورة على `--c-surface` (الأصل: media أبيض)، والاسم والسعر `--c-text-inverse` فوق الـ scrim، والسعر القديم `--c-text-inverse` بـ `--o-muted`. حلقة الفوكس جوه السكشن `--ring-w` بلون `currentColor` (cream). شكل الكارت الباقي من §8.3: السلايدر عليه class `.unix-products` (ستايل الكارت المشترك، §8.15)، والسكشن بيغيّر الألوان بس.
+- **الأسهم:** بتظهر من lg بس (الأصل من 990px) ولما الـ slider يكون جاهز، دواير `--tap` ببوردر `--line-w` بلون `currentColor`، و hover بـ `--c-hover-tint`، و active بـ `--c-press-tint`، والمعطّل `--o-disabled`، والفوكس `currentColor`. على الموبايل سحب باللمس.
+
+### 8.14 Collections Grid («حركة. رياضة. استرخاء.»، `home.unix-collections-grid`)
+الكومبوننت `home.unix-collections-grid` (ROADMAP 2.5 · SPEC §4.5 · `reference/shopify-theme/sections/featured-collections.liquid` و `assets/section-featured-collections.css` و `assets/featured-collections.js`). التوكنز في §13.1 والفروقات في §13.2.
+- **السكشن:** full-width بخلفية `--c-surface-sand`، والمحتوى جوه `.unix-container` ناحية البداية. من غير margin.
+- **المسافات (زي الأصل، بتوكنز موجودة):** padding-block `--s-5` (الأصل 20) ثم `--s-7` من lg (الأصل 40 من 1200px). بين العنوان والوصف `--s-6` (الأصل padding-top 35px)، وبين الوصف والزرار `--s-5`، وبين الزرار والكروت `--s-5` (الأصل gap .4rem، اتوسّع شوية عشان الزرار مايلزقش في الكروت).
+- **النص:** العنوان `--t-h2` (h2)، بعده الوصف `--t-body` بوزن 700 (الأصل `<strong>`)، وبعدهم زرار outline (§8.2). كله بلون `--c-text-brand`.
+- **الكروت:** نسبة 3:4، وحواف `--r-md`، وصورة cover، وفوقها `--c-overlay` بـ opacity من الحقل (الأصل 10% / 20% / 20%) و `--c-scrim`. اسم التصنيف `--t-h4` (h3) بلون `--c-text-inverse` تحت ناحية البداية، padding `--s-3` ثم `--s-5` من lg. الكارت كله لينك (stretched link على `::after`). **حلقة الفوكس على الـ `::after`** (`--ring-w`، offset سالب `--ring-w`، و `border-radius: var(--r-md)` زي الكارت) بلون `--c-text-inverse` فوق الـ scrim، و `--c-text-brand` في الكارت اللي من غير صورة. Hover: الصورة `scale(var(--zoom-hover))` في `--d-reveal` (§5)، ومع reduced-motion مافيش scale. كارت من غير صورة: خلفية `--c-surface-muted` والاسم `--c-text-brand` من غير scrim.
+- **الترتيب:** صف أفقي بـ scroll-snap: 1.5 كارت في الشاشة على الموبايل، و 2.5 من 576، و 3 من lg (زي الأصل). المسافة `--s-2`. أقصى عرض للصف `--collections-max`. تحت lg الصف بيوصل لحافة الشاشة ومن غير scroll أفقي للصفحة. الصف نفسه `tabindex="0"` وليه `aria-label` (عشان يتحرك بالكيبورد حتى لو الكروت من غير لينكات).
+- **الأسهم (زي الأصل):** بتظهر بس لما الكروت **أكتر من 3**، ومن lg، على جانبي الصف في النص رأسيًا. نفس شكل أسهم §8.13 بس بلون `--c-text-brand` على `--c-surface-sand`. بتحرّك الصف كارت واحد (`scrollBy`، و smooth إلا مع reduced-motion)، وبتتعطّل عند الأطراف. JS صغير vanilla (`partials/unix-collections-grid.js`).
 
 ### 8.15 Products Tabs («المفضلة دائما»، `home.unix-products-tabs`) — *المرحلة 2.3*
 مطابق لـ `reference/shopify-theme/sections/products-with-tabs.liquid` و `templates/index.json → products_with_tabs` (SPEC §4.3).
@@ -444,7 +465,13 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 ### 13.1 Tokens
 | Token | القيمة | الاستخدام |
 |---|---|---|
-| `--c-hero-bg` | sand-300 `#d8c5b8` | خلفية الهيرو لحد ما الميديا تحمّل، أو لو مافيش ميديا (scheme «Sand» في الأصل) (2.1). النص عليها `--c-text` (ink-900 / sand-300 ≈ 7.2، AAA) |
+| `--c-surface-sand` | sand-300 `#d8c5b8` | **التوكن العام** لخلفيات scheme «Sand» في الأصل: «حركة. رياضة. استرخاء.»، وخلفية «جديد من يونكس» لحد ما الصورة تحمّل (2.4، 2.5) |
+| `--c-hero-bg` | `var(--c-surface-sand)` *(alias)* | خلفية الهيرو لحد ما الميديا تحمّل، أو لو مافيش ميديا (scheme «Sand» في الأصل) (2.1). النص عليها `--c-text` (ink-900 / sand-300 ≈ 7.2، AAA) |
+| `--c-text-brand` | ink-700 `#373542` | النص فوق `--c-surface-sand` (الأصل بيفرض `#373542` في «حركة. رياضة. استرخاء.»)، تباين 7.2 AAA (§1.3) (2.5) |
+| `--c-overlay` | ink-900 | طبقة التعتيم فوق الصور، بـ `opacity` من حقل التاجر زي الأصل، بس بلون ink-900 بدل الأسود (2.4، 2.5) |
+| `--c-scrim-top` | `linear-gradient(to bottom, rgb(36 30 26 / .55), transparent 60%)` | نفس `--c-scrim` بس من فوق، للعنوان اللي فوق الصورة في «جديد من يونكس» (2.4) |
+| `--card-w-sm` / `--card-w-md` | 164px / 264px | عرض كارت المنتج في كاروسيل «جديد من يونكس»: موبايل، ومن lg (الأصل 163 / 265px، اتقرّبوا لشبكة 4px) (2.4) |
+| `--collections-max` | 1036px | أقصى عرض لصف كروت التصنيفات (الأصل 103.6rem لـ 3 كروت) (2.5) |
 | `--c-hero-scrim` | `linear-gradient(to top, rgb(36 30 26 / .55), rgb(36 30 26 / .3) 50%, transparent 85%)` | scrim الهيرو: نفس `--c-scrim` بس ممتد لحد 85% عشان يغطي النص على الموبايل (2.1) |
 | `--hero-ratio` | `2 / 3` | نسبة الهيرو على الموبايل (`mobile_image_ratio` في الأصل) (2.1) |
 | `--hero-ratio-wide` | `16 / 9` | نسبة الهيرو من 576px (`desktop_image_ratio` في الأصل) (2.1) |
@@ -472,6 +499,9 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 | الهيرو من غير ميديا: نص أبيض على sand | نص `--c-text` ومن غير scrim (§8.1 no-media) | الأبيض على sand تباينه 1.7 |
 | الهيدر بيتسحب فوق الهيرو بـ JS (`header-overlay.js`) | السحب من السيرفر في CSS الهيرو، والألوان بـ `:has()` | CLS = 0 |
 | شريط العرض (`.uo-home`): خلفية `#22323E`، و CTA مربع، ونصوص بـ opacity | خلفية `--c-action`، و CTA pill، ونصوص كاملة اللون (§8.12) | ألوان النظام بس (P4)، والأزرار pill (§12)، والتباين |
+| «جديد من يونكس»: طبقة سودا 30% بس فوق الصورة، والعنوان ونص الكروت أبيض | طبقة `--c-overlay` (ink-900) بنفس الـ opacity (حقل من 20 لـ 60)، وفوقها `--c-scrim-top` تحت العنوان و `--c-scrim` تحت الكروت، والنص cream (§8.13) | 30% لوحدها مابتضمنش تباين AA على أي صورة (نفس سبب scrim الهيرو) |
+| «حركة. رياضة. استرخاء.»: اسم التصنيف أبيض فوق طبقة سودا 10–20% بس | نفس الـ opacity بلون `--c-overlay`، وفوقها `--c-scrim` تحت الاسم، والاسم cream (§8.14) | 10–20% مابتضمنش تباين على صور فاتحة |
+| «حركة. رياضة. استرخاء.»: Swiper للكروت، والأسهم بتظهر مع الـ hover بس | صف CSS بـ scroll-snap بنفس عدد الكروت في الشاشة (1.5 / 2.5 / 3)، وأسهم ظاهرة دايمًا من lg لما الكروت أكتر من 3 (§8.14) | من غير Swiper، والكيبورد بيوصل لكل كارت وللأسهم |
 | كروت المنتجات في «المفضلة دائما» و«منتجات مختارة»: صورة 2:3 `contain`، والـ vendor ظاهر | صورة 4:5 (`--ratio-card`) بـ fit إعداد المتجر، ومن غير vendor | نسبة الكارت الموحدة (§6، §8.3). سلة مافيهاش vendor على الكارت |
 | صورة اللايف ستايل في «منتجات مختارة» بنسبتها الطبيعية (`adapt`) | 4:5 ثابتة (`--ratio-card`) | مافيش CLS، وكل الشرايح نفس الارتفاع |
 | تابات المنتجات: `div` بتتداس بالماوس بس | ARIA tabs كاملة بالكيبورد، والتابات اللي مش ظاهرة بتتحمّل وقت الحاجة | Accessibility (P6) والأداء |
