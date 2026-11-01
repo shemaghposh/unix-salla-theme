@@ -9,7 +9,6 @@
     "unix": {
       "announcement": {
         "label": "إعلانات المتجر",
-        "default_1": "وصلت مجموعتنا الجديدة: Sailor وHalo Back وSoft Angle",
         "default_2": "شحن مجاني داخل السعودية للطلبات فوق :amount"
       },
       "header": {

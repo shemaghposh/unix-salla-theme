@@ -92,7 +92,7 @@
             "type": "static",
             "format": "title",
             "id": "unix-static-announcement",
-            "value": "شريط الإعلانات",
+            "value": "<div class='rounded-lg' style='background-color: #21636d; display: flex; justify-content: center; align-items: center;padding: 15px;margin-bottom: 20px !important; flex-direction: column;gap: 15px;'><h6 style='color: #ffffff;font-size: 15px; font-weight: bold;'> شريط الإعلانات</h6></div>",
             "variant": "h6"
         },
         {
@@ -110,11 +110,11 @@
             "type": "string",
             "icon": "sicon-format-text-alt",
             "label": "الرسالة الأولى",
-            "description": "اتركيها فارغة لعرض النص الافتراضي: «وصلت مجموعتنا الجديدة: Sailor وHalo Back وSoft Angle»",
+            "description": "اتركيها فارغة لإخفاء الرسالة",
             "id": "unix_announcement_1_text",
             "format": "text",
             "multilanguage": true,
-            "value": null,
+            "value": "وصلت مجموعتنا الجديدة: Sailor وHalo Back وSoft Angle",
             "required": false,
             "placeholder": "وصلت مجموعتنا الجديدة...",
             "minLength": 0,
@@ -165,7 +165,8 @@
             "description": "يظهر في الرسالة الثانية الافتراضية، ويُستخدم في شريط الشحن المجاني بالسلة",
             "placeholder": "500",
             "value": 500,
-            "required": false
+            "required": false,
+            "minimum": 0
         },
         {
             "type": "static",
