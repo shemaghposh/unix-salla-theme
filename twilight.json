@@ -911,14 +911,14 @@
                     "item_label": "فيديو",
                     "value": [
                         {
-                            "tiles.video": "https://cdn.shopify.com/videos/c/vp/364de4a30bf946f291ccdfbda7fe05c9/364de4a30bf946f291ccdfbda7fe05c9.HD-720p-1.6Mbps-90511977.mp4",
+                            "tiles.video": null,
                             "tiles.poster": null,
                             "tiles.caption": null,
                             "tiles.link": null,
                             "tiles.link_label": null
                         },
                         {
-                            "tiles.video": "https://cdn.shopify.com/videos/c/vp/0e0b1cadcf524ede8d80b2f7d4a14231/0e0b1cadcf524ede8d80b2f7d4a14231.HD-720p-1.6Mbps-90512069.mp4",
+                            "tiles.video": null,
                             "tiles.poster": null,
                             "tiles.caption": null,
                             "tiles.link": null,
@@ -975,7 +975,7 @@
                             "label": "رابط البطاقة",
                             "id": "tiles.link",
                             "value": null,
-                            "description": "عند إضافة رابط تصبح البطاقة كلها رابطاً. في الأصل: الفيديو الأول يفتح كل المنتجات",
+                            "description": "عند إضافة رابط تصبح البطاقة كلها رابطاً. في الأصل: الفيديو الأول يفتح صفحة كل المنتجات، فاختاريها هنا للفيديو الأول",
                             "required": false,
                             "format": "variable-list",
                             "searchable": true,
@@ -1995,6 +1995,293 @@
                     "required": false,
                     "minLength": 1,
                     "maxLength": 30
+                }
+            ]
+        },
+        {
+            "key": "7d1f3c52-8a4e-4b6f-9c21-5e0a7b1d2c43",
+            "title": {
+                "en": "UNIX · Products with tabs",
+                "ar": "يونكس · منتجات بتبويبات (المفضلة دائما)"
+            },
+            "icon": "sicon-list-play",
+            "path": "home.unix-products-tabs",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/slider-products-with-bg.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-ptabs-desc",
+                    "value": "<div>عنوان، وتبويبات تتنقلين بينها، وسلايدر منتجات لكل تبويب، وزر في الأسفل يتغير مع التبويب. مصدر كل تبويب: التصنيف إن اخترتِه، وإلا المنتجات المختارة، وإلا أحدث المنتجات.</div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": "المفضلة دائما",
+                    "required": false,
+                    "format": "text",
+                    "description": "اتركيه فارغاً لإخفاء العنوان",
+                    "placeholder": "أدخلي العنوان هنا...",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "id": "tabs",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "التبويبات",
+                    "description": "تبويب واحد = بدون شريط تبويبات",
+                    "item_label": "تبويب",
+                    "icon": "sicon-list-add",
+                    "required": true,
+                    "minLength": 1,
+                    "maxLength": 8,
+                    "value": [
+                        {
+                            "tabs.label": "وصل حديثًا",
+                            "tabs.limit": 8,
+                            "tabs.button_label": "تسوّقي الجديد"
+                        },
+                        {
+                            "tabs.label": "الأكثر مبيعا",
+                            "tabs.limit": 8
+                        },
+                        {
+                            "tabs.label": "توبات كومفي",
+                            "tabs.limit": 4
+                        },
+                        {
+                            "tabs.label": "اطقم كومفي",
+                            "tabs.limit": 4
+                        },
+                        {
+                            "tabs.label": "ليقينز رياضية",
+                            "tabs.limit": 4
+                        }
+                    ],
+                    "fields": [
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "اسم التبويب",
+                            "multilanguage": true,
+                            "id": "tabs.label",
+                            "value": null,
+                            "required": true,
+                            "format": "text",
+                            "description": null,
+                            "placeholder": "مثال: وصل حديثًا",
+                            "minLength": 1,
+                            "maxLength": 40
+                        },
+                        {
+                            "type": "items",
+                            "icon": "sicon-keyboard_arrow_down",
+                            "label": "التصنيف",
+                            "id": "tabs.category",
+                            "format": "dropdown-list",
+                            "description": "إذا اخترتِ تصنيفاً يظهر هو (حتى لو اخترتِ منتجات)، مثل unix.sa",
+                            "selected": [],
+                            "options": [],
+                            "source": "categories",
+                            "multichoice": false,
+                            "searchable": true,
+                            "required": false,
+                            "value": []
+                        },
+                        {
+                            "type": "items",
+                            "icon": "sicon-keyboard_arrow_down",
+                            "label": "منتجات مختارة (اختياري)",
+                            "id": "tabs.products",
+                            "format": "dropdown-list",
+                            "description": "تُستخدم فقط إذا تركتِ التصنيف فارغاً",
+                            "selected": [],
+                            "options": [],
+                            "source": "products",
+                            "multichoice": true,
+                            "searchable": true,
+                            "required": false,
+                            "minLength": 0,
+                            "maxLength": 12,
+                            "value": []
+                        },
+                        {
+                            "type": "number",
+                            "icon": "sicon-pencil-ruler",
+                            "label": "عدد منتجات التصنيف",
+                            "id": "tabs.limit",
+                            "format": "integer",
+                            "description": null,
+                            "value": 8,
+                            "required": false,
+                            "minimum": 1,
+                            "maximum": 12
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "نص الزر لهذا التبويب (اختياري)",
+                            "multilanguage": true,
+                            "id": "tabs.button_label",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "إذا تركتِه فارغاً: «تصفحي» + اسم التبويب",
+                            "placeholder": "مثال: تسوّقي الجديد",
+                            "minLength": 0,
+                            "maxLength": 40
+                        },
+                        {
+                            "type": "items",
+                            "icon": "sicon-link",
+                            "label": "رابط الزر لهذا التبويب (اختياري)",
+                            "id": "tabs.button_url",
+                            "value": null,
+                            "description": "إذا تركتِه فارغاً: رابط التصنيف، وإلا رابط زر القسم",
+                            "required": false,
+                            "format": "variable-list",
+                            "searchable": true,
+                            "source": "custom",
+                            "sources": [
+                                { "label": "منتج", "key": "products", "value": "products" },
+                                { "label": "منتجات مع وسم", "key": "products_tags", "value": "products_tags" },
+                                { "label": "تصنيف", "key": "categories", "value": "categories" },
+                                { "label": "ماركة تجارية", "key": "brands", "value": "brands" },
+                                { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
+                                { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
+                                { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "إظهار الزر أسفل القسم",
+                    "description": null,
+                    "id": "show_button",
+                    "format": "switch",
+                    "required": false,
+                    "value": true,
+                    "selected": true
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "نص الزر الاحتياطي",
+                    "multilanguage": true,
+                    "id": "button_label",
+                    "value": "تصفحي الجميع",
+                    "required": false,
+                    "format": "text",
+                    "description": "يظهر فقط إذا لم يكن للتبويب اسم أو نص زر",
+                    "placeholder": "تصفحي الجميع",
+                    "minLength": 0,
+                    "maxLength": 40,
+                    "conditions": [
+                        { "id": "show_button", "operation": "=", "value": true }
+                    ]
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-link",
+                    "label": "رابط الزر الاحتياطي",
+                    "id": "button_url",
+                    "value": null,
+                    "description": "يُستخدم إذا لم يكن للتبويب رابط أو تصنيف (في unix.sa: كل المنتجات)",
+                    "required": false,
+                    "format": "variable-list",
+                    "searchable": true,
+                    "source": "custom",
+                    "sources": [
+                        { "label": "منتج", "key": "products", "value": "products" },
+                        { "label": "منتجات مع وسم", "key": "products_tags", "value": "products_tags" },
+                        { "label": "تصنيف", "key": "categories", "value": "categories" },
+                        { "label": "ماركة تجارية", "key": "brands", "value": "brands" },
+                        { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
+                        { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
+                        { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                    ],
+                    "conditions": [
+                        { "id": "show_button", "operation": "=", "value": true }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "3b9e6a1d-2f47-4c8e-b5d0-8a6c4e2f1b97",
+            "title": {
+                "en": "UNIX · Featured products with lifestyle images",
+                "ar": "يونكس · منتجات مختارة مع صور"
+            },
+            "icon": "sicon-image",
+            "path": "home.unix-featured-products",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-fprods-desc",
+                    "value": "<div>كاروسيل: لكل عنصر صورة لايف ستايل وفوقها بطاقة صغيرة للمنتج (الصورة والاسم والسعر) تفتح صفحته. 3 في الشاشة على الكمبيوتر، وسحب على الجوال.</div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": "اختاري قطعتك المفضلة لوقت الاسترخاء",
+                    "required": false,
+                    "format": "text",
+                    "description": "اتركيه فارغاً لإخفاء العنوان",
+                    "placeholder": "أدخلي العنوان هنا...",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "id": "items",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "المنتجات",
+                    "description": "إذا لم تضيفي منتجات تظهر أحدث 4 منتجات بصورها",
+                    "item_label": "منتج",
+                    "icon": "sicon-list-add",
+                    "required": false,
+                    "minLength": 0,
+                    "maxLength": 8,
+                    "value": [],
+                    "fields": [
+                        {
+                            "type": "items",
+                            "icon": "sicon-keyboard_arrow_down",
+                            "label": "المنتج",
+                            "id": "items.product",
+                            "format": "dropdown-list",
+                            "description": null,
+                            "selected": [],
+                            "options": [],
+                            "source": "products",
+                            "multichoice": false,
+                            "searchable": true,
+                            "required": true,
+                            "value": []
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-image",
+                            "label": "صورة لايف ستايل",
+                            "id": "items.image",
+                            "format": "image",
+                            "value": null,
+                            "required": false,
+                            "placeholder": null,
+                            "description": "* المقاس المناسب 1200×1500 بكسل (4:5). إذا تركتِها فارغة تظهر صورة المنتج"
+                        }
+                    ]
                 }
             ]
         }

@@ -2,7 +2,8 @@
   UNIX video tiles (ROADMAP 2.7 · DS §8.18, §13 · SPEC §4.8).
   Matches unix.sa (reference/shopify-theme/sections/banner-grid.liquid, assets/section-banner-grid.css,
   assets/banner-grid.js, templates/index.json → banner-grid): two muted, looping, inline videos at 3:4,
-  no text, a light overlay, the first tile linked as a whole card. Two columns from md, one tile per
+  no text, a light overlay; on unix.sa the first tile links to all products as a whole card (here the
+  link field is empty by default: the merchant picks it, DS §13.2). Two columns from md, one tile per
   view with horizontal swipe (CSS scroll-snap) below md.
   Below the fold, so nothing loads eagerly: posters are lazy images, and unix-video-tiles.js sets the
   video src only when a tile nears the viewport, plays it while visible and pauses it off screen.
@@ -97,9 +98,7 @@
             {% if t.video %}
               <button type="button" class="unix-video-tiles__toggle" data-unix-video-tile-toggle hidden
                       aria-pressed="true"
-                      aria-label="{{ trans('blocks.unix.video_tiles.play_video') }}"
-                      data-label-pause="{{ trans('blocks.unix.video_tiles.pause_video')|e('html_attr') }}"
-                      data-label-play="{{ trans('blocks.unix.video_tiles.play_video')|e('html_attr') }}">
+                      aria-label="{{ trans('blocks.unix.video_tiles.pause_video') }}">
                 <svg class="unix-video-tiles__icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
                      fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                   <path d="M9 6v12M15 6v12"/>

@@ -173,18 +173,21 @@
   --hero-cta-line: .55;                /* underline CTA length on hover (unix.sa scaleX(.55)) */
   --d-stagger: 60ms;                   /* reveal stagger step (DS §5) */
   --d-hint: 2s;                        /* scroll-indicator bob cycle */
+  /* product sections (2.3, 2.6) */
+  --ratio-card: 4 / 5;                 /* product card + featured lifestyle image (DS §6) */
+  --zoom-hover: 1.04;                  /* image hover scale (DS §5 "Image hover") */
+  --overlay-card-max: 376px;           /* mini card over a lifestyle image (unix.sa 37.5rem, on the 4px grid) */
 
   /* Phase 2 · 2.7 / 2.9: video tiles and FAQ */
   --tile-ratio: 3 / 4;                 /* video tile (unix.sa banner-grid media ratio 3/4) (2.7) */
-  --c-tile-overlay: rgb(36 30 26 / .2); /* light overlay on video tiles (unix.sa overlay_opacity .2) (2.7) */
-  --media-hover-scale: 1.04;           /* DS §5 "Image hover" scale (2.7) */
+  --c-tile-overlay: color-mix(in srgb, var(--unix-ink-900) 20%, transparent); /* light overlay on video tiles (unix.sa overlay_opacity .2) (2.7) */
   --faq-max: 908px;                    /* FAQ column from lg (unix.sa collapsible-content__wrapper 90.8rem) (2.9) */
   --o-teaser: .3;                      /* faded 4th question while collapsed (unix.sa item--opacity) (2.9) */
   --c-teaser-fade: linear-gradient(to bottom, color-mix(in srgb, var(--c-bg) 30%, transparent) 20%, var(--c-bg)); /* fade over the teaser (2.9) */
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :root { --d-stagger: 0ms; }
+  :root { --d-stagger: 0ms; --zoom-hover: 1; }
 }
 
 /* ── Base ─────────────────────────────────────── */

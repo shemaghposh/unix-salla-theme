@@ -21,10 +21,9 @@ function initTile(tile) {
   // "paused by choice": reduced motion / Save-Data start paused, like a visitor's own pause.
   let userPaused = prefersReducedMotion() || saveData();
 
+  // Fixed label "Pause video"; state lives in aria-pressed only (true = paused), like the hero (DS §8.1).
   const setToggle = paused => {
-    if (!toggle) return;
-    toggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
-    toggle.setAttribute('aria-label', paused ? toggle.dataset.labelPlay : toggle.dataset.labelPause);
+    if (toggle) toggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
   };
 
   const load = () => {

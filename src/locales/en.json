@@ -44,6 +44,17 @@
         "cr_badge": "Saudi Business Center",
         "tm": "Trademark"
       },
+      "products_tabs": {
+        "default_title": "Always favourites",
+        "tabs_label": "Browse products by collection",
+        "browse_tab": "Browse :name",
+        "browse_all": "Browse all",
+        "prev": "Previous products",
+        "next": "Next products"
+      },
+      "featured_products": {
+        "default_title": "Choose your favourite piece for lounging"
+      },
       "hero": {
         "default_eyebrow": "UNIX NEW COLLECTION",
         "default_title": "Move with confidence.",
@@ -55,8 +66,7 @@
       "video_tiles": {
         "default_label": "UNIX in motion",
         "default_link_label": "Shop now",
-        "pause_video": "Pause video",
-        "play_video": "Play video"
+        "pause_video": "Pause video"
       },
       "faq": {
         "label": "Frequently asked questions",
