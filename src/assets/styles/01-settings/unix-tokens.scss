@@ -52,6 +52,8 @@
   --c-success: var(--unix-success);
   --c-scrim: linear-gradient(to top, rgb(36 30 26 / .55), transparent 60%);
   --c-backdrop: rgb(36 30 26 / .32);
+  --c-announce-bg: var(--unix-announce);
+  --c-announce-text: var(--unix-announce-text);
 
   /* ── 2 Typography ───────────────────────────── */
   --f-body: var(--font-main);
@@ -75,6 +77,7 @@
   --content-max: 1440px;
   --gutter: 12px;
   --page-margin: 16px;
+  --announce-h: 40px;
 
   /* ── 4 Shape & depth ────────────────────────── */
   --r-sm: 8px;
@@ -90,6 +93,7 @@
   --d-base: 280ms;
   --d-slow: 480ms;
   --d-reveal: 800ms;
+  --d-announce: 4s; /* dwell per announcement; not a motion, so NOT zeroed for reduced motion */
   --ease-out: cubic-bezier(.22, 1, .36, 1);
   --ease-in-out: cubic-bezier(.65, 0, .35, 1);
 

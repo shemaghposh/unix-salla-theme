@@ -1,0 +1,76 @@
+/* ── Announcement bar (DS §8.6 · SPEC §2) ──────────
+ * Slides share one grid cell. Waiting slides sit one width toward the
+ * inline-end, the active one at 0, the leaving one one width toward the
+ * inline-start. `--announce-dir` flips the X axis for RTL (transforms have
+ * no logical form). Slides stay in the a11y tree; the track clips them. */
+.unix-announce {
+  --announce-dir: 1;
+
+  block-size: var(--announce-h);
+  background: var(--c-announce-bg);
+  color: var(--c-announce-text);
+  font-size: var(--t-small);
+  line-height: var(--announce-h);
+
+  &:focus-visible {
+    outline: 2px solid var(--c-announce-text);
+    outline-offset: -2px;
+  }
+}
+
+[dir="rtl"] .unix-announce { --announce-dir: -1; }
+
+.unix-announce__track {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  block-size: var(--announce-h);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+}
+
+.unix-announce__item,
+.unix-announce__link {
+  min-inline-size: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.unix-announce__item {
+  grid-area: 1 / 1;
+  transform: translateX(calc(100% * var(--announce-dir)));
+
+  &.is-active,
+  &.is-leaving {
+    transition: transform var(--d-reveal) var(--ease-in-out);
+  }
+  &.is-active { transform: none; }
+  &.is-leaving { transform: translateX(calc(-100% * var(--announce-dir))); }
+}
+
+.unix-announce__link {
+  display: block;
+  block-size: var(--announce-h);
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: var(--s-1);
+  transition: text-decoration-color var(--d-fast) var(--ease-out);
+
+  &:hover,
+  &:focus-visible,
+  &:active { text-decoration-color: currentColor; }
+
+  &:focus-visible {
+    outline: 2px solid var(--c-announce-text);
+    outline-offset: -2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-announce__item.is-active,
+  .unix-announce__item.is-leaving { transition: none; }
+}

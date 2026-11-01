@@ -1,7 +1,11 @@
 {
   "blocks": {
     "header": {
-      "cart": "Cart"
+      "cart": "Cart",
+      "announcements": "Store announcements",
+      "announcements_pause_hint": "Announcements rotate automatically. Move focus to this bar to pause them.",
+      "announcement_default_1": "Our new collection has arrived: Sailor, Halo Back and Soft Angle",
+      "announcement_default_2": "Free shipping across Saudi Arabia on orders over 500 SAR"
     },
     "appBanner": {
       "download_now": "download now"
