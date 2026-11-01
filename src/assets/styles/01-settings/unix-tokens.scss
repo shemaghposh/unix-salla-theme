@@ -12,8 +12,10 @@
 @font-face {
   font-family: "Somar";
   src: url("fonts/Somar-Bold.woff2") format("woff2");
-  font-weight: 600 800;
+  font-weight: 700 800;
   font-display: swap;
+  /* Arabic blocks only (DS §2.1): Latin heading glyphs fall through to the next family. */
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
 }
 
 :root {
