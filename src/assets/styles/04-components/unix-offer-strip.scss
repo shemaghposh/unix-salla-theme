@@ -1,0 +1,61 @@
+/* ── Offer strip (ROADMAP 2.2 · DS §8.12) ──────────
+ * unix.sa's .uo-home: a full-width ink band, centred copy, and the whole band is the link.
+ * The CTA is a visual pill only (the band is the interactive element). */
+.unix-offer {
+  background: var(--c-action);
+  color: var(--c-text-inverse);
+}
+
+.unix-offer__inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-2);
+  padding-block: var(--section-sm);
+  padding-inline: var(--page-margin);
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: var(--ring-w) solid var(--c-text-inverse);
+    outline-offset: calc(var(--s-1) * -1);
+  }
+}
+
+.unix-offer__eyebrow {
+  font-size: var(--t-micro);
+  line-height: 1.5;
+  font-weight: 500;
+
+  html[lang="en"] & {
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+}
+
+.theme-unix .unix-offer__title {
+  margin: 0;
+  font-size: var(--t-h2);
+  line-height: 1.3;
+  color: inherit;
+}
+
+.unix-offer__text {
+  max-inline-size: 65ch;
+  font-size: var(--t-small);
+  line-height: 1.6;
+}
+
+// The pill itself is .unix-btn.unix-btn--ghost (DS §8.2); only the band-driven fill lives here,
+// because the band, not the pill, is the link.
+.unix-offer__cta {
+  margin-block-start: var(--s-3);
+  transition: background-color var(--d-base) var(--ease-out), color var(--d-base) var(--ease-out);
+
+  .unix-offer__inner:hover &,
+  .unix-offer__inner:focus-visible &,
+  .unix-offer__inner:active & {
+    background: var(--c-text-inverse);
+    color: var(--c-action);
+  }
+}

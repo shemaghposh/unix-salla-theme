@@ -43,6 +43,14 @@
         "cr": "السجل التجاري",
         "cr_badge": "المركز السعودي للأعمال",
         "tm": "العلامة التجارية"
+      },
+      "hero": {
+        "default_eyebrow": "UNIX NEW COLLECTION",
+        "default_title": "تحركي بثقة.",
+        "default_text": "ملابس رياضية و بيجامات صُممت لكل لحظة في يومك",
+        "default_cta_label": "اكتشفي المجموعة",
+        "pause_video": "أوقفي الفيديو مؤقتًا",
+        "scroll_down": "انتقلي إلى القسم التالي"
       }
     }
   },

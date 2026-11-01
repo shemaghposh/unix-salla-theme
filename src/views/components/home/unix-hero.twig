@@ -1,0 +1,151 @@
+{#
+  UNIX hero (ROADMAP 2.1 · DS §8.1, §13 · SPEC §4.1).
+  Matches unix.sa (reference/shopify-theme/sections/media-banner.liquid, templates/index.json
+  → media_banner_NJrzt4): full-bleed media, gradient scrim, content at the bottom inline-start,
+  eyebrow → h1 → text → underline CTA, optional scroll indicator, header overlay.
+  Height follows the media ratio like the original (2:3 mobile, 16:9 from 576px), clamped to
+  --hero-min-h / --hero-max-h, or 100svh when `full_height` is on. The ratio is reserved in CSS,
+  so there is no layout shift while media loads.
+
+  Fields (twilight.json → components → home.unix-hero):
+    eyebrow, title, text, cta_label   string (multilanguage). null = not saved yet → translated
+                                      default (blocks.unix.hero.default_*); '' = cleared on purpose.
+    cta_link                          link picker; empty → no CTA (no dead links)
+    cta_ghost                         boolean  ghost pill instead of the underline CTA
+    image_desktop, image_mobile       image    poster/fallback; first hero image is the LCP image
+    image_alt                         string (multilanguage); empty → decorative (alt="")
+    video_desktop, video_mobile       string   direct MP4 URLs; loaded by unix-hero.js after load
+    full_height                       boolean  100svh instead of the media ratio
+    header_overlay                    boolean  transparent header over the hero (first hero with an image only)
+  No image → .unix-hero--no-media: ink text on sand, no scrim, until a video is actually playing.
+  Images/videos switch at 750px like unix.sa; the ratio switches at 576px (DS §8.1).
+    show_scroll_indicator             boolean  chevron button to the next section
+  `position` is the component's index on the page (0 = first → eager + fetchpriority high).
+#}
+{% set hero = {} %}
+{% for key in ['eyebrow', 'title', 'text', 'cta_label', 'image_alt'] %}
+  {% set value = attribute(component, key) %}
+  {# multilanguage values may arrive as {ar, en}; resolve to the current language #}
+  {% if value is iterable %}
+    {% set value = value[language.code] is defined ? value[language.code] : null %}
+  {% endif %}
+  {% if value is null and key != 'image_alt' %}
+    {% set value = trans('blocks.unix.hero.default_' ~ key) %}
+  {% endif %}
+  {% set hero = hero|merge({ (key): value|default('')|trim }) %}
+{% endfor %}
+
+{# link picker (variable-list) returns an object with .url; tolerate a plain string too #}
+{% set cta_url = component.cta_link %}
+{% if cta_url is iterable %}
+  {% set cta_url = cta_url.url|default('') %}
+{% endif %}
+{% set cta_url = cta_url|default('')|trim %}
+{% if cta_url == '#' %}{% set cta_url = '' %}{% endif %}
+
+{% set img_desktop = component.image_desktop|default('')|trim %}
+{% set img_mobile = component.image_mobile|default('')|trim %}
+{% set video_desktop = component.video_desktop|default('')|trim %}
+{% set video_mobile = component.video_mobile|default('')|trim %}
+{% set is_first = position is defined and position == 0 %}
+{% set has_image = img_desktop or img_mobile %}
+{#
+  Transparent header (DS §8.1): rendered server-side so nothing shifts. Only for the first
+  component, with the field on, the theme's transparent-home setting on, and an image (cream
+  header icons on bare sand would fail contrast). The hero CSS pulls itself under the header.
+#}
+{% set header_overlay = is_first
+  and (component.header_overlay is null or component.header_overlay)
+  and theme.settings.get('unix_header_transparent_home', true)
+  and has_image %}
+{% set show_scroll = component.show_scroll_indicator is null or component.show_scroll_indicator %}
+
+<section component-id="{{ componentId }}"
+         class="unix-hero{{ component.full_height ? ' unix-hero--full' }}{{ has_image ? '' : ' unix-hero--no-media' }}"
+         data-unix-hero
+         {% if header_overlay %}data-header-overlay{% endif %}
+         {% if hero.title %}aria-labelledby="unix-hero-title-{{ componentId }}"{% endif %}>
+  <div class="unix-hero__media">
+    {% if has_image %}
+      {# Salla's cdn(width) filter serves resized copies (as header/footer do for the logo) #}
+      {% set src_mobile = img_mobile ?: img_desktop %}
+      <picture class="unix-hero__picture">
+        {% if img_desktop and img_mobile %}
+          <source media="(min-width: 750px)"
+                  srcset="{{ img_desktop|cdn(1280) }} 1280w, {{ img_desktop|cdn(1920) }} 1920w, {{ img_desktop|cdn(2560) }} 2560w"
+                  sizes="100vw" width="1920" height="1080">
+        {% endif %}
+        <img class="unix-hero__image"
+             src="{{ src_mobile|cdn(1080) }}"
+             srcset="{{ src_mobile|cdn(480) }} 480w, {{ src_mobile|cdn(768) }} 768w, {{ src_mobile|cdn(1080) }} 1080w{{ img_mobile ? '' : ', ' ~ src_mobile|cdn(1920) ~ ' 1920w' }}"
+             sizes="100vw"
+             alt="{{ hero.image_alt|e('html_attr') }}"
+             {% if img_mobile %}width="1080" height="1620"{% else %}width="1920" height="1080"{% endif %}
+             {% if is_first %}loading="eager" fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}>
+      </picture>
+    {% endif %}
+
+    {% if video_desktop or video_mobile %}
+      <video class="unix-hero__video"
+             data-unix-hero-video
+             data-src-desktop="{{ video_desktop ?: video_mobile }}"
+             data-src-mobile="{{ video_mobile ?: video_desktop }}"
+             muted playsinline loop preload="none"
+             aria-hidden="true" tabindex="-1"></video>
+    {% endif %}
+    <span class="unix-hero__scrim" aria-hidden="true"></span>
+  </div>
+
+  {% if hero.eyebrow or hero.title or hero.text or (hero.cta_label and cta_url) %}
+    <div class="unix-hero__inner unix-container">
+      <div class="unix-hero__content">
+        {% if hero.eyebrow %}
+          <p class="unix-hero__eyebrow">{{ hero.eyebrow }}</p>
+        {% endif %}
+        {% if hero.title %}
+          <h1 class="unix-hero__title" id="unix-hero-title-{{ componentId }}">{{ hero.title }}</h1>
+        {% endif %}
+        {% if hero.text %}
+          <p class="unix-hero__text">{{ hero.text }}</p>
+        {% endif %}
+        {% if hero.cta_label and cta_url %}
+          {% if component.cta_ghost %}
+            <a class="unix-hero__cta unix-hero__cta--ghost unix-btn unix-btn--ghost" href="{{ cta_url }}">{{ hero.cta_label }}</a>
+          {% else %}
+            <a class="unix-hero__cta unix-hero__cta--underline" href="{{ cta_url }}">
+              <span class="unix-hero__cta-label">{{ hero.cta_label }}</span>
+              <svg class="unix-hero__cta-icon icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+                   fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </a>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if video_desktop or video_mobile %}
+    <button type="button" class="unix-hero__control unix-hero__toggle" data-unix-hero-toggle hidden
+            aria-label="{{ trans('blocks.unix.hero.pause_video') }}" aria-pressed="false">
+      <svg class="unix-hero__toggle-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+           fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M9 6v12M15 6v12"/>
+      </svg>
+      <svg class="unix-hero__toggle-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+           fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+        <path d="M8 5.5v13l10.5-6.5z"/>
+      </svg>
+    </button>
+  {% endif %}
+
+  {% if show_scroll %}
+    <button type="button" class="unix-hero__control unix-hero__scroll" data-unix-hero-scroll hidden
+            aria-label="{{ trans('blocks.unix.hero.scroll_down') }}">
+      <svg class="unix-hero__scroll-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+           fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9l6 6 6-6"/>
+      </svg>
+    </button>
+  {% endif %}
+</section>

@@ -1,0 +1,251 @@
+/* ── Hero (ROADMAP 2.1 · DS §8.1, §13) ─────────────
+ * Full-bleed media with the mandatory scrim; content sits at the bottom inline-start.
+ * Height = media ratio like unix.sa (2:3 → 16:9 from 576px), clamped to the DS limits,
+ * or 100svh with .unix-hero--full. The ratio is reserved before media loads (no CLS).
+ * Inside the hero, focus rings and controls use currentColor (cream): taupe is too weak on media.
+ * `--_dir` flips the X axis for RTL (transforms have no logical form). */
+@keyframes unix-hero-rise {
+  from { opacity: 0; transform: translateY(var(--s-4)); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes unix-hero-bob {
+  0%, 100% { transform: none; }
+  50% { transform: translateY(var(--s-2)); }
+}
+
+.unix-hero {
+  --_dir: 1;
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  inline-size: 100%;
+  aspect-ratio: var(--hero-ratio);
+  min-block-size: var(--hero-min-h);
+  max-block-size: var(--hero-max-h);
+  overflow: hidden;
+  background: var(--c-hero-bg);
+  color: var(--c-text-inverse);
+
+  @media (min-width: 576px) { aspect-ratio: var(--hero-ratio-wide); }
+
+  &--full {
+    aspect-ratio: auto;
+    block-size: 100vh;
+    block-size: 100svh;
+    @media (min-width: 576px) { aspect-ratio: auto; }
+  }
+
+  // Transparent header (DS §8.1): the attribute is rendered server-side only for the first hero,
+  // so pulling up under the header bar happens in the first paint (no layout shift).
+  &[data-header-overlay] { margin-block-start: calc(var(--header-h) * -1); }
+
+  // No image (DS §8.1): cream on sand fails (1.7), so ink text and no scrim until a video plays.
+  &--no-media:not(.is-video-playing) {
+    color: var(--c-text);
+    .unix-hero__scrim { display: none; }
+  }
+
+  :focus-visible {
+    outline: var(--ring-w) solid currentColor;
+    outline-offset: var(--ring-w);
+  }
+}
+
+[dir="rtl"] .unix-hero { --_dir: -1; }
+
+/* ── Media ─────────────────────────────────────── */
+.unix-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.unix-hero__picture,
+.unix-hero__image,
+.unix-hero__video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.unix-hero__image,
+.unix-hero__video {
+  object-fit: cover;
+  object-position: center;
+}
+
+// The image stays underneath as the poster until the video is actually playing.
+.unix-hero__video {
+  opacity: 0;
+  transition: opacity var(--d-base) var(--ease-out);
+
+  .unix-hero.is-video-playing & { opacity: 1; }
+}
+
+.unix-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--c-hero-scrim);
+}
+
+/* ── Content ───────────────────────────────────── */
+// The bottom padding always clears the scroll indicator and the video toggle.
+.unix-hero__inner {
+  padding-block: var(--section-md) max(var(--section-md), var(--s-9));
+}
+
+.unix-hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-3);
+  max-inline-size: 65ch;
+
+  > * {
+    margin: 0;
+    animation: unix-hero-rise var(--d-reveal) var(--ease-out) both;
+  }
+  @for $i from 2 through 4 {
+    > :nth-child(#{$i}) { animation-delay: calc(var(--d-stagger) * #{$i - 1}); }
+  }
+}
+
+.unix-hero__eyebrow {
+  font-size: var(--t-micro);
+  line-height: 1.5;
+  font-weight: 500;
+
+  html[lang="en"] & {
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+}
+
+.theme-unix .unix-hero__title {
+  font-size: var(--t-display);
+  line-height: 1.2;
+  color: inherit;
+}
+
+.theme-unix .unix-hero__text {
+  font-size: var(--t-body);
+  line-height: 1.7;
+  max-inline-size: 65ch;
+}
+
+/* ── CTA ───────────────────────────────────────── */
+.unix-hero__cta { margin-block-start: var(--s-3); } // --s-3 gap + --s-3 = --s-5 before the CTA (DS §8.1)
+
+.unix-hero__cta--underline {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-block-size: var(--tap);
+  color: inherit;
+  font-size: var(--t-body);
+  font-weight: 500;
+  text-decoration: none;
+
+  // Full 1px line that shortens toward the inline-start on hover (unix.sa scaleX(.55) from the
+  // start side). Animating the logical end inset keeps it direction-agnostic.
+  &::after {
+    content: "";
+    position: absolute;
+    inset-block-end: var(--s-1);
+    inset-inline: 0;
+    block-size: var(--line-w);
+    background: currentColor;
+    transition: inset-inline-end var(--d-base) var(--ease-out);
+  }
+
+  &:hover::after,
+  &:focus-visible::after,
+  &:active::after { inset-inline-end: calc((1 - var(--hero-cta-line)) * 100%); }
+
+  &:hover .unix-hero__cta-icon,
+  &:focus-visible .unix-hero__cta-icon,
+  &:active .unix-hero__cta-icon { translate: calc(var(--s-1) * var(--_dir)) 0; }
+}
+
+.unix-hero__cta-icon {
+  flex: none;
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+  transition: translate var(--d-base) var(--ease-out);
+}
+
+.theme-unix .unix-hero__cta--ghost {
+  transition: background-color var(--d-base) var(--ease-out), color var(--d-base) var(--ease-out);
+
+  &:hover,
+  &:focus-visible,
+  &:active {
+    background: var(--c-text-inverse);
+    color: var(--c-action);
+  }
+  &:focus-visible { outline-color: var(--c-text-inverse); }
+}
+
+/* ── Controls: video toggle + scroll indicator ── */
+.unix-hero__control {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color var(--d-fast) var(--ease-out), opacity var(--d-base) var(--ease-out);
+
+  &[hidden] { display: none; }
+  &:hover { background: var(--c-hover-tint); }
+  &:active { background: var(--c-press-tint); }
+  &:disabled { opacity: var(--o-disabled); cursor: default; }
+
+  svg {
+    inline-size: var(--icon-md);
+    block-size: var(--icon-md);
+  }
+}
+
+.unix-hero__toggle {
+  inset-block-end: var(--s-5);
+  inset-inline-end: var(--page-margin);
+  inline-size: var(--tap);
+  block-size: var(--tap);
+
+  .unix-hero__toggle-play { display: none; }
+  // Fixed label, aria-pressed="true" while paused: only the icon swaps.
+  &[aria-pressed="true"] {
+    .unix-hero__toggle-pause { display: none; }
+    .unix-hero__toggle-play { display: block; }
+  }
+}
+
+.unix-hero__scroll {
+  inset-block-end: var(--s-5);
+  inset-inline-start: 50%;
+  inline-size: var(--btn-h);
+  block-size: var(--btn-h);
+  margin-inline-start: calc(var(--btn-h) / -2);
+
+  &.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.unix-hero__scroll-icon { animation: unix-hero-bob var(--d-hint) ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-hero__content > * { animation: none; }
+  .unix-hero__scroll-icon { animation: none; }
+}

@@ -43,6 +43,14 @@
         "cr": "Commercial registration",
         "cr_badge": "Saudi Business Center",
         "tm": "Trademark"
+      },
+      "hero": {
+        "default_eyebrow": "UNIX NEW COLLECTION",
+        "default_title": "Move with confidence.",
+        "default_text": "Activewear and loungewear designed for every moment of your day",
+        "default_cta_label": "Discover the collection",
+        "pause_video": "Pause video",
+        "scroll_down": "Scroll to the next section"
       }
     }
   },

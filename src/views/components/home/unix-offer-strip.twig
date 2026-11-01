@@ -1,0 +1,49 @@
+{#
+  UNIX offer strip (ROADMAP 2.2 · DS §8.12 · SPEC §4.2).
+  The slot unix.sa keeps right after the hero (templates/index.json → offer_home, rendering
+  snippets/unix-offer.liquid in `home` mode, styled by assets/unix-offer.css → .uo-home).
+  The original offer was stopped on 31 Oct 2026, so every field defaults to empty and nothing
+  renders until the merchant writes a title: a reserved slot, like the original.
+
+  Fields (twilight.json → components → home.unix-offer-strip):
+    enabled                           boolean  hide the strip without clearing its copy (default on)
+    eyebrow, title, text, cta_label   string (multilanguage); no title → nothing renders
+    link                              link picker; set → the whole strip is a link (like .uo-home)
+#}
+{% set offer = {} %}
+{% for key in ['eyebrow', 'title', 'text', 'cta_label'] %}
+  {% set value = attribute(component, key) %}
+  {# multilanguage values may arrive as {ar, en}; resolve to the current language #}
+  {% if value is iterable %}
+    {% set value = value[language.code] is defined ? value[language.code] : null %}
+  {% endif %}
+  {% set offer = offer|merge({ (key): value|default('')|trim }) %}
+{% endfor %}
+
+{# link picker (variable-list) returns an object with .url; tolerate a plain string too #}
+{% set offer_url = component.link %}
+{% if offer_url is iterable %}
+  {% set offer_url = offer_url.url|default('') %}
+{% endif %}
+{% set offer_url = offer_url|default('')|trim %}
+{% if offer_url == '#' %}{% set offer_url = '' %}{% endif %}
+
+{% set offer_enabled = component.enabled is null or component.enabled %}
+
+{% if offer_enabled and offer.title %}
+  {% set tag = offer_url ? 'a' : 'div' %}
+  <section component-id="{{ componentId }}" class="unix-offer" aria-labelledby="unix-offer-title-{{ componentId }}">
+    <{{ tag }} class="unix-offer__inner"{% if offer_url %} href="{{ offer_url }}"{% endif %}>
+      {% if offer.eyebrow %}
+        <span class="unix-offer__eyebrow">{{ offer.eyebrow }}</span>
+      {% endif %}
+      <h2 class="unix-offer__title" id="unix-offer-title-{{ componentId }}">{{ offer.title }}</h2>
+      {% if offer.text %}
+        <span class="unix-offer__text">{{ offer.text }}</span>
+      {% endif %}
+      {% if offer_url and offer.cta_label %}
+        <span class="unix-offer__cta unix-btn unix-btn--ghost">{{ offer.cta_label }}</span>
+      {% endif %}
+    </{{ tag }}>
+  </section>
+{% endif %}
