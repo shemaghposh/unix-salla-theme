@@ -164,6 +164,11 @@ function setupGallery(gallery) {
   let swiper = null;
 
   const sync = index => {
+    // Only the visible slide's zoom/play control is in the tab order (no focus on off-screen slides)
+    gallery.querySelectorAll('.unix-gallery__main [data-slid-index]').forEach(slide => {
+      const control = slide.matches('a') ? slide : slide.querySelector('[data-unix-gallery-zoom]');
+      if (control) control.tabIndex = Number(slide.dataset.slidIndex) === index ? 0 : -1;
+    });
     thumbs.forEach((thumb, i) => {
       if (i === index) {
         thumb.setAttribute('aria-current', 'true');
