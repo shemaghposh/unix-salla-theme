@@ -161,6 +161,15 @@
   :root { --d-fast: 0ms; --d-base: 0ms; --d-slow: 0ms; --d-reveal: 0ms; --d-announce-slide: 0ms; }
 }
 
+/* ── Phase 2 · 2.7 / 2.9 (DS §15) ─────────────────
+ * Video tiles and FAQ. Kept in one block so merges stay easy; folded into the sections above
+ * when Phase 2 closes. */
+:root {
+  --tile-ratio: 3 / 4;                         /* video tile (unix.sa banner-grid media ratio 3/4) (2.7) */
+  --c-tile-overlay: rgb(36 30 26 / .2);        /* light overlay on video tiles (unix.sa overlay_opacity .2) (2.7) */
+  --media-hover-scale: 1.04;                   /* DS §5 "Image hover" scale (2.7) */
+}
+
 /* ── Base ─────────────────────────────────────── */
 .theme-unix {
   background-color: var(--c-bg);

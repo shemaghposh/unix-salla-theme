@@ -560,6 +560,144 @@
     ],
     "components": [
         {
+            "key": "3e8a1f5c-7b2d-4c9e-a6f4-1d0b9c8e2a73",
+            "title": {
+                "en": "UNIX video tiles",
+                "ar": "يونكس: فيديوهين جنب بعض"
+            },
+            "icon": "sicon-video",
+            "path": "home.unix-video-tiles",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-video-tiles-desc",
+                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>فيديوهات قصيرة بنسبة 3:4، بدون صوت وتتكرر، عمودين على الشاشات الكبيرة وسحب أفقي على الجوال. تبدأ عند ظهورها فقط، وتتوقف عند تفعيل تقليل الحركة. (صورة المعاينة مؤقتة)</small></div>"
+                },
+                {
+                    "id": "tiles",
+                    "type": "collection",
+                    "format": "collection",
+                    "required": true,
+                    "minLength": 1,
+                    "maxLength": 4,
+                    "label": "الفيديوهات",
+                    "item_label": "فيديو",
+                    "value": [
+                        {
+                            "tiles.video": "https://cdn.shopify.com/videos/c/vp/364de4a30bf946f291ccdfbda7fe05c9/364de4a30bf946f291ccdfbda7fe05c9.HD-720p-1.6Mbps-90511977.mp4",
+                            "tiles.poster": null,
+                            "tiles.caption": null,
+                            "tiles.link": null,
+                            "tiles.link_label": null
+                        },
+                        {
+                            "tiles.video": "https://cdn.shopify.com/videos/c/vp/0e0b1cadcf524ede8d80b2f7d4a14231/0e0b1cadcf524ede8d80b2f7d4a14231.HD-720p-1.6Mbps-90512069.mp4",
+                            "tiles.poster": null,
+                            "tiles.caption": null,
+                            "tiles.link": null,
+                            "tiles.link_label": null
+                        }
+                    ],
+                    "fields": [
+                        {
+                            "type": "string",
+                            "icon": "sicon-link",
+                            "label": "رابط الفيديو (MP4)",
+                            "multilanguage": false,
+                            "id": "tiles.video",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "رابط مباشر لملف MP4 عمودي (3:4)، بدون صوت، أقل من 4MB",
+                            "placeholder": "https://.../video.mp4",
+                            "minLength": 0,
+                            "maxLength": 500
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-image",
+                            "value": null,
+                            "label": "صورة الغلاف",
+                            "id": "tiles.poster",
+                            "format": "image",
+                            "required": false,
+                            "placeholder": null,
+                            "description": "3:4، المقاس المناسب 720×960 بكسل. تظهر قبل تشغيل الفيديو وبدلاً منه عند تقليل الحركة",
+                            "settings": {
+                                "width": 720,
+                                "height": 960
+                            }
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "نص على الفيديو (اختياري)",
+                            "multilanguage": true,
+                            "id": "tiles.caption",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "الأصل بدون نص",
+                            "placeholder": "مثال: حركة بثقة",
+                            "minLength": 0,
+                            "maxLength": 80
+                        },
+                        {
+                            "type": "items",
+                            "icon": "sicon-link",
+                            "label": "رابط البطاقة",
+                            "id": "tiles.link",
+                            "value": null,
+                            "description": "عند إضافة رابط تصبح البطاقة كلها رابطاً. في الأصل: الفيديو الأول يفتح كل المنتجات",
+                            "required": false,
+                            "format": "variable-list",
+                            "searchable": true,
+                            "source": "custom",
+                            "sources": [
+                                { "label": "منتج", "key": "products", "value": "products" },
+                                { "label": "تصنيف", "key": "categories", "value": "categories" },
+                                { "label": "ماركة تجارية", "key": "brands", "value": "brands" },
+                                { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
+                                { "label": "مقالة", "key": "blog_articles", "value": "blog_articles" },
+                                { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
+                                { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                            ]
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "اسم الرابط لقارئ الشاشة",
+                            "multilanguage": true,
+                            "id": "tiles.link_label",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "يُستخدم عند عدم وجود نص على الفيديو. الافتراضي: تسوقي الآن",
+                            "placeholder": "تسوقي الآن",
+                            "minLength": 0,
+                            "maxLength": 60
+                        }
+                    ]
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "اسم القسم لقارئ الشاشة",
+                    "multilanguage": true,
+                    "id": "label",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "لا يظهر على الصفحة. الافتراضي: يونكس في الحركة",
+                    "placeholder": "يونكس في الحركة",
+                    "minLength": 0,
+                    "maxLength": 60
+                }
+            ]
+        },
+        {
             "key": "186b3f4f-25cf-4d3c-abca-cef7eed6f0ab",
             "title": {
                 "en": "Enhances Animated Images",

@@ -43,6 +43,12 @@
         "cr": "Commercial registration",
         "cr_badge": "Saudi Business Center",
         "tm": "Trademark"
+      },
+      "video_tiles": {
+        "default_label": "UNIX in motion",
+        "default_link_label": "Shop now",
+        "pause_video": "Pause video",
+        "play_video": "Play video"
       }
     }
   },
