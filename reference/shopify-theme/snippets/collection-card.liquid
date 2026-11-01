@@ -1,0 +1,94 @@
+{% comment %}
+  	Renders a product card
+  	Accepts:
+  	- collection: {Object} Collection Liquid object
+  	- media_ratio: {String} Collection image aspect ratio
+  	- media_fit: {String} Collection image fit
+  	- show_desc: {Boolean} Show the collection description. Default: true (optional)
+  	- show_button: {Boolean} Show the button (ex., Shop Now). Default: true (optional)
+  	Usage:
+  {% render 'collection-card', collection: collection %}
+{% endcomment %}
+
+{% liquid
+  assign aspect_ratio = media_ratio | split: '/'
+  assign temp = aspect_ratio[0] | append: '.0'
+  assign padding_bottom = aspect_ratio[1] | divided_by: temp | times: 100 | round: 2
+%}
+
+<div class="collection-card">
+  {% if full_link %}
+    <a
+      href="{{ collection.url | default: '#' }}"
+      class="collection-card__link-overlay"
+      aria-label="{{ collection.title }}"
+    >
+      <span class="visibility-hidden">{{ collection.title }}</span>
+    </a>
+  {% endif %}
+  <div class="collection-card__wrapper">
+    <div
+      class="collection-card__media"
+      style="padding-bottom: {{ padding_bottom }}%"
+    >
+      {% capture sizes %}
+        (min-width: 1200px) calc(100vw / 4), (min-width: 750px) calc(100vw / 2), 100vw
+      {% endcapture %}
+      {% capture style %}
+        {% if media_fit == 'contain' %}
+          object-fit: contain;
+        {% endif -%}
+        {% if media_fit == 'cover' %}
+          object-fit: cover;
+        {% endif %}
+      {% endcapture %}
+
+      {% if is_predective %}
+        {% if predective_image != blank %}
+          {{
+            predective_image
+            | image_url: width: predective_image.width
+            | image_tag: loading: 'lazy',
+              class: "collection-card__image",
+              widths: '360, 533, 720, 940, 1066, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600',
+              sizes: sizes,
+              style: style
+          }}
+        {% endif %}
+      {% else %}
+        {% if collection.featured_image != blank %}
+          {{
+            collection.featured_image
+            | image_url: width: collection.featured_image.width
+            | image_tag: loading: 'lazy',
+              class: "collection-card__image",
+              widths: '360, 533, 720, 940, 1066, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600',
+              sizes: sizes,
+              style: style
+          }}
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="collection-card__info">
+      {% if collection.title != blank %}
+        <div class="collection-card__title body-xl">
+           {{ collection.title }}
+        </div>
+      {% endif %}
+      {% if show_desc and collection.description != blank %}
+        <div class="collection-card__description body-small">
+           {{ collection.description | strip_html | truncate: 50 }}
+        </div>
+      {% endif %}
+      {% if show_button and button_label != blank %}
+        {% render 'button',
+          link: collection.url,
+          label: button_label,
+          style: 'simple_secondary',
+          class: 'collection-card'
+        %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+

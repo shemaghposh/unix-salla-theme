@@ -1,0 +1,84 @@
+/* UNIX — National Day promo code pill (product page).
+
+   Deep green on a tinted field: the occasion's palette without the flag or
+   any national emblem, which cannot be used commercially in Saudi Arabia.
+   Sits under the price where the retired UNIX10 pill used to be, so the eye
+   still finds it in the same place.
+
+   Built as one button rather than text plus a separate control: on a phone
+   the whole strip is the tap target, which is far easier than aiming at a
+   small copy link. */
+
+.unix-ndc {
+  margin: 1rem 0 1.2rem;
+}
+
+.unix-ndc__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  flex-wrap: wrap;
+  max-width: 100%;
+  padding: .85rem 1.3rem;
+  border: 1px dashed rgba(20, 83, 45, .45);
+  border-radius: 999px;
+  background: rgba(20, 83, 45, .07);
+  color: #14532D;
+  font: inherit;
+  font-size: 1.3rem;
+  line-height: 1.3;
+  cursor: pointer;
+  text-align: start;
+  transition: background-color .2s ease, border-color .2s ease;
+}
+.unix-ndc__btn:hover {
+  background: rgba(20, 83, 45, .12);
+  border-color: rgba(20, 83, 45, .7);
+}
+
+.unix-ndc__occasion {
+  flex: none;
+  font-size: 1.05rem;
+  letter-spacing: .03em;
+  padding: .2rem .65rem;
+  border-radius: 999px;
+  background: #14532D;
+  color: #F5F1EA;
+}
+
+.unix-ndc__offer {
+  opacity: .85;
+}
+
+.unix-ndc__code {
+  font-weight: 700;
+  letter-spacing: .06em;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.unix-ndc__cta {
+  flex: none;
+  font-size: 1.15rem;
+  padding-inline-start: .7rem;
+  border-inline-start: 1px solid rgba(20, 83, 45, .3);
+  opacity: .8;
+}
+
+.unix-ndc__btn.is-copied {
+  background: rgba(20, 83, 45, .16);
+  border-style: solid;
+}
+.unix-ndc__btn.is-copied .unix-ndc__cta {
+  opacity: 1;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 749px) {
+  .unix-ndc__btn {
+    width: 100%;
+    justify-content: flex-start;
+    padding: .9rem 1.1rem;
+    font-size: 1.25rem;
+  }
+}

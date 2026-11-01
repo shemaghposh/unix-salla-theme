@@ -1,0 +1,149 @@
+{%- liquid
+	assign body_font_light = settings.type_body_font | font_modify: 'weight', '300'
+	assign body_font_regular = settings.type_body_font | font_modify: 'weight', '400'
+	assign body_font_medium = settings.type_body_font | font_modify: 'weight', '500'
+	assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+	assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+	assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+	assign heading_font_italic = settings.type_header_font | font_modify: 'style', 'italic'
+%}
+
+{% style %}
+	{{ settings.type_body_font | font_face: font_display: 'swap' }}
+	{{ settings.type_header_font | font_face: font_display: 'swap' }}
+	{{ settings.type_header_font | font_face: font_display: 'swap' }}
+	{{ settings.type_button_font | font_face: font_display: 'swap' }}
+	{{ settings.type_header_font_card | font_face: font_display: 'swap' }}
+	{{ body_font_light | font_face: font_display: 'swap' }}
+	{{ body_font_regular | font_face: font_display: 'swap' }}
+	{{ body_font_medium | font_face: font_display: 'swap' }}
+	{{ body_font_bold | font_face: font_display: 'swap' }}
+	{{ body_font_italic | font_face: font_display: 'swap' }}
+	{{ heading_font_italic | font_face: font_display: 'swap' }}
+	{{ body_font_bold_italic | font_face: font_display: 'swap' }}
+
+	:root {
+		--font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+		--font-body-style: {{ settings.type_body_font.style }};
+		--font-body-weight: {{ settings.type_body_font.weight }};
+
+		--font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
+		--font-body-line-height: {{ settings.type_body_line_height }};
+		--font-body-letter-spacing: {{ settings.type_body_letter_spacing }}em;
+
+		--font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+		--font-heading-style: {{ settings.type_header_font.style }};
+		--font-heading-weight: {{ settings.type_header_font.weight }};
+		--font-heading-letter-spacing: {{ settings.type_header_letter_spacing }}em;
+		--font-heading-line-height: {{ settings.type_header_line_height }};
+		--font-heading-text-transform: {{ settings.heading_text_transform }};
+
+		--font-subtitle-family: {{ settings.type_subtitle_font.family }}, {{ settings.type_subtitle_font.fallback_families }};
+		--font-subtitle-style: {{ settings.type_subtitle_font.style }};
+		--font-subtitle-weight: {{ settings.type_subtitle_font.weight }};
+		--font-subtitle-text-transform: {{ settings.subtitle_text_transform }};
+		--font-subtitle-scale: {{ settings.subtitle_scale | divided_by: 100.0 }};
+
+		--font-heading-h1-scale: {{ settings.heading_h1_scale | divided_by: 100.0 }};
+		--font-heading-h2-scale: {{ settings.heading_h2_scale | divided_by: 100.0 }};
+		--font-heading-h3-scale: {{ settings.heading_h3_scale | divided_by: 100.0 }};
+		--font-heading-h4-scale: {{ settings.heading_h4_scale | divided_by: 100.0 }};
+		--font-heading-h5-scale: {{ settings.heading_h5_scale | divided_by: 100.0 }};
+
+		--font-heading-card-family: {{ settings.type_header_font_card.family }}, {{ settings.type_header_font_card.fallback_families }};
+		--font-heading-card-style: {{ settings.type_header_font_card.style }};
+		--font-heading-card-weight: {{ settings.type_header_font_card.weight }};
+		--font-text-card-family: {{ settings.type_text_font_card.family }}, {{ settings.type_text_font_card.fallback_families }};
+		--font-text-card-style: {{ settings.type_text_font_card.style }};
+		--font-text-card-weight: {{ settings.type_text_font_card.weight }};
+
+		--font-heading-card-scale: {{ settings.heading_scale_card | divided_by: 100.0 }};
+		--font-text-card-scale: {{ settings.text_scale_card | divided_by: 100.0 }};
+
+		--font-button-family: {{ settings.type_button_font.family }}, {{ settings.type_button_font.fallback_families }};
+		--font-button-style: {{ settings.type_button_font.style }};
+		--font-button-weight: {{ settings.type_button_font.weight }};
+		--font-button-text-transform: {{ settings.button_text_transform }};
+
+		--font-button-family: {{ settings.type_button_font.family }}, {{ settings.type_button_font.fallback_families }};
+		--font-button-style: {{ settings.type_button_font.style }};
+		--font-button-weight: {{ settings.type_button_font.weight }};
+		--font-button-text-transform: {{ settings.button_text_transform }};
+		--font-button-letter-spacing: -0.03em;
+		--font-subtitle-secondary-letter-spacing: -0.04em;
+
+		--font-header-menu-family: {{ settings.type_header_menu_font.family }}, {{ settings.type_header_menu_font.fallback_families }};
+		--font-header-menu-style: {{ settings.type_header_menu_font.style }};
+		--font-header-menu-weight: {{ settings.type_header_menu_font.weight }};
+		--font-header-menu-text-transform: {{ settings.header_menu_text_transform }};
+
+		--font-footer-menu-family: {{ settings.type_footer_menu_font.family }}, {{ settings.type_footer_menu_font.fallback_families }};
+		--font-footer-menu-style: {{ settings.type_footer_menu_font.style }};
+		--font-footer-menu-weight: {{ settings.type_footer_menu_font.weight }};
+		--font-footer-link-size: {{ settings.link_size_footer }}px;
+		--font-footer-bottom-link-size: {{ settings.link_size_footer_bottom }}px;
+
+		--font-popups-heading-family: {{ settings.type_popups_heading_font.family }}, {{ settings.type_popups_heading_font.fallback_families }};
+		--font-popups-heading-style: {{ settings.type_popups_heading_font.style }};
+		--font-popups-heading-weight: {{ settings.type_popups_heading_font.weight }};
+		--font-popups-text-family: {{ settings.type_popups_text_font.family }}, {{ settings.type_popups_text_font.fallback_families }};
+		--font-popups-text-style: {{ settings.type_popups_text_font.style }};
+		--font-popups-text-weight: {{ settings.type_popups_text_font.weight }};
+		--font-popup-heading-scale: {{ settings.popup_heading_scale | divided_by: 100.0 }};
+		--font-popup-subheading-scale: {{ settings.popup_subheading_scale | divided_by: 100.0 }};
+		--font-popup-desc-scale: {{ settings.popup_desc_scale | divided_by: 100.0 }};
+		--font-popup-text-scale: {{ settings.popup_text_scale | divided_by: 100.0 }};
+	}
+{% endstyle %}
+
+{% comment %} UNIX: locale-based font system. Arabic = IBM Plex Sans Arabic (body + headings, regular weight). English = Open Sans. Arabic letter-spacing always 0. {% endcomment %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{%- if request.locale.iso_code == 'ar' -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Open+Sans:wght@400;600;700&display=swap">
+{%- else -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
+{%- endif -%}
+
+{% style %}
+	@font-face {
+		font-family: 'Somar';
+		src: url('{{ 'Somar-Bold.woff2' | asset_url }}') format('woff2');
+		font-weight: 700;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	{%- if request.locale.iso_code == 'ar' -%}
+	:root {
+		--font-body-family: 'IBM Plex Sans Arabic', Tahoma, sans-serif;
+		--font-heading-family: 'IBM Plex Sans Arabic', Tahoma, sans-serif;
+		--font-heading-weight: 400;
+		--font-subtitle-family: 'IBM Plex Sans Arabic', Tahoma, sans-serif;
+		--font-heading-card-family: 'IBM Plex Sans Arabic', Tahoma, sans-serif;
+		--font-text-card-family: 'IBM Plex Sans Arabic', Tahoma, sans-serif;
+		--font-button-family: 'IBM Plex Sans Arabic', Tahoma, sans-serif;
+		--font-header-menu-family: 'IBM Plex Sans Arabic', Tahoma, sans-serif;
+		--font-footer-menu-family: 'IBM Plex Sans Arabic', Tahoma, sans-serif;
+		--font-popups-heading-family: 'IBM Plex Sans Arabic', Tahoma, sans-serif;
+		--font-popups-text-family: 'IBM Plex Sans Arabic', Tahoma, sans-serif;
+		--font-body-letter-spacing: 0em;
+		--font-heading-letter-spacing: 0em;
+		--font-button-letter-spacing: 0em;
+		--font-subtitle-secondary-letter-spacing: 0em;
+	}
+	{%- else -%}
+	:root {
+		--font-body-family: 'Open Sans', sans-serif;
+		--font-heading-family: 'Open Sans', sans-serif;
+		--font-subtitle-family: 'Open Sans', sans-serif;
+		--font-heading-card-family: 'Open Sans', sans-serif;
+		--font-text-card-family: 'Open Sans', sans-serif;
+		--font-button-family: 'Open Sans', sans-serif;
+		--font-header-menu-family: 'Open Sans', sans-serif;
+		--font-footer-menu-family: 'Open Sans', sans-serif;
+		--font-popups-heading-family: 'Open Sans', sans-serif;
+		--font-popups-text-family: 'Open Sans', sans-serif;
+	}
+	{%- endif -%}
+{% endstyle %}

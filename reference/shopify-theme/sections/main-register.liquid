@@ -1,0 +1,285 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  if section.settings.desktop_image != blank and section.settings.mobile_image == blank
+    assign image = section.settings.desktop_image
+  elsif section.settings.desktop_image == blank and section.settings.mobile_image != blank
+    assign image = section.settings.mobile_image
+  elsif section.settings.desktop_image == blank and section.settings.mobile_image == blank
+    assign image = blank
+  elsif section.settings.desktop_image != blank and section.settings.mobile_image != blank
+    assign image = 1
+  endif
+%}
+
+<div
+  class="login-section-wrapper color-{{ section.settings.color_scheme }}"
+  {% if section.settings.header_overlay %}
+    data-header-overlay="true"
+  {% endif %}
+>
+  <div class="customer login register container">
+    {% if settings.show_breadcrumbs %}
+      <nav class="breadcrumb breadcrumb__desktop body-xs" role="navigation" aria-label="breadcrumbs">
+        <a
+          href="{{ routes.root_url }}"
+          title="{{ 'general.breadcrumbs.home' | t }}"
+          class="link-hover-line-secondary focus-inset"
+        >
+          <span>{{- 'general.breadcrumbs.home' | t -}}</span>
+        </a>
+        <div class="breadcrumb__delimiter">/</div>
+        <span>{{ 'customer.login_page.create_account' | t }}</span>
+      </nav>
+    {% endif %}
+    <div class="login__wrapper">
+      <div class="login__col">
+        <div class="login__overlay" style="opacity: {{ section.settings.overlay_opacity }}"></div>
+        {% capture sizes %}
+					(min-width: 990px) calc(50vw - 40px), 100vw
+				{% endcapture %}
+        {% if image != blank and image != 1 %}
+          {% liquid
+            assign class = 'featured-collections__image'
+          %}
+          {{
+            image
+            | image_url: width: image.width
+            | image_tag:
+              class: class,
+              loading: 'lazy',
+              widths: '375, 425, 576, 768, 990, 1100, 1360, 1600, 1920, 2200, 2400, 2600'
+          }}
+        {% elsif image == 1 %}
+          {% assign desktop_image = section.settings.desktop_image %}
+          {% assign mobile_image = section.settings.mobile_image %}
+          <picture>
+            <source
+              srcset=" {{ mobile_image | image_url: width: 375 }} 1x, {{ mobile_image | image_url: width: 750 }} 2x"
+              media="(max-width: 375px)"
+            >
+            <source
+              srcset=" {{ mobile_image | image_url: width: 575 }} 1x, {{ mobile_image | image_url: width: 1150 }} 2x"
+              media="(max-width: 575px)"
+            >
+            <source
+              srcset=" {{ desktop_image | image_url: width: 750 }} 1x, {{ desktop_image | image_url: width: 1500 }} 2x"
+              media="(max-width: 750px)"
+            >
+            {%- if desktop_image.width > 750 -%}
+              <source
+                srcset=" {{ desktop_image | image_url: width: 1100 }} 1x, {%- if desktop_image.width > 1500 -%} {{ desktop_image | image_url: width: 2200 }} 2x {%- endif -%}"
+                media="(max-width: 1100px)"
+              >
+            {%- endif -%}
+            {%- if desktop_image.width > 1100 -%}
+              <source
+                srcset=" {{ desktop_image | image_url: width: 1500 }} 1x, {%- if desktop_image.width > 2200 -%} {{ desktop_image | image_url: width: 3000 }} 2x {%- endif -%}"
+                media="(max-width: 1500px)"
+              >
+            {%- endif -%}
+            {%- if desktop_image.width > 1500 -%}
+              <source
+                srcset=" {{ desktop_image | image_url: width: 1780 }} 1x, {%- if desktop_image.width > 3000 -%} {{ desktop_image | image_url: width: 3560 }} 2x {%- endif -%}"
+                media="(max-width: 1780px) "
+              >
+            {%- endif -%}
+            {%- if desktop_image.width > 1780 -%}
+              <source
+                srcset=" {{ desktop_image | image_url: width: 2000 }} 1x, {%- if desktop_image.width > 3560 -%} {{ desktop_image | image_url: width: 4000 }} 2x {%- endif -%}"
+                media="(max-width: 2000px) "
+              >
+            {%- endif -%}
+            <img
+              sizes="{{ sizes }}"
+              src="{{ desktop_image | image_url: width: desktop_image.width }}"
+              loading="lazy"
+              alt="{{ desktop_image.alt | escape }}"
+              class="featured-collections__image"
+              width="{{ desktop_image.width }}"
+              height="{{ desktop_image.width | divided_by: desktop_image.aspect_ratio }}"
+              style="--focal_point_desktop: {{ desktop_image.presentation.focal_point }}; --focal_point_mobile: {{ mobile_image.presentation.focal_point }};"
+            >
+          </picture>
+        {% endif %}
+      </div>
+      <div class="login__col">
+        <div class="login__form">
+          <div class="page-header">
+            <div class="page-header__inner">
+              <h1 class="title--page login__title h2">
+                {{ 'customer.register.title' | t }}
+              </h1>
+              <div class="login__text body-large">{{ 'customer.login_page.register_description' | t }}</div>
+            </div>
+          </div>
+          {%- form 'create_customer' -%}
+            <div class="field color-{{ section.settings.input_color_scheme }}">
+              <input
+                dir="ltr"
+                class="field__input"
+                type="text"
+                name="customer[first_name]"
+                id="RegisterForm-FirstName"
+                {% if form.first_name %}
+                  value="{{ form.first_name }}"
+                {% endif %}
+                autocomplete="given-name"
+                aria-required="true"
+                placeholder="{{ 'customer.register.first_name' | t }}"
+                required
+              >
+              <label for="RegisterForm-FirstName" class="body-small">{{ 'customer.register.first_name' | t }}</label>
+            </div>
+            <div class="field color-{{ section.settings.input_color_scheme }}">
+              <input
+                dir="ltr"
+                class="field__input"
+                type="text"
+                name="customer[last_name]"
+                id="RegisterForm-LastName"
+                {% if form.last_name %}
+                  value="{{ form.last_name }}"
+                {% endif %}
+                autocomplete="family-name"
+                aria-required="true"
+                placeholder="{{ 'customer.register.last_name' | t }}"
+                required
+              >
+              <label for="RegisterForm-LastName" class="body-small">{{ 'customer.register.last_name' | t }}</label>
+            </div>
+            <div class="field field--email color-{{ section.settings.input_color_scheme }}">
+              <input
+                dir="ltr"
+                class="field__input"
+                type="email"
+                name="customer[email]"
+                id="RegisterForm-email"
+                {% if form.email %}
+                  value="{{ form.email }}"
+                {% endif %}
+                spellcheck="false"
+                autocapitalize="off"
+                autocomplete="email"
+                aria-required="true"
+                {% if form.errors contains 'email' %}
+                  aria-invalid="true"
+                  aria-describedby="RegisterForm-email-error"
+                {% endif %}
+                placeholder="{{ 'customer.register.email' | t }}"
+                required
+              >
+              <label for="RegisterForm-email" class="body-small">{{ 'customer.register.email' | t }}</label>
+              {%- if form.errors contains 'email' -%}
+                <span id="RegisterForm-email-error" class="form__message body-xs">
+                  {{ form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email }}.
+                </span>
+              {%- endif -%}
+            </div>
+            <div class="field field--pass color-{{ section.settings.input_color_scheme }}">
+              <div class="button-pass-visibility">
+                {% render 'icon-eye' %}
+                {% render 'icon-eye-close' %}
+              </div>
+              <input
+                dir="ltr"
+                class="field__input"
+                type="password"
+                name="customer[password]"
+                id="RegisterForm-password"
+                aria-required="true"
+                {% if form.errors contains 'password' %}
+                  aria-invalid="true"
+                  aria-describedby="RegisterForm-password-error"
+                {% endif %}
+                placeholder="{{ 'customer.register.password' | t }}"
+                required
+              >
+              <label for="RegisterForm-password" class="body-small">{{ 'customer.register.password' | t }}</label>
+              {%- if form.errors contains 'password' -%}
+                <span id="RegisterForm-password-error" class="form__message body-xs">
+                  {{ form.errors.translated_fields.password | capitalize }}
+                  {{ form.errors.messages.password }}.
+                </span>
+              {%- endif -%}
+
+              {%- if form.errors contains 'form' -%}
+                <span id="RegisterForm-email-error" class="form__message body-xs">
+                  {{ 'customer.login_page.customer_exist' | t }}
+                </span>
+              {%- endif -%}
+            </div>
+
+            <div class="login__buttons">
+              <button
+                id="RegisterSubmit"
+                class="button button--primary register__create-acc focus-inset"
+              >
+                <span>
+                  {{ 'customer.register.submit' | t }}
+                </span>
+              </button>
+              <a href="{{ routes.account_login_url }}" class="button button--tertiary button--login focus-inset">
+                <span>{{ 'customer.login_page.title' | t }}</span>
+              </a>
+            </div>
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.onload = () => {
+    typeof PasswordViewer !== 'undefined' && new PasswordViewer();
+  };
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-register.name",
+  "tag": "section",
+  "class": "spaced-section login-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "background-3",
+      "label": "t:sections.all.color_scheme.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "input_color_scheme",
+      "default": "background-2",
+      "label": "t:sections.all.input_color_scheme.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_overlay",
+      "default": true,
+      "label": "t:sections.all.header_overlay.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "t:sections.main-login.settings.mobile_image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "t:sections.main-login.settings.desktop_image.label"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.4,
+      "label": "t:sections.all.overlay_opacity.label"
+    }
+  ]
+}
+{% endschema %}

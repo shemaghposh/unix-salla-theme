@@ -1,0 +1,77 @@
+{% style %}
+	:root {
+		--column-count: 1;
+		--countdown-bar-height: 0px;
+		--announcement-height: 0px;
+		--ann-bar-height: 0px;
+		--header-height: 0px;
+		--breadcrumbs-height: 0px;
+		--margin-header: 0px;
+
+		--spaced-section: 5rem;
+
+		--border-radius-main: {{ settings.main_border_radius }}px;
+		--border-radius-button: {{ settings.button_border_radius }}px;
+		--payment-terms-background-color: {{ settings.colors_background_1 }};
+
+		--color-shadow: var(--color-foreground);
+	}
+
+	@media screen and (min-width: 990px) {
+		:root {
+			--spaced-section: 16rem;
+		}
+	}
+
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	html {
+		box-sizing: border-box;
+		font-size: 10px;
+		height: 100%;
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	}
+
+	body {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		min-height: 100%;
+		margin: 0;
+		font-size: calc(var(--font-body-scale) * 1.2rem);
+		font-family: var(--font-body-family);
+		font-style: var(--font-body-style);
+		font-weight: var(--font-body-weight);
+		line-height: var(--font-body-line-height);
+		letter-spacing: calc(var(--font-body-letter-spacing) * 0.1);
+		overflow-x: hidden;
+		scroll-behavior: smooth;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	@media screen and (min-width: 750px) {
+		body {
+			font-size: calc(var(--font-body-scale) * 1.3rem);
+		}
+	}
+
+	@media screen and (min-width: 1600px) {
+		body {
+			font-size: calc(var(--font-body-scale) * 1.4rem);
+		}
+	}
+
+	main {
+		flex-grow: 1;
+	}
+
+	.focus-none {
+		box-shadow: none !important;
+		outline: 0 !important;
+	}
+{% endstyle %}

@@ -1,0 +1,100 @@
+{% liquid
+  assign enable_country_selector = false
+  if section.settings.enable_country_selector and localization.available_countries.size > 1
+    assign enable_country_selector = true
+  endif
+
+  assign enable_language_selector = false
+  if section.settings.enable_language_selector and localization.available_languages.size > 1
+    assign enable_language_selector = true
+  endif
+
+  assign current_country = localization.country
+  assign current_currency = localization.country.currency.iso_code | append: ' ' | append: localization.country.currency.symbol
+%}
+
+{% if enable_country_selector or enable_language_selector %}
+  <details-modal class="header__region">
+    <details>
+      <summary
+        class="header__icon header__region-summary link--text focus-inset modal__toggle"
+        aria-haspopup="dialog"
+        role="button"
+      >
+        <div>
+          {% if section.settings.show_country_flag %}
+            <div
+              style="display: inline"
+              class="currency-flag"
+              aria-hidden="true"
+            >
+              {{- localization.country | image_url: width: 32 | image_tag: loading: 'lazy', class: '' -}}
+            </div>
+          {% endif %}
+          {% if section.settings.enable_region_label %}
+            <span class="header__region-heading body-xs">
+              {% if enable_country_selector %}
+                {{ 'localization.change_region' | t }}
+              {% elsif enable_country_selector == false and enable_language_selector %}
+                {{- localization.language.endonym_name | capitalize }}
+              {% endif %}
+            </span>
+          {% endif %}
+        </div>
+      </summary>
+      <div
+        class="region-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="{{ 'localization.region_label' | t }}"
+      >
+        <div class="region-modal__wrapper">
+          <div class="region-modal__inner color-background-1">
+            <div
+              class="region-modal__content"
+              tabindex="-1"
+            >
+              <button
+                type="button"
+                class="region-modal__close modal-close-button focus-inset no-js-hidden"
+                aria-label="{{ 'accessibility.close' | t }}"
+              >
+                {% render 'icon-close' %}
+              </button>
+
+              {% if enable_country_selector %}
+                <h3 class="region-modal__heading">
+                  {{ 'localization.change_region' | t }}
+                </h3>
+              {% endif %}
+
+              {% if current_country != blank and current_currency != blank %}
+                <p class="region-modal__text">
+                  {{ 'localization.current' | t: country: current_country, currency: current_currency }}
+                </p>
+              {% endif %}
+
+              <div
+                class="region-modal__selects"
+                {% if enable_country_selector == true and enable_language_selector == false %}
+                  style="grid-template-columns: 1fr;"
+                {% endif %}
+                {% if enable_country_selector == false and enable_language_selector == true %}
+                  style="grid-template-columns: 1fr;"
+                {% endif %}
+              >
+                {% if enable_country_selector %}
+                  {% render 'header-localization' %}
+                {% endif %}
+
+                {% if enable_language_selector %}
+                  {% render 'header-language' %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </details-modal>
+{% endif %}

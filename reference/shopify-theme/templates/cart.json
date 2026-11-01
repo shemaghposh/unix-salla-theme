@@ -1,0 +1,66 @@
+{
+  "sections": {
+    "cart-items": {
+      "type": "main-cart-items",
+      "blocks": {
+        "subtotal": { "type": "subtotal", "settings": {} },
+        "buttons": { "type": "buttons", "settings": {} }
+      },
+      "block_order": ["subtotal", "buttons"],
+      "settings": {
+        "show_cart_note": false,
+        "padding_top": "no-indent",
+        "padding_bottom": "l"
+      }
+    },
+    "cashback-note": {
+      "type": "cashback-note-section",
+      "settings": {}
+    },
+    "popular-products": {
+      "type": "popular-products",
+      "settings": {
+        "color_scheme": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "subheading": "",
+        "heading": "اختيارات تناسبك",
+        "heading_size": "h3",
+        "heading_tag": "h2",
+        "text": "",
+        "product_list": [
+          "femme-scoop-long-sleeves-top-cream-white",
+          "femme-scoop-long-sleeves-top-black",
+          "core-control-bra-top-midnight-blue",
+          "core-control-bra-top-black",
+          "curve-enhance-bra-top-toffee"
+        ],
+        "products_to_show": 4,
+        "enable_carousel": true,
+        "columns_mobile": "2",
+        "show_collection": false,
+        "collection": "best-sellers",
+        "color_scheme_collection": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "layout_columns": true,
+        "subheading_collection": "Subheading",
+        "heading_color": "basic",
+        "collection_heading_tag": "h3",
+        "show_desc_collection": true,
+        "opacity_overlay": 0.2,
+        "image_ratio": "3/4",
+        "image_fit": "cover",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_desc": false,
+        "card_heading_tag": "h3",
+        "button_show": true,
+        "button_label": "تسوق الان",
+        "button_style": "secondary",
+        "button_link": "shopify://collections/best-sellers",
+        "padding_top": "m",
+        "padding_bottom": "l",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    }
+  },
+  "order": ["cart-items", "cashback-note", "popular-products"]
+}

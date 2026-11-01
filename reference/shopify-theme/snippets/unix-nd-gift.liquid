@@ -1,0 +1,76 @@
+{%- comment -%}
+  UNIX — National Day gift-with-purchase (cart drawer).
+
+  Renders only inside the campaign window. The three thresholds mirror the
+  three automatic Buy-X-Get-Y discounts in Shopify admin, so the gift shown
+  here is always the one checkout will actually price at zero. Shopify does
+  not auto-add the free item, so unix-nd-gift.js keeps the cart in step:
+  exactly one gift line for the tier reached, tagged with a private property
+  so it can be told apart from the same item bought at full price. Highest
+  tier only, never stacked.
+
+  9 Oct 2026: the 1,199 tier is the Amalfi candle only.
+
+  13 Oct 2026: the campaign now ends 14 Oct 2026, 11:00 Riyadh (08:00 UTC),
+  the same minute the gift discounts end. After that, any gift line still
+  sitting in a cart (added before the end) is removed automatically, so
+  nobody is charged full price for a gift whose discount has expired.
+
+  This snippet is rendered in the cart drawer and cart page, so after the
+  campaign it also renders the "buy 2+ activewear, 20% off" cart message
+  (unix-offer.liquid, mode 'cart'), which starts at the same minute.
+{%- endcomment -%}
+
+{%- assign nd_start = '2026-09-07T21:00:00Z' | date: '%s' | plus: 0 -%}
+{%- assign nd_end   = '2026-10-14T07:59:59Z' | date: '%s' | plus: 0 -%}
+{%- assign nd_now   = 'now' | date: '%s' | plus: 0 -%}
+
+{%- if nd_now >= nd_start and nd_now <= nd_end -%}
+  {%- assign is_ar = false -%}
+  {%- if request.locale.iso_code contains 'ar' -%}{%- assign is_ar = true -%}{%- endif -%}
+
+  {{ 'unix-nd-gift.css' | asset_url | stylesheet_tag }}
+
+  <div
+    class="unix-nd"
+    data-unix-nd
+    data-lang="{{ is_ar | default: false }}"
+    data-tiers='[
+      {"min":599,"variants":[46960924229799],"ar":"مشبك شعر Grip &amp; Go","en":"Grip &amp; Go hair clip"},
+      {"min":899,"variants":[46960930062503],"ar":"زجاجة مياه ٤٧٠ مل","en":"470 ml water bottle"},
+      {"min":1199,"variants":[47033767690407],"ar":"شمعة Amalfi العطرية","en":"Amalfi scented candle"}
+    ]'
+    role="status"
+    aria-live="polite"
+  >
+    <div class="unix-nd__head">
+      <span class="unix-nd__badge">{% if is_ar %}اليوم الوطني ٩٦{% else %}National Day 96{% endif %}</span>
+      <span class="unix-nd__title" data-unix-nd-title></span>
+    </div>
+    <div class="unix-nd__track"><div class="unix-nd__fill" data-unix-nd-fill></div></div>
+    <p class="unix-nd__note" data-unix-nd-note></p>
+  </div>
+{%- elsif nd_now > nd_end -%}
+  <script>
+  /* Campaign over: drop any leftover gift lines (tagged _unix_nd_gift). */
+  (function () {
+    if (window.__unixNdCleaned) return; window.__unixNdCleaned = true;
+    fetch('/cart.js', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (cart) {
+        var updates = {}, n = 0;
+        (cart.items || []).forEach(function (it) {
+          if (it.properties && it.properties._unix_nd_gift) { updates[it.key] = 0; n++; }
+        });
+        if (!n) return;
+        return fetch('/cart/update.js', {
+          method: 'POST', credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ updates: updates })
+        }).then(function () { window.location.reload(); });
+      })
+      .catch(function () {});
+  })();
+  </script>
+  {%- render 'unix-offer', mode: 'cart' -%}
+{%- endif -%}

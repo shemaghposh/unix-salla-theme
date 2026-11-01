@@ -1,0 +1,470 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "media_banner_NJrzt4": {
+      "type": "media-banner",
+      "blocks": {
+        "subheading_tCjBnC": { "type": "subheading", "settings": { "subheading": "UNIX NEW COLLECTION" } },
+        "heading_FjCPre": { "type": "heading", "settings": { "heading": "تحركي بثقة.", "heading_size": "hero-display", "heading_tag": "h1", "heading_color": "basic" } },
+        "text_info_premium": { "type": "text_information", "settings": { "text_information": "ملابس رياضية و بيجامات صُممت لكل لحظة في يومك" } },
+        "button_3H4LeK": { "type": "button", "settings": { "button_label": "اكتشفي المجموعة", "button_style": "underline", "button_link": "shopify://collections/new-collection" } },
+        "divider_NVLLNQ": { "type": "divider", "settings": { "mobile_alignment": "after" } }
+      },
+      "block_order": ["subheading_tCjBnC","heading_FjCPre","text_info_premium","button_3H4LeK","divider_NVLLNQ"],
+      "custom_css": [],
+      "name": "t:sections.media-banner.name",
+      "settings": {
+        "full_width": true,
+        "color_scheme": "scheme-7a3489a3-6b6d-4490-ac16-ef083e678e6c",
+        "layout_style": "minimal",
+        "section_height": "adapt",
+        "enable_header_overlay": true,
+        "overlay_style": "gradient-bottom",
+        "media_position": "center",
+        "enable_animation": true,
+        "animation_style": "fade-up",
+        "enable_stagger": true,
+        "show_scroll_indicator": true,
+        "mobile_image": "shopify://shop_images/hf_20260712_211438_a282bcf3-f526-4e4f-85ee-94a465bb9f3b.webp",
+        "desktop_image": "shopify://shop_images/i-1.jpg",
+        "enable_image_parallax": false,
+        "show_video": true,
+        "mobile_video": "shopify://files/videos/Unix (1).mp4",
+        "desktop_video": "shopify://files/videos/Unix.mp4",
+        "mobile_image_ratio": "2/3",
+        "desktop_image_ratio": "16/9",
+        "opacity_overlay": 0.5,
+        "text_align": "bottom-left",
+        "text_transform": "none",
+        "text_width": "medium",
+        "show_marquee": false,
+        "marquee_text": "حركة ، رياضة ، استرخاء ، يونكس معك في كل تفاصيل يومك",
+        "marquee_position": "bottom",
+        "marquee_speed": 8,
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "offer_home": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'unix-offer', mode: 'home' %}"
+      }
+    },
+    "products_with_tabs": {
+      "type": "products-with-tabs",
+      "blocks": {
+        "tab-new": { "type": "tab", "settings": { "tab_label": "وصل حديثًا", "collection": "new-collection", "product_limit": 8, "product_list": [], "tab_button_label": "تسوّقي الجديد", "tab_button_link": "shopify://collections/new-collection" } },
+        "tab-1": { "type": "tab", "settings": { "tab_label": "الأكثر مبيعا", "collection": "", "product_limit": 6, "product_list": ["comfy-boyfriend-shirt-sky-blue","soft-pyjama-set","waist-tone-pants-off-white","core-control-bra-top-black","curve-enhance-set-toffee"], "tab_button_label": "", "tab_button_link": "" } },
+        "tab-2": { "type": "tab", "settings": { "tab_label": "توبات كومفي", "collection": "comfy-top", "product_limit": 4, "product_list": [], "tab_button_label": "", "tab_button_link": "" } },
+        "tab-4": { "type": "tab", "settings": { "tab_label": "اطقم كومفي", "collection": "comfy-set", "product_limit": 4, "product_list": [], "tab_button_label": "", "tab_button_link": "" } },
+        "tab-3": { "type": "tab", "settings": { "tab_label": "ليقينز رياضية", "collection": "legging", "product_limit": 4, "product_list": [], "tab_button_label": "", "tab_button_link": "" } }
+      },
+      "block_order": ["tab-new","tab-1","tab-2","tab-4","tab-3"],
+      "custom_css": ["@media (max-width: 749px) {.popular-products__title {text-align: center !important; font-size: 21px !important; }}"],
+      "settings": {
+        "color_scheme": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "subheading": "",
+        "heading": "المفضلة دائما",
+        "heading_size": "h3",
+        "heading_tag": "h2",
+        "text": "",
+        "products_to_show": 4,
+        "enable_carousel": true,
+        "columns_mobile": "2",
+        "image_ratio": "2/3",
+        "image_fit": "contain",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_desc": false,
+        "card_heading_tag": "h3",
+        "button_show": true,
+        "button_label": "تصفحي الجميع",
+        "button_style": "outline",
+        "button_link": "https://unix.sa/collections/all-products",
+        "padding_top": "s",
+        "padding_bottom": "s",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "featured_collection_PU8y3X": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "layout": "overlay",
+        "collection": "new-collection",
+        "color_scheme": "scheme-7a3489a3-6b6d-4490-ac16-ef083e678e6c",
+        "subheading": "NEW COLLECTION",
+        "heading": "جديد من يونكس",
+        "heading_size": "h1",
+        "heading_tag": "h2",
+        "heading_color": "basic",
+        "image_ratio": "2/3",
+        "image_fit": "contain",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_desc": false,
+        "card_heading_tag": "h3",
+        "mobile_aspect_ratio": "adapt",
+        "desktop_aspect_ratio": "adapt",
+        "overlay_opacity": 0.3,
+        "padding_top": "no-indent",
+        "padding_bottom": "no-indent",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "featured_collections_YMJcqj": {
+      "type": "featured-collections",
+      "blocks": {
+        "collection_CNPW7Q": { "type": "collection", "settings": { "collection": "set", "color_scheme": "", "collection_image": "shopify://shop_images/Product2_d8c6124a-3892-4c7e-9f31-f030e8e8e509.webp", "overlay_opacity": 0.1 } },
+        "collection_iPEYMk": { "type": "collection", "settings": { "collection": "comfy-set", "color_scheme": "", "collection_image": "shopify://shop_images/Comfy_Collection.webp", "overlay_opacity": 0.2 } },
+        "collection_8gjRzk": { "type": "collection", "settings": { "collection": "accessories", "color_scheme": "", "collection_image": "shopify://shop_images/Accessories_Collection.webp", "overlay_opacity": 0.2 } }
+      },
+      "block_order": ["collection_CNPW7Q","collection_iPEYMk","collection_8gjRzk"],
+      "custom_css": ["#Banner-template--21032740618407__featured_collections_YMJcqj > div.featured-collections__wrapper.featured-collections__wrapper--large.container > div.featured-collections__information {padding-top: 35px !important;}"],
+      "settings": {
+        "full_width": true,
+        "color_scheme": "scheme-7a3489a3-6b6d-4490-ac16-ef083e678e6c",
+        "card_image_ratio": "3/4",
+        "card_heading_tag": "h2",
+        "subheading": "",
+        "heading": "حركة. رياضة. استرخاء.",
+        "heading_size": "h1",
+        "heading_color": "basic",
+        "heading_tag": "h2",
+        "text_information": "<strong>مجموعة صُممت بعناية لتكون جميلة و عملية في الوقت ذاته، لتأخذك من تمارينك الصباحية إلى استرخائك المسائي</strong>",
+        "text_align": "left",
+        "text_width": "large",
+        "show_button": true,
+        "button_label": "تسوقي الان",
+        "button_style": "outline",
+        "button_link": "shopify://collections",
+        "collections_title": "",
+        "show_video": true,
+        "mobile_image_ratio": "3/4",
+        "desktop_image_ratio": "adapt",
+        "opacity_overlay": 0,
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "product_markers_DaXLdg": {
+      "type": "product-markers",
+      "blocks": {
+        "product_markers_item_txgKmP": { "type": "product_markers_item", "settings": { "product_id": "curve-enhance-bra-top-whip-pink", "position_x": 32, "position_y": 28, "position_x_mobile": 39, "position_y_mobile": 42, "tooltip_open_position": "to-top", "mobile_opening_direction": "to-top" } },
+        "product_markers_item_adgJUp": { "type": "product_markers_item", "settings": { "product_id": "femme-scoop-long-sleeves-top-cream-white", "position_x": 52, "position_y": 57, "position_x_mobile": 66, "position_y_mobile": 72, "tooltip_open_position": "to-top", "mobile_opening_direction": "to-top" } },
+        "product_markers_item_4eB3Qd": { "type": "product_markers_item", "settings": { "product_id": "comfy-lounge-shorts-set-whip-pink", "position_x": 59, "position_y": 73, "position_x_mobile": 25, "position_y_mobile": 89, "tooltip_open_position": "to-top", "mobile_opening_direction": "to-top" } }
+      },
+      "block_order": ["product_markers_item_txgKmP","product_markers_item_adgJUp","product_markers_item_4eB3Qd"],
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "layout": "banner",
+        "show_marker": true,
+        "color_scheme": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "subheading": "",
+        "heading": "تصفحي جديد يونكس و أكثر القطع مبيعًا",
+        "heading_size": "h2",
+        "heading_tag": "h3",
+        "text": "",
+        "mobile_image": "shopify://shop_images/Unix_New.webp",
+        "mobile_media_ratio": "adapt",
+        "desktop_media_ratio": "adapt",
+        "min_height": "medium",
+        "show_video": false,
+        "card_color_scheme": "scheme-7a3489a3-6b6d-4490-ac16-ef083e678e6c",
+        "image_ratio": "2/3",
+        "image_fit": "contain",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_desc": false,
+        "card_heading_tag": "h3",
+        "padding_top": "m",
+        "padding_bottom": "no-indent",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "blocks": {
+        "product-1": { "type": "product", "settings": { "product": "pearla-lounge-set-pants-pearl", "mobile_image": "shopify://shop_images/website-interface-02.webp", "show_video": false, "show_video_product": false } },
+        "product-2": { "type": "product", "settings": { "product": "curve-enhance-set-whip-pink", "mobile_image": "shopify://shop_images/IMG_8005.webp", "desktop_image": "shopify://shop_images/IMG_8005.webp", "show_video": false, "show_video_product": false } },
+        "product-3": { "type": "product", "settings": { "product": "waist-tone-hoodie-off-white", "mobile_image": "shopify://shop_images/website-interface-04.webp", "show_video": false, "show_video_product": false } },
+        "product_emqnkF": { "type": "product", "settings": { "product": "bamboo-3-pieces-set-cold-blue", "mobile_image": "shopify://shop_images/website-interface-03.webp", "show_video": false, "show_video_product": false } }
+      },
+      "block_order": ["product-1","product-2","product-3","product_emqnkF"],
+      "custom_css": [".featured-products__item-image {border-radius: 16px; overflow: hidden;}",".featured-products__item-image img {border-radius: 16px;}"],
+      "settings": {
+        "color_scheme": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "subheading": "",
+        "heading": "اختاري قطعتك المفضلة لوقت الاسترخاء",
+        "heading_size": "h2",
+        "heading_tag": "h3",
+        "text": "",
+        "products_to_show": 3,
+        "swipe_on_mobile": true,
+        "enable_carousel": true,
+        "bg_image": "cover",
+        "bg_image_ratio_mobile": "adapt",
+        "bg_image_ratio_desktop": "adapt",
+        "card_color_scheme": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "image_ratio": "2/3",
+        "image_fit": "contain",
+        "show_vendor": true,
+        "card_heading_tag": "h3",
+        "padding_top": "m",
+        "padding_bottom": "m",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "banner-grid": {
+      "type": "banner-grid",
+      "blocks": {
+        "banner-grid-card-2": { "type": "card", "settings": { "color_scheme": "", "enable_image_parallax": true, "overlay_opacity": 0.2, "subheading": "", "subheading_opacity": 1, "heading": "", "text": "", "show_video": true, "mobile_video": "shopify://files/videos/WhatsApp Video 2026-08-01 at 16.35.30.mp4", "desktop_video": "shopify://files/videos/WhatsApp Video 2026-08-01 at 16.35.30.mp4", "show_button": false, "button_style": "secondary", "button_label": "تسوقي الان", "button_link": "shopify://collections/all", "full_link": true } },
+        "card_pDcJCJ": { "type": "card", "settings": { "color_scheme": "background-3", "enable_image_parallax": false, "overlay_opacity": 0.2, "subheading": "", "subheading_opacity": 1, "heading": "", "text": "", "show_video": true, "mobile_video": "shopify://files/videos/WhatsApp Video 2026-08-01 at 16.37.58.mp4", "desktop_video": "shopify://files/videos/WhatsApp Video 2026-08-01 at 16.37.58.mp4", "show_button": false, "button_style": "secondary", "button_label": "Learn More", "button_link": "", "full_link": true } }
+      },
+      "block_order": ["banner-grid-card-2","card_pDcJCJ"],
+      "settings": {
+        "mobile_columns": "1",
+        "swipe_on_mobile": true,
+        "columns": 2,
+        "color_scheme": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "subheading": "",
+        "heading": "",
+        "heading_size": "h2",
+        "heading_tag": "h2",
+        "text": "",
+        "mobile_media_ratio": "3/4",
+        "desktop_media_ratio": "3/4",
+        "gap": "24",
+        "text_align_content": "center",
+        "heading_size_card": "recommended",
+        "heading_tag_card": "h3",
+        "heading_color_card": "accent",
+        "text_size_card": "body-normal",
+        "padding_top": "l",
+        "padding_bottom": "no-indent",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "countdown_B7eKBG": {
+      "type": "countdown",
+      "disabled": true,
+      "name": "t:sections.countdown.presets.name",
+      "settings": {
+        "layout": "overlay",
+        "main_color_scheme": "background-3",
+        "timer_color_scheme": "",
+        "enable_mock_timer": true,
+        "date_picker": "2025-08-01",
+        "time_picker": "00:00",
+        "mock_date_picker_day": 2,
+        "mock_date_picker_hours": 3,
+        "countdown_block_font": "recommended",
+        "timer_position": "right",
+        "timer_align_mobile": "bottom",
+        "completed_countdown": "show_text",
+        "countdown_heading": "Less Restriction. More Freedom To Move",
+        "mobile_height": "3/2",
+        "desktop_height": "adapt",
+        "opacity_overlay": 0.2,
+        "enable_image_parallax": false,
+        "subheading": "Performance Wear",
+        "heading": "Less Restriction. More Freedom To Move",
+        "heading_size": "recommended",
+        "heading_color": "accent",
+        "heading_tag": "h2",
+        "text": "",
+        "show_badge": true,
+        "badge_text": "50% OFF",
+        "show_link": true,
+        "button_label": "Shop Now",
+        "button_style": "primary",
+        "button_link": "",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "popular-products_2": {
+      "type": "popular-products",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "", "subheading": "", "heading": "New Arrivals", "heading_size": "h3", "heading_tag": "h2", "text": "", "product_list": [], "products_to_show": 4, "enable_carousel": true, "columns_mobile": "2", "show_collection": false, "collection": "", "color_scheme_collection": "", "layout_columns": false, "subheading_collection": "Subheading", "heading_color": "basic", "collection_heading_tag": "h3", "show_desc_collection": true, "opacity_overlay": 0.2, "image_ratio": "2/3", "image_fit": "contain", "show_secondary_image": true, "show_vendor": true, "show_desc": false, "card_heading_tag": "h3", "button_show": true, "button_label": "View All", "button_style": "secondary", "button_link": "", "padding_top": "l", "padding_bottom": "no-indent", "margin_top": "no-indent", "margin_bottom": "no-indent"
+      }
+    },
+    "popular_products_QQMD6b": {
+      "type": "popular-products",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "background-1", "subheading": "", "heading": "Pants", "heading_size": "h3", "heading_tag": "h2", "text": "",
+        "product_list": ["comfy-lounge-pants-whip-pink","comfy-lounge-pants-sky-blue","comfy-pants-lounge-set-sky-blue","comfy-pants-lounge-set-whip-pink","core-control-leggings-black","core-control-leggings-midnight-blue","sculpting-leggings-vanilla","sculpting-leggings-chocolate"],
+        "products_to_show": 5, "enable_carousel": true, "columns_mobile": "2", "show_collection": false, "collection": "comfy-bottom", "color_scheme_collection": "", "layout_columns": false, "subheading_collection": "Subheading", "heading_color": "basic", "collection_heading_tag": "h3", "show_desc_collection": true, "opacity_overlay": 0.2, "image_ratio": "2/3", "image_fit": "contain", "show_secondary_image": true, "show_vendor": true, "show_desc": false, "card_heading_tag": "h3", "button_show": true, "button_label": "View All", "button_style": "secondary", "button_link": "", "padding_top": "l", "padding_bottom": "no-indent", "margin_top": "no-indent", "margin_bottom": "no-indent"
+      }
+    },
+    "featured_blog": {
+      "type": "featured-blog",
+      "settings": {
+        "blog": "news",
+        "color_scheme": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "post_layout": "columns",
+        "enable_border": false,
+        "enable_carousel": true,
+        "columns": 4,
+        "post_limit_mobile": 3,
+        "post_limit": 7,
+        "subheading": "",
+        "heading": "<strong>من عالم UNIX</strong>",
+        "heading_size": "h3",
+        "heading_tag": "h2",
+        "text": "",
+        "image_ratio": "portrait",
+        "color_scheme_card": "",
+        "show_image_first": false,
+        "show_tags_first": true,
+        "show_date_first": true,
+        "show_author_first": true,
+        "show_excerpt_first": false,
+        "show_image": false,
+        "show_tags": false,
+        "show_date": true,
+        "show_author": false,
+        "show_excerpt": true,
+        "post_heading_tag": "h2",
+        "show_view_all": true,
+        "button_label": "تصفّحي المقالات",
+        "button_style": "primary",
+        "padding_top": "l",
+        "padding_bottom": "l",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "media_banner_myDdjy": {
+      "type": "media-banner",
+      "blocks": {
+        "badge_daqLNJ": { "type": "badge", "settings": { "badge_text": "50% Off" } },
+        "heading_Vb8gVg": { "type": "heading", "settings": { "heading": "Half Price on All Sportswear Collections", "heading_size": "recommended", "heading_tag": "h2", "heading_color": "accent" } },
+        "collections_wCN4zE": { "type": "collections", "settings": { "collections": [] } }
+      },
+      "block_order": ["badge_daqLNJ","heading_Vb8gVg","collections_wCN4zE"],
+      "disabled": true,
+      "settings": {
+        "full_width": true, "color_scheme": "background-3", "layout_style": "default", "section_height": "adapt", "enable_header_overlay": false, "overlay_style": "solid", "media_position": "center", "enable_animation": false, "animation_style": "fade-up", "enable_stagger": true, "show_scroll_indicator": false, "enable_image_parallax": true, "show_video": false, "mobile_image_ratio": "adapt", "desktop_image_ratio": "adapt", "opacity_overlay": 0, "text_align": "center", "text_transform": "none", "text_width": "large", "show_marquee": false, "marquee_text": "Marquee Text Example", "marquee_position": "bottom", "marquee_speed": 5, "margin_top": "l", "margin_bottom": "no-indent"
+      }
+    },
+    "popular-products": {
+      "type": "popular-products",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "", "subheading": "", "heading": "In High-Demand", "heading_size": "h3", "heading_tag": "h2", "text": "", "product_list": [], "products_to_show": 4, "enable_carousel": true, "columns_mobile": "2", "show_collection": false, "collection": "", "color_scheme_collection": "", "layout_columns": false, "subheading_collection": "Subheading", "heading_color": "basic", "collection_heading_tag": "h3", "show_desc_collection": true, "opacity_overlay": 0.2, "image_ratio": "2/3", "image_fit": "contain", "show_secondary_image": true, "show_vendor": true, "show_desc": false, "card_heading_tag": "h3", "button_show": true, "button_label": "View All", "button_style": "secondary", "button_link": "", "padding_top": "l", "padding_bottom": "no-indent", "margin_top": "no-indent", "margin_bottom": "no-indent"
+      }
+    },
+    "multicolumn": {
+      "type": "multicolumn",
+      "blocks": {
+        "column-1": { "type": "column", "settings": { "icon": "abstract_1", "subheading": "", "heading": "Sustainable Materials", "heading_tag": "h3", "text": "Made with eco-friendly fabrics for high performance and a lower impact.", "show_button": false, "button_label": "Button Label", "button_link": "", "button_style": "secondary" } },
+        "column-2": { "type": "column", "settings": { "icon": "abstract_2", "subheading": "", "heading": "Secure Payment", "heading_tag": "h3", "text": "Your data is protected with encrypted checkout for a safe shopping experience.", "show_button": false, "button_label": "Button Label", "button_link": "", "button_style": "secondary" } },
+        "column-3": { "type": "column", "settings": { "icon": "abstract_3", "subheading": "", "heading": "30 Days Free Returns", "heading_tag": "h3", "text": "Not the right fit? Return or exchange your order for free within 30 days.", "show_button": false, "button_label": "Button Label", "button_link": "", "button_style": "secondary" } },
+        "column-4": { "type": "column", "settings": { "icon": "abstract_4", "subheading": "", "heading": "Worldwide Shipping", "heading_tag": "h3", "text": "No matter where you are, we’ll deliver quality activewear to your door.", "show_button": false, "button_label": "Button Label", "button_link": "", "button_style": "secondary" } }
+      },
+      "block_order": ["column-1","column-2","column-3","column-4"],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "background-1", "enable_border": false, "border_full": false, "mobile_columns": "1", "swipe_on_mobile": true, "enable_column_background": true, "layout": "right", "columns_per_row": 4, "swipe_on_desktop": false, "subheading": "About", "heading": "<strong>Designed for movement, built for comfort, and made to last—</strong>our gear keeps up with every rep, run, and rest day<strong>. </strong>No gimmicks, just high-performance fabrics and a perfect fit.", "heading_tag": "h2", "enable_accent": true, "accent_color": "#293e3a", "heading_size": "h2", "text": "", "icon_size": "medium", "image_size": "extra_small", "image_ratio": "1/1", "object_fit": "cover", "content_alignment": "left", "card_heading_size": "h3", "button_show": true, "button_label": "More About Us", "button_style": "primary", "button_link": "", "padding_top": "l", "padding_bottom": "no-indent", "margin_top": "no-indent", "margin_bottom": "no-indent"
+      }
+    },
+    "logo-list": {
+      "type": "logo-list",
+      "blocks": {
+        "logo-1": { "type": "logo", "settings": { "mobile_image_width": 75, "desktop_image_width": 105, "logo_link": "", "new_tab_link": true } },
+        "logo-2": { "type": "logo", "settings": { "mobile_image_width": 125, "desktop_image_width": 165, "logo_link": "", "new_tab_link": true } },
+        "logo-3": { "type": "logo", "settings": { "mobile_image_width": 65, "desktop_image_width": 100, "logo_link": "", "new_tab_link": true } },
+        "logo-4": { "type": "logo", "settings": { "mobile_image_width": 65, "desktop_image_width": 100, "logo_link": "", "new_tab_link": true } },
+        "logo-5": { "type": "logo", "settings": { "mobile_image_width": 70, "desktop_image_width": 105, "logo_link": "", "new_tab_link": true } },
+        "logo-6": { "type": "logo", "settings": { "mobile_image_width": 65, "desktop_image_width": 100, "logo_link": "", "new_tab_link": true } },
+        "logo-7": { "type": "logo", "settings": { "mobile_image_width": 55, "desktop_image_width": 90, "logo_link": "", "new_tab_link": true } },
+        "logo-8": { "type": "logo", "settings": { "mobile_image_width": 90, "desktop_image_width": 115, "logo_link": "", "new_tab_link": true } },
+        "logo-9": { "type": "logo", "settings": { "mobile_image_width": 100, "desktop_image_width": 140, "logo_link": "", "new_tab_link": true } }
+      },
+      "block_order": ["logo-1","logo-2","logo-3","logo-4","logo-5","logo-6","logo-7","logo-8","logo-9"],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "background-1", "subheading": "Popular Brands", "heading": "", "heading_size": "h2", "heading_tag": "h2", "text": "", "enable_border": true, "enable_navigation": false, "enable_desktop_animate": true, "enable_repeat_desktop_animate": false, "padding_top": "xl", "padding_bottom": "no-indent", "margin_top": "l", "margin_bottom": "no-indent"
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "disabled": true,
+      "settings": {
+        "layout": "overlay", "collection": "", "color_scheme": "background-3", "subheading": "Sale", "heading": "Unbeatable Savings on New Sportswear Collection", "heading_size": "h2", "heading_tag": "h2", "heading_color": "accent", "image_ratio": "2/3", "image_fit": "contain", "show_secondary_image": true, "show_vendor": true, "show_desc": false, "card_heading_tag": "h3", "mobile_aspect_ratio": "adapt", "desktop_aspect_ratio": "adapt", "overlay_opacity": 0.4, "padding_top": "no-indent", "padding_bottom": "no-indent", "margin_top": "l", "margin_bottom": "no-indent"
+      }
+    },
+    "collapsible-content": {
+      "type": "collapsible-content",
+      "blocks": {
+        "block_1": { "type": "accordion", "settings": { "question": "كيف أعرف مقاسي المناسب؟", "answer": "<p>في صفحة كل قطعة تجدين أداة <strong>«اعرفي مقاسك»</strong>: أسئلة سريعة عن طولك ومقاسك المعتاد والقصّة اللي تحبينها، ونقترح لك بعدها المقاس الأنسب لهذه القطعة بالذات. ويبقى مقاسك محفوظًا لتجدينه جاهزًا في باقي القطع.</p><p>وإذا حبيتي تقارنين بنفسك، تجدين تحتها جدول المقاسات بالسنتيمتر.</p>", "opened": true } },
+        "block_3": { "type": "accordion", "settings": { "question": "هل توفرون شحن مجاني ؟", "answer": "<p>نعم، نوفّر شحناً مجانياً لجميع الطلبات التي تتجاوز 600 ريال سعودي داخل المملكة العربية السعودية.</p>", "opened": false } },
+        "block_2": { "type": "accordion", "settings": { "question": "ما الأقمشة التي تستخدمونها ؟", "answer": "<p>تُصنع قطع الأكتيف وير من أقمشة نايلون وسباندكس فاخرة مصمّمة للدعم والتنفّس، بينما يأتي اللاونج وير من أقمشة مزيج قطنٰ ناعمة. للحفاظ على الجودة، اغسليها بماء بارد مع الألوان المتشابهة، وتجنّبي مُلطّف الأقمشة، وجفّفيها بالهواء متى أمكن.</p>", "opened": false } },
+        "block_4": { "type": "accordion", "settings": { "question": "إلى أين تشحنون، وكم يستغرق التوصيل؟", "answer": "<p>نشحن إلى جميع أنحاء المملكة ودول الخليج والعالم. ويستغرق التوصيل المعتاد داخل السعودية من 1 إلى 4 أيام عمل. وبعد شحن طلبكِ، يصلكِ رابط تتبّع عبر البريد الإلكتروني والرسائل النصية.</p>", "opened": false } },
+        "accordion_zPinVW": { "type": "accordion", "settings": { "question": "ما سياسة الإرجاع؟", "answer": "<p>يُقدّم طلب الإرجاع أو الاستبدال خلال 24 ساعة من استلام الطلب، للمنتجات غير المستخدمة في حالتها الأصلية مع وجود بطاقاتها. أما المنتجات المخفّضة فلا تُقبل للإرجاع. للبدء، تواصلي معنا عبر <a href=\"mailto:info@unix.sa\">info@unix.sa</a> مع ذكر رقم طلبكِ.</p>", "opened": false } },
+        "accordion_NDAi77": { "type": "accordion", "settings": { "question": "ما وسائل الدفع التي تقبلونها؟", "answer": "<p>نقبل مدى، وفيزا، وماستركارد، وتابي، وتمارا. وجميع المعاملات آمنة ومشفّرة.</p>", "opened": false } },
+        "accordion_cTWjfa": { "type": "accordion", "settings": { "question": "هل يمكنني الدفع بالتقسيط؟", "answer": "<p>نعم، نوفّر الدفع بالتقسيط عبر تابي وتمارا عند إتمام الطلب، لتتسوّقي بمرونة أكبر.</p>", "opened": false } }
+      },
+      "block_order": ["block_1","block_3","block_2","block_4","accordion_zPinVW","accordion_NDAi77","accordion_cTWjfa"],
+      "settings": {
+        "layout": "border",
+        "color_scheme": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "enable_border": true,
+        "border_full": false,
+        "subheading": "",
+        "heading": "إجابات لكل تفصيلة",
+        "heading_size": "h2",
+        "heading_tag": "h2",
+        "text": "جمعنا لكِ أكثر الأسئلة تكرارًا، لتتسوّقي بثقة وراحة",
+        "text_align": "center",
+        "row_color_scheme": "background-2",
+        "enable_data_schema": true,
+        "buttons_show": true,
+        "show_more_button_style": "primary",
+        "show_less_button_style": "secondary",
+        "padding_top": "l",
+        "padding_bottom": "l",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    }
+  },
+  "order": [
+    "media_banner_NJrzt4",
+    "offer_home",
+    "products_with_tabs",
+    "featured_collection_PU8y3X",
+    "featured_collections_YMJcqj",
+    "product_markers_DaXLdg",
+    "featured-products",
+    "banner-grid",
+    "countdown_B7eKBG",
+    "popular-products_2",
+    "popular_products_QQMD6b",
+    "featured_blog",
+    "media_banner_myDdjy",
+    "popular-products",
+    "multicolumn",
+    "logo-list",
+    "featured-collection",
+    "collapsible-content"
+  ]
+}

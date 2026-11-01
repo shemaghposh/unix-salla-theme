@@ -1,0 +1,111 @@
+{%- comment -%}
+  UNIX — delivery estimate selector.
+  Country first. Saudi Arabia reveals a city list so the shopper sees her own
+  city's window; every other country resolves straight to the international one.
+  Windows come from the courier and match the shipping method descriptions
+  shown at checkout, so the promise is identical in both places.
+{%- endcomment -%}
+
+{{ 'unix-shipping.css' | asset_url | stylesheet_tag }}
+
+{%- assign is_ar = false -%}
+{%- if request.locale.iso_code contains 'ar' -%}{%- assign is_ar = true -%}{%- endif -%}
+
+{%- if is_ar -%}
+  {%- assign L_TITLE   = 'متى يصلك طلبك؟' -%}
+  {%- assign L_COUNTRY = 'اختاري الدولة' -%}
+  {%- assign L_CITY    = 'اختاري المدينة' -%}
+  {%- assign L_PREFIX  = 'يصلك خلال' -%}
+  {%- assign D1 = 'يوم إلى يومين عمل' -%}
+  {%- assign D2 = 'يومين إلى ثلاثة أيام عمل' -%}
+  {%- assign D3 = 'ثلاثة إلى ستة أيام عمل' -%}
+  {%- assign D4 = 'خمسة إلى عشرة أيام عمل' -%}
+  {%- assign N_LOCAL = 'تُحتسب أيام العمل من الأحد إلى الخميس، وتبدأ بعد شحن الطلب' -%}
+  {%- assign N_INTL  = 'المدة تقديرية وتختلف حسب إجراءات الجمارك في كل بلد' -%}
+  {%- assign C_SA = 'السعودية' -%}
+  {%- assign COUNTRIES = 'الإمارات,الكويت,البحرين,عُمان,قطر,الأردن,مصر,لبنان' -%}
+  {%- assign CITY1 = 'الرياض' -%}
+  {%- assign CITY2 = 'جدة,مكة المكرمة,المدينة المنورة,الدمام,الخبر,الظهران,الجبيل,الأحساء,الطائف,القطيف' -%}
+  {%- assign CITY3 = 'أبها,خميس مشيط,تبوك,بريدة,عنيزة,حائل,نجران,جازان,الباحة,عرعر,سكاكا,ينبع,الخرج,حفر الباطن,وادي الدواسر,القريات,بيشة,صبيا,محايل عسير,الزلفي,المجمعة,شقراء,الدوادمي,القنفذة,رابغ,أملج,ضباء,طريف,النعيرية,رأس تنورة,الرس,البكيرية,الأفلاج,عفيف,الدرعية,مدينة أخرى' -%}
+{%- else -%}
+  {%- assign L_TITLE   = 'When will it reach you?' -%}
+  {%- assign L_COUNTRY = 'Select country' -%}
+  {%- assign L_CITY    = 'Select city' -%}
+  {%- assign L_PREFIX  = 'Arrives in' -%}
+  {%- assign D1 = '1 to 2 business days' -%}
+  {%- assign D2 = '2 to 3 business days' -%}
+  {%- assign D3 = '3 to 6 business days' -%}
+  {%- assign D4 = '5 to 10 business days' -%}
+  {%- assign N_LOCAL = 'Business days run Sunday to Thursday and start once the order ships' -%}
+  {%- assign N_INTL  = 'Estimated, and varies with customs clearance in each country' -%}
+  {%- assign C_SA = 'Saudi Arabia' -%}
+  {%- assign COUNTRIES = 'United Arab Emirates,Kuwait,Bahrain,Oman,Qatar,Jordan,Egypt,Lebanon' -%}
+  {%- assign CITY1 = 'Riyadh' -%}
+  {%- assign CITY2 = 'Jeddah,Makkah,Madinah,Dammam,Khobar,Dhahran,Jubail,Al Ahsa,Taif,Qatif' -%}
+  {%- assign CITY3 = 'Abha,Khamis Mushait,Tabuk,Buraidah,Unaizah,Hail,Najran,Jazan,Al Baha,Arar,Sakaka,Yanbu,Al Kharj,Hafar Al Batin,Wadi ad-Dawasir,Qurayyat,Bisha,Sabya,Muhayil,Zulfi,Majmaah,Shaqra,Dawadmi,Al Qunfudhah,Rabigh,Umluj,Duba,Turaif,Nairyah,Ras Tanura,Ar Rass,Al Bukayriyah,Al Aflaj,Afif,Diriyah,Another city' -%}
+{%- endif -%}
+
+<div class='unix-ship'>
+  <div class='unix-ship__title'>
+    <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'>
+      <path d='M3 7h11v10H3z'/><path d='M14 10h4l3 3v4h-7z'/><circle cx='7' cy='18' r='1.6'/><circle cx='17' cy='18' r='1.6'/>
+    </svg>
+    <span>{{ L_TITLE }}</span>
+  </div>
+
+  <div class='unix-ship__fields'>
+    <select class='unix-ship__country' aria-label='{{ L_COUNTRY }}'>
+      <option value=''>{{ L_COUNTRY }}</option>
+      <option value='sa'>{{ C_SA }}</option>
+      {%- assign clist = COUNTRIES | split: ',' -%}
+      {%- for c in clist -%}<option value='intl'>{{ c }}</option>{%- endfor -%}
+    </select>
+
+    <select class='unix-ship__city' aria-label='{{ L_CITY }}' hidden>
+      <option value=''>{{ L_CITY }}</option>
+      <option value='1'>{{ CITY1 }}</option>
+      {%- assign l2 = CITY2 | split: ',' -%}
+      {%- for c in l2 -%}<option value='2'>{{ c }}</option>{%- endfor -%}
+      {%- assign l3 = CITY3 | split: ',' -%}
+      {%- for c in l3 -%}<option value='3'>{{ c }}</option>{%- endfor -%}
+    </select>
+  </div>
+
+  <div class='unix-ship__result' hidden aria-live='polite'></div>
+</div>
+
+<script>
+(function () {
+  var root = document.currentScript.previousElementSibling;
+  while (root && !root.classList.contains('unix-ship')) { root = root.previousElementSibling; }
+  if (!root) return;
+
+  var country = root.querySelector('.unix-ship__country');
+  var city    = root.querySelector('.unix-ship__city');
+  var result  = root.querySelector('.unix-ship__result');
+
+  var PREFIX = {{ L_PREFIX | json }};
+  var DAYS   = { '1': {{ D1 | json }}, '2': {{ D2 | json }}, '3': {{ D3 | json }}, 'intl': {{ D4 | json }} };
+  var NOTE   = { local: {{ N_LOCAL | json }}, intl: {{ N_INTL | json }} };
+
+  function show(key) {
+    var note = key === 'intl' ? NOTE.intl : NOTE.local;
+    result.innerHTML = PREFIX + ' <span class="unix-ship__days"></span><span class="unix-ship__note"></span>';
+    result.querySelector('.unix-ship__days').textContent = DAYS[key];
+    result.querySelector('.unix-ship__note').textContent = note;
+    result.hidden = false;
+  }
+  function hide() { result.hidden = true; }
+
+  country.addEventListener('change', function () {
+    var v = country.value;
+    if (v === 'sa') { city.hidden = false; city.value = ''; hide(); }
+    else if (v === 'intl') { city.hidden = true; city.value = ''; show('intl'); }
+    else { city.hidden = true; city.value = ''; hide(); }
+  });
+
+  city.addEventListener('change', function () {
+    if (city.value) { show(city.value); } else { hide(); }
+  });
+})();
+</script>

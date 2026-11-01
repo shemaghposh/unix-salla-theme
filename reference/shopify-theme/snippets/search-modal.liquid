@@ -1,0 +1,162 @@
+{% liquid
+  assign has_search_modal = false
+
+  for i in (1..4)
+    assign enable_tab_setting = 'enable_tab_' | append: i
+    assign heading_setting = 'heading_' | append: i
+    assign menu_setting = 'menu_' | append: i
+    assign collections_setting = 'collection_list_' | append: i
+    assign products_setting = 'product_list_' | append: i
+    if block.settings[enable_tab_setting] and block.settings[heading_setting] != blank
+      if block.settings[menu_setting] != blank or block.settings[collections_setting] != blank or block.settings[products_setting] != blank
+        assign has_search_modal = true
+      endif
+    endif
+  endfor
+%}
+
+{% if has_search_modal and block.settings.show_tabs %}
+  <div class="search__modal">
+    <div class="container">
+      <div class="search__modal-tabs">
+        {% for i in (1..4) %}
+          {% liquid
+            assign enable_tab_setting = 'enable_tab_' | append: i
+            assign heading_setting = 'heading_' | append: i
+            assign menu_setting = 'menu_' | append: i
+            assign collections_setting = 'collection_list_' | append: i
+            assign products_setting = 'product_list_' | append: i
+
+            assign is_visible_tab = false
+            if block.settings[enable_tab_setting] and block.settings[heading_setting] != blank
+              if block.settings[menu_setting] != blank or block.settings[collections_setting] != blank or block.settings[products_setting] != blank
+                assign is_visible_tab = true
+              endif
+            endif
+          %}
+          {% if is_visible_tab %}
+            <div
+              class="search__modal-tab{% if i == 1 %} search__modal-tab--active{% endif %}"
+              data-search-modal-tab-id="#search-modal-tab-{{ i }}"
+              tabindex="0"
+              role="button"
+              aria-label="Go to tab {{ i }}"
+            >
+              <span>{{ block.settings[heading_setting] }}</span>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="container search__modal-items-container">
+      <div class="search__modal-items">
+        {% for i in (1..4) %}
+          {% liquid
+            assign enable_tab_setting = 'enable_tab_' | append: i
+            assign heading_setting = 'heading_' | append: i
+            assign menu_setting = 'menu_' | append: i
+            assign collections_setting = 'collection_list_' | append: i
+            assign products_setting = 'product_list_' | append: i
+            assign layout_setting = 'layout_' | append: i
+
+            assign is_visible_tab = false
+            if block.settings[enable_tab_setting] and block.settings[heading_setting]
+              if block.settings[menu_setting] != blank or block.settings[collections_setting] != blank or block.settings[products_setting] != blank
+                assign is_visible_tab = true
+              endif
+            endif
+          %}
+          {% if is_visible_tab %}
+            {% liquid
+              assign has_products = false
+              assign has_collections = false
+
+              if block.settings[layout_setting] == 'products'
+                assign has_products = true
+                assign has_collections = false
+              elsif block.settings[layout_setting] == 'collections'
+                assign has_collections = true
+                assign has_products = false
+              endif
+            %}
+            <div
+              class="search__modal-item{% if i == 1 %} search__modal-item--active{% endif %}"
+              data-search-modal-tab-id="#search-modal-tab-{{ forloop.index }}"
+            >
+              <div class="search__modal-wrapper">
+                {% if block.settings[menu_setting] != blank %}
+                  <ul class="search__modal-menu list-unstyled" role="list">
+                    {%- for link in block.settings[menu_setting].links -%}
+                      <li class="search__modal-menu-item">
+                        <a
+                          href="{{ link.url }}"
+                          {% if link.type == 'http_link' and settings.open_new_tab %}
+                            target="_blank"
+                          {% endif %}
+                          class="search__modal-menu-link link-hover-line"
+                          aria-label="{{ link.title }}"
+                        >
+                          <span>{{ link.title }}</span>
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {% endif %}
+
+                {% if has_products and block.settings[products_setting] != blank %}
+                  <div class="search__modal-products{% if block.settings[menu_setting] == blank %} search__modal-products--full-width{% endif %}">
+                    {% for product in block.settings[products_setting] %}
+                      <div class="search__modal-products-item collection-product-card quickview{%- if settings.quickview_hover -%}--hover{% endif %}">
+                        {% render 'product-card',
+                          product_card_product: product,
+                          media_ratio: block.settings.product_image_ratio,
+                          media_fit: block.settings.product_image_fit,
+                          show_secondary_image: block.settings.show_secondary_image,
+                          show_vendor: block.settings.show_vendor,
+                          show_desc: false,
+                          section_id: section.id,
+                          add_id: forloop.index,
+                          small: true
+                        %}
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                {% if has_collections and block.settings[collections_setting] != blank %}
+                  {% liquid
+                    assign has_swiper = false
+                    if block.settings[collections_setting].count > 1
+                      assign has_swiper = true
+                    endif
+                  %}
+                  <div class="search__modal-collections{% if block.settings[menu_setting] == blank %} search__modal-collections--full-width{% endif %}{% if has_swiper %} swiper swiper--search-modal-mobile{% endif %}">
+                    <div class="search__modal-collections-wrapper{% if has_swiper %} swiper-wrapper{% endif %}">
+                      {% for item in block.settings[collections_setting] %}
+                        <div class="search__modal-collections-item{% if has_swiper %} swiper-slide{% endif %}">
+                          {% render 'collection-card',
+                            collection: item,
+                            media_ratio: block.settings.collection_image_ratio,
+                            media_fit: block.settings.collection_image_fit,
+                            show_desc: block.settings.collection_show_desc,
+                            show_button: block.settings.collection_show_button,
+                            button_label: block.settings.collection_button_label,
+                            full_link: block.settings.collection_full_link
+                          %}
+                        </div>
+                      {% endfor %}
+                    </div>
+                    {% if has_swiper %}
+                      <div class="search__modal-pagination swiper-pagination no-js-hidden"></div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}

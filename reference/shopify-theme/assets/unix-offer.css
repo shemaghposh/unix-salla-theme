@@ -1,0 +1,27 @@
+/* UNIX — Activewear "buy 2+, 20% off" placements. Quiet: brand ink on paper. */
+.uo-hero{max-width:72rem;margin:0 auto;padding:4rem 2rem 2.4rem;text-align:center;color:#22323E}
+.uo-hero__eyebrow{margin:0 0 .8rem;font-size:1.2rem;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.uo-hero__title{margin:0 0 1.2rem;font-size:clamp(2.8rem,6vw,4.4rem);line-height:1.15}
+.uo-hero__text{max-width:56rem;margin:0 auto 2.4rem;font-size:1.5rem;line-height:1.8;opacity:.8}
+.uo-hero__steps{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;list-style:none;margin:0;padding:0}
+.uo-hero__steps li{display:flex;align-items:center;gap:.8rem;padding:1rem 1.6rem;border:1px solid rgba(34,50,62,.18);font-size:1.35rem}
+.uo-hero__steps span{display:grid;place-items:center;width:2.4rem;height:2.4rem;border-radius:50%;background:#22323E;color:#fff;font-size:1.2rem}
+.uo-hero__soon{margin:2rem 0 0;font-size:1.3rem;opacity:.65}
+@media (max-width:749px){.uo-hero{padding:2.8rem 1.6rem 1.6rem}.uo-hero__steps{flex-direction:column;align-items:stretch}.uo-hero__steps li{justify-content:flex-start}}
+
+.uo-home{display:grid;gap:.8rem;justify-items:center;text-align:center;margin:0 auto;padding:4rem 2rem;background:#22323E;color:#F8F6F2;text-decoration:none}
+.uo-home__eyebrow{font-size:1.2rem;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.uo-home__title{font-size:clamp(2.6rem,5vw,4rem);line-height:1.2;font-weight:600}
+.uo-home__text{max-width:52rem;font-size:1.4rem;opacity:.8;line-height:1.7}
+.uo-home__cta{margin-top:1.2rem;padding:1.2rem 3.2rem;border:1px solid #F8F6F2;font-size:1.4rem;transition:background .25s,color .25s}
+.uo-home:hover .uo-home__cta{background:#F8F6F2;color:#22323E}
+
+.uo-chip{display:flex;align-items:center;gap:1rem;margin:1.2rem 0 .4rem;padding:1rem 1.4rem;border:1px solid rgba(34,50,62,.22);color:#22323E;text-decoration:none;font-size:1.3rem;line-height:1.5}
+.uo-chip__tag{flex:none;padding:.3rem .8rem;background:#22323E;color:#fff;font-weight:600;font-size:1.2rem}
+.uo-chip__text{flex:1 1 auto}
+.uo-chip__cta{flex:none;text-decoration:underline;text-underline-offset:3px;opacity:.75}
+
+.uo-cart{display:flex;align-items:center;gap:1rem;margin:0 0 1.2rem;padding:1rem 1.2rem;border:1px dashed rgba(34,50,62,.35);color:#22323E;font-size:1.3rem;line-height:1.6}
+.uo-cart.is-done{border-style:solid;background:rgba(34,50,62,.05)}
+.uo-cart__tag{flex:none;padding:.2rem .7rem;background:#22323E;color:#fff;font-weight:600;font-size:1.15rem}
+.uo-cart a{color:inherit;text-decoration:underline;text-underline-offset:3px}

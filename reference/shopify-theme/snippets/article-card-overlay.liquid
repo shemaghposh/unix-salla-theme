@@ -1,0 +1,96 @@
+{% if article.metafields.custom.author_image != blank %}
+  {%- assign author_image = article.metafields.custom.author_image -%}
+{% elsif section_author_image != blank %}
+  {%- assign author_image = section_author_image -%}
+{% endif %}
+
+<article
+  class="article-card-overlay article-card-overlay--{{ image_ratio }} color-{{ color_scheme }}"
+  aria-labelledby="Article-{{ article.id }}"
+>
+  {%- if show_image == true and article.image -%}
+    <div class="article-card-overlay__image">
+      {% liquid
+        assign aspect_ratio_img = 100 | divided_by: article.image.aspect_ratio | round: 2
+        assign width_ratio = 1
+
+        if aspect_ratio_img < 75
+          assign width_ratio = 75.0 | divided_by: aspect_ratio_img | round: 2
+        endif
+      %}
+      {%- capture sizes -%}
+        (min-width: 1200px) calc(((100vw - 40px) / 3) * {{ width_ratio }}), (min-width: 750px) calc(((100vw - 40px) / 2) * {{ width_ratio }}), calc(((100vw - 40px)) * {{ width_ratio }})
+      {%- endcapture -%}
+      {{
+        article.image
+        | image_url: width: article.image.width
+        | image_tag: loading: 'lazy', sizes: sizes, widths: '375, 425, 576, 768, 990, 1100, 1360, 1600, 1920'
+      }}
+    </div>
+  {%- endif -%}
+  <div class="article-overlay-content motion-reduce">
+    <div class="article-card-overlay__info">
+      <div class="article-card-overlay__top body-small">
+        {%- if show_tags and article.tags != blank -%}
+          <ul class="article-card-overlay__tags">
+            {% for tag in article.tags %}
+              <li class="article-card-overlay__tag">
+                <a href="{{ blog.url }}/tagged/{{ tag | handle }}">
+                  <span title="{{ tag }}">{{ tag }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {%- endif -%}
+        {% if show_date or article.comments_count > 0 and blog.comments_enabled? %}
+          <div class="article-card-overlay__meta">
+            {%- if show_date -%}
+              <span class="article-card-overlay__date">
+                {{- article.published_at | time_tag: format: 'abbreviated_date' -}}
+              </span>
+            {%- endif -%}
+            {%- if article.comments_count > 0 and blog.comments_enabled? -%}
+              <span class="article-card-overlay__comments">
+                {{- 'blogs.article.comments' | t: count: article.comments_count -}}
+              </span>
+            {%- endif -%}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="article-card-overlay__bottom">
+        <header class="article-card-overlay__header">
+          <{{ heading_tag | default: 'h3' }}
+            class="article-card-overlay__title h2"
+            id="Article-{{ article.id }}"
+          >
+            <a href="{{ article.url }}">
+              {{ article.title | escape }}
+            </a>
+          </{{ heading_tag | default: 'h3' }}>
+        </header>
+        {%- if show_excerpt and article.excerpt_or_content.size > 0 -%}
+          <p class="article-card-overlay__excerpt">
+            {{ article.excerpt_or_content | strip_html | truncate: 150 }}
+          </p>
+        {%- endif -%}
+        {% if show_author %}
+          <div class="article-card-overlay__author">
+            <span>{{- 'general.blog.author' | t -}}</span>
+            {% if author_image %}
+              <div class="article-card-overlay__author-image">
+                {{
+                  author_image
+                  | image_url: width: author_image.width
+                  | image_tag: loading: 'lazy', widths: '50, 100'
+                }}
+              </div>
+            {% endif %}
+            <span class="article-card-overlay__author-name">{{- article.author -}}</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <a class="article-card-overlay-link" href="{{ article.url }}" aria-label="{{ "accessibility.article_link" | t }}"></a>
+</article>

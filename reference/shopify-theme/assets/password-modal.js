@@ -1,0 +1,1 @@
+class PasswordModal extends DetailsModal{constructor(){super(),this.querySelector('input[aria-invalid="true"]')&&this.open({target:this.querySelector("details")}),this.closeBtn=this.querySelector(".modal__close-button");let e=this;this.closeBtn.addEventListener("click",()=>{e.close(!0)})}}customElements.define("password-modal",PasswordModal);

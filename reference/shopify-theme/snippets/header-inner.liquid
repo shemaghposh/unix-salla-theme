@@ -1,0 +1,33 @@
+<div class="header__left">
+  {% render 'header-drawer' %}
+
+  {% render 'desktop-burger-menu' %}
+
+  {% if section.settings.logo_position == 'left-logo' %}
+    {% render 'header-logo', tag: 'h1' %}
+  {% endif %}
+
+  {% if section.settings.menu != blank %}
+    {% render 'header-inline-menu', section: section %}
+  {% endif %}
+</div>
+
+{% if section.settings.logo_position == 'center-logo' %}
+  {% render 'header-logo', tag: 'h1' %}
+{% endif %}
+
+<div class="header__column">
+  {% render 'header-lang-toggle' %}
+
+  <div class="header__icons">
+    {% render 'header-search', section: section %}
+    {% render 'color-scheme' %}
+    {% render 'header-account' %}
+  </div>
+  <div class="header__icons">
+    {% comment %}
+      TODO: Add favorite icon
+    {% endcomment %}
+    {% render 'header-cart' %}
+  </div>
+</div>

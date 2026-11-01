@@ -1,0 +1,38 @@
+{
+  "sections": {
+    "offer_hero": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'unix-offer', mode: 'hero' %}"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 24,
+        "columns": 4,
+        "image_ratio": "2/3",
+        "image_fit": "contain",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_desc": false,
+        "card_heading_tag": "h3",
+        "enable_filtering": true,
+        "filter_type": "horizontal_united",
+        "enable_filters_sticky": false,
+        "hor_filter": "مقاس",
+        "enable_sorting": true,
+        "image_filter_ratio": "4/5",
+        "image_filter_fit": "cover",
+        "image_filter_columns": 2,
+        "columns_mobile": "2",
+        "padding_top": "no-indent",
+        "padding_bottom": "m"
+      }
+    }
+  },
+  "order": [
+    "offer_hero",
+    "product-grid"
+  ]
+}

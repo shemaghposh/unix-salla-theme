@@ -1,0 +1,1 @@
+.map-section .container .map{border-radius:var(--border-radius-main);overflow:hidden}.map-section .map{aspect-ratio:var(--height-mobile);border-radius:var(--border-radius-main);overflow:hidden}@media screen and (min-width: 990px){.map-section .map{aspect-ratio:var(--height-desktop)}}.map-section .map__iframe{display:block}

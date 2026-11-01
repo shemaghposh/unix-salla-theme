@@ -1,0 +1,186 @@
+{{ 'section-map.css' | asset_url | stylesheet_tag }}
+{% style %}
+  {% render 'section-margin' %}
+  {% render 'section-padding' %}
+{% endstyle %}
+
+{% if section.settings.enable_fullwidth != true %}
+  <div class="container">
+{% endif %}
+<div
+  id="google-map-section"
+  class="map"
+  style="
+    --height-mobile: {{ section.settings.height_mobile }};
+    --height-desktop: {{ section.settings.height_desktop }}
+  "
+>
+  {% if section.settings.api_key != blank
+    and section.settings.latitude != blank
+    and section.settings.longitude != blank
+  %}
+    <iframe
+      width="100%"
+      height="100%"
+      frameborder="0"
+      style="border:0"
+      src="https://www.google.com/maps/embed/v1/view?key={{ section.settings.api_key }}&center={{ section.settings.latitude }},{{ section.settings.longitude }}&zoom=15"
+      allowfullscreen
+    >
+    </iframe>
+  {% else %}
+    <p>Please enter a Google Maps API Key, latitude, and longitude in the section settings.</p>
+  {% endif %}
+</div>
+{% if section.settings.enable_fullwidth != true %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:sections.map.name",
+  "tag": "section",
+  "class": "map-section spaced-section",
+  "enabled_on": {
+    "templates": ["*"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "api_key",
+      "label": "t:sections.map.settings.api_key.label"
+    },
+    {
+      "type": "text",
+      "id": "latitude",
+      "default": "43.696582",
+      "label": "t:sections.map.settings.latitude.label"
+    },
+    {
+      "type": "text",
+      "id": "longitude",
+      "default": "-79.4313801",
+      "label": "t:sections.map.settings.longitude.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_fullwidth",
+      "default": false,
+      "label": "t:sections.map.settings.enable_fullwidth.label"
+    },
+    {
+      "type": "select",
+      "id": "height_mobile",
+      "options": [
+        {
+          "value": "1/1",
+          "label": "t:sections.map.settings.height_mobile.options__1.label"
+        },
+        {
+          "value": "32/9",
+          "label": "t:sections.map.settings.height_mobile.options__2.label"
+        },
+        {
+          "value": "3/4",
+          "label": "t:sections.map.settings.height_mobile.options__3.label"
+        }
+      ],
+      "default": "3/4",
+      "label": "t:sections.map.settings.height_mobile.label"
+    },
+    {
+      "type": "select",
+      "id": "height_desktop",
+      "options": [
+        {
+          "value": "1/1",
+          "label": "t:sections.map.settings.height_desktop.options__1.label"
+        },
+        {
+          "value": "32/9",
+          "label": "t:sections.map.settings.height_desktop.options__2.label"
+        },
+        {
+          "value": "3/4",
+          "label": "t:sections.map.settings.height_desktop.options__3.label"
+        }
+      ],
+      "default": "32/9",
+      "label": "t:sections.map.settings.height_desktop.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section-margin.header.content"
+    },
+    {
+      "type": "select",
+      "id": "margin_top",
+      "options": [
+        {
+          "value": "no-indent",
+          "label": "t:sections.all.section-margin.options__1.label"
+        },
+        {
+          "value": "xs",
+          "label": "t:sections.all.section-margin.options__2.label"
+        },
+        {
+          "value": "s",
+          "label": "t:sections.all.section-margin.options__3.label"
+        },
+        {
+          "value": "m",
+          "label": "t:sections.all.section-margin.options__4.label"
+        },
+        {
+          "value": "l",
+          "label": "t:sections.all.section-margin.options__5.label"
+        },
+        {
+          "value": "xl",
+          "label": "t:sections.all.section-margin.options__6.label"
+        }
+      ],
+      "default": "no-indent",
+      "label": "t:sections.all.section-margin.margin_top.label"
+    },
+    {
+      "type": "select",
+      "id": "margin_bottom",
+      "options": [
+        {
+          "value": "no-indent",
+          "label": "t:sections.all.section-margin.options__1.label"
+        },
+        {
+          "value": "xs",
+          "label": "t:sections.all.section-margin.options__2.label"
+        },
+        {
+          "value": "s",
+          "label": "t:sections.all.section-margin.options__3.label"
+        },
+        {
+          "value": "m",
+          "label": "t:sections.all.section-margin.options__4.label"
+        },
+        {
+          "value": "l",
+          "label": "t:sections.all.section-margin.options__5.label"
+        },
+        {
+          "value": "xl",
+          "label": "t:sections.all.section-margin.options__6.label"
+        }
+      ],
+      "default": "no-indent",
+      "label": "t:sections.all.section-margin.margin_bottom.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.map.presets.name"
+    }
+  ]
+}
+{% endschema %}

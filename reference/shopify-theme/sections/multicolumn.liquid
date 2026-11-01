@@ -1,0 +1,1312 @@
+{{ 'section-multicolumn.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  {% render 'section-margin' %}
+  {% render 'section-padding' %}
+{% endstyle %}
+
+{% liquid
+  assign content_alignment = section.settings.content_alignment
+  assign swipe_on_mobile = section.settings.swipe_on_mobile
+  assign swipe_on_desktop = section.settings.swipe_on_desktop
+  assign columns_per_row = section.settings.columns_per_row
+  assign image_size = section.settings.image_size
+  assign image_ratio = section.settings.image_ratio
+  assign object_fit = section.settings.object_fit
+
+  if swipe_on_mobile and section.blocks.size > 1
+    assign has_swiper = true
+  elsif swipe_on_desktop and section.blocks.size > 1 and section.settings.layout == 'default'
+    assign has_swiper = true
+  else
+    assign has_swiper = false
+  endif
+
+  if section.settings.subheading != blank or section.settings.heading != blank or section.settings.text != blank
+    if section.settings.layout == 'right'
+      assign is_right = true
+      assign is_left = false
+    elsif section.settings.layout == 'left'
+      assign is_right = false
+      assign is_left = true
+    else
+      assign is_right = false
+      assign is_left = false
+    endif
+  endif
+%}
+
+<div
+  class="
+    multicolumn color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding
+    {% if section.settings.enable_border %} section-border {% if section.settings.border_full %} section-border-full {% endif %} {% endif %}
+  "
+>
+  <div class="container">
+    <div
+      class="multicolumn__wrapper{% if is_right %} multicolumn__wrapper--right{% endif %}{% if is_left %} multicolumn__wrapper--left{% endif %}"
+      {% if section.settings.enable_accent %}
+        style="--accent-color: {{ section.settings.accent_color }}"
+      {% endif %}
+    >
+      {%- if section.settings.subheading != blank
+        or section.settings.heading != blank
+        or section.settings.text != blank
+        or section.settings.button_show
+      -%}
+        <div class="multicolumn__top{% if section.settings.enable_accent %} multicolumn__top--has-highlighting{% endif %}">
+          {%- if section.settings.subheading != blank
+            or section.settings.heading != blank
+            or section.settings.text != blank
+          -%}
+            <div class="multicolumn__text">
+              {% render 'section-text', section: section, class: 'multicolumn' %}
+            </div>
+          {% endif %}
+          {%- if section.settings.button_show -%}
+            {% render 'button',
+              link: section.settings.button_link,
+              label: section.settings.button_label,
+              style: section.settings.button_style,
+              class: 'multicolumn'
+            %}
+          {%- endif -%}
+        </div>
+      {% endif %}
+
+      <div
+        class="multicolumn-list{% if has_swiper %} swiper swiper--multicolumn{% endif %}"
+        data-mobile-columns="{{section.settings.mobile_columns}}"
+        data-desktop-columns="{{ section.settings.columns_per_row }}"
+        {% if section.settings.layout == 'default' %}
+          data-slider-desktop="{{ swipe_on_desktop }}"
+        {% else %}
+          data-slider-desktop="false"
+        {% endif %}
+        data-slider-mobile="{{ swipe_on_mobile }}"
+      >
+        <div class="multicolumn-list__wrapper multicolumn-list__wrapper--{{ columns_per_row }} multicolumn-list__wrapper--{{ content_alignment }} multicolumn-list__wrapper--{{ section.settings.mobile_columns }}-mobile{% if has_swiper %} swiper-wrapper{% endif %}">
+          {%- for block in section.blocks -%}
+            <div
+              class="multicolumn-card multicolumn-list__item multicolumn-card--{{ content_alignment }}{% if section.settings.enable_column_background %} multicolumn-card--background{% endif %}{% if has_swiper %} swiper-slide{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.icon != 'none' -%}
+                <div class="multicolumn-card__image-wrapper multicolumn-card__image-wrapper--icon multicolumn-card__image-wrapper--{{- section.settings.icon_size }}">
+                  {% render 'icon-pack', icon: block.settings.icon %}
+                </div>
+              {%- elsif block.settings.image != blank or block.settings.image_2 != blank -%}
+                {% if image_ratio != 'adapt' %}
+                  {% style %}
+                    #shopify-section-{{ section.id }} .multicolumn-card__image-wrapper {
+                      aspect-ratio: {{ image_ratio }};
+                    }
+                  {% endstyle %}
+                {% endif %}
+                <div class="multicolumn-card__image-wrapper multicolumn-card__image-wrapper--{{ image_size }}">
+                  {% if block.settings.image != blank %}
+                    {%- assign height = block.settings.image.height -%}
+                    {%- assign width = block.settings.image.width -%}
+                    {%- if image_size == 'extra_small' -%}
+                      {%- assign width_adapt_ratio = 1 -%}
+                      {%- if block.settings.image.width > block.settings.image.height -%}
+                        {%- assign width_adapt_ratio = 44 | times: block.settings.image.aspect_ratio | round: 2 -%}
+                      {%- endif -%}
+
+                      {%- if width_adapt_ratio != 1 -%}
+                        {%- assign sizes = width_adapt_ratio | append: 'px' -%}
+                      {%- else -%}
+                        {%- assign sizes = '88px' -%}
+                      {%- endif -%}
+                      {%- assign widths = '44, 88, 150, 200, 300, 500, 800, 1000' -%}
+                    {%- elsif image_size == 'small' -%}
+                      {%- assign widths = '200, 300, 500, 800, 1000, 1200' -%}
+                      {% case columns_per_row %}
+                        {% when 4 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image.width > block.settings.image.height -%}
+                            {%- assign width_adapt_ratio = 200 | times: block.settings.image.aspect_ratio | round: 2 -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 1200px) calc(0.3 * (100vw - 40px) / 4), (min-width: 990px) calc(0.3 * (100vw - 40px) / 3), (min-width: 750px) calc(0.3 * (100vw - 40px) / 2), calc(30vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% when 3 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image.width > block.settings.image.height -%}
+                            {%- assign width_adapt_ratio = 250 | times: block.settings.image.aspect_ratio | round: 2 -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 990px) calc(0.3 * (100vw - 40px) / 3), (min-width: 750px) calc(0.3 * (100vw - 40px) / 2), calc(30vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% when 2 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image.width > block.settings.image.height -%}
+                            {%- assign width_adapt_ratio = 300 | times: block.settings.image.aspect_ratio | round: 2 -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 750px) calc(0.3 * (100vw - 40px) / 2), calc(30vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% else %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image.width > block.settings.image.height -%}
+                            {%- assign width_adapt_ratio = 600 | times: block.settings.image.aspect_ratio | round: 2 -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                calc(30vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                      {% endcase %}
+                    {%- elsif image_size == 'medium' -%}
+                      {%- assign widths = '200, 300, 500, 800, 1000, 1200, 1600, 1800, 2000' -%}
+                      {% case columns_per_row %}
+                        {% when 4 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image.width > block.settings.image.height -%}
+                            {%- assign width_adapt_ratio = 300 | times: block.settings.image.aspect_ratio | round: 2 -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 1200px) calc(0.5 * (100vw - 40px) / 4), (min-width: 990px) calc(0.5 * (100vw - 40px) / 3), (min-width: 750px) calc(0.5 * (100vw - 40px) / 2), calc(50vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% when 3 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image.width > block.settings.image.height -%}
+                            {%- assign width_adapt_ratio = 350 | times: block.settings.image.aspect_ratio | round: 2 -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 990px) calc(0.5 * (100vw - 40px) / 3), (min-width: 750px) calc(0.5 * (100vw - 40px) / 2), calc(50vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% when 2 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image.width > block.settings.image.height -%}
+                            {%- assign width_adapt_ratio = 500 | times: block.settings.image.aspect_ratio | round: 2 -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 750px) calc(0.5 * (100vw - 40px) / 2), calc(50vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% else %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image.width > block.settings.image.height -%}
+                            {%- assign width_adapt_ratio = 1000
+                              | times: block.settings.image.aspect_ratio
+                              | round: 2
+                            -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                calc(50vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                      {% endcase %}
+                    {%- else -%}
+                      {%- assign widths = '375, 425, 576, 768, 990, 1100, 1360, 1600, 1920' -%}
+                      {% case columns_per_row %}
+                        {% when 4 %}
+                          {% capture sizes %}
+                              (min-width: 1200px) calc((100vw - 40px) / 4), (min-width: 990px) calc((100vw - 40px) / 3), (min-width: 750px) calc((100vw - 40px) / 2), calc(100vw - 40px)
+                            {% endcapture %}
+                        {% when 3 %}
+                          {% capture sizes %}
+                              (min-width: 990px) calc((100vw - 40px) / 3), (min-width: 750px) calc((100vw - 40px) / 2), calc(100vw - 40px)
+                            {% endcapture %}
+                        {% when 2 %}
+                          {% capture sizes %}
+                              (min-width: 750px) calc((100vw - 40px) / 2), calc(100vw - 40px)
+                            {% endcapture %}
+                        {% else %}
+                          {% capture sizes %}
+                              calc(100vw - 40px)
+                            {% endcapture %}
+                      {% endcase %}
+                    {%- endif -%}
+
+                    {%- capture style -%}
+                      object-fit: {{ object_fit }};
+                      object-position: {{ block.settings.image.presentation.focal_point }};
+                    {%- endcapture -%}
+
+                    {{
+                      block.settings.image
+                      | image_url: width: block.settings.image.width
+                      | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: widths,
+                        height: height,
+                        width: width,
+                        style: style,
+                        class: 'multicolumn-card__image-wrapper-image'
+                    }}
+                  {% endif %}
+
+                  {% if block.settings.image_2 != blank %}
+                    {%- assign height = block.settings.image_2.height -%}
+                    {%- assign width = block.settings.image_2.width -%}
+                    {%- if image_size == 'extra_small' -%}
+                      {%- assign width_adapt_ratio = 1 -%}
+                      {%- if block.settings.image_2.width > block.settings.image_2.height -%}
+                        {%- assign width_adapt_ratio = 44 | times: block.settings.image_2.aspect_ratio | round: 2 -%}
+                      {%- endif -%}
+
+                      {%- if width_adapt_ratio != 1 -%}
+                        {%- assign sizes = width_adapt_ratio | append: 'px' -%}
+                      {%- else -%}
+                        {%- assign sizes = '88px' -%}
+                      {%- endif -%}
+                      {%- assign widths = '44, 88, 150, 200, 300, 500, 800, 1000' -%}
+                    {%- elsif image_size == 'small' -%}
+                      {%- assign widths = '200, 300, 500, 800, 1000, 1200' -%}
+                      {% case columns_per_row %}
+                        {% when 4 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image_2.width > block.settings.image_2.height -%}
+                            {%- assign width_adapt_ratio = 200
+                              | times: block.settings.image_2.aspect_ratio
+                              | round: 2
+                            -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 1200px) calc(0.3 * (100vw - 40px) / 4), (min-width: 990px) calc(0.3 * (100vw - 40px) / 3), (min-width: 750px) calc(0.3 * (100vw - 40px) / 2), calc(30vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% when 3 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image_2.width > block.settings.image_2.height -%}
+                            {%- assign width_adapt_ratio = 250
+                              | times: block.settings.image_2.aspect_ratio
+                              | round: 2
+                            -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 990px) calc(0.3 * (100vw - 40px) / 3), (min-width: 750px) calc(0.3 * (100vw - 40px) / 2), calc(30vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% when 2 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image_2.width > block.settings.image_2.height -%}
+                            {%- assign width_adapt_ratio = 300
+                              | times: block.settings.image_2.aspect_ratio
+                              | round: 2
+                            -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 750px) calc(0.3 * (100vw - 40px) / 2), calc(30vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% else %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image_2.width > block.settings.image_2.height -%}
+                            {%- assign width_adapt_ratio = 600
+                              | times: block.settings.image_2.aspect_ratio
+                              | round: 2
+                            -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                calc(30vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                      {% endcase %}
+                    {%- elsif image_size == 'medium' -%}
+                      {%- assign widths = '200, 300, 500, 800, 1000, 1200, 1600, 1800, 2000' -%}
+                      {% case columns_per_row %}
+                        {% when 4 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image_2.width > block.settings.image_2.height -%}
+                            {%- assign width_adapt_ratio = 300
+                              | times: block.settings.image_2.aspect_ratio
+                              | round: 2
+                            -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 1200px) calc(0.5 * (100vw - 40px) / 4), (min-width: 990px) calc(0.5 * (100vw - 40px) / 3), (min-width: 750px) calc(0.5 * (100vw - 40px) / 2), calc(50vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% when 3 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image_2.width > block.settings.image_2.height -%}
+                            {%- assign width_adapt_ratio = 350
+                              | times: block.settings.image_2.aspect_ratio
+                              | round: 2
+                            -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 990px) calc(0.5 * (100vw - 40px) / 3), (min-width: 750px) calc(0.5 * (100vw - 40px) / 2), calc(50vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% when 2 %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image_2.width > block.settings.image_2.height -%}
+                            {%- assign width_adapt_ratio = 500
+                              | times: block.settings.image_2.aspect_ratio
+                              | round: 2
+                            -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                (min-width: 750px) calc(0.5 * (100vw - 40px) / 2), calc(50vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                        {% else %}
+                          {%- assign width_adapt_ratio = 1 -%}
+                          {%- if block.settings.image_2.width > block.settings.image_2.height -%}
+                            {%- assign width_adapt_ratio = 1000
+                              | times: block.settings.image_2.aspect_ratio
+                              | round: 2
+                            -%}
+                          {%- endif -%}
+                          {% capture sizes %}
+                              {%- if width_adapt_ratio != 1 -%}
+                                {{ width_adapt_ratio }}px
+                              {%- else -%}
+                                calc(50vw - 40px)
+                              {%- endif -%}
+                            {% endcapture %}
+                      {% endcase %}
+                    {%- else -%}
+                      {%- assign widths = '375, 425, 576, 768, 990, 1100, 1360, 1600, 1920' -%}
+                      {% case columns_per_row %}
+                        {% when 4 %}
+                          {% capture sizes %}
+                              (min-width: 1200px) calc((100vw - 40px) / 4), (min-width: 990px) calc((100vw - 40px) / 3), (min-width: 750px) calc((100vw - 40px) / 2), calc(100vw - 40px)
+                            {% endcapture %}
+                        {% when 3 %}
+                          {% capture sizes %}
+                              (min-width: 990px) calc((100vw - 40px) / 3), (min-width: 750px) calc((100vw - 40px) / 2), calc(100vw - 40px)
+                            {% endcapture %}
+                        {% when 2 %}
+                          {% capture sizes %}
+                              (min-width: 750px) calc((100vw - 40px) / 2), calc(100vw - 40px)
+                            {% endcapture %}
+                        {% else %}
+                          {% capture sizes %}
+                              calc(100vw - 40px)
+                            {% endcapture %}
+                      {% endcase %}
+                    {%- endif -%}
+
+                    {%- capture style -%}
+                      object-fit: {{ object_fit }};
+                      object-position: {{ block.settings.image_2.presentation.focal_point }};
+                    {%- endcapture -%}
+
+                    {{
+                      block.settings.image_2
+                      | image_url: width: block.settings.image_2.width
+                      | image_tag:
+                        loading: 'lazy',
+                        sizes: sizes,
+                        widths: widths,
+                        height: height,
+                        width: width,
+                        style: style,
+                        class: 'multicolumn-card__image-wrapper-image'
+                    }}
+                  {% endif %}
+                </div>
+              {%- endif -%}
+              {%- if block.settings.subheading != blank
+                or block.settings.heading != blank
+                or block.settings.text != blank
+              -%}
+                <div class="multicolumn-card__info">
+                  {%- if block.settings.subheading != blank -%}
+                    <div class="multicolumn-card__subheading">
+                      {{ block.settings.subheading }}
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.heading != blank -%}
+                    <{{ block.settings.heading_tag | default: 'h3' }} class="multicolumn-card__heading {{ section.settings.card_heading_size }}">
+                      {{ block.settings.heading | newline_to_br }}
+                    </{{ block.settings.heading_tag | default: 'h3' }}>
+                  {%- endif -%}
+                  {%- if block.settings.text != blank -%}
+                    <div class="multicolumn-card__text">
+                      {{ block.settings.text }}
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              {%- if block.settings.show_button -%}
+                {% render 'button',
+                  label: block.settings.button_label,
+                  link: block.settings.button_link,
+                  style: block.settings.button_style,
+                  class: 'multicolumn-card'
+                %}
+              {% endif %}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- if has_swiper -%}
+          <div class="multicolumn__pagination swiper-pagination no-js-hidden"></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if has_swiper %}
+  <script src="{{ 'multicolumn.js' | asset_url }}" defer></script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:sections.multicolumn.name",
+  "tag": "section",
+  "class": "multicolumn-section",
+  "enabled_on": {
+    "templates": ["*"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "background-1",
+      "label": "t:sections.all.color_scheme.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_border",
+      "label": "t:sections.all.enable_border.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "border_full",
+      "label": "t:sections.all.border_full.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.multicolumn.settings.header_mobile.content"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:sections.multicolumn.settings.columns.options__1.label"
+        },
+        {
+          "value": "2",
+          "label": "t:sections.multicolumn.settings.columns.options__2.label"
+        }
+      ],
+      "default": "1",
+      "label": "t:sections.multicolumn.settings.columns.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "default": true,
+      "label": "t:sections.multicolumn.settings.swipe_on_mobile.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_column_background",
+      "default": true,
+      "label": "t:sections.multicolumn.settings.enable_column_background.label",
+      "info": "t:sections.multicolumn.settings.enable_column_background.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.multicolumn.settings.header_desktop.content"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:sections.multicolumn.settings.layout.options__1.label"
+        },
+        {
+          "value": "left",
+          "label": "t:sections.multicolumn.settings.layout.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.multicolumn.settings.layout.options__3.label"
+        }
+      ],
+      "default": "default",
+      "label": "t:sections.multicolumn.settings.layout.label"
+    },
+    {
+      "type": "range",
+      "id": "columns_per_row",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.multicolumn.settings.columns.label",
+      "info": "t:sections.multicolumn.settings.columns.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "swipe_on_desktop",
+      "default": false,
+      "label": "t:sections.multicolumn.settings.swipe_on_desktop.label",
+      "info": "t:sections.multicolumn.settings.swipe_on_desktop.info"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.all.subheading.label"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:sections.all.heading.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_tag.options__1.label"
+        },
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_tag.options__2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:sections.all.heading_tag.options__3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:sections.all.heading_tag.options__4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:sections.all.heading_tag.options__5.label"
+        },
+        {
+          "value": "h6",
+          "label": "t:sections.all.heading_tag.options__6.label"
+        },
+        {
+          "value": "div",
+          "label": "t:sections.all.heading_tag.options__7.label"
+        }
+      ],
+      "default": "h2",
+      "label": "t:sections.all.heading_tag.label",
+      "info": "t:sections.all.heading_tag.info",
+      "visible_if": "{{ section.settings.heading != blank }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_accent",
+      "default": true,
+      "label": "t:sections.multicolumn.settings.enable_accent.label",
+      "info": "t:sections.multicolumn.settings.enable_accent.info",
+      "visible_if": "{{ section.settings.heading != blank }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "t:sections.multicolumn.settings.accent_color.label",
+      "default": "#293E3A",
+      "visible_if": "{{ section.settings.heading != blank }}"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h3",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__2.label"
+        }
+      ],
+      "default": "h2",
+      "label": "t:sections.all.heading_size.label",
+      "visible_if": "{{ section.settings.heading != blank }}"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "t:sections.all.text.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.multicolumn.settings.header_icons.content"
+    },
+    {
+      "type": "select",
+      "id": "icon_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.multicolumn.settings.icon_size.options__1.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.multicolumn.settings.icon_size.options__2.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.multicolumn.settings.icon_size.options__3.label"
+        }
+      ],
+      "default": "medium",
+      "label": "t:sections.multicolumn.settings.icon_size.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.multicolumn.settings.header_image.content"
+    },
+    {
+      "type": "select",
+      "id": "image_size",
+      "options": [
+        {
+          "value": "extra_small",
+          "label": "t:sections.multicolumn.settings.image_size.options__1.label"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.multicolumn.settings.image_size.options__2.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.multicolumn.settings.image_size.options__3.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.multicolumn.settings.image_size.options__4.label"
+        }
+      ],
+      "default": "extra_small",
+      "label": "t:sections.multicolumn.settings.image_size.label"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "1/1",
+          "label": "t:sections.multicolumn.settings.aspect_ratio.options__1.label"
+        },
+        {
+          "value": "3/2",
+          "label": "t:sections.multicolumn.settings.aspect_ratio.options__2.label"
+        },
+        {
+          "value": "3/4",
+          "label": "t:sections.multicolumn.settings.aspect_ratio.options__3.label"
+        },
+        {
+          "value": "adapt",
+          "label": "t:sections.multicolumn.settings.aspect_ratio.options__4.label"
+        }
+      ],
+      "default": "1/1",
+      "label": "t:sections.multicolumn.settings.aspect_ratio.label"
+    },
+    {
+      "type": "select",
+      "id": "object_fit",
+      "options": [
+        {
+          "value": "contain",
+          "label": "t:sections.multicolumn.settings.image_fit.options__1.label"
+        },
+        {
+          "value": "cover",
+          "label": "t:sections.multicolumn.settings.image_fit.options__2.label"
+        }
+      ],
+      "default": "cover",
+      "label": "t:sections.multicolumn.settings.image_fit.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.multicolumn.settings.header_content.content"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "default": "left",
+      "label": "t:sections.multicolumn.settings.content_alignment.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.multicolumn.settings.content_alignment.options.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.multicolumn.settings.content_alignment.options.options__2.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_heading_size",
+      "options": [
+        {
+          "value": "h4",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h3",
+      "label": "t:sections.multicolumn.settings.column_heading_size.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.button.header_button.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_show",
+      "default": false,
+      "label": "t:sections.all.button.button_show.label"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.all.button.button_label.label",
+      "default": "t:sections.multicolumn.settings.button_label.default"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "t:sections.all.button.button_style.options__1.label"
+        },
+        {
+          "value": "secondary",
+          "label": "t:sections.all.button.button_style.options__2.label"
+        },
+        {
+          "value": "tertiary",
+          "label": "t:sections.all.button.button_style.options__3.label"
+        }
+      ],
+      "default": "primary",
+      "label": "t:sections.all.button.button_style.label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.all.button.button_link.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section-padding.header.content"
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "options": [
+        {
+          "value": "no-indent",
+          "label": "t:sections.all.section-padding.options__1.label"
+        },
+        {
+          "value": "xs",
+          "label": "t:sections.all.section-padding.options__2.label"
+        },
+        {
+          "value": "s",
+          "label": "t:sections.all.section-padding.options__3.label"
+        },
+        {
+          "value": "m",
+          "label": "t:sections.all.section-padding.options__4.label"
+        },
+        {
+          "value": "l",
+          "label": "t:sections.all.section-padding.options__5.label"
+        },
+        {
+          "value": "xl",
+          "label": "t:sections.all.section-padding.options__6.label"
+        }
+      ],
+      "default": "no-indent",
+      "label": "t:sections.all.section-padding.padding_top.label"
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "options": [
+        {
+          "value": "no-indent",
+          "label": "t:sections.all.section-padding.options__1.label"
+        },
+        {
+          "value": "xs",
+          "label": "t:sections.all.section-padding.options__2.label"
+        },
+        {
+          "value": "s",
+          "label": "t:sections.all.section-padding.options__3.label"
+        },
+        {
+          "value": "m",
+          "label": "t:sections.all.section-padding.options__4.label"
+        },
+        {
+          "value": "l",
+          "label": "t:sections.all.section-padding.options__5.label"
+        },
+        {
+          "value": "xl",
+          "label": "t:sections.all.section-padding.options__6.label"
+        }
+      ],
+      "default": "no-indent",
+      "label": "t:sections.all.section-padding.padding_bottom.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section-margin.header.content"
+    },
+    {
+      "type": "select",
+      "id": "margin_top",
+      "options": [
+        {
+          "value": "no-indent",
+          "label": "t:sections.all.section-margin.options__1.label"
+        },
+        {
+          "value": "xs",
+          "label": "t:sections.all.section-margin.options__2.label"
+        },
+        {
+          "value": "s",
+          "label": "t:sections.all.section-margin.options__3.label"
+        },
+        {
+          "value": "m",
+          "label": "t:sections.all.section-margin.options__4.label"
+        },
+        {
+          "value": "l",
+          "label": "t:sections.all.section-margin.options__5.label"
+        },
+        {
+          "value": "xl",
+          "label": "t:sections.all.section-margin.options__6.label"
+        }
+      ],
+      "default": "l",
+      "label": "t:sections.all.section-margin.margin_top.label"
+    },
+    {
+      "type": "select",
+      "id": "margin_bottom",
+      "options": [
+        {
+          "value": "no-indent",
+          "label": "t:sections.all.section-margin.options__1.label"
+        },
+        {
+          "value": "xs",
+          "label": "t:sections.all.section-margin.options__2.label"
+        },
+        {
+          "value": "s",
+          "label": "t:sections.all.section-margin.options__3.label"
+        },
+        {
+          "value": "m",
+          "label": "t:sections.all.section-margin.options__4.label"
+        },
+        {
+          "value": "l",
+          "label": "t:sections.all.section-margin.options__5.label"
+        },
+        {
+          "value": "xl",
+          "label": "t:sections.all.section-margin.options__6.label"
+        }
+      ],
+      "default": "no-indent",
+      "label": "t:sections.all.section-margin.margin_bottom.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "t:sections.multicolumn.blocks.column.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.all.image.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "t:sections.multicolumn.blocks.column.settings.image_2.label"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "options": [
+            {
+              "value": "none",
+              "label": "t:sections.all.icon_pack.options__1.label"
+            },
+            {
+              "value": "abstract_1",
+              "label": "t:sections.all.icon_pack.options__2.label"
+            },
+            {
+              "value": "abstract_2",
+              "label": "t:sections.all.icon_pack.options__3.label"
+            },
+            {
+              "value": "abstract_3",
+              "label": "t:sections.all.icon_pack.options__4.label"
+            },
+            {
+              "value": "abstract_4",
+              "label": "t:sections.all.icon_pack.options__5.label"
+            },
+            {
+              "value": "arrow",
+              "label": "t:sections.all.icon_pack.options__6.label"
+            },
+            {
+              "value": "bag",
+              "label": "t:sections.all.icon_pack.options__7.label"
+            },
+            {
+              "value": "box",
+              "label": "t:sections.all.icon_pack.options__8.label"
+            },
+            {
+              "value": "check_mark_1",
+              "label": "t:sections.all.icon_pack.options__9.label"
+            },
+            {
+              "value": "check_mark_2",
+              "label": "t:sections.all.icon_pack.options__10.label"
+            },
+            {
+              "value": "check_mark_3",
+              "label": "t:sections.all.icon_pack.options__11.label"
+            },
+            {
+              "value": "close",
+              "label": "t:sections.all.icon_pack.options__12.label"
+            },
+            {
+              "value": "facebook",
+              "label": "t:sections.all.icon_pack.options__13.label"
+            },
+            {
+              "value": "filter",
+              "label": "t:sections.all.icon_pack.options__14.label"
+            },
+            {
+              "value": "flag",
+              "label": "t:sections.all.icon_pack.options__15.label"
+            },
+            {
+              "value": "hand",
+              "label": "t:sections.all.icon_pack.options__16.label"
+            },
+            {
+              "value": "heart",
+              "label": "t:sections.all.icon_pack.options__17.label"
+            },
+            {
+              "value": "instagram",
+              "label": "t:sections.all.icon_pack.options__18.label"
+            },
+            {
+              "value": "lightning_bolt",
+              "label": "t:sections.all.icon_pack.options__19.label"
+            },
+            {
+              "value": "link",
+              "label": "t:sections.all.icon_pack.options__20.label"
+            },
+            {
+              "value": "menu",
+              "label": "t:sections.all.icon_pack.options__21.label"
+            },
+            {
+              "value": "minus",
+              "label": "t:sections.all.icon_pack.options__22.label"
+            },
+            {
+              "value": "moon",
+              "label": "t:sections.all.icon_pack.options__23.label"
+            },
+            {
+              "value": "payment",
+              "label": "t:sections.all.icon_pack.options__24.label"
+            },
+            {
+              "value": "pickup",
+              "label": "t:sections.all.icon_pack.options__25.label"
+            },
+            {
+              "value": "pinterest",
+              "label": "t:sections.all.icon_pack.options__26.label"
+            },
+            {
+              "value": "plant",
+              "label": "t:sections.all.icon_pack.options__27.label"
+            },
+            {
+              "value": "plus",
+              "label": "t:sections.all.icon_pack.options__28.label"
+            },
+            {
+              "value": "rabbit",
+              "label": "t:sections.all.icon_pack.options__29.label"
+            },
+            {
+              "value": "recycle",
+              "label": "t:sections.all.icon_pack.options__30.label"
+            },
+            {
+              "value": "return",
+              "label": "t:sections.all.icon_pack.options__31.label"
+            },
+            {
+              "value": "reward",
+              "label": "t:sections.all.icon_pack.options__32.label"
+            },
+            {
+              "value": "search",
+              "label": "t:sections.all.icon_pack.options__33.label"
+            },
+            {
+              "value": "snapchat",
+              "label": "t:sections.all.icon_pack.options__34.label"
+            },
+            {
+              "value": "tik_tok",
+              "label": "t:sections.all.icon_pack.options__35.label"
+            },
+            {
+              "value": "trash",
+              "label": "t:sections.all.icon_pack.options__36.label"
+            },
+            {
+              "value": "tumblr",
+              "label": "t:sections.all.icon_pack.options__37.label"
+            },
+            {
+              "value": "twitter",
+              "label": "t:sections.all.icon_pack.options__38.label"
+            },
+            {
+              "value": "user",
+              "label": "t:sections.all.icon_pack.options__39.label"
+            },
+            {
+              "value": "vimeo",
+              "label": "t:sections.all.icon_pack.options__40.label"
+            },
+            {
+              "value": "world",
+              "label": "t:sections.all.icon_pack.options__41.label"
+            },
+            {
+              "value": "youtube",
+              "label": "t:sections.all.icon_pack.options__42.label"
+            }
+          ],
+          "default": "none",
+          "label": "t:sections.all.icon_pack.label",
+          "info": "t:sections.multicolumn.blocks.column.settings.icon.info"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "t:sections.all.subheading.label"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "t:sections.all.heading.label",
+          "default": "t:sections.multicolumn.blocks.column.settings.heading.default"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "options": [
+            {
+              "value": "h1",
+              "label": "t:sections.all.heading_tag.options__1.label"
+            },
+            {
+              "value": "h2",
+              "label": "t:sections.all.heading_tag.options__2.label"
+            },
+            {
+              "value": "h3",
+              "label": "t:sections.all.heading_tag.options__3.label"
+            },
+            {
+              "value": "h4",
+              "label": "t:sections.all.heading_tag.options__4.label"
+            },
+            {
+              "value": "h5",
+              "label": "t:sections.all.heading_tag.options__5.label"
+            },
+            {
+              "value": "h6",
+              "label": "t:sections.all.heading_tag.options__6.label"
+            },
+            {
+              "value": "div",
+              "label": "t:sections.all.heading_tag.options__7.label"
+            }
+          ],
+          "default": "h3",
+          "label": "t:sections.all.heading_tag.label",
+          "info": "t:sections.all.heading_tag.info",
+          "visible_if": "{{ block.settings.heading != blank }}"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "t:sections.all.text.label",
+          "default": "t:sections.multicolumn.blocks.column.settings.text.default"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.all.button.header_button.content"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_button",
+          "default": false,
+          "label": "t:sections.all.button.button_show.label"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "t:sections.all.button.button_label.label",
+          "default": "t:sections.multicolumn.blocks.column.settings.button_label.default"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.all.button.button_link.label"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "options": [
+            {
+              "value": "primary",
+              "label": "t:sections.all.button.button_style.options__1.label"
+            },
+            {
+              "value": "secondary",
+              "label": "t:sections.all.button.button_style.options__2.label"
+            },
+            {
+              "value": "tertiary",
+              "label": "t:sections.all.button.button_style.options__3.label"
+            }
+          ],
+          "default": "secondary",
+          "label": "t:sections.all.button.button_style.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.multicolumn.name",
+      "blocks": [
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,280 @@
+/* ============================================================
+   UNIX — Saudi Address Finder: cart-drawer experience
+
+   The app injects a map widget into .cart-drawer__bottom, the fixed strip
+   at the foot of the drawer that also holds the checkout buttons. Out of
+   the box the map is open at 300px, the strip does not scroll, and on a
+   phone the buttons vanish below the fold.
+
+   This file gives the widget three deliberate states, all driven by a
+   class the companion script sets on the widget root:
+
+     .una-collapsed  one tidy row: pin, label, chevron. The default.
+     (no class)      open: hint, map, actions. Map capped to the screen.
+     .una-done       saved: map folded away, address card shown.
+
+   And it makes the drawer footer a scroll container with the checkout
+   buttons pinned to its bottom, so they are reachable in every state.
+
+   Selectors are the app's own [data-na=...] attributes, so nothing here
+   can leak into theme markup. The one generic name, .actions, is always
+   qualified by the widget root.
+   ============================================================ */
+
+/* ---------- drawer footer: scrollable, buttons pinned ---------- */
+
+cart-drawer .cart-drawer__bottom,
+.cart-drawer .cart-drawer__bottom,
+#CartDrawer .cart-drawer__bottom {
+  max-height: 76svh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+cart-drawer .cart-drawer__bottom .cart__ctas,
+.cart-drawer .cart-drawer__bottom .cart__ctas,
+#CartDrawer .cart-drawer__bottom .cart__ctas {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: rgb(var(--color-background, 245 241 234));
+  padding-top: .8rem;
+}
+
+/* ---------- widget shell ---------- */
+
+[data-na='root'] {
+  font-size: 1.3rem;
+  padding: .2rem 0 .6rem !important;
+}
+
+/* the header row — always visible, acts as the toggle */
+[data-na='open-map-btn'] {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: .8rem;
+  padding: 1rem 1.2rem !important;
+  margin: 0 0 .4rem;
+  border: 1px solid rgba(55, 53, 66, .14);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 1.35rem !important;
+  font-weight: 600 !important;
+  color: #373542 !important;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color .2s ease, background-color .2s ease;
+}
+[data-na='open-map-btn']:hover {
+  border-color: rgba(55, 53, 66, .3);
+}
+[data-na='open-map-btn'] > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background: #EEE7DA;
+  padding: 0 !important;
+}
+[data-na='open-map-btn'] > span:first-child svg {
+  width: 1.7rem !important;
+  height: 1.7rem !important;
+  color: #14532D;
+}
+[data-na='open-map-label'] {
+  flex: 1 1 auto;
+  text-align: start;
+}
+
+/* chevron, drawn by CSS so we don't depend on the app's markup */
+[data-na='open-map-btn']::after {
+  content: '';
+  flex: none;
+  width: .9rem;
+  height: .9rem;
+  border-inline-end: 2px solid rgba(55, 53, 66, .5);
+  border-bottom: 2px solid rgba(55, 53, 66, .5);
+  transform: rotate(45deg);
+  margin-inline-end: .3rem;
+  transition: transform .25s ease;
+}
+[data-na='root']:not(.una-collapsed):not(.una-done) [data-na='open-map-btn']::after {
+  transform: rotate(-135deg);
+  margin-top: .5rem;
+}
+
+/* ---------- collapsed state ---------- */
+
+[data-na='root'].una-collapsed [data-na='map-container'],
+[data-na='root'].una-done [data-na='map-container'] {
+  display: none !important;
+}
+
+/* ---------- open state ---------- */
+
+[data-na='map-container'] {
+  padding: .6rem .2rem 0;
+}
+
+[data-na='drop-pin-hint'] {
+  padding: 0 .2rem 1rem !important;
+  font-size: 1.2rem !important;
+  line-height: 1.55 !important;
+  color: #6B6560 !important;
+}
+
+[data-na='map'] {
+  height: 220px !important;
+  max-height: 32svh !important;
+  margin-bottom: 1rem !important;
+  border-radius: 12px !important;
+  box-shadow: 0 0 0 1px rgba(55, 53, 66, .12);
+}
+
+/* the loading overlay the app draws while it calls SPL */
+[data-na='map-loading'] {
+  border-radius: 12px !important;
+}
+[data-na='finding-title'] {
+  font-size: 1.35rem !important;
+  color: #373542 !important;
+}
+[data-na='finding-sub'] {
+  font-size: 1.15rem !important;
+}
+
+/* Google's own chrome: keep only what a phone needs */
+[data-na='map'] .gm-style-mtc-bbw,
+[data-na='map'] .gm-fullscreen-control,
+[data-na='map'] .gm-style-cc,
+[data-na='map'] .gmnoscreen {
+  display: none !important;
+}
+
+/* "go to my location" — the one control that matters, made unmissable */
+[data-na='map'] button[title='Go to my location'] {
+  width: 4.4rem !important;
+  height: 4.4rem !important;
+  border-radius: 50% !important;
+  bottom: 1.2rem !important;
+  right: 1.2rem !important;
+  margin: 0 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .18) !important;
+}
+[data-na='map'] button[title='Go to my location'] svg {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+/* actions row */
+[data-na='root'] .actions {
+  gap: .8rem;
+  margin: 0 0 .4rem;
+}
+[data-na='find-address-btn'] {
+  flex: 1 1 auto;
+  min-height: 4.6rem;
+  padding: 1.1rem 1.6rem !important;
+  border-radius: 999px !important;
+  font-size: 1.4rem !important;
+  font-weight: 600;
+}
+[data-na='cancel-map-btn'] {
+  flex: 0 0 auto;
+  min-height: 4.6rem;
+  padding: 1.1rem 1.8rem !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(55, 53, 66, .25) !important;
+  background: transparent !important;
+  color: #373542;
+  font-size: 1.35rem !important;
+}
+
+/* ---------- done state ---------- */
+
+[data-na='address-result'] {
+  display: none;
+  margin: 0 0 .6rem !important;
+  padding: 1.1rem 1.3rem 1.1rem 1.3rem;
+  border-radius: 12px;
+  background: #EDF2E9;
+  border: 1px solid rgba(20, 83, 45, .18);
+  font-size: 1.3rem !important;
+}
+[data-na='root'].una-done [data-na='address-result'] {
+  display: block !important;
+}
+[data-na='address-result'] > div:first-child {
+  align-items: flex-start !important;
+  margin-bottom: .5rem !important;
+}
+[data-na='address-found-title'] {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  color: #14532D;
+  font-weight: 700;
+  font-size: 1.35rem;
+}
+[data-na='address-found-title']::before {
+  content: '';
+  flex: none;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: #14532D url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F5F1EA' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E") center/60% no-repeat;
+}
+[data-na='edit-address-btn'] {
+  font-size: 1.2rem !important;
+  color: #14532D !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: .3rem .2rem;
+}
+[data-na='address-details'] {
+  color: #4E483F;
+  line-height: 1.7 !important;
+}
+
+/* in the done state the header reads as "done", not as a call to action */
+[data-na='root'].una-done [data-na='open-map-btn'] {
+  display: none !important;
+}
+
+/* ---------- errors ---------- */
+
+[data-na='address-error'] {
+  margin: .4rem 0 .6rem !important;
+  padding: .9rem 1.2rem;
+  border-radius: 10px;
+  background: #FBEFE6;
+  border: 1px solid rgba(199, 123, 74, .3);
+  color: #8A4A1E;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+[data-na='address-error']:empty {
+  display: none !important;
+}
+
+/* ---------- phones ---------- */
+
+@media screen and (max-width: 749px) {
+  cart-drawer .cart-drawer__bottom,
+  .cart-drawer .cart-drawer__bottom,
+  #CartDrawer .cart-drawer__bottom {
+    max-height: 72svh;
+  }
+  [data-na='map'] {
+    height: 200px !important;
+    max-height: 30svh !important;
+  }
+  [data-na='open-map-btn'] {
+    padding: .95rem 1.1rem !important;
+  }
+}

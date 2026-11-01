@@ -1,0 +1,68 @@
+{%- comment -%}
+  UNIX — Size finder v2 (see assets/unix-size-finder.js for the model).
+
+  Passes the product's category, chart family and learned fit shift to
+  the script. Sets need nothing extra: the script reads each size
+  picker's own label ("مقاس الهودي", "مقاس البنطلون") and gives each
+  piece its own answer.
+{%- endcomment -%}
+
+{%- if product.has_only_default_variant == false -%}
+  {%- liquid
+    assign has_size = false
+    for option in product.options_with_values
+      if option.name contains 'مقاس' or option.name contains 'Size' or option.name contains 'size'
+        assign has_size = true
+      endif
+    endfor
+  -%}
+  {%- if has_size -%}
+    {%- liquid
+      assign t = product.type | downcase
+      assign cat = 'topFitted'
+      if t contains 'legging'
+        assign cat = 'leggings'
+      elsif t contains 'bra'
+        assign cat = 'bra'
+      elsif t contains 'hood'
+        assign cat = 'hoodie'
+      elsif t contains 'pant' or t contains 'short' or t contains 'jogger'
+        assign cat = 'wide'
+      endif
+
+      assign chart = 'sport'
+      assign pg = product.metafields.custom.size_chart.value | default: product.metafields.custom.size_chart_top.value | default: product.metafields.custom.size_chart_bottom.value
+      if pg != blank and pg.handle contains 'comfy'
+        assign chart = 'comfy'
+      endif
+
+      comment
+        Learned shift per product, in size steps (positive = runs small).
+        Starts from the existing fit note and is replaced by the
+        calibration value once returns data exists.
+      endcomment
+      assign delta = product.metafields.custom.fit_delta | default: 0
+      if delta == 0
+        assign fit = product.metafields.custom.size_fit_style | downcase
+        if fit contains 'small'
+          assign delta = 0.33
+        elsif fit contains 'large'
+          assign delta = -0.33
+        endif
+      endif
+
+      assign lang = 'en'
+      if request.locale.iso_code contains 'ar'
+        assign lang = 'ar'
+      endif
+    -%}
+    {{ 'unix-size-finder.css' | asset_url | stylesheet_tag }}
+    <div class="unix-sf" data-unix-sf
+      data-lang="{{ lang }}" data-chart="{{ chart }}" data-cat="{{ cat }}"
+      data-delta="{{ delta }}" data-form="product-form-{{ section.id }}">
+      <button type="button" class="unix-sf__open" data-sf-open aria-expanded="false"></button>
+      <div class="unix-sf__panel" data-sf-panel hidden></div>
+    </div>
+    <script src="{{ 'unix-size-finder.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
+{%- endif -%}

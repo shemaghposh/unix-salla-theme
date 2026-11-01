@@ -1,0 +1,31 @@
+{% comment %}
+   Renders section text
+   Accepts:
+   section: {Object} Section
+  class: {String} Class (optional)
+   Usage:
+   {% render 'section-text', section: section, class: '' %}
+{% endcomment %}
+
+{%- if section.settings.subheading != blank or section.settings.heading != blank -%}
+  <div class="{% if class %}{{ class }}__titles{% endif %} titles 
+    {% if text_align %} titles--{{ text_align }} {% endif %}">
+    {%- if section.settings.subheading != blank -%}
+      <div class="{% if class %}{{ class }}__subtitle{% endif %} subtitle">
+        {{ section.settings.subheading }}
+      </div>
+    {% endif %}
+    {%- if section.settings.heading != blank -%}
+      <{{ section.settings.heading_tag | default: 'h2' }}
+        class="{{ section.settings.heading_size }} {% if class %}{{ class }}__title{% endif %} title"
+      >
+        {{- section.settings.heading -}}
+      </{{ section.settings.heading_tag | default: 'h2' }}>
+    {% endif %}
+  </div>
+{% endif %}
+{%- if section.settings.text != blank -%}
+  <div class="{% if class %}{{ class }}__description{% endif %} description body-large {% if text_align %} description--{{ text_align }} {% endif %}">
+    {{ section.settings.text  | newline_to_br }}
+  </div>
+{% endif %}

@@ -1,0 +1,297 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": ""
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2",
+            "heading_tag": "h1"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "unix_promo_code": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'unix-nd-code' %}{% render 'unix-offer', mode: 'chip' %}"
+          }
+        },
+        "unix_tamara": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'tamara' %}"
+          }
+        },
+        "tabby_pay_later_cart_no_rerender_i9nJi6": {
+          "type": "shopify://apps/tabby-pay-later/blocks/cart-no-rerender/b31c2495-41fc-4b20-9fc7-8cb2e9dd9a95",
+          "settings": {
+            "no_price_display": false
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_type": "shopify_swatch",
+            "variant_image_size": "portrait",
+            "show_label": true,
+            "show_label_color": false,
+            "add_text": "",
+            "enable_linked_products": false,
+            "linked_products_label": "Color"
+          }
+        },
+        "unix_size_finder": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'unix-size-finder' %}"
+          }
+        },
+        "size_guide_custom": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% assign sg_ar = false %}{% if request.locale.iso_code contains 'ar' %}{% assign sg_ar = true %}{% endif %}{% assign sc_single = product.metafields.custom.size_chart.value %}{% assign sc_top = product.metafields.custom.size_chart_top.value %}{% assign sc_bottom = product.metafields.custom.size_chart_bottom.value %}{%- if sc_single != blank or sc_top != blank or sc_bottom != blank -%}<div class=\"unix-size-guide-buttons\" style=\"display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 4px;\">{%- if sc_single != blank -%}<button type=\"button\" class=\"unix-sg-btn\" data-sg-target=\"unix-sg-single\" style=\"text-decoration:underline;background:none;border:none;cursor:pointer;padding:0;font:inherit;\"><span class=\"body-xs\">{% if sg_ar %}دليل المقاسات{% else %}Size guide{% endif %}</span></button>{%- endif -%}{%- if sc_top != blank -%}<button type=\"button\" class=\"unix-sg-btn\" data-sg-target=\"unix-sg-top\" style=\"text-decoration:underline;background:none;border:none;cursor:pointer;padding:0;font:inherit;\"><span class=\"body-xs\">{% if sg_ar %}دليل مقاسات الأعلى{% else %}Top size guide{% endif %}</span></button>{%- endif -%}{%- if sc_bottom != blank -%}<button type=\"button\" class=\"unix-sg-btn\" data-sg-target=\"unix-sg-bottom\" style=\"text-decoration:underline;background:none;border:none;cursor:pointer;padding:0;font:inherit;\"><span class=\"body-xs\">{% if sg_ar %}دليل مقاسات الأسفل{% else %}Bottom size guide{% endif %}</span></button>{%- endif -%}</div>{%- if sc_single != blank -%}<div id=\"unix-sg-single\" class=\"unix-sg-modal\" style=\"display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px;\"><div style=\"background:#fff;max-width:900px;width:100%;max-height:90vh;overflow:auto;border-radius:12px;position:relative;padding:16px;\"><button type=\"button\" class=\"unix-sg-close\" aria-label=\"{% if sg_ar %}إغلاق{% else %}Close{% endif %}\" style=\"position:absolute;top:10px;left:10px;background:none;border:none;font-size:26px;cursor:pointer;line-height:1;z-index:2;\">&times;</button><div class=\"rte\">{{ sc_single.content }}</div></div></div>{%- endif -%}{%- if sc_top != blank -%}<div id=\"unix-sg-top\" class=\"unix-sg-modal\" style=\"display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px;\"><div style=\"background:#fff;max-width:900px;width:100%;max-height:90vh;overflow:auto;border-radius:12px;position:relative;padding:16px;\"><button type=\"button\" class=\"unix-sg-close\" aria-label=\"{% if sg_ar %}إغلاق{% else %}Close{% endif %}\" style=\"position:absolute;top:10px;left:10px;background:none;border:none;font-size:26px;cursor:pointer;line-height:1;z-index:2;\">&times;</button><div class=\"rte\">{{ sc_top.content }}</div></div></div>{%- endif -%}{%- if sc_bottom != blank -%}<div id=\"unix-sg-bottom\" class=\"unix-sg-modal\" style=\"display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px;\"><div style=\"background:#fff;max-width:900px;width:100%;max-height:90vh;overflow:auto;border-radius:12px;position:relative;padding:16px;\"><button type=\"button\" class=\"unix-sg-close\" aria-label=\"{% if sg_ar %}إغلاق{% else %}Close{% endif %}\" style=\"position:absolute;top:10px;left:10px;background:none;border:none;font-size:26px;cursor:pointer;line-height:1;z-index:2;\">&times;</button><div class=\"rte\">{{ sc_bottom.content }}</div></div></div>{%- endif -%}<script>(function(){var wrap=document.currentScript.parentElement;wrap.querySelectorAll(\".unix-sg-btn\").forEach(function(btn){btn.addEventListener(\"click\",function(){var m=document.getElementById(btn.getAttribute(\"data-sg-target\"));if(m){m.style.display=\"flex\";document.body.style.overflow=\"hidden\";}});});wrap.querySelectorAll(\".unix-sg-modal\").forEach(function(modal){function close(){modal.style.display=\"none\";document.body.style.overflow=\"\";}modal.addEventListener(\"click\",function(e){if(e.target===modal)close();});var c=modal.querySelector(\".unix-sg-close\");if(c)c.addEventListener(\"click\",close);});})();</script>{%- endif -%}"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_quantity": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "unix_shipping_estimate": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'unix-shipping-estimate' %}"
+          }
+        },
+        "inventory": {
+          "type": "inventory",
+          "disabled": true,
+          "settings": {}
+        },
+        "tags": {
+          "type": "tags",
+          "disabled": true,
+          "settings": {}
+        },
+        "pickup_availability": {
+          "type": "pickup_availability",
+          "settings": {}
+        },
+        "popup": {
+          "type": "popup",
+          "disabled": true,
+          "settings": {
+            "external_heading": "Next Day Delivery",
+            "external_text": "Shop now and receive your order tomorrow with our next day delivery service.",
+            "label": "Read More",
+            "heading": "Next Day Delivery",
+            "text": "<p>Get your items delivered to your doorstep in no time with our Next Day Delivery service! Order today and receive your package by tomorrow to ensure quick and convenient shopping experience. Don't wait around for your items, shop with us and enjoy fast and reliable delivery straight to your door.</p>"
+          }
+        },
+        "dropdown_information_1": {
+          "type": "dropdown_information",
+          "settings": {
+            "characteristics": false,
+            "heading": "الوصف",
+            "description": "{{ product.description }}",
+            "default_open": false,
+            "show_under_gallery_on_desktop": false
+          }
+        },
+        "dropdown_information_2": {
+          "type": "dropdown_information",
+          "settings": {
+            "characteristics": false,
+            "heading": "مميزات المنتج",
+            "description": "<p>{{ product.metafields.custom.key_features | metafield_tag }}</p>",
+            "default_open": false,
+            "show_under_gallery_on_desktop": false
+          }
+        },
+        "dropdown_information_3": {
+          "type": "dropdown_information",
+          "settings": {
+            "characteristics": false,
+            "heading": "تعليمات العناية",
+            "description": "<p>{{ product.metafields.descriptors.care_guide | metafield_tag }}</p>",
+            "default_open": false,
+            "show_under_gallery_on_desktop": false
+          }
+        },
+        "judge_me_reviews_preview_badge_7f9MCN": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "unix_promo_code",
+        "unix_tamara",
+        "tabby_pay_later_cart_no_rerender_i9nJi6",
+        "variant_picker",
+        "unix_size_finder",
+        "size_guide_custom",
+        "buy_buttons",
+        "unix_shipping_estimate",
+        "inventory",
+        "tags",
+        "pickup_availability",
+        "popup",
+        "dropdown_information_1",
+        "dropdown_information_2",
+        "dropdown_information_3",
+        "judge_me_reviews_preview_badge_7f9MCN"
+      ],
+      "settings": {
+        "gallery_type_mobile": "slider",
+        "mobile_alignment": "before",
+        "gallery_type": "slider_previews",
+        "variant_media_display": "show_all",
+        "desktop_alignment": "right",
+        "aspect_ratio": "2/3",
+        "image_fit": "contain",
+        "image_fit_modal": "contain",
+        "show_description_bellow_gallery": false,
+        "enable_video_looping": false,
+        "enable_image_zoom_mobile": true,
+        "enable_image_zoom_desktop": true,
+        "padding_bottom": "l"
+      }
+    },
+    "complete_the_look": {
+      "type": "complete-the-look",
+      "settings": {
+        "heading": "أكملي الإطلالة",
+        "subheading": "",
+        "limit": 2,
+        "show_price": true,
+        "hide_soldout": false,
+        "color_scheme": "background-1",
+        "padding_top": 32,
+        "padding_bottom": 40
+      }
+    },
+    "1782811052fbca1ed2": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_nwykJC": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "real_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_nwykJC"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "color_scheme": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "subheading": "",
+        "heading": "قد يعجبك أيضًا",
+        "heading_size": "h3",
+        "heading_tag": "h2",
+        "text": "",
+        "columns_per_row": 4,
+        "products_limit": 4,
+        "enable_carousel": false,
+        "enable_empty_text": true,
+        "image_ratio": "2/3",
+        "image_fit": "contain",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_desc": false,
+        "card_heading_tag": "h3",
+        "columns_mobile": "2",
+        "button_show": true,
+        "button_label": "عرض الكل",
+        "button_style": "secondary",
+        "button_link": "shopify://collections/all",
+        "padding_top": "s",
+        "padding_bottom": "l",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "popular_products_LKpNjw": {
+      "type": "popular-products",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "subheading": "",
+        "heading": "Bestsellers",
+        "heading_size": "h3",
+        "heading_tag": "h2",
+        "text": "",
+        "product_list": [],
+        "products_to_show": 4,
+        "enable_carousel": true,
+        "columns_mobile": "2",
+        "show_collection": false,
+        "collection": "",
+        "color_scheme_collection": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "layout_columns": false,
+        "subheading_collection": "Subheading",
+        "heading_color": "basic",
+        "collection_heading_tag": "h3",
+        "show_desc_collection": true,
+        "opacity_overlay": 0.2,
+        "image_ratio": "2/3",
+        "image_fit": "contain",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_desc": false,
+        "card_heading_tag": "h3",
+        "button_show": true,
+        "button_label": "View All",
+        "button_style": "secondary",
+        "button_link": "",
+        "padding_top": "no-indent",
+        "padding_bottom": "l",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "complete_the_look",
+    "1782811052fbca1ed2",
+    "product-recommendations",
+    "popular_products_LKpNjw"
+  ]
+}

@@ -1,0 +1,1 @@
+(()=>{let e=()=>{jarallax(document.querySelectorAll(".jarallax"))};document.addEventListener("DOMContentLoaded",function(){e(),document.addEventListener("shopify:section:load",function(){e()})})})();

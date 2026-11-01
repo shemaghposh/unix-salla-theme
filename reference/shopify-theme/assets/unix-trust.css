@@ -1,0 +1,134 @@
+/* UNIX — footer trust strip.
+   Last band on the page. Centred stack: contact and social icons,
+   registration credentials, a rule, then payment marks and the rights line.
+   Background comes from the footer's colour scheme via the wrapper class,
+   so the two bands never diverge. */
+
+.unix-trust {
+  background: rgb(var(--color-background, 245 241 234));
+  padding: 1.2rem 0 3.6rem;
+}
+.unix-trust__inner {
+  max-width: 74rem;
+  margin: 0 auto;
+  padding: 0 var(--page-margin, 2rem);
+  text-align: center;
+}
+
+/* contact + social icons: soft rounded tiles so they read as buttons rather
+   than loose glyphs, matching the card shapes in the payment row below */
+.unix-trust__icons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-bottom: 2.6rem;
+}
+.unix-trust__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.6rem;
+  height: 4.6rem;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(55, 53, 66, .1);
+  color: #373542;
+  transition: box-shadow .2s ease, transform .2s ease, color .2s ease;
+}
+.unix-trust__icon svg {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: block;
+}
+.unix-trust__icon:hover {
+  box-shadow: 0 0 0 1px rgba(55, 53, 66, .3);
+  transform: translateY(-1px);
+}
+
+/* each platform picks up its own colour on hover only, so the row stays
+   monochrome and calm at rest */
+.unix-trust__icon--wa:hover { color: #25D366; }
+.unix-trust__icon--ig:hover { color: #C13584; }
+.unix-trust__icon--tt:hover { color: #000000; }
+
+/* registration credentials */
+.unix-trust__creds {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem 4rem;
+  margin-bottom: 2.4rem;
+}
+.unix-trust__cred {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.unix-trust__cred-badge {
+  width: 5.6rem;
+  height: auto;
+  flex: none;
+}
+.unix-trust__cred-text {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  text-align: start;
+}
+.unix-trust__cred-label {
+  font-size: 1.3rem;
+  color: #373542;
+  opacity: .75;
+  line-height: 1.35;
+}
+.unix-trust__cred-value {
+  font-size: 1.35rem;
+  color: #373542;
+  line-height: 1.35;
+}
+
+/* payment marks: uploaded logos and Shopify's card SVGs share one box so
+   the row reads as a single set despite the different source aspect ratios */
+.unix-trust__pay {
+  list-style: none;
+  margin: 0;
+  padding: 2.4rem 0 0;
+  border-top: 1px solid rgba(55, 53, 66, .14);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .7rem;
+  align-items: center;
+}
+.unix-trust__pay li { line-height: 0; }
+.unix-trust__pay-icon,
+.unix-trust__pay-img {
+  width: 4.8rem;
+  height: 3.1rem;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(55, 53, 66, .1);
+}
+.unix-trust__pay-img {
+  object-fit: contain;
+  padding: .4rem .5rem;
+}
+
+.unix-trust__rights {
+  margin: 2rem 0 0;
+  font-size: 1.2rem;
+  color: #373542;
+  opacity: .45;
+}
+
+@media screen and (max-width: 749px) {
+  .unix-trust { padding: .8rem 0 2.8rem; }
+  .unix-trust__icons { gap: 1rem; margin-bottom: 2.2rem; }
+  .unix-trust__icon { width: 4.2rem; height: 4.2rem; border-radius: 12px; }
+  .unix-trust__icon svg { width: 1.9rem; height: 1.9rem; }
+  .unix-trust__creds { gap: 1.6rem 2.4rem; }
+  .unix-trust__cred-badge { width: 4.8rem; }
+  .unix-trust__pay { padding-top: 2rem; }
+}

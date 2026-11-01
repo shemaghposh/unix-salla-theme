@@ -1,0 +1,816 @@
+<header-drawer>
+  <details class="menu-drawer-container">
+    <summary
+      class="header__icon header__icon--menu header__icon--summary link link--text focus-inset"
+      aria-label="{{ 'sections.header.menu' | t }}"
+    >
+      <span class="header__icon-wrapper">
+        {% render 'icon-hamburger' %}
+        {% render 'icon-close' %}
+      </span>
+    </summary>
+    <div
+      id="menu-drawer"
+      class="menu-drawer motion-reduce color-background-1 js-mobile-swipe js-mobile-swipe-left"
+      tabindex="-1"
+    >
+      <div class="menu-drawer__header js-mobile-swipe-control">
+        <button
+          type="button"
+          class="menu-drawer__close-button modal-close-button focus-inset"
+          aria-label="{{ 'accessibility.close' | t }}"
+        >
+          {% render 'icon-close' %}
+        </button>
+        <div class="menu-drawer__header-heading">
+          {% render 'header-logo', class: 'in-header-drawer' %}
+        </div>
+        {% render 'color-scheme' %}
+      </div>
+      <div class="menu-drawer__wrapper">
+        <div class="menu-drawer__top">
+          <nav class="menu-drawer__navigation">
+            {% if section.settings.menu != blank %}
+              <ul class="menu-drawer__menu" role="list">
+                {%- for link in section.settings.menu.links -%}
+                  {% liquid
+                    assign mega_menu = false
+                  %}
+                  {% for block in section.blocks %}
+                    {% liquid
+                      assign mega_menu_trigger = block.settings.mega_menu_trigger | handle | strip
+
+                      if link.handle == mega_menu_trigger
+                        if block.settings.inner_menu_type == 'columns'
+                          for i in (1..4)
+                            assign enable_column_setting = 'enable_column_' | append: i
+                            assign heading_setting = 'column_heading_' | append: i
+                            if block.settings[enable_column_setting] and block.settings[heading_setting] != blank
+                              assign mega_menu = true
+                            endif
+                          endfor
+                        elsif block.settings.inner_menu_type == 'submenu'
+                          if link.links != blank
+                            assign mega_menu = true
+                          endif
+                        endif
+                      endif
+                    %}
+                  {% endfor %}
+                  <li>
+                    {%- if section.blocks.size > 0 and mega_menu -%}
+                      <menu-drawer>
+                        <details id="Details-MobileMenu-Link-{{ forloop.index }}">
+                          <summary
+                            class="menu-drawer__menu-item focus-inset{% if link.child_active %} menu-drawer__menu-item--active{% endif %}"
+                            {% if forloop.length < 10 %}
+                              style="transition-delay: calc(100ms * {{ forloop.index }})"
+                            {% elsif forloop.length < 20 %}
+                              style="transition-delay: calc(50ms * {{ forloop.index }})"
+                            {% elsif forloop.length < 50 %}
+                              style="transition-delay: calc(20ms * {{ forloop.index }})"
+                            {% else %}
+                              style="transition-delay: calc(5ms * {{ forloop.index }})"
+                            {% endif %}
+                          >
+                            <a
+                              href="{{ link.url }}"
+                              class="menu-drawer__menu-link focus-inset body-xl"
+                              {% if childlink.current %}
+                                aria-current="page"
+                              {% endif %}
+                            >
+                              {{ link.title | escape }}
+                            </a>
+                            <div class="menu-drawer__menu-arrow">
+                              {% render 'icon-caret-right' %}
+                            </div>
+                          </summary>
+                          <div
+                            id="link-{{ link.title | escape }}"
+                            class="menu-drawer__submenu motion-reduce js-mobile-swipe js-mobile-swipe-right"
+                            tabindex="-1"
+                          >
+                            <div class="menu-drawer__submenu-inner">
+                              <div class="menu-drawer__header no-js-hidden js-mobile-swipe-control">
+                                <button
+                                  type="button"
+                                  class="menu-drawer__submenu-back modal-close-button focus-inset"
+                                  aria-expanded="true"
+                                  aria-label="{{ 'accessibility.back' | t }}"
+                                >
+                                  {% render 'icon-caret-left' %}
+                                </button>
+                                <div class="menu-drawer__header-heading body-xl">
+                                  {{ link.title | escape }}
+                                </div>
+                              </div>
+                              {% if mega_menu %}
+                                <div class="menu-drawer__mega-menu">
+                                  {% render 'mega-menu-mobile', link: link, blocks: section.blocks %}
+                                </div>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </details>
+                      </menu-drawer>
+                    {%- elsif link.links != blank -%}
+                      <menu-drawer>
+                        <details id="Details-MobileMenu-Link-{{ forloop.index }}">
+                          <summary
+                            class="menu-drawer__menu-item focus-inset{% if link.child_active %} menu-drawer__menu-item--active{% endif %}"
+                            {% if forloop.length < 10 %}
+                              style="transition-delay: calc(100ms * {{ forloop.index }})"
+                            {% elsif forloop.length < 20 %}
+                              style="transition-delay: calc(50ms * {{ forloop.index }})"
+                            {% elsif forloop.length < 50 %}
+                              style="transition-delay: calc(20ms * {{ forloop.index }})"
+                            {% else %}
+                              style="transition-delay: calc(5ms * {{ forloop.index }})"
+                            {% endif %}
+                          >
+                            <a
+                              href="{{ link.url }}"
+                              class="menu-drawer__menu-link focus-inset body-xl"
+                              {% if childlink.current %}
+                                aria-current="page"
+                              {% endif %}
+                            >
+                              {{ link.title | escape }}
+                            </a>
+                            <div class="menu-drawer__menu-arrow">
+                              {% render 'icon-caret-right' %}
+                            </div>
+                          </summary>
+                          <div
+                            id="link-{{ link.title | escape }}"
+                            class="menu-drawer__submenu motion-reduce js-mobile-swipe js-mobile-swipe-right"
+                            tabindex="-1"
+                          >
+                            <div class="menu-drawer__submenu-inner">
+                              <div class="menu-drawer__header no-js-hidden js-mobile-swipe-control">
+                                <button
+                                  type="button"
+                                  class="menu-drawer__submenu-back modal-close-button focus-inset"
+                                  aria-expanded="true"
+                                  aria-label="{{ 'accessibility.back' | t }}"
+                                >
+                                  {% render 'icon-caret-left' %}
+                                </button>
+                                <div class="menu-drawer__header-heading body-xl">
+                                  {{ link.title | escape }}
+                                </div>
+                              </div>
+                              <ul
+                                class="menu-drawer__menu"
+                                role="list"
+                                tabindex="-1"
+                              >
+                                {%- for childlink in link.links -%}
+                                  <li>
+                                    {%- if childlink.links == blank -%}
+                                      <a
+                                        href="{{ childlink.url }}"
+                                        class="menu-drawer__menu-item menu-drawer__menu-link focus-inset body-xl{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"
+                                        {% if childlink.current %}
+                                          aria-current="page"
+                                        {% endif %}
+                                        {% if forloop.length < 10 %}
+                                          style="transition-delay: calc(100ms * {{ forloop.index }})"
+                                        {% elsif forloop.length < 20 %}
+                                          style="transition-delay: calc(50ms * {{ forloop.index }})"
+                                        {% elsif forloop.length < 50 %}
+                                          style="transition-delay: calc(20ms * {{ forloop.index }})"
+                                        {% else %}
+                                          style="transition-delay: calc(5ms * {{ forloop.index }})"
+                                        {% endif %}
+                                      >
+                                        {{ childlink.title | escape }}
+                                      </a>
+                                    {%- else -%}
+                                      <menu-drawer>
+                                        <details id="Details-MobileMenu-ChildLink-{{ forloop.index }}">
+                                          <summary
+                                            class="menu-drawer__menu-item focus-inset body-xl"
+                                            {% if forloop.length < 10 %}
+                                              style="transition-delay: calc(100ms * {{ forloop.index }})"
+                                            {% elsif forloop.length < 20 %}
+                                              style="transition-delay: calc(50ms * {{ forloop.index }})"
+                                            {% elsif forloop.length < 50 %}
+                                              style="transition-delay: calc(20ms * {{ forloop.index }})"
+                                            {% else %}
+                                              style="transition-delay: calc(5ms * {{ forloop.index }})"
+                                            {% endif %}
+                                          >
+                                            <a
+                                              href="{{ childlink.url }}"
+                                              class="menu-drawer__menu-link focus-inset body-xl"
+                                              {% if childlink.current %}
+                                                aria-current="page"
+                                              {% endif %}
+                                            >
+                                              {{ childlink.title | escape }}
+                                            </a>
+                                            <div class="menu-drawer__menu-arrow">
+                                              {% render 'icon-caret-right' %}
+                                            </div>
+                                          </summary>
+                                          <div
+                                            id="childlink-{{ childlink.title | escape }}"
+                                            class="menu-drawer__submenu motion-reduce js-mobile-swipe js-mobile-swipe-right"
+                                          >
+                                            <div class="menu-drawer__submenu-inner">
+                                              <div class="menu-drawer__header no-js-hidden js-mobile-swipe-control">
+                                                <button
+                                                  type="button"
+                                                  class="menu-drawer__submenu-back modal-close-button focus-inset"
+                                                  aria-expanded="true"
+                                                  aria-label="{{ 'accessibility.back' | t }}"
+                                                >
+                                                  {% render 'icon-caret-left' %}
+                                                </button>
+                                                <div class="menu-drawer__header-heading body-xl">
+                                                  {{ childlink.title | escape }}
+                                                </div>
+                                              </div>
+                                              <ul
+                                                class="menu-drawer__menu"
+                                                role="list"
+                                                tabindex="-1"
+                                              >
+                                                {%- for grandchildlink in childlink.links -%}
+                                                  <li>
+                                                    <a
+                                                      href="{{ grandchildlink.url }}"
+                                                      class="menu-drawer__menu-item menu-drawer__menu-link focus-inset body-xl{% if grandchildlink.current %} menu-drawer__menu-item--active{% endif %}"
+                                                      {% if grandchildlink.current %}
+                                                        aria-current="page"
+                                                      {% endif %}
+                                                      {% if forloop.length < 10 %}
+                                                        style="transition-delay: calc(100ms * {{ forloop.index }})"
+                                                      {% elsif forloop.length < 20 %}
+                                                        style="transition-delay: calc(50ms * {{ forloop.index }})"
+                                                      {% elsif forloop.length < 50 %}
+                                                        style="transition-delay: calc(20ms * {{ forloop.index }})"
+                                                      {% else %}
+                                                        style="transition-delay: calc(5ms * {{ forloop.index }})"
+                                                      {% endif %}
+                                                    >
+                                                      {{ grandchildlink.title | escape }}
+                                                    </a>
+                                                  </li>
+                                                {%- endfor -%}
+                                              </ul>
+                                            </div>
+                                          </div>
+                                        </details>
+                                      </menu-drawer>
+                                    {%- endif -%}
+                                  </li>
+                                {%- endfor -%}
+                              </ul>
+                            </div>
+                          </div>
+                        </details>
+                      </menu-drawer>
+                    {%- else -%}
+                      <a
+                        href="{{ link.url }}"
+                        class="menu-drawer__menu-item menu-drawer__menu-link focus-inset body-xl{% if link.current %} menu-drawer__menu-item--active{% endif %}"
+                        {% if link.current %}
+                          aria-current="page"
+                        {% endif %}
+                        {% if forloop.length < 10 %}
+                          style="transition-delay: calc(100ms * {{ forloop.index }})"
+                        {% elsif forloop.length < 20 %}
+                          style="transition-delay: calc(50ms * {{ forloop.index }})"
+                        {% elsif forloop.length < 50 %}
+                          style="transition-delay: calc(20ms * {{ forloop.index }})"
+                        {% else %}
+                          style="transition-delay: calc(5ms * {{ forloop.index }})"
+                        {% endif %}
+                      >
+                        {{ link.title | escape }}
+                      </a>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {% endif %}
+          </nav>
+
+          {% if section.settings.enable_mobile_promo %}
+            {% liquid
+              if section.settings.image_ratio_promo == '1/1'
+                assign padding_bottom = 100
+              elsif section.settings.image_ratio_promo == '16/9'
+                assign padding_bottom = 56.25
+              elsif section.settings.image_ratio_promo == '3/4'
+                assign padding_bottom = 133.33
+              elsif section.settings.image_promo != blank and section.settings.image_ratio_promo == 'adapt'
+                assign padding_bottom = 1 | divided_by: section.settings.image_promo.aspect_ratio | times: 100 | round: 2
+              else
+                assign padding_bottom = 0
+              endif
+            %}
+            <div
+              class="menu-drawer__promo color-{{ section.settings.color_scheme_promo }}"
+              style="--promo-height: {{ padding_bottom }}%;"
+            >
+              {% if section.settings.link_promo != blank %}
+                <a
+                  href="{{ section.settings.link_promo }}"
+                  class="menu-drawer__promo-overlay-link"
+                  {% if section.settings.heading_promo != blank %}
+                    aria-label="{{ section.settings.heading_promo | escape }}"
+                  {% else %}
+                    aria-label="{{ 'accessibility.open' | t }}"
+                  {% endif %}
+                >
+                  <span class="visually-hidden">
+                    {% if section.settings.heading_promo != blank %}
+                      {{ section.settings.heading_promo | escape }}
+                    {% else %}
+                      {{ 'accessibility.open' | t }}
+                    {% endif %}
+                  </span>
+                </a>
+              {% endif %}
+              {% if section.settings.image_promo != blank %}
+                {{
+                  section.settings.image_promo
+                  | image_url: width: section.settings.image_promo.width
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '295, 590, 885',
+                    sizes: '100%',
+                    class: 'menu-drawer__promo-image'
+                }}
+              {% endif %}
+              <div
+                class="menu-drawer__promo-overlay"
+                style="opacity: {{ section.settings.overlay_opacity_promo }}"
+              ></div>
+              {% if section.settings.subheading_promo != blank or section.settings.heading_promo != blank %}
+                <div class="menu-drawer__promo-content">
+                  {% if section.settings.subheading_promo != blank %}
+                    <div class="menu-drawer__promo-subheading body-xs">
+                      {{ section.settings.subheading_promo }}
+                    </div>
+                  {% endif %}
+                  {% if section.settings.heading_promo != blank %}
+                    <div class="menu-drawer__promo-heading body-large">
+                      {{ section.settings.heading_promo }}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="menu-drawer__bottom">
+          {%  render 'header-account', is_mobile: true %}
+
+          {% if section.settings.enable_social %}
+            <div class="menu-drawer__social container">
+              <ul class="list list-social list-unstyled" role="list">
+                {%- if settings.social_twitter_link != blank -%}
+                  <li class="list-social__item">
+                    <a
+                      href="{{ settings.social_twitter_link }}"
+                      {% if settings.new_tab %}
+                        target="_blank"
+                      {% endif %}
+                      class="link link--text list-social__link"
+                    >
+                      {%- render 'icon-twitter' -%}
+                      <span class="visually-hidden">
+                        {{- 'general.social.links.twitter' | t -}}
+                      </span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_facebook_link != blank -%}
+                  <li class="list-social__item">
+                    <a
+                      href="{{ settings.social_facebook_link }}"
+                      {% if settings.new_tab %}
+                        target="_blank"
+                      {% endif %}
+                      class="link link--text list-social__link"
+                    >
+                      {%- render 'icon-facebook' -%}
+                      <span class="visually-hidden">
+                        {{- 'general.social.links.facebook' | t -}}
+                      </span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_pinterest_link != blank -%}
+                  <li class="list-social__item">
+                    <a
+                      href="{{ settings.social_pinterest_link }}"
+                      {% if settings.new_tab %}
+                        target="_blank"
+                      {% endif %}
+                      class="link link--text list-social__link"
+                    >
+                      {%- render 'icon-pinterest' -%}
+                      <span class="visually-hidden">
+                        {{- 'general.social.links.pinterest' | t -}}
+                      </span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_instagram_link != blank -%}
+                  <li class="list-social__item">
+                    <a
+                      href="{{ settings.social_instagram_link }}"
+                      {% if settings.new_tab %}
+                        target="_blank"
+                      {% endif %}
+                      class="link link--text list-social__link"
+                    >
+                      {%- render 'icon-instagram' -%}
+                      <span class="visually-hidden">
+                        {{- 'general.social.links.instagram' | t -}}
+                      </span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_tiktok_link != blank -%}
+                  <li class="list-social__item">
+                    <a
+                      href="{{ settings.social_tiktok_link }}"
+                      {% if settings.new_tab %}
+                        target="_blank"
+                      {% endif %}
+                      class="link link--text list-social__link"
+                    >
+                      {%- render 'icon-tiktok' -%}
+                      <span class="visually-hidden">
+                        {{ 'general.social.links.tiktok' | t }}
+                      </span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_tumblr_link != blank -%}
+                  <li class="list-social__item">
+                    <a
+                      href="{{ settings.social_tumblr_link }}"
+                      {% if settings.new_tab %}
+                        target="_blank"
+                      {% endif %}
+                      class="link link--text list-social__link"
+                    >
+                      {%- render 'icon-tumblr' -%}
+                      <span class="visually-hidden">
+                        {{- 'general.social.links.tumblr' | t -}}
+                      </span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_snapchat_link != blank -%}
+                  <li class="list-social__item">
+                    <a
+                      href="{{ settings.social_snapchat_link }}"
+                      {% if settings.new_tab %}
+                        target="_blank"
+                      {% endif %}
+                      class="link link--text list-social__link"
+                    >
+                      {%- render 'icon-snapchat' -%}
+                      <span class="visually-hidden">
+                        {{- 'general.social.links.snapchat' | t -}}
+                      </span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_youtube_link != blank -%}
+                  <li class="list-social__item">
+                    <a
+                      href="{{ settings.social_youtube_link }}"
+                      {% if settings.new_tab %}
+                        target="_blank"
+                      {% endif %}
+                      class="link link--text list-social__link"
+                    >
+                      {%- render 'icon-youtube' -%}
+                      <span class="visually-hidden">
+                        {{- 'general.social.links.youtube' | t -}}
+                      </span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_vimeo_link != blank -%}
+                  <li class="list-social__item">
+                    <a
+                      href="{{ settings.social_vimeo_link }}"
+                      {% if settings.new_tab %}
+                        target="_blank"
+                      {% endif %}
+                      class="link link--text list-social__link"
+                    >
+                      {%- render 'icon-vimeo' -%}
+                      <span class="visually-hidden">
+                        {{- 'general.social.links.vimeo' | t -}}
+                      </span>
+                    </a>
+                  </li>
+                {%- endif -%}
+              </ul>
+            </div>
+          {% endif %}
+
+          {% liquid
+            assign enable_country_selector = false
+            if section.settings.enable_country_selector and localization.available_countries.size > 1
+              assign enable_country_selector = true
+            endif
+
+            assign enable_language_selector = false
+            if section.settings.enable_language_selector and localization.available_languages.size > 1
+              assign enable_language_selector = true
+            endif
+
+            assign current_country = localization.country
+            assign current_currency = localization.country.currency.iso_code | append: ' ' | append: localization.country.currency.symbol
+          %}
+
+          {%- if enable_country_selector or enable_language_selector -%}
+            <div class="header__localization-container">
+              <h3 class="header__localization-heading container">
+                {%- if enable_country_selector and enable_language_selector -%}
+                  {{ 'localization.heading' | t }}
+                {%- else -%}
+                  {{ 'localization.region_label' | t }}
+                {%- endif -%}
+              </h3>
+              {% if current_country != blank and current_currency != blank %}
+                <p class="header__localization-text container">
+                  {{ 'localization.current' | t: country: current_country, currency: current_currency }}
+                </p>
+              {% endif %}
+              <div class="header__localization-wrapper">
+                {%- if enable_country_selector -%}
+                  <div class="header__localization">
+                    <noscript>
+                      {%- form 'localization', id: 'HeaderCountryFormNoScriptMobile', class: 'localization-form' -%}
+                        <div class="localization-form__select">
+                          <select
+                            class="localization-selector link"
+                            name="country_code"
+                            aria-labelledby="HeaderCountryLabelNoScriptMobile"
+                          >
+                            {%- for country in localization.available_countries -%}
+                              <option
+                                value="{{ country.iso_code }}"
+                                {%- if country.iso_code == localization.country.iso_code %}
+                                  selected
+                                {% endif %}
+                              >
+                                {{ country.name }} ({{ country.currency.iso_code }}
+                                {{ country.currency.symbol }})
+                              </option>
+                            {%- endfor -%}
+                          </select>
+                        </div>
+                        <button class="button button--primary focus-inset">
+                          <span>
+                            {{ 'localization.update_country' | t }}
+                          </span>
+                        </button>
+                      {%- endform -%}
+                    </noscript>
+                    <mobile-localization-form>
+                      {%- form 'localization', id: 'HeaderCountryFormMobile', class: 'localization-form' -%}
+                        <div class="no-js-hidden">
+                          <div class="disclosure">
+                            <button
+                              type="button"
+                              class="mobile-localization-form__button header__localization-button focus-inset"
+                              aria-expanded="false"
+                              aria-controls="HeaderCountryListMobile"
+                              aria-describedby="HeaderCountryLabelMobile"
+                            >
+                              <div class="mobile-localization-form__button-left body-large">
+                                <span>{{ 'localization.region_label' | t }}</span>
+                                <div class="currency-country">
+                                  {% if section.settings.show_country_flag %}
+                                    <div
+                                      class="currency-flag"
+                                      aria-hidden="true"
+                                    >
+                                      {{- localization.country | image_url: width: 32 | image_tag: loading: 'lazy', class: '' -}}
+                                    </div>
+                                  {% endif %}
+                                  <span class="mobile-localization-form__button-text">
+                                    {{ localization.country.name }} (
+                                    {{- localization.country.currency.iso_code }}
+                                    {{ localization.country.currency.symbol -}}
+                                    )
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div class="mobile-localization-form__button-icon">
+                                {% render 'icon-caret-right' %}
+                              </div>
+                            </button>
+                            <div class="mobile-localization-form__submenu menu-drawer__submenu js-mobile-swipe js-mobile-swipe-right">
+                              <div class="menu-drawer__submenu-inner">
+                                <div class="menu-drawer__header js-mobile-swipe-control">
+                                  <button
+                                    type="button"
+                                    class="mobile-localization-form__back mobile-localization-form__back--reg modal-close-button focus-inset"
+                                    aria-expanded="true"
+                                    aria-label="{{ 'accessibility.back' | t }}"
+                                  >
+                                    {% render 'icon-caret-left' %}
+                                  </button>
+                                  <div class="menu-drawer__header-heading body-xl">
+                                    {{ 'localization.region_label' | t }}
+                                  </div>
+                                </div>
+                                <ul
+                                  id="HeaderCountryListMobile"
+                                  role="list"
+                                  class="mobile-localization-form__list list-unstyled"
+                                >
+                                  {%- for country in localization.available_countries -%}
+                                    <li
+                                      class="disclosure__item"
+                                      tabindex="-1"
+                                      {% if forloop.length < 10 %}
+                                        style="transition-delay: calc(100ms * {{ forloop.index }})"
+                                      {% elsif forloop.length < 20 %}
+                                        style="transition-delay: calc(50ms * {{ forloop.index }})"
+                                      {% elsif forloop.length < 50 %}
+                                        style="transition-delay: calc(20ms * {{ forloop.index }})"
+                                      {% else %}
+                                        style="transition-delay: calc(5ms * {{ forloop.index }})"
+                                      {% endif %}
+                                    >
+                                      <a
+                                        class="link link--text disclosure__link body-xl caption-large{% if country.iso_code == localization.country.iso_code %} disclosure__link--active{% endif %} focus-inset"
+                                        href="#"
+                                        {% if country.iso_code == localization.country.iso_code %}
+                                          aria-current="true"
+                                        {% endif %}
+                                        data-value="{{ country.iso_code }}"
+                                      >
+                                        <span>
+                                          <span class="currency-country-name">
+                                            {% if section.settings.show_country_flag %}
+                                              <span class="currency-flag" aria-hidden="true">
+                                                {{- country | image_url: width: 32 | image_tag: loading: 'lazy', class: '' -}}
+                                              </span>
+                                            {% endif %}
+                                            {{ country.name }}
+                                          </span>
+                                          <span class="localization-form__currency"
+                                            >({{ country.currency.iso_code }}
+                                            {{ country.currency.symbol }})</span
+                                          >
+                                        </span>
+                                      </a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <input
+                            type="hidden"
+                            name="country_code"
+                            value="{{ localization.country.iso_code }}"
+                          >
+                        </div>
+                      {%- endform -%}
+                    </mobile-localization-form>
+                  </div>
+                {%- endif -%}
+                {%- if enable_language_selector -%}
+                  <div class="header__localization header__localization--language">
+                    <noscript>
+                      {%- form 'localization', id: 'HeaderLanguageFormNoScriptMobile', class: 'localization-form' -%}
+                        <div class="localization-form__select">
+                          <select
+                            class="localization-selector link"
+                            name="locale_code"
+                            aria-labelledby="HeaderLanguageLabelNoScriptMobile"
+                          >
+                            {%- for language in localization.available_languages -%}
+                              <option
+                                value="{{ language.iso_code }}"
+                                lang="{{ language.iso_code }}"
+                                {%- if language.iso_code == localization.language.iso_code %}
+                                  selected
+                                {% endif %}
+                              >
+                                {{ language.endonym_name | capitalize }}
+                              </option>
+                            {%- endfor -%}
+                          </select>
+                        </div>
+                        <button class="button button--primary">
+                          <span>
+                            {{ 'localization.update_language' | t }}
+                          </span>
+                        </button>
+                      {%- endform -%}
+                    </noscript>
+                    <mobile-localization-form>
+                      {%- form 'localization', id: 'HeaderLanguageFormMobile', class: 'localization-form' -%}
+                        <div class="no-js-hidden">
+                          <div class="disclosure">
+                            <button
+                              type="button"
+                              class="mobile-localization-form__button header__localization-lang-button focus-inset"
+                              aria-expanded="false"
+                              aria-controls="HeaderLanguageListMobile"
+                              aria-describedby="HeaderLanguageLabelMobile"
+                            >
+                              <div class="mobile-localization-form__button-left body-large">
+                                <span>{{ 'localization.language_label' | t }}</span>
+                                <span class="value mobile-localization-form__button-text">
+                                  {{- localization.language.endonym_name | capitalize }}
+                                </span>
+                              </div>
+                              <div class="mobile-localization-form__button-icon">
+                                {% render 'icon-caret-right' %}
+                              </div>
+                            </button>
+                            <div class="mobile-localization-form__submenu menu-drawer__submenu js-mobile-swipe js-mobile-swipe-right">
+                              <div class="menu-drawer__submenu-inner">
+                                <div class="menu-drawer__header js-mobile-swipe-control">
+                                  <button
+                                    type="button"
+                                    class="mobile-localization-form__back mobile-localization-form__back--lang modal-close-button focus-inset"
+                                    aria-expanded="true"
+                                    aria-label="{{ 'accessibility.back' | t }}"
+                                  >
+                                    {% render 'icon-caret-left' %}
+                                  </button>
+                                  <div class="menu-drawer__header-heading body-xl">
+                                    {{ 'localization.language_label' | t }}
+                                  </div>
+                                </div>
+                                <ul
+                                  id="HeaderLanguageListMobile"
+                                  role="list"
+                                  class="mobile-localization-form__list list-unstyled"
+                                >
+                                  {%- for language in localization.available_languages -%}
+                                    <li
+                                      class="disclosure__item"
+                                      tabindex="-1"
+                                      {% if forloop.length < 10 %}
+                                        style="transition-delay: calc(100ms * {{ forloop.index }})"
+                                      {% elsif forloop.length < 20 %}
+                                        style="transition-delay: calc(50ms * {{ forloop.index }})"
+                                      {% elsif forloop.length < 50 %}
+                                        style="transition-delay: calc(20ms * {{ forloop.index }})"
+                                      {% else %}
+                                        style="transition-delay: calc(5ms * {{ forloop.index }})"
+                                      {% endif %}
+                                    >
+                                      <a
+                                        class="link link--text disclosure__link body-xl caption-large{% if language.iso_code == localization.language.iso_code %} disclosure__link--active{% endif %} focus-inset"
+                                        href="#"
+                                        hreflang="{{ language.iso_code }}"
+                                        lang="{{ language.iso_code }}"
+                                        {% if language.iso_code == localization.language.iso_code %}
+                                          aria-current="true"
+                                        {% endif %}
+                                        data-value="{{ language.iso_code }}"
+                                      >
+                                        <span>
+                                          {{ language.endonym_name | capitalize }}
+                                        </span>
+                                      </a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <input
+                            type="hidden"
+                            name="locale_code"
+                            value="{{ localization.language.iso_code }}"
+                          >
+                        </div>
+                      {%- endform -%}
+                    </mobile-localization-form>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </details>
+</header-drawer>

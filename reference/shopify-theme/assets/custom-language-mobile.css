@@ -1,0 +1,50 @@
+/* Compact AR/EN language toggle — styled with the theme's own design tokens */
+.header__lang-toggle {
+  display: flex;
+  align-items: center;
+  margin-inline: 0.4rem;
+}
+
+.header__lang-toggle-form {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.3rem;
+  background-color: rgb(var(--color-background-input));
+  border-radius: var(--border-radius-button);
+}
+
+.header__lang-toggle-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--border-radius-button);
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: rgb(var(--color-foreground-secondary));
+  transition: color var(--duration-default), background-color var(--duration-default);
+}
+
+.header__lang-toggle-btn:hover {
+  color: rgb(var(--color-foreground));
+}
+
+.header__lang-toggle-btn.is-active {
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  pointer-events: none;
+  box-shadow: 0 1px 4px rgba(var(--color-shadow), 0.12);
+}
+
+@media screen and (max-width: 576px) {
+  .header__lang-toggle {
+    margin-inline: 0.2rem;
+  }
+
+  .header__lang-toggle-btn {
+    padding: 0.5rem 0.7rem;
+  }
+}

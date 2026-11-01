@@ -1,0 +1,75 @@
+/* UNIX — delivery estimate selector (product page)
+   Loaded in addition to unix-custom.css. Kept in its own file so the
+   calculator can be revised without touching the rest of the overrides. */
+
+.unix-ship {
+  margin: 1.6rem 0 .6rem;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid rgba(55, 53, 66, .16);
+  border-radius: 12px;
+  background: rgba(55, 53, 66, .02);
+}
+.unix-ship__title {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  font-size: 1.3rem;
+  color: #373542;
+  margin-bottom: 1rem;
+}
+.unix-ship__title svg {
+  flex: none;
+  width: 1.7rem;
+  height: 1.7rem;
+  opacity: .55;
+}
+.unix-ship__fields {
+  display: flex;
+  gap: .8rem;
+  flex-wrap: wrap;
+}
+.unix-ship__fields select {
+  flex: 1 1 14rem;
+  min-width: 0;
+  padding: .9rem 1.2rem;
+  border: 1px solid rgba(55, 53, 66, .22);
+  border-radius: 8px;
+  background-color: #fff;
+  color: #373542;
+  font: inherit;
+  font-size: 1.3rem;
+  cursor: pointer;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, rgba(55,53,66,.45) 50%),
+                    linear-gradient(135deg, rgba(55,53,66,.45) 50%, transparent 50%);
+  background-position: 1.4rem calc(50% + 1px), 1.9rem calc(50% + 1px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+html[dir='ltr'] .unix-ship__fields select {
+  background-position: calc(100% - 1.9rem) calc(50% + 1px), calc(100% - 1.4rem) calc(50% + 1px);
+}
+.unix-ship__fields select:focus {
+  outline: none;
+  border-color: rgba(55, 53, 66, .6);
+}
+.unix-ship__city[hidden] { display: none; }
+.unix-ship__result {
+  margin-top: 1.1rem;
+  padding-top: 1.1rem;
+  border-top: 1px dashed rgba(55, 53, 66, .18);
+  font-size: 1.35rem;
+  color: #373542;
+  line-height: 1.6;
+}
+.unix-ship__result[hidden] { display: none; }
+.unix-ship__days { font-weight: 700; }
+.unix-ship__note {
+  display: block;
+  margin-top: .3rem;
+  font-size: 1.15rem;
+  opacity: .6;
+}
+@media screen and (max-width: 749px) {
+  .unix-ship__fields select { flex: 1 1 100%; }
+}

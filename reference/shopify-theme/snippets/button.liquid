@@ -1,0 +1,27 @@
+{% comment %}
+  Renders button
+  Accepts:
+  link: {Object} Button link
+  label: {Object} Button label
+  style: {Object} Button style
+  class: {String} Class (optional),
+  button_block: true (optional),
+  block: block (optional)
+  Usage:
+  {% render 'button', link: section.settings.button_link, label: section.settings.button_label, style: section.settings.button_style, class: '' %}
+{% endcomment %}
+
+<a
+  {% if link != blank %}
+    href="{{ link }}"
+  {% endif %}
+  class="{% if class %}{{ class }}__button{% endif %} button button--{{ style }} {% if full_link %} button--full-link {% endif %} focus-inset"
+  {% if link == blank %}
+    aria-disabled="true"
+  {% endif %}
+  {% if button_block == 'true' %}
+    {{ block.shopify_attributes }}
+  {% endif %}
+>
+  <span>{{ label }}</span>
+</a>

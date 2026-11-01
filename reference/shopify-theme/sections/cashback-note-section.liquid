@@ -1,0 +1,15 @@
+{%- if cart.item_count > 0 -%}
+  <div class="container">
+    <div class="cbk-page-wrap">{% render 'cashback-note' %}</div>
+  </div>
+  <style>.cbk-page-wrap{max-width:680px;margin-inline:auto}</style>
+{%- endif -%}
+{% schema %}
+{
+  "name": "ملاحظة الكاش باك",
+  "tag": "section",
+  "enabled_on": { "templates": ["cart"] },
+  "settings": [],
+  "presets": [{ "name": "ملاحظة الكاش باك" }]
+}
+{% endschema %}

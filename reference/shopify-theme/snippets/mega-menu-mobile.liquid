@@ -1,0 +1,173 @@
+{% for block in blocks %}
+  {% assign mega_menu_trigger = block.settings.mega_menu_trigger | handle | strip %}
+  {% if link.handle == mega_menu_trigger and block.type == 'mega_menu' %}
+    <div
+      class="header__mega-menu mega-menu color-background-1"
+      {{ block.shopify_attributes }}
+    >
+      <div class="mega-menu__wrapper">
+        {% if block.settings.inner_menu_type == 'submenu' %}
+          <div class="mega-menu__links container js-mega-menu-mobile-tabs">
+            <div class="mega-menu__tabs">
+              {% for childLink in link.links %}
+                <div
+                  class="mega-menu__tab{% if forloop.index == 1 %} mega-menu__tab--active{% endif %}"
+                  data-mega-menu-tab-id="#mega-menu-tab-{{ forloop.index }}"
+                  tabindex="0"
+                  role="button"
+                  aria-label="Go to tab {{ forloop.index }}"
+                >
+                  <span>{{ childLink.title | escape }}</span>
+                </div>
+              {% endfor %}
+            </div>
+            <div class="mega-menu__submenus">
+              {% for childLink in link.links %}
+                <div
+                  class="mega-menu__submenu{% if forloop.index == 1 %} mega-menu__submenu--active{% endif %}"
+                  data-mega-menu-tab-id="#mega-menu-tab-{{ forloop.index }}"
+                >
+                  {% if childLink.links != blank %}
+                    <ul class="mega-menu__column-list list-unstyled" role="list">
+                      {% for grandChildLink in childLink.links %}
+                        <li class="mega-menu__column-list-item">
+                          <a
+                            href="{{ grandChildLink.url }}"
+                            class="mega-menu__column-list-link focus-inset body-xl"
+                            aria-disabled="true"
+                            aria-label="{{ grandChildLink.title | escape }}"
+                          >
+                            {{ grandChildLink.title | escape }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% else %}
+                    <ul class="mega-menu__column-list list-unstyled" role="list">
+                      <li class="mega-menu__column-list-item">
+                        <a
+                          href="{{ childLink.url }}"
+                          class="mega-menu__column-list-link focus-inset body-xl"
+                          aria-disabled="true"
+                          aria-label="{{ childLink.title | escape }}"
+                        >
+                          {{ childLink.title | escape }}
+                        </a>
+                      </li>
+                    </ul>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% elsif block.settings.inner_menu_type == 'columns' %}
+          {% liquid
+            assign has_columns = false
+            for i in (1..4)
+              assign enable_column_setting = 'enable_column_' | append: i
+              assign heading_setting = 'column_heading_' | append: i
+              assign menu_setting = 'menu_' | append: i
+              if block.settings[enable_column_setting] and block.settings[heading_setting] != blank
+                assign has_columns = true
+              endif
+            endfor
+          %}
+          {% if has_columns %}
+            <div class="mega-menu__links container js-mega-menu-mobile-tabs">
+              <div class="mega-menu__tabs">
+                {% for i in (1..4) %}
+                  {% liquid
+                    assign is_visible_column = false
+                    assign enable_column_setting = 'enable_column_' | append: i
+                    assign heading_setting = 'column_heading_' | append: i
+                    if block.settings[enable_column_setting] and block.settings[heading_setting] != blank
+                      assign is_visible_column = true
+                    endif
+                  %}
+                  {% if is_visible_column %}
+                    <div
+                      class="mega-menu__tab{% if forloop.index == 1 %} mega-menu__tab--active{% endif %}"
+                      data-mega-menu-tab-id="#mega-menu-tab-{{ forloop.index }}"
+                      tabindex="0"
+                      role="button"
+                      aria-label="Go to tab {{ forloop.index }}"
+                    >
+                      <span>{{ block.settings[heading_setting] }}</span>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <div class="mega-menu__submenus">
+                {% for i in (1..4) %}
+                  {% liquid
+                    assign is_visible_column = false
+                    assign enable_column_setting = 'enable_column_' | append: i
+                    assign heading_setting = 'column_heading_' | append: i
+                    assign menu_setting = 'column_menu_' | append: i
+                    if block.settings[enable_column_setting] and block.settings[heading_setting] != blank
+                      assign is_visible_column = true
+                    endif
+                  %}
+                  {% if is_visible_column %}
+                    <div
+                      class="mega-menu__submenu{% if forloop.index == 1 %} mega-menu__submenu--active{% endif %}"
+                      data-mega-menu-tab-id="#mega-menu-tab-{{ forloop.index }}"
+                    >
+                      {% if block.settings[menu_setting] != blank and block.settings[menu_setting].links != blank %}
+                        <ul class="mega-menu__column-list list-unstyled" role="list">
+                          {% for link in block.settings[menu_setting].links %}
+                            <li class="mega-menu__column-list-item">
+                              <a
+                                href="{{ link.url }}"
+                                class="mega-menu__column-list-link focus-inset body-xl"
+                                aria-disabled="true"
+                                aria-label="{{ link.title | escape }}"
+                              >
+                                {{ link.title | escape }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% if block.settings.mega_menu_collection_list != blank %}
+          {% liquid
+            assign has_swiper = false
+            if block.settings.mega_menu_collection_list.count > 1 and block.settings.enable_carousel
+              assign has_swiper = true
+            endif
+          %}
+          <div class="mega-menu__collections{% if has_swiper %} swiper swiper--mega-menu-mobile{% endif %}">
+            <div class="mega-menu__collections-wrapper{% if has_swiper %} swiper-wrapper{% endif %}">
+              {% for item in block.settings.mega_menu_collection_list %}
+                <div class="mega-menu__collections-item{% if has_swiper %} swiper-slide{% endif %}">
+                  {% render 'collection-card',
+                    collection: item,
+                    media_ratio: block.settings.image_ratio_mobile,
+                    media_fit: block.settings.image_fit,
+                    show_desc: block.settings.show_desc,
+                    show_button: block.settings.show_button,
+                    button_label: block.settings.button_label,
+                    full_link: block.settings.full_link
+                  %}
+                </div>
+              {% endfor %}
+            </div>
+            {% if has_swiper %}
+              <div class="container">
+                <div class="mega-menu__pagination swiper-pagination no-js-hidden"></div>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}

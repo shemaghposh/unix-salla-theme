@@ -1,0 +1,190 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": ""
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "dropdown",
+            "show_label": true,
+            "show_label_color": false,
+            "add_text": ""
+          }
+        },
+        "popup_size_guide": {
+          "type": "popup_size_guide",
+          "settings": {
+            "label": "Size Guide",
+            "heading": "Size Guide",
+            "text": "",
+            "page": "size-guide"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_quantity": true,
+            "show_gift_card_recipient": false
+          }
+        },
+        "inventory": {
+          "type": "inventory",
+          "settings": {}
+        },
+        "tags": {
+          "type": "tags",
+          "settings": {}
+        },
+        "pickup_availability": {
+          "type": "pickup_availability",
+          "settings": {}
+        },
+        "popup": {
+          "type": "popup",
+          "settings": {
+            "icon": "",
+            "icon_dm": "",
+            "external_heading": "Next Day Delivery",
+            "external_text": "Shop now and receive your order tomorrow with our next day delivery service.",
+            "label": "Read More",
+            "heading": "Next Day Delivery",
+            "text": "<p>Get your items delivered to your doorstep in no time with our Next Day Delivery service! Order today and receive your package by tomorrow to ensure quick and convenient shopping experience. Don't wait around for your items, shop with us and enjoy fast and reliable delivery straight to your door.</p>"
+          }
+        },
+        "dropdown_information_1": {
+          "type": "dropdown_information",
+          "settings": {
+            "characteristics": false,
+            "heading": "Details",
+            "description": "<p>Expertly crafted from 100% premium cotton, this piece is designed to offer you a soft, breathable feel perfect for everyday wear.</p><p><strong>Care</strong></p><ul><li>Machine wash cold, gentle cycle with like colors</li><li>Tumble dry low; remove promptly</li><li>Iron on low heat if needed; do not iron on print</li><li>Do not bleach</li></ul>",
+            "default_open": false
+          }
+        },
+        "dropdown_information_2": {
+          "type": "dropdown_information",
+          "settings": {
+            "characteristics": false,
+            "heading": "Shipping",
+            "description": "<p>We strive to process and ship your order as quickly as possible.</p><ul><li>Standard Shipping: Arrives in 3-5 business days</li><li>Expedited Option: Available at checkout for faster delivery</li><li>Free standard shipping on orders over $50</li></ul>",
+            "default_open": false
+          }
+        },
+        "dropdown_information_3": {
+          "type": "dropdown_information",
+          "settings": {
+            "characteristics": false,
+            "heading": "Sizing & Fit",
+            "description": "<p>Our Classic Cotton Tee comes in a range of sizes to ensure a perfect fit for everyone.</p><ul><li>True to size for a comfortable fit</li><li>Soft, stretchable fabric adapts to your body shape</li><li>For a looser fit, consider sizing up</li></ul>",
+            "default_open": false
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "variant_picker",
+        "popup_size_guide",
+        "buy_buttons",
+        "inventory",
+        "tags",
+        "pickup_availability",
+        "popup",
+        "dropdown_information_1",
+        "dropdown_information_2",
+        "dropdown_information_3"
+      ],
+      "settings": {
+        "gallery_type_mobile": "slider",
+        "mobile_alignment": "before",
+        "gallery_type": "slider_previews",
+        "desktop_alignment": "right",
+        "aspect_ratio": "3/4",
+        "image_fit": "cover",
+        "image_fit_modal": "contain",
+        "padding_bottom": "l"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "color_scheme": "",
+        "subheading": "",
+        "heading": "Recommendations",
+        "heading_size": "h3",
+        "text": "",
+        "columns_per_row": 4,
+        "products_limit": 4,
+        "enable_carousel": false,
+        "image_ratio": "3/4",
+        "image_fit": "cover",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_desc": false,
+        "columns_mobile": "2",
+        "button_show": true,
+        "button_label": "View All",
+        "button_style": "secondary",
+        "button_link": "",
+        "padding_top": "no-indent",
+        "padding_bottom": "l",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "popular_products_LKpNjw": {
+      "type": "popular-products",
+      "settings": {
+        "color_scheme": "",
+        "subheading": "",
+        "heading": "Bestsellers",
+        "heading_size": "h3",
+        "text": "",
+        "product_list": [],
+        "products_to_show": 4,
+        "enable_carousel": true,
+        "columns_mobile": "2",
+        "show_collection": false,
+        "collection": "",
+        "color_scheme_collection": "",
+        "layout_columns": false,
+        "subheading_collection": "Subheading",
+        "heading_color": "basic",
+        "show_desc_collection": true,
+        "opacity_overlay": 0.2,
+        "image_ratio": "3/4",
+        "image_fit": "cover",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_desc": false,
+        "button_show": true,
+        "button_label": "View All",
+        "button_style": "secondary",
+        "button_link": "",
+        "padding_top": "no-indent",
+        "padding_bottom": "l",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    }
+  },
+  "order": ["main", "product-recommendations", "popular_products_LKpNjw"]
+}

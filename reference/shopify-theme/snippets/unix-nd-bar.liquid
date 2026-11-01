@@ -1,0 +1,27 @@
+{%- comment -%}
+  UNIX — National Day announcement-bar colouring.
+
+  Adds a class to <html> only inside the campaign window, so the deep-green
+  bar appears and disappears on its own with no further edits. Outside the
+  window nothing is added and the bar keeps the theme's normal scheme.
+
+  Campaign ends 14 Oct 2026, 11:00 Riyadh (08:00 UTC), matching the
+  discounts and the gift bar.
+
+  This snippet is rendered in the <head> of every page, so it also loads
+  unix-sar.js (outside the campaign window, permanently) to show prices
+  as "SAR" on the English storefront.
+{%- endcomment -%}
+
+{%- assign nd_start = '2026-09-07T21:00:00Z' | date: '%s' | plus: 0 -%}
+{%- assign nd_end   = '2026-10-14T07:59:59Z' | date: '%s' | plus: 0 -%}
+{%- assign nd_now   = 'now' | date: '%s' | plus: 0 -%}
+
+{%- if nd_now >= nd_start and nd_now <= nd_end -%}
+  {{ 'unix-nd-bar.css' | asset_url | stylesheet_tag }}
+  <script>document.documentElement.classList.add('unix-nd-bar');</script>
+{%- endif -%}
+
+{%- unless request.locale.iso_code contains 'ar' -%}
+  <script src="{{ 'unix-sar.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}

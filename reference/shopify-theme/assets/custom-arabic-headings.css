@@ -1,0 +1,172 @@
+/* ============================================================
+   Premium Arabic headings
+   - Applies the bundled Somar Bold font to Arabic text only
+   - Mobile-first, fluid clamp() sizes tuned for Arabic
+   - Quiet-luxury weight & rhythm (Alo / COS / Axel Arigato feel)
+   - Latin text is untouched (keeps Montserrat)
+   ============================================================ */
+
+@font-face {
+  font-family: "Somar";
+  src: url("Somar-Bold.woff2") format("woff2");
+  font-weight: 600 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- Arabic gets the premium display face on all headings --- */
+:lang(ar) h1,
+:lang(ar) h2,
+:lang(ar) h3,
+:lang(ar) h4,
+[lang="ar"] h1, [lang="ar"] h2, [lang="ar"] h3, [lang="ar"] h4,
+.rte:lang(ar) h1, .rte:lang(ar) h2, .rte:lang(ar) h3,
+:lang(ar) .h0,
+:lang(ar) .h1,
+:lang(ar) .h2,
+:lang(ar) .h3,
+:lang(ar) .h4,
+:lang(ar) .media-banner__heading,
+:lang(ar) .popular-products__title,
+:lang(ar) .featured-collections__heading,
+:lang(ar) .featured-collection__title,
+:lang(ar) .featured-blog__title,
+:lang(ar) .collapsible-content__heading,
+:lang(ar) .product-markers__title,
+:lang(ar) .banner-grid__heading,
+:lang(ar) .title,
+:lang(ar) .section-heading {
+  font-family: "Somar", var(--font-heading-family), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.32;
+  word-spacing: 0.02em;
+}
+
+/* --- Fluid, mobile-first display sizing for the main section titles ---
+   clamp(min @ ~360px, fluid, max @ large desktop) */
+:lang(ar) .popular-products__title,
+:lang(ar) .featured-collections__heading,
+:lang(ar) .featured-collection__title,
+:lang(ar) .featured-blog__title,
+:lang(ar) .collapsible-content__heading,
+:lang(ar) .product-markers__title,
+:lang(ar) .banner-grid__heading {
+  font-size: clamp(2.4rem, 1.55rem + 3.9vw, 4.6rem);
+  line-height: 1.3;
+}
+
+/* Hero display stays largest, tuned separately for Arabic */
+:lang(ar) .media-banner__heading.hero-display {
+  font-family: "Somar", var(--font-heading-family), sans-serif;
+  font-weight: 700;
+  font-size: clamp(3.6rem, 2.2rem + 6vw, 8rem);
+  line-height: 1.28;
+  letter-spacing: 0;
+}
+
+/* --- Mobile refinements: more breathing room, no overflow --- */
+@media screen and (max-width: 749px) {
+  :lang(ar) h1,
+  :lang(ar) h2,
+  :lang(ar) h3,
+  :lang(ar) .media-banner__heading,
+  :lang(ar) .popular-products__title,
+  :lang(ar) .featured-collections__heading,
+  :lang(ar) .featured-collection__title,
+  :lang(ar) .featured-blog__title,
+  :lang(ar) .collapsible-content__heading,
+  :lang(ar) .product-markers__title,
+  :lang(ar) .banner-grid__heading {
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Keep bold richtext inside Arabic headings from over-thickening */
+:lang(ar) h1 strong,
+:lang(ar) h2 strong,
+:lang(ar) h3 strong,
+:lang(ar) .media-banner__heading strong {
+  font-weight: 800;
+}
+
+/* ============================================================
+   Section override: "حركة. رياضة. استرخاء." (featured-collections)
+   Light image behind light text -> force brand-dark heading,
+   description & subheading for readability.
+   Scoped to this section only.
+   ============================================================ */
+[id*="featured_collections_YMJcqj"] .featured-collections__heading,
+[id*="featured_collections_YMJcqj"] .featured-collections__heading *,
+[id*="featured_collections_YMJcqj"] .featured-collections__subheading,
+[id*="featured_collections_YMJcqj"] .featured-collections__information,
+[id*="featured_collections_YMJcqj"] .featured-collections__information * {
+  color: #373542 !important;
+}
+
+/* ============================================================
+   Button style: Outline / مفرّغ
+   Transparent fill + brand border, brand-dark label.
+   On hover it inverts: fills with brand color, label goes light.
+   Uses the theme's existing ::before slide-up mechanic so the
+   fill animates in like the primary/secondary buttons.
+   ============================================================ */
+.button--outline {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 4.4rem;
+  padding: 0 2.4rem;
+  background-color: transparent;
+  color: #373542;
+  box-shadow: inset 0 0 0 .12rem #373542;
+  transition: color var(--duration-default), box-shadow var(--duration-default);
+}
+.button--outline span {
+  position: relative;
+  z-index: 1;
+}
+.button--outline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #373542;
+  transform: translateY(calc(100% + 1px));
+  transition: transform var(--duration-default);
+  z-index: 0;
+}
+.button--outline:not(:disabled):not([aria-disabled=true]):hover::before {
+  transform: none;
+}
+.button--outline:not(:disabled):not([aria-disabled=true]):hover {
+  color: #f5f1ea;
+}
+
+/* ============================================================
+   Product markers: honor tooltip open-direction on MOBILE too.
+   The theme only defines --to-top/right/bottom/left inside a
+   (min-width: 750px) media query, so on mobile every tooltip
+   opens downward and gets clipped. These rules replicate the
+   directions for small screens.
+   ============================================================ */
+@media screen and (max-width: 749px) {
+  .product-markers--banner .product-markers__item-inner--to-top {
+    padding-top: 0 !important;
+    padding-bottom: 2.6rem !important;
+    top: auto;
+    bottom: 100%;
+    transform-origin: bottom center;
+  }
+  .product-markers--banner .product-markers__item-inner--to-bottom {
+    padding-top: 2.6rem !important;
+    top: 100%;
+    bottom: auto;
+    transform-origin: top center;
+  }
+}

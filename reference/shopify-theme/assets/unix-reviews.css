@@ -1,0 +1,188 @@
+/* ============================================================
+   UNIX × Judge.me — widget styling, matched to the store scheme
+     text            #241e1a
+     secondary text  #8a8079
+     surface 1       #f5f1ea
+     surface 2       #e8e0d5
+     button bg       #373542   hover #4b4960
+     button label    #f5f1ea
+     border          #ddd3c6
+     input bg        #efeae1   focus #8b7355
+     accent          #8b7355
+   Radius: cards 16px · buttons 30px · Font: inherited from theme
+
+   Star shapes are NOT handled here. They live in unix-stars.css, which
+   loads at the end of <body> so it lands after the Judge.me app stylesheet.
+   Keeping them apart avoids two files fighting over the same elements.
+   ============================================================ */
+
+/* ---------- font ---------- */
+.jdgm-widget,
+.jdgm-widget *,
+.jdgm-prev-badge,
+.jdgm-prev-badge * {
+  font-family: inherit !important;
+}
+
+/* ---------- widget shell ---------- */
+.jdgm-rev-widg {
+  background: transparent !important;
+  border: 0 !important;
+}
+.jdgm-rev-widg__title {
+  color: #241e1a !important;
+  font-weight: 600 !important;
+  letter-spacing: -.01em !important;
+}
+.jdgm-rev-widg__summary-text { color: #8a8079 !important; font-size: .875rem !important; }
+.jdgm-rev-widg__summary-average { color: #241e1a !important; font-weight: 600 !important; }
+
+/* ---------- histogram ---------- */
+.jdgm-histogram__bar {
+  background: #e8e0d5 !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+}
+.jdgm-histogram__bar-content {
+  background: #8b7355 !important;
+  border-radius: 999px !important;
+}
+.jdgm-histogram__frequency,
+.jdgm-histogram__star { color: #8a8079 !important; }
+
+/* ---------- buttons: exact theme button ---------- */
+.jdgm-btn,
+.jdgm-btn--solid,
+.jdgm-write-rev-link,
+.jdgm-form__submit-btn {
+  background: #373542 !important;
+  color: #f5f1ea !important;
+  border: 0 !important;
+  border-radius: 30px !important;
+  font-weight: 500 !important;
+  font-size: .84rem !important;
+  letter-spacing: .01em !important;
+  padding: 13px 32px !important;
+  box-shadow: none !important;
+  transition: background .15s ease !important;
+}
+.jdgm-btn:hover,
+.jdgm-write-rev-link:hover,
+.jdgm-form__submit-btn:hover {
+  background: #4b4960 !important;
+  color: #f5f1ea !important;
+}
+
+/* ghost / tertiary — theme's tertiary button */
+.jdgm-btn--outline,
+.jdgm-ask-question-btn {
+  background: transparent !important;
+  color: #241e1a !important;
+  border: 1px solid #ddd3c6 !important;
+  border-radius: 30px !important;
+}
+.jdgm-btn--outline:hover,
+.jdgm-ask-question-btn:hover {
+  background: #e8e0d5 !important;
+}
+
+/* ---------- review cards ---------- */
+.jdgm-rev {
+  background: #ffffff !important;
+  border: 1px solid #ddd3c6 !important;
+  border-radius: 16px !important;
+  padding: 18px !important;
+  margin-bottom: 12px !important;
+}
+.jdgm-rev__author,
+.jdgm-rev__title { color: #241e1a !important; font-weight: 600 !important; }
+.jdgm-rev__body,
+.jdgm-rev__body p { color: #241e1a !important; line-height: 1.85 !important; }
+.jdgm-rev__timestamp,
+.jdgm-rev__location { color: #8a8079 !important; font-size: .78rem !important; }
+
+.jdgm-rev__buyer-badge {
+  background: #f5f1ea !important;
+  color: #8b7355 !important;
+  border-radius: 999px !important;
+  font-size: .7rem !important;
+  font-weight: 600 !important;
+  padding: 3px 10px !important;
+}
+
+.jdgm-rev__reply {
+  background: #f5f1ea !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+}
+.jdgm-rev__reply-content { color: #241e1a !important; }
+
+.jdgm-rev__pics img,
+.jdgm-rev__pic-img { border-radius: 12px !important; }
+
+/* ---------- write-a-review form ---------- */
+.jdgm-form {
+  background: #f5f1ea !important;
+  border: 0 !important;
+  border-radius: 16px !important;
+  padding: 22px !important;
+}
+.jdgm-form__title,
+.jdgm-form label,
+.jdgm-form__fieldset-title { color: #241e1a !important; font-weight: 600 !important; }
+
+.jdgm-form input[type='text'],
+.jdgm-form input[type='email'],
+.jdgm-form textarea {
+  background: #efeae1 !important;
+  border: 1px solid #ddd3c6 !important;
+  border-radius: 12px !important;
+  color: #241e1a !important;
+  font-family: inherit !important;
+  padding: 12px 14px !important;
+}
+.jdgm-form input::placeholder,
+.jdgm-form textarea::placeholder { color: #8a8079 !important; }
+.jdgm-form input:focus,
+.jdgm-form textarea:focus {
+  border-color: #8b7355 !important;
+  outline: none !important;
+}
+
+/* ---------- preview badge (stars on cards + under title) ---------- */
+.jdgm-prev-badge__text { color: #8a8079 !important; font-size: .78rem !important; }
+.jdgm-prev-badge { margin: 6px 0 !important; }
+.card-wrapper .jdgm-prev-badge { margin: 4px 0 0 !important; }
+
+/* ---------- pagination + sort ---------- */
+.jdgm-paginate__page { color: #8a8079 !important; border-radius: 8px !important; }
+.jdgm-paginate__page.jdgm-curt {
+  background: #373542 !important;
+  color: #f5f1ea !important;
+}
+.jdgm-sort-dropdown,
+.jdgm-sort-dropdown-wrapper select {
+  background: transparent !important;
+  border: 1px solid #ddd3c6 !important;
+  border-radius: 12px !important;
+  color: #241e1a !important;
+  font-family: inherit !important;
+}
+
+/* ---------- dividers ---------- */
+.jdgm-rev-widg__header,
+.jdgm-rev-widg__body { border-color: #ddd3c6 !important; }
+
+/* ---------- RTL ---------- */
+html[dir='rtl'] .jdgm-widget {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 749px) {
+  .jdgm-rev { padding: 15px !important; }
+  .jdgm-btn,
+  .jdgm-write-rev-link,
+  .jdgm-form__submit-btn { width: 100% !important; text-align: center !important; }
+}

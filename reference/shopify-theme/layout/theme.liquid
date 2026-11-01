@@ -1,0 +1,247 @@
+<!doctype html>
+<html
+  class="no-js class-for-unique-selectors"
+  data-scheme="{{ settings.color_scheme }}"
+  lang="{{ request.locale.iso_code }}"
+  dir="{% render 'direction' %}"
+>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {% render '_favicon' %}
+
+    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %}
+        &ndash; tagged "{{ current_tags | join: ', ' }}"
+      {%- endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %}
+        &ndash; {{ shop.name -}}
+      {%- endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta
+        name="description"
+        content="{{ page_description | escape }}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}"
+      >
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    {{ content_for_header }}
+
+    {% comment %} FONTS {% endcomment %}
+    {% render '_fonts' %}
+
+    {% comment %} DARK MODE VARIABLES {% endcomment %}
+    {% render '_color-vars' %}
+
+    {% comment %} BASIC VARIABLES AND STYLES {% endcomment %}
+    {% render '_base-vars-styles' %}
+
+    {% comment %} ACCOUNT COMPONENT VARIABLES {% endcomment %}
+    {% render '_shopify-account-vars' %}
+
+    {% comment %} SWIPER MIN CSS {% endcomment %}
+    {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {% comment %} BASIC STYLES {% endcomment %}
+    {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {{ 'header.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {% comment %} CUSTOM: show language selector in navbar on mobile {% endcomment %}
+    {{ 'custom-language-mobile.css' | asset_url | stylesheet_tag }}
+
+    {%- if request.locale.iso_code contains 'ar' -%}
+      {% comment %}theme-check-disable AssetPreload{% endcomment %}
+      <link rel="preload" as="font" href="{{ 'Somar-Bold.woff2' | asset_url }}" type="font/woff2" crossorigin>
+      {% comment %}theme-check-enable AssetPreload{% endcomment %}
+      {{ 'custom-arabic-headings.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+
+    {{ 'components-sections.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {%- if settings.enable_styles -%}
+      {{ 'section-reviews.css' | asset_url | stylesheet_tag: preload: true }}
+    {%- endif -%}
+
+    {%- if settings.predictive_search_enabled -%}
+      {{ 'component-predictive-search.css' | asset_url | stylesheet_tag: preload: true }}
+    {%- endif -%}
+
+    {{ 'section-main-product.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {%- if settings.show_on_mobile
+      or settings.quickview_show
+      or settings.add_to_cart_enabled
+      or settings.show_color_swatch
+    -%}
+      {{ 'quick-add.css' | asset_url | stylesheet_tag: preload: true }}
+    {%- endif -%}
+
+    {% comment %} CUSTOM: UNIX overrides — must load last {% endcomment %}
+    {{ 'unix-custom.css' | asset_url | stylesheet_tag }}
+
+    {% comment %} CUSTOM: UNIX × Judge.me branding {% endcomment %}
+    {{ 'unix-reviews.css' | asset_url | stylesheet_tag }}
+
+    {% comment %}
+      CUSTOM: retire the standalone UNIX10 pill on the product page.
+      The campaign code now lives in the announcement bar instead.
+    {% endcomment %}
+    {{ 'unix-hide-promo.css' | asset_url | stylesheet_tag }}
+
+    {% comment %}
+      CUSTOM: National Day announcement-bar colour.
+      Self-gating — the snippet prints nothing outside the campaign window.
+    {% endcomment %}
+    {% render 'unix-nd-bar' %}
+
+    {%- unless settings.type_body_font.system? -%}
+      {% comment %}theme-check-disable AssetPreload{% endcomment %}
+      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+      {% comment %}theme-check-enable AssetPreload{% endcomment %}
+    {%- endunless -%}
+    {%- unless settings.type_header_font.system? -%}
+      {% comment %}theme-check-disable AssetPreload{% endcomment %}
+      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
+      {% comment %}theme-check-enable AssetPreload{% endcomment %}
+    {%- endunless -%}
+
+    <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'jarallax.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'image-parallax.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'product-card.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      if (Shopify.designMode) {
+        document.documentElement.classList.add('shopify-design-mode');
+      }
+
+      const ON_CHANGE_DEBOUNCE_TIMER = 300,
+        PUB_SUB_EVENTS = {
+          cartUpdate: 'cart-update',
+          quantityUpdate: 'quantity-update',
+          variantChange: 'variant-change',
+          cartError: 'cart-error',
+        };
+    </script>
+
+    {% render '_dark_mode_toggle_script' %}
+
+    <script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
+  </head>
+
+  <body class="template-{{ template.name }} template-{{ template | replace: '.', '-' }}">
+    <a
+      class="skip-to-content-link button button--primary visually-hidden"
+      href="#MainContent"
+    >
+      <span>
+        {{ 'accessibility.skip_to_text' | t }}
+      </span>
+    </a>
+
+    {% sections 'header-group' %}
+
+    {% sections 'overlay-group' %}
+
+    {% if settings.show_breadcrumbs %}
+      {% render 'breadcrumbs' %}
+    {% endif %}
+
+    <main
+      id="MainContent"
+      class="content-for-layout focus-none"
+      role="main"
+      tabindex="-1"
+    >
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {% if settings.show_back_to_top %}
+      {% render 'scroll-top' %}
+    {% endif %}
+
+    {%- if request.page_type != 'cart' and settings.cart_type == 'drawer' -%}
+      {%- render 'cart-drawer' -%}
+    {%- endif -%}
+
+    <ul hidden>
+      <li id="a11y-refresh-page-message">
+        {{ 'accessibility.refresh_page' | t }}
+      </li>
+    </ul>
+
+    {%- if settings.show_on_mobile
+      or settings.quickview_show
+      or settings.add_to_cart_enabled
+      or settings.show_color_swatch
+    -%}
+      <script src="{{ 'quick-add.js' | asset_url }}" defer></script>
+      <script src="{{ 'product-form.js' | asset_url }}" async></script>
+    {%- endif -%}
+
+    {% if settings.show_back_to_top %}
+      <script src="{{ 'scroll-top.js' | asset_url }}" async></script>
+    {% endif %}
+
+    {%- if settings.predictive_search_enabled -%}
+      <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    <script src="{{ 'product-model.js' | asset_url }}" defer></script>
+    
+    {% render '_support_scripts' %}
+
+    {% comment %}
+      CUSTOM: Judge.me star override + reviews kept out of the cart drawer.
+      Loaded at the very end of <body> so it lands after the app's own
+      stylesheet, which is injected by the Judge.me script at runtime.
+      Placing it in <head> was not enough: the app CSS arrived later and
+      won the cascade.
+    {% endcomment %}
+    {{ 'unix-stars.css' | asset_url | stylesheet_tag }}
+
+    {% comment %}
+      CUSTOM: Saudi Address Finder in the cart drawer.
+      The app injects a 300px map into .cart-drawer__bottom, which is not a
+      scroll container, so on phones it pushed the checkout buttons out of
+      reach. The stylesheet gives the widget three states (collapsed, open,
+      done), keeps the map to a third of the screen, and pins the checkout
+      buttons to the bottom of a now-scrollable footer. The script moves the
+      widget between those states and scrolls the map or the saved-address
+      card into view at the right moment.
+      Loaded here so it lands after the theme's cart styles and after the
+      app's own markup.
+    {% endcomment %}
+    {{ 'unix-address-map.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'unix-address-map.js' | asset_url }}" defer="defer"></script>
+
+    {% comment %}
+      CUSTOM: National Day gift-with-purchase.
+      Keeps the cart in step with the three automatic Buy-X-Get-Y discounts
+      (adds/removes the gift line) and draws the progress bar in the drawer.
+      Loaded last so the theme's cart components exist before it runs.
+      Date-gated inside the snippet; harmless outside the campaign window.
+    {% endcomment %}
+    <script src="{{ 'unix-nd-gift.js' | asset_url }}" defer="defer"></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+{%- comment -%}
+  Tamara instalments widget (product page), as used in the earlier theme.
+  publicKey is Tamara's public widget key for UNIX (safe to expose).
+  Language follows the storefront locale.
+{%- endcomment -%}
+<script>
+  window.tamaraWidgetConfig = {
+    lang: "{{ request.locale.iso_code }}",
+    country: "SA",
+    publicKey: "c4ecb8b5-4de1-4781-8620-1eb1371c3a16",
+    css : `:host {
+      --font-primary: inherit !important;
+      --font-secondary: inherit !important;
+    }
+    .tamara-summary-widget__amount {
+      font-weight: 700 !important;
+    }`,
+    style: {
+        fontSize: '14px',
+        badgeRatio: 1.2,
+    }
+  }
+</script>
+
+<script defer type="text/javascript" src="https://cdn.tamara.co/widget-v2/tamara-widget.js"></script>
+
+<div style="margin-top:10px;">
+  <tamara-widget
+    id="tamara-widget-custom"
+    type="tamara-summary"
+    amount="{{ product.price | money_without_currency | remove: ',' }}"
+    config='{"badgePosition":"right","showExtraContent":""}'
+    inline-type="2">
+  </tamara-widget>
+</div>

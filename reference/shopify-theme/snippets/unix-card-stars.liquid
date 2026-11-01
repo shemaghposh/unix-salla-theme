@@ -1,0 +1,18 @@
+{%- comment -%}
+  UNIX — Judge.me star rating on product cards.
+
+  Uses Judge.me's own preview-badge markup. The metafield renders the stars
+  server-side so they appear instantly and are visible to crawlers; the
+  wrapper classes let Judge.me's script fill the badge in for products whose
+  metafield has not synced yet. Products with no reviews render nothing,
+  which is deliberate: an empty five-star row reads worse than no row at all.
+
+  Accepts:
+  - card_product: {Object} the product being rendered
+{%- endcomment -%}
+
+{%- if card_product.metafields.judgeme.badge != blank -%}
+  <div class='jdgm-widget jdgm-preview-badge unix-card-stars' data-id='{{ card_product.id }}'>
+    {{ card_product.metafields.judgeme.badge }}
+  </div>
+{%- endif -%}

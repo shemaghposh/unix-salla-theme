@@ -1,0 +1,315 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": "no-indent",
+        "padding_bottom": "m"
+      }
+    },
+    "image_with_text_4Jib9d": {
+      "type": "image-with-text",
+      "settings": {
+        "color_scheme": "",
+        "subheading": "",
+        "heading": "Behind every piece we offer lies a commitment to ethical practices and sustainable materials.",
+        "heading_size": "h1",
+        "text": "",
+        "text_align": "center",
+        "mobile_image": "",
+        "desktop_image": "",
+        "mobile_media_ratio": "3/4",
+        "desktop_media_ratio": "adapt",
+        "show_video": false,
+        "button_show": false,
+        "button_label": "Button label",
+        "button_style": "secondary",
+        "button_link": "",
+        "padding_top": "m",
+        "padding_bottom": "no-indent",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "multicolumn_7UVhhR": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_6WhMGA": {
+          "type": "column",
+          "settings": {
+            "icon": "abstract_1",
+            "subheading": "",
+            "heading": "Sustainable Materials",
+            "text": "Our store is committed to offering sustainable materials that are not only good for the environment, but also good for your family.",
+            "show_button": false,
+            "button_label": "Button Label",
+            "button_link": "",
+            "button_style": "secondary"
+          }
+        },
+        "column_Kkrm3b": {
+          "type": "column",
+          "settings": {
+            "icon": "abstract_2",
+            "subheading": "",
+            "heading": "Secure Payment",
+            "text": "We use encryption technologies and trusted payment gateways to safeguard your data and provide you with peace of mind.",
+            "show_button": false,
+            "button_label": "Button Label",
+            "button_link": "",
+            "button_style": "secondary"
+          }
+        },
+        "column_nzDpxc": {
+          "type": "column",
+          "settings": {
+            "icon": "abstract_3",
+            "subheading": "",
+            "heading": "30 Days Free Returns",
+            "text": "At our store, we offer a hassle-free, risk-free shopping experience with our 30 Days Free Returns policy.",
+            "show_button": false,
+            "button_label": "Button Label",
+            "button_link": "",
+            "button_style": "secondary"
+          }
+        },
+        "column_pWtaq4": {
+          "type": "column",
+          "settings": {
+            "icon": "abstract_4",
+            "subheading": "",
+            "heading": "Worldwide Shipping",
+            "text": "With fast and reliable shipping options, you can shop with ease knowing that your order will reach you no matter where you are in the world.",
+            "show_button": false,
+            "button_label": "Button Label",
+            "button_link": "",
+            "button_style": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "column_6WhMGA",
+        "column_Kkrm3b",
+        "column_nzDpxc",
+        "column_pWtaq4"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "enable_border": false,
+        "border_full": false,
+        "mobile_columns": "1",
+        "swipe_on_mobile": true,
+        "enable_column_background": true,
+        "layout": "right",
+        "columns_per_row": 4,
+        "swipe_on_desktop": false,
+        "subheading": "About",
+        "heading": "<strong>Welcome to our family-owned clothing store, where fashion and sustainability harmonize seamlessly.</strong> Explore our curated collections, designed with style and eco-consciousness in mind.",
+        "enable_accent": true,
+        "accent_color": "#000000",
+        "heading_size": "h2",
+        "text": "",
+        "icon_size": "medium",
+        "image_size": "extra_small",
+        "image_ratio": "1/1",
+        "object_fit": "cover",
+        "content_alignment": "left",
+        "card_heading_size": "h3",
+        "button_show": false,
+        "button_label": "Button label",
+        "button_style": "primary",
+        "button_link": "",
+        "padding_top": "no-indent",
+        "padding_bottom": "no-indent",
+        "margin_top": "l",
+        "margin_bottom": "l"
+      }
+    },
+    "multicolumn_cKcADF": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_jbqj6H": {
+          "type": "column",
+          "settings": {
+            "image": "",
+            "icon": "none",
+            "subheading": "Founder",
+            "heading": "Rose Stanley",
+            "text": "",
+            "show_button": false,
+            "button_label": "Button Label",
+            "button_link": "",
+            "button_style": "secondary"
+          }
+        },
+        "column_bPxWCn": {
+          "type": "column",
+          "settings": {
+            "image": "",
+            "icon": "none",
+            "subheading": "Product Manager",
+            "heading": "Deanna Anderson",
+            "text": "",
+            "show_button": false,
+            "button_label": "Button Label",
+            "button_link": "",
+            "button_style": "secondary"
+          }
+        },
+        "column_mjcMJa": {
+          "type": "column",
+          "settings": {
+            "image": "",
+            "icon": "none",
+            "subheading": "Designer",
+            "heading": "Carrie Wright",
+            "text": "",
+            "show_button": false,
+            "button_label": "Button Label",
+            "button_link": "",
+            "button_style": "secondary"
+          }
+        },
+        "column_EtfApx": {
+          "type": "column",
+          "settings": {
+            "image": "",
+            "icon": "none",
+            "subheading": "Marketing",
+            "heading": "Tammy Snyder",
+            "text": "",
+            "show_button": false,
+            "button_label": "Button Label",
+            "button_link": "",
+            "button_style": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "column_jbqj6H",
+        "column_bPxWCn",
+        "column_mjcMJa",
+        "column_EtfApx"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "enable_border": true,
+        "border_full": false,
+        "mobile_columns": "1",
+        "swipe_on_mobile": true,
+        "enable_column_background": false,
+        "layout": "default",
+        "columns_per_row": 4,
+        "swipe_on_desktop": false,
+        "subheading": "",
+        "heading": "Meet Our Team",
+        "enable_accent": false,
+        "accent_color": "#293e3a",
+        "heading_size": "h2",
+        "text": "",
+        "icon_size": "medium",
+        "image_size": "large",
+        "image_ratio": "adapt",
+        "object_fit": "cover",
+        "content_alignment": "left",
+        "card_heading_size": "h3",
+        "button_show": false,
+        "button_label": "Button label",
+        "button_style": "primary",
+        "button_link": "",
+        "padding_top": "l",
+        "padding_bottom": "l",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "collapsible-content": {
+      "type": "collapsible-content",
+      "blocks": {
+        "block_1": {
+          "type": "accordion",
+          "settings": {
+            "question": "What sizing options do you offer?",
+            "answer": "<p>Our collection caters to a diverse range of body types, offering sizes from XS to XXL. We also feature selections for petite, tall, and plus sizes to ensure a perfect fit for everyone.</p>",
+            "opened": true
+          }
+        },
+        "block_2": {
+          "type": "accordion",
+          "settings": {
+            "question": "How can I track my order?",
+            "answer": "<p>Once your order has been shipped, you will receive a confirmation email containing a tracking number and a link to follow the delivery progress.</p>",
+            "opened": false
+          }
+        },
+        "block_3": {
+          "type": "accordion",
+          "settings": {
+            "question": "Do you offer international shipping?",
+            "answer": "<p>Yes, we are pleased to offer international shipping to most countries. Shipping costs and delivery times vary depending on the destination.</p>",
+            "opened": false
+          }
+        },
+        "block_4": {
+          "type": "accordion",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We accept returns within 30 days of purchase for most items in new, unused condition with original tags attached. Refunds will be processed in the original form of payment. Some exclusions may apply, and return shipping fees are the responsibility of the customer.</p>",
+            "opened": false
+          }
+        },
+        "block_5": {
+          "type": "accordion",
+          "settings": {
+            "question": "Can I change or cancel my order?",
+            "answer": "<p>We understand that you may need to make changes to your order. While we cannot modify orders once they have been placed, you can cancel your order within 24 hours of placement and create a new order with your desired changes. </p>",
+            "opened": false
+          }
+        },
+        "accordion_88CNyn": {
+          "type": "accordion",
+          "settings": {
+            "question": "How do I apply a promo code?",
+            "answer": "<p>To apply a promo code to your order, proceed to checkout and locate the 'Promo Code' field on the payment page. Enter your code exactly as it appears, then click 'Apply' to see your new total. Note that only one promo code can be used per order.</p>",
+            "opened": false
+          }
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3",
+        "block_4",
+        "block_5",
+        "accordion_88CNyn"
+      ],
+      "settings": {
+        "layout": "border",
+        "color_scheme": "background-1",
+        "enable_border": true,
+        "border_full": false,
+        "subheading": "",
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h2",
+        "text": "Find quick answers to your questions in our comprehensive FAQ section.",
+        "text_align": "left",
+        "row_color_scheme": "background-2",
+        "buttons_show": true,
+        "show_more_button_style": "secondary",
+        "show_less_button_style": "secondary",
+        "padding_top": "l",
+        "padding_bottom": "l",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_with_text_4Jib9d",
+    "multicolumn_7UVhhR",
+    "multicolumn_cKcADF",
+    "collapsible-content"
+  ]
+}

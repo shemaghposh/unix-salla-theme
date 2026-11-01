@@ -1,0 +1,65 @@
+/* UNIX — National Day gift bar in the cart drawer.
+   Sits directly under the free-shipping slider and borrows its rhythm so
+   the two read as one strip of "what you unlock". Green is the only
+   accent: it belongs to the occasion without touching the flag itself. */
+
+.unix-nd {
+  margin: .8rem 0 0;
+  padding: 1.1rem 1.3rem;
+  border-radius: 12px;
+  background: rgba(30, 90, 60, .06);
+  border: 1px solid rgba(30, 90, 60, .14);
+}
+.unix-nd__head {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  margin-bottom: .8rem;
+}
+.unix-nd__badge {
+  flex: none;
+  font-size: 1.05rem;
+  letter-spacing: .04em;
+  padding: .25rem .7rem;
+  border-radius: 999px;
+  background: #1E5A3C;
+  color: #F5F1EA;
+}
+.unix-nd__title {
+  font-size: 1.3rem;
+  color: #373542;
+  line-height: 1.35;
+}
+.unix-nd__track {
+  height: .5rem;
+  border-radius: 999px;
+  background: rgba(30, 90, 60, .14);
+  overflow: hidden;
+}
+.unix-nd__fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: #1E5A3C;
+  transition: width .45s ease;
+}
+.unix-nd__note {
+  margin: .7rem 0 0;
+  font-size: 1.2rem;
+  color: #373542;
+  opacity: .75;
+  line-height: 1.5;
+}
+.unix-nd.is-max .unix-nd__note { opacity: 1; }
+.unix-nd.is-max .unix-nd__title { font-weight: 600; }
+
+/* gift line inside the cart: quiet tag so it is obviously not a mistake */
+.cart-item[data-unix-gift] .cart-item__name::after {
+  content: ' — هدية';
+  color: #1E5A3C;
+  font-size: .9em;
+}
+html[lang^="en"] .cart-item[data-unix-gift] .cart-item__name::after {
+  content: ' — gift';
+}
+.cart-item[data-unix-gift] .quantity { visibility: hidden; }

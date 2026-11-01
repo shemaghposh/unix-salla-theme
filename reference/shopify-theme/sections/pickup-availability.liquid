@@ -1,0 +1,215 @@
+{% comment %}theme-check-disable UndefinedObject{% endcomment %}
+{%- assign pick_up_availabilities = product_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+
+{%- if pick_up_availabilities.size > 0 -%}
+  <pickup-availability-preview class="pickup-availability-preview">
+    {%- liquid
+      assign closest_location = pick_up_availabilities.first
+
+      if closest_location.available
+        render 'icon-box'
+      endif
+    -%}
+
+    <div class="pickup-availability-info">
+      {%- if closest_location.available -%}
+        <p class="pickup-availability-info__text body-small">
+          {{-
+            'products.product.pickup_availability.pick_up_available_at_html'
+            | t: location_name: closest_location.location.name
+          -}}
+          .
+          <span class="secondary-text">{{ closest_location.pick_up_time -}}</span>
+        </p>
+        <button
+          id="ShowPickupAvailabilityDrawer"
+          class="pickup-availability-button button button--simple_secondary"
+          aria-haspopup="dialog"
+        >
+          {%- if pick_up_availabilities.size == 1 -%}
+            <span class="body-xs">{{ 'products.product.pickup_availability.view_store_info' | t }}</span>
+          {%- else -%}
+            <span class="body-xs">{{ 'products.product.pickup_availability.check_other_stores' | t }}</span>
+          {%- endif -%}
+        </button>
+      {%- else -%}
+        <p class="pickup-availability-info__text">
+          {{
+            'products.product.pickup_availability.pick_up_unavailable_at_html'
+            | t: location_name: closest_location.location.name
+          }}
+        </p>
+        {%- if pick_up_availabilities.size > 1 -%}
+          <button
+            id="ShowPickupAvailabilityDrawer"
+            class="pickup-availability-button button button--simple button--arrow"
+            aria-haspopup="dialog"
+          >
+            <span class="body-xs">{{ 'products.product.pickup_availability.check_other_stores' | t }}</span>
+            {% render 'icon-button-arrow' %}
+          </button>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </pickup-availability-preview>
+
+  <pickup-availability-drawer tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="PickupAvailabilityHeading">
+    <div class="pickup-availability-header">
+      <div class="pickup-availability-header-wrapper">
+        <h2 class="pickup-availability-drawer-title">{{ 'products.product.pickup_availability.header' | t }}</h2>
+      </div>
+      <button
+        class="pickup-availability-drawer-button focus-inset"
+        type="button"
+        aria-label="{{ 'accessibility.close' | t }}"
+      >
+        {%- render 'icon-close' -%}
+      </button>
+    </div>
+
+    <div class="pickup-availability-content">
+      <div class="pickup-availability-product">
+        {% if product_variant.product.featured_media %}
+          <div class="pickup-availability-product__left">
+            {% liquid
+              assign aspect_ratio = settings.cart_image_ratio | split: '/'
+              assign temp = aspect_ratio[0] | append: '.0'
+              assign padding_bottom = aspect_ratio[1] | divided_by: temp | times: 100 | round: 2
+            %}
+            {% liquid
+              assign aspect_ratio_settings = aspect_ratio[1] | divided_by: temp
+              assign aspect_ratio_img_width = item.image.height | plus: 0.0 | divided_by: item.image.width | round: 2
+              assign aspect_ratio_img_height = item.image.width | plus: 0.0 | divided_by: item.image.height | round: 2
+
+              assign width_ratio = 1
+              if aspect_ratio_settings < 1
+                if aspect_ratio_settings < aspect_ratio_img_width and aspect_ratio_img_width > 1
+                  assign width_ratio = aspect_ratio_img_width
+                elsif aspect_ratio_settings < aspect_ratio_img_width and aspect_ratio_img_width < 1
+                  assign width_ratio = aspect_ratio_img_height
+                elsif aspect_ratio_settings > aspect_ratio_img_width and aspect_ratio_img_width < 1
+                  assign width_ratio = aspect_ratio_img_height
+                else
+
+                endif
+              else
+                if aspect_ratio_settings < aspect_ratio_img_width and aspect_ratio_img_width > 1
+                  assign width_ratio = aspect_ratio_img_width
+                elsif aspect_ratio_settings > aspect_ratio_img_width and aspect_ratio_img_width > 1
+                  assign width_ratio = aspect_ratio_settings
+                elsif aspect_ratio_settings > aspect_ratio_img_width and aspect_ratio_img_width < 1
+                  assign width_ratio = aspect_ratio_img_height | times: aspect_ratio_settings | round: 2 | plus: aspect_ratio_img_width
+                else
+                  assign width_ratio = aspect_ratio_settings | plus: 0.25
+                endif
+              endif
+            %}
+            <div class="pickup-availability-product__image" style="padding-bottom: {{ padding_bottom }}%">
+              {% assign width = 164 | times: width_ratio %}
+              <img
+                src="{{ product_variant.product.featured_media | image_url: width: width }}"
+                alt="{{ product_variant.product.featured_media.alt | escape }}"
+                width="{{ width }}"
+                height="auto"
+                loading="lazy"
+                {%- if settings.cart_image_fit == 'contain' -%}
+                  style="object-fit: contain;"
+                {%- endif -%}
+                {%- if settings.cart_image_fit == 'cover' -%}
+                  style="object-fit: cover;"
+                {%- endif -%}
+              >
+            </div>
+          </div>
+        {% endif %}
+        <div class="pickup-availability-product__info pickup-availability-product__info--{{ settings.card_secondary_text }}">
+          {% if product_variant.product.vendor %}
+            <div class="pickup-availability-product__vendor body-small">
+              {{ product_variant.product.vendor }}
+            </div>
+          {% endif %}
+          <h3 class="h6 pickup-availability-product__name body-small body-font" id="PickupAvailabilityHeading">
+            {{ product_variant.product.title | escape }}
+          </h3>
+          {%- unless product_variant.product.has_only_default_variant -%}
+            <dl class="pickup-availability-variant body-xs">
+              {%- for option in product_variant.product.options_with_values -%}
+                {% liquid
+                  assign color_trigger = settings.trigger_swatch | handle | strip
+                  assign name_option = option.name | handle | strip
+
+                  if settings.type_color_swatch == 'custom' and color_trigger == name_option
+                    for value in option.values
+                      if option.selected_value == value
+                        assign color_value = value | handle | strip
+                        assign color_value_custom = color_value | remove: '-'
+
+                        if settings.custom_colors != blank
+                          assign custom_colors_string = settings.custom_colors | strip
+                          assign custom_colors_obj = custom_colors_string | newline_to_br | split: '<br />'
+
+                          for obj in custom_colors_obj
+                            assign obj_strip = obj | strip
+                            assign obj_key = obj_strip | split: ':' | first
+                            assign obj_value = obj_strip | split: ':' | last
+                            assign obj_color_name = obj_key | handle | strip
+
+                            if color_value == obj_color_name
+                              assign obj_color_value = obj_value | strip
+                              if obj_color_value contains 'gradient'
+                                assign color_value_custom = obj_color_value
+                              else
+                                assign color_value_custom = obj_color_value | remove: '-'
+                              endif
+                              break
+                            endif
+                          endfor
+                        endif
+                      endif
+                    endfor
+                  endif
+                %}
+                <div
+                  class="product-option body-xs{% if settings.type_color_swatch == 'custom' and color_trigger == name_option %} product-option--color{% endif %}"
+                  {% if settings.type_color_swatch == 'custom' and color_trigger == name_option %}
+                    style="--swatch-color: {{ color_value_custom }}"
+                  {% endif %}
+                >
+                  <dt>{{ option.name }}:</dt>
+                  {%- for value in option.values -%}
+                    {%- if option.selected_value == value -%}
+                      <dd>{{ value | escape }}</dd>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {%- endfor -%}
+            </dl>
+          {%- endunless -%}
+        </div>
+      </div>
+
+      <ul class="pickup-availability-list list-unstyled" role="list" data-store-availability-drawer-content>
+        {%- for availability in pick_up_availabilities -%}
+          <li class="pickup-availability-list__item">
+            <h4 class="h6 body-xl">{{ availability.location.name | escape }}</h4>
+            <p class="pickup-availability-preview">
+              {%- if availability.available -%}
+                {{ 'products.product.pickup_availability.pick_up_available' | t }},
+                {{ availability.pick_up_time | downcase }}
+              {%- endif -%}
+            </p>
+
+            {%- assign address = availability.location.address -%}
+            <address class="pickup-availability-address body-normal">
+              {{ address | format_address }}
+
+              {%- if address.phone.size > 0 -%}
+                <p>{{ address.phone }}</p>
+              {%- endif -%}
+            </address>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </pickup-availability-drawer>
+{%- endif -%}

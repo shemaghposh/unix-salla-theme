@@ -1,0 +1,119 @@
+{%- comment -%}
+  UNIX — trust strip. Last band on every page, below the footer columns.
+
+  Layout mirrors the pattern Saudi shoppers already know from local stores:
+  contact and social icons, then the registration badge beside its number,
+  then a rule and the payment marks.
+
+  Social links are stored without the tracking parameters they were shared
+  with: those are short-lived session tokens that expire, which would leave
+  dead links in the footer.
+
+  Card brands are rendered from Shopify's enabled payment types so they stay
+  in sync with checkout automatically. mada, Tabby and Tamara are uploaded
+  images because Shopify treats them as providers, not card brands, and never
+  includes them in that list. Instalment providers sit at the start of the
+  row and mada at the end, so the two most locally relevant marks bracket
+  the international card brands.
+
+  The wrapper carries the footer's own colour-scheme class so the strip always
+  matches the footer background, even if that scheme is edited later.
+{%- endcomment -%}
+
+{{ 'unix-trust.css' | asset_url | stylesheet_tag }}
+
+{%- assign is_ar = false -%}
+{%- if request.locale.iso_code contains 'ar' -%}{%- assign is_ar = true -%}{%- endif -%}
+
+{%- comment -%}
+  Customer care number. wa.me needs digits only, with country code and no
+  leading zero or plus; tel: takes the full international form.
+{%- endcomment -%}
+{%- assign wa_number   = '966573616566' -%}
+{%- assign tel_number  = '+966573616566' -%}
+{%- assign tel_display = '+966 57 361 6566' -%}
+{%- assign ig_url = 'https://www.instagram.com/unix_theclub' -%}
+{%- assign tt_url = 'https://www.tiktok.com/@unix_theclub' -%}
+{%- assign cdn = 'https://cdn.shopify.com/s/files/1/0710/2791/6967/files/' -%}
+
+{%- if is_ar -%}
+  {%- assign L_CR     = 'السجل التجاري' -%}
+  {%- assign L_TM     = 'العلامة التجارية' -%}
+  {%- assign L_WA     = 'تواصلي عبر واتساب' -%}
+  {%- assign L_TEL    = 'اتصلي بنا' -%}
+  {%- assign L_IG     = 'تابعينا على إنستجرام' -%}
+  {%- assign L_TT     = 'تابعينا على تيك توك' -%}
+  {%- assign L_RIGHTS = 'جميع الحقوق محفوظة لـ UNIX' -%}
+{%- else -%}
+  {%- assign L_CR     = 'Commercial registration' -%}
+  {%- assign L_TM     = 'Trademark' -%}
+  {%- assign L_WA     = 'Message us on WhatsApp' -%}
+  {%- assign L_TEL    = 'Call us' -%}
+  {%- assign L_IG     = 'Follow us on Instagram' -%}
+  {%- assign L_TT     = 'Follow us on TikTok' -%}
+  {%- assign L_RIGHTS = 'All rights reserved to UNIX' -%}
+{%- endif -%}
+
+<div class='unix-trust color-scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2'>
+  <div class='unix-trust__inner'>
+
+    <div class='unix-trust__icons'>
+      <a class='unix-trust__icon' href='tel:{{ tel_number }}' aria-label='{{ L_TEL }}' title='{{ L_TEL }} {{ tel_display }}'>
+        <svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'>
+          <path d='M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02z'/>
+        </svg>
+      </a>
+
+      <a class='unix-trust__icon unix-trust__icon--wa' href='https://wa.me/{{ wa_number }}' target='_blank' rel='noopener' aria-label='{{ L_WA }}' title='{{ L_WA }}'>
+        <svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'>
+          <path d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413'/>
+        </svg>
+      </a>
+
+      <a class='unix-trust__icon unix-trust__icon--ig' href='{{ ig_url }}' target='_blank' rel='noopener' aria-label='{{ L_IG }}' title='{{ L_IG }}'>
+        <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'>
+          <rect x='2.6' y='2.6' width='18.8' height='18.8' rx='5.2'/>
+          <circle cx='12' cy='12' r='4.1'/>
+          <circle cx='17.4' cy='6.6' r='1.15' fill='currentColor' stroke='none'/>
+        </svg>
+      </a>
+
+      <a class='unix-trust__icon unix-trust__icon--tt' href='{{ tt_url }}' target='_blank' rel='noopener' aria-label='{{ L_TT }}' title='{{ L_TT }}'>
+        <svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'>
+          <path d='M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 1 1 .74-5.07v-3.1a5.65 5.65 0 0 0-.74-.05 5.66 5.66 0 1 0 5.66 5.66V9.01a7.35 7.35 0 0 0 4.28 1.37V7.3a4.28 4.28 0 0 1-3.2-1.48z'/>
+        </svg>
+      </a>
+    </div>
+
+    <div class='unix-trust__creds'>
+      <div class='unix-trust__cred'>
+        <img class='unix-trust__cred-badge'
+             src='{{ cdn }}caf0145a-3812-44c1-be62-422577a1def6.png?v=1788167847'
+             alt='{{ L_CR }}' width='411' height='389' loading='lazy'>
+        <div class='unix-trust__cred-text'>
+          <span class='unix-trust__cred-label'>{{ L_CR }}</span>
+          <span class='unix-trust__cred-value' dir='ltr'>1009084709</span>
+        </div>
+      </div>
+
+      <div class='unix-trust__cred'>
+        <div class='unix-trust__cred-text'>
+          <span class='unix-trust__cred-label'>{{ L_TM }}</span>
+          <span class='unix-trust__cred-value' dir='ltr'>TM-01-00-14674-25</span>
+        </div>
+      </div>
+    </div>
+
+    <ul class='unix-trust__pay'>
+      <li><img class='unix-trust__pay-img' src='{{ cdn }}tamara.png?v=1788168694' alt='Tamara' width='608' height='199' loading='lazy'></li>
+      <li><img class='unix-trust__pay-img' src='{{ cdn }}tabby2.svg?v=1788168421' alt='Tabby' width='254' height='100' loading='lazy'></li>
+      {%- for type in shop.enabled_payment_types -%}
+        <li>{{ type | payment_type_svg_tag: class: 'unix-trust__pay-icon' }}</li>
+      {%- endfor -%}
+      <li><img class='unix-trust__pay-img' src='{{ cdn }}mada-circle.png?v=1788168421' alt='mada' width='200' height='67' loading='lazy'></li>
+    </ul>
+
+    <p class='unix-trust__rights'>{{ L_RIGHTS }} &copy; {{ 'now' | date: '%Y' }}</p>
+
+  </div>
+</div>

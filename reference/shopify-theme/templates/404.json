@@ -1,0 +1,61 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-404",
+      "settings": {
+        "padding_top": "xs",
+        "padding_bottom": "m"
+      }
+    },
+    "popular_products": {
+      "type": "popular-products",
+      "settings": {
+        "color_scheme": "",
+        "subheading": "",
+        "heading": "الأكثر مبيعًا",
+        "heading_size": "h3",
+        "text": "",
+        "product_list": [
+          "waist-tone-set-grey",
+          "sailor-set-black",
+          "bamboo-3-pieces-set-dusk",
+          "pearla-lounge-set-pants-pearl"
+        ],
+        "products_to_show": 4,
+        "enable_carousel": false,
+        "columns_mobile": "2",
+        "show_collection": false,
+        "collection": "",
+        "color_scheme_collection": "",
+        "layout_columns": false,
+        "subheading_collection": "Subheading",
+        "heading_color": "basic",
+        "show_desc_collection": true,
+        "opacity_overlay": 0.2,
+        "image_ratio": "2/3",
+        "image_fit": "contain",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_desc": false,
+        "button_show": true,
+        "button_label": "تصفّحي الجميع",
+        "button_style": "outline",
+        "button_link": "shopify://collections/all-products",
+        "padding_top": "l",
+        "padding_bottom": "l",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    }
+  },
+  "order": ["main", "popular_products"]
+}

@@ -1,0 +1,83 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "custom_css": [
+        ".collection-hero__wrapper {padding-top: 20px;}",
+        ".collection-hero__description {padding-bottom: 2.5rem;}"
+      ],
+      "settings": {
+        "color_scheme": "scheme-d82e0a29-230e-4404-a6e4-2d6c5004fdfe",
+        "heading_tag": "h1",
+        "image_ratio": "small",
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 12,
+        "columns": 4,
+        "image_ratio": "2/3",
+        "image_fit": "contain",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_desc": false,
+        "card_heading_tag": "h3",
+        "enable_filtering": true,
+        "filter_type": "horizontal_united",
+        "enable_filters_sticky": false,
+        "hor_filter": "مقاس",
+        "enable_sorting": true,
+        "image_filter_ratio": "4/5",
+        "image_filter_fit": "cover",
+        "image_filter_columns": 2,
+        "columns_mobile": "2",
+        "padding_top": "no-indent",
+        "padding_bottom": "m"
+      }
+    },
+    "rich_text_rTWqWW": {
+      "type": "rich-text",
+      "blocks": {
+        "text_UJhLKG": {
+          "type": "text",
+          "settings": {
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_UJhLKG"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "full_width": true,
+        "alignment": "center",
+        "text_alignment": "left",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent",
+        "padding_top": "no-indent",
+        "padding_bottom": "l"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "product-grid",
+    "rich_text_rTWqWW"
+  ]
+}

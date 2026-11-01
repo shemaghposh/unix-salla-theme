@@ -1,0 +1,61 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": "no-indent",
+        "padding_bottom": "m"
+      }
+    },
+    "form": {
+      "type": "contact-form",
+      "blocks": {
+        "info_1": {
+          "type": "info",
+          "settings": {
+            "subheading": "Store Location",
+            "text": "<h3>6 W, 18TH ST, NEW YORK, NY, 10011-4631, USA</h3>",
+            "text_transform": "none"
+          }
+        },
+        "info_2": {
+          "type": "info",
+          "settings": {
+            "subheading": "Working Hours",
+            "text": "<h3>Mon – Sun<br/>10AM – 6PM</h3>",
+            "text_transform": "none"
+          }
+        },
+        "info_3": {
+          "type": "info",
+          "settings": {
+            "subheading": "E-mail",
+            "text": "<h3>swipe@hello.com</h3>",
+            "text_transform": "none"
+          }
+        }
+      },
+      "block_order": ["info_1", "info_2", "info_3"],
+      "settings": {
+        "position": "right",
+        "color_scheme": "",
+        "subheading": "",
+        "heading": "We are Here to Help You. Feel Free to Contact Us",
+        "heading_size": "h1",
+        "text": "",
+        "color_scheme_form": "",
+        "heading_form": "If you have any questions feel free to contact us, we promise to get back to you as quickly as we can",
+        "heading_form_size": "h3",
+        "text_form": "",
+        "additional_text": "",
+        "button_style": "primary",
+        "padding_top": "m",
+        "padding_bottom": "l",
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    }
+  },
+  "order": ["main", "form"]
+}

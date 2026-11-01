@@ -1,0 +1,13 @@
+/* UNIX — retired promo pill.
+
+   The old UNIX10 copy-to-clipboard pill was replaced in templates/product.json
+   by {% render 'unix-nd-code' %}, which renders the National Day code in the
+   campaign colours and gates itself by date.
+
+   This rule is kept only as a safety net: if the old block is ever restored
+   from a theme backup it stays hidden rather than appearing alongside the
+   new one. It does not affect .unix-ndc, the current pill. */
+
+.unix-promo {
+  display: none !important;
+}

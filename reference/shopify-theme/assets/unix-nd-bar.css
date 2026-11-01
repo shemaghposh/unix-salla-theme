@@ -1,0 +1,30 @@
+/* UNIX — National Day announcement bar.
+
+   Runs only during the campaign; outside it the file is still loaded but
+   the theme's own scheme colours apply because these rules are scoped to
+   the .unix-nd-bar class that unix-nd-bar.liquid only prints in-window.
+
+   Deep green with a warm off-white text: the occasion's palette without
+   touching the flag itself, which cannot be used commercially in Saudi
+   Arabia. */
+
+.unix-nd-bar .announcement-bar,
+.unix-nd-bar announcement-bar,
+.unix-nd-bar .announcement-bar__wrapper {
+  background: #14532D !important;
+  color: #F5F1EA !important;
+}
+.unix-nd-bar .announcement-bar *,
+.unix-nd-bar announcement-bar * {
+  color: #F5F1EA !important;
+}
+.unix-nd-bar .announcement-bar a,
+.unix-nd-bar announcement-bar a {
+  color: #F5F1EA !important;
+  text-decoration-color: rgba(245, 241, 234, .5);
+}
+.unix-nd-bar .announcement-bar svg,
+.unix-nd-bar announcement-bar svg {
+  fill: #F5F1EA !important;
+  color: #F5F1EA !important;
+}

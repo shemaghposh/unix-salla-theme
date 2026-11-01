@@ -1,0 +1,257 @@
+/* UNIX custom overrides — loads on every locale */
+
+/* Hide G: Combined Listings colour swatches on product cards only.
+   The app injects .mpg-swatch on both the product page and the card;
+   .mpg-card marks the card instance, so the product page is untouched. */
+.mpg-swatch.mpg-card {
+  display: none !important;
+}
+
+/* ============================================================
+   Section: "Move. Train. Unwind." / "حركة. رياضة. استرخاء."
+   (featured_collections_YMJcqj)
+   Light image behind light text -> force brand-dark heading,
+   description, subheading and CTA for readability.
+   Previously this lived in custom-arabic-headings.css, which only
+   loads for the Arabic locale, so English rendered washed out.
+   ============================================================ */
+[id*="featured_collections_YMJcqj"] .featured-collections__heading,
+[id*="featured_collections_YMJcqj"] .featured-collections__heading *,
+[id*="featured_collections_YMJcqj"] .featured-collections__subheading,
+[id*="featured_collections_YMJcqj"] .featured-collections__information,
+[id*="featured_collections_YMJcqj"] .featured-collections__information * {
+  color: #373542 !important;
+}
+
+/* ============================================================
+   Button style: Outline
+   Transparent fill + brand border, brand-dark label.
+   On hover it inverts: fills with brand colour, label goes light.
+   Uses the theme's existing ::before slide-up mechanic so the
+   fill animates in like the primary/secondary buttons.
+   Moved here from custom-arabic-headings.css so English matches
+   Arabic — previously the outline button only rendered correctly
+   on the Arabic locale.
+   ============================================================ */
+.button--outline {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 4.4rem;
+  padding: 0 2.4rem;
+  background-color: transparent;
+  color: #373542;
+  box-shadow: inset 0 0 0 .12rem #373542;
+  transition: color var(--duration-default), box-shadow var(--duration-default);
+}
+.button--outline span {
+  position: relative;
+  z-index: 1;
+}
+.button--outline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #373542;
+  transform: translateY(calc(100% + 1px));
+  transition: transform var(--duration-default);
+  z-index: 0;
+}
+.button--outline:not(:disabled):not([aria-disabled=true]):hover::before {
+  transform: none;
+}
+.button--outline:not(:disabled):not([aria-disabled=true]):hover {
+  color: #f5f1ea;
+}
+
+/* ============================================================
+   Product markers: honor tooltip open-direction on MOBILE too.
+   The theme only defines --to-top/right/bottom/left inside a
+   (min-width: 750px) media query, so on mobile every tooltip
+   opens downward and gets clipped. These rules replicate the
+   directions for small screens — moved here so they apply to
+   English as well as Arabic.
+   ============================================================ */
+@media screen and (max-width: 749px) {
+  .product-markers--banner .product-markers__item-inner--to-top {
+    padding-top: 0 !important;
+    padding-bottom: 2.6rem !important;
+    top: auto;
+    bottom: 100%;
+    transform-origin: bottom center;
+  }
+  .product-markers--banner .product-markers__item-inner--to-bottom {
+    padding-top: 2.6rem !important;
+    top: 100%;
+    bottom: auto;
+    transform-origin: top center;
+  }
+}
+
+/* ============================================================
+   MOBILE DRAWER — accordion instead of sliding panels
+   The theme renders each parent link's children inside
+   .menu-drawer__submenu, an absolutely positioned panel that
+   slides in from the side with its own back button.
+   Customers expected the children to open *underneath* the
+   parent, so this flattens the panel into an inline accordion:
+     • submenu flows in the document instead of overlaying
+     • the duplicated header + back arrow are hidden
+     • the caret rotates to point down when open
+     • children are indented so the hierarchy reads clearly
+   Scoped to the drawer, so the desktop inline menu is untouched.
+   ============================================================ */
+.menu-drawer .menu-drawer__submenu {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+  z-index: auto !important;
+  transition: none !important;
+}
+
+.menu-drawer .menu-drawer__submenu-inner {
+  height: auto !important;
+  overflow: visible !important;
+  padding: 0 !important;
+}
+
+/* the sub-panel's own title bar + back arrow are redundant inline */
+.menu-drawer .menu-drawer__submenu .menu-drawer__header {
+  display: none !important;
+}
+
+/* caret: point down while the section is open */
+.menu-drawer .menu-drawer__menu-arrow {
+  transition: transform .2s ease;
+}
+.menu-drawer details[open] > summary .menu-drawer__menu-arrow {
+  transform: rotate(-90deg);
+}
+html[dir='rtl'] .menu-drawer details[open] > summary .menu-drawer__menu-arrow {
+  transform: rotate(90deg);
+}
+
+/* indent + soften the child links so the level reads clearly */
+.menu-drawer .menu-drawer__submenu .menu-drawer__menu {
+  padding-inline-start: 1.6rem !important;
+}
+.menu-drawer .menu-drawer__submenu .menu-drawer__menu-item {
+  opacity: 1 !important;
+  transform: none !important;
+  transition-delay: 0ms !important;
+  font-size: .95em;
+}
+
+/* keep the region / language pickers as sliding panels — they are
+   long lists and read better full-screen */
+.menu-drawer .mobile-localization-form__submenu.menu-drawer__submenu {
+  position: absolute !important;
+  height: 100% !important;
+  background: var(--color-background) !important;
+}
+.menu-drawer .mobile-localization-form__submenu .menu-drawer__header {
+  display: flex !important;
+}
+
+/* ============================================================
+   PRODUCT PAGE — discount code chip (copy on tap)
+   Sits under the price. Deliberately quiet: a dashed hairline
+   pill rather than a loud promo banner, so it reads as a detail
+   of the product rather than a sale sticker. Uses the brand
+   ink (#373542) at low alpha for the border so it sits inside
+   the existing type hierarchy instead of competing with it.
+   Full-width on mobile so it is an easy tap target.
+   ============================================================ */
+.unix-promo {
+  margin: 1.2rem 0 .4rem;
+}
+.unix-promo__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.8rem;
+  border: 1px dashed rgba(55, 53, 66, .32);
+  border-radius: 999px;
+  background: transparent;
+  color: #373542;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color .2s ease, background-color .2s ease;
+}
+.unix-promo__btn:hover {
+  border-color: rgba(55, 53, 66, .7);
+  background: rgba(55, 53, 66, .035);
+}
+.unix-promo__label {
+  font-size: 1.3rem;
+  opacity: .75;
+}
+.unix-promo__code {
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.unix-promo__cta {
+  font-size: 1.2rem;
+  opacity: .6;
+  text-decoration: underline;
+  text-underline-offset: .3rem;
+}
+.unix-promo__btn.is-copied {
+  border-style: solid;
+  border-color: rgba(55, 53, 66, .7);
+  background: rgba(55, 53, 66, .05);
+}
+.unix-promo__btn.is-copied .unix-promo__cta {
+  opacity: 1;
+  text-decoration: none;
+}
+@media screen and (max-width: 749px) {
+  .unix-promo__btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ============================================================
+   PRODUCT PAGE — photo sits flush under the header on phones
+   The theme gives .product__outer an 8px top padding on mobile,
+   which shows as a thin white strip between the header and the
+   model photo. The gallery should start right at the header.
+   ============================================================ */
+@media screen and (max-width: 749px) {
+  .product__outer {
+    padding-top: 0 !important;
+  }
+}
+
+/* ============================================================
+   DESKTOP HEADER — shopping links only
+   The inline header menu wrapped onto two lines because it also
+   carried Home (the logo already does that), About, Blog and the
+   gift card. Those stay in the burger menu and the mobile drawer;
+   only the inline desktop row drops them, so it fits on one line.
+   Matched by link target (with or without the /en prefix), so
+   renaming a menu item does not break the rule.
+   ============================================================ */
+.list-menu--inline > li:has(> a[href="/"]),
+.list-menu--inline > li:has(> a[href="/en"]),
+.list-menu--inline > li:has(> a[href="/en/"]),
+.list-menu--inline > li:has(> a[href$="/pages/about"]),
+.list-menu--inline > li:has(> a[href*="/blogs/"]),
+.list-menu--inline > li:has(> a[href$="/products/unix-gift-card"]) {
+  display: none !important;
+}

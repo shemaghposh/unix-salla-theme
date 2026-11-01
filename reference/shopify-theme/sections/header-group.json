@@ -1,0 +1,186 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "t:sections.header.settings.header-group.label",
+  "sections": {
+    "countdown-timer-bar": {
+      "type": "countdown-timer-bar",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "text_color": "basic",
+        "promo_text": "",
+        "enable_mock_timer": false,
+        "date_picker": "2025-08-01",
+        "time_picker": "00:00",
+        "mock_date_picker_day": 2,
+        "mock_date_picker_hours": 3,
+        "countdown_block_font": "small",
+        "completed_countdown": "show_text",
+        "countdown_heading": "Free Shipping Across Saudi Arabia on Orders Above 600 SAR",
+        "show_link": true,
+        "button_label": "Shop Now",
+        "button_style": "simple_secondary",
+        "button_link": "",
+        "overlay_mobile_link": true
+      }
+    },
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_slide_drop2": {
+          "type": "announcement-slide",
+          "settings": {
+            "text": "وصلت مجموعتنا الجديدة: Sailor وHalo Back وSoft Angle"
+          }
+        },
+        "announcement_slide_49epm6": {
+          "type": "announcement-slide",
+          "settings": {
+            "text": "شحن مجاني داخل السعودية للطلبات فوق 500 ر.س"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_slide_drop2",
+        "announcement_slide_49epm6"
+      ],
+      "settings": {
+        "height": 40,
+        "height_mobile": 40,
+        "color_scheme": "scheme-d82e0a29-230e-4404-a6e4-2d6c5004fdfe",
+        "slide_duration": 4,
+        "speed": 0.8
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "search": {
+          "type": "search",
+          "settings": {
+            "show_tabs": false,
+            "enable_tab_1": true,
+            "heading_1": "Tab heading 1",
+            "menu_1": "",
+            "layout_1": "products",
+            "product_list_1": [],
+            "collection_list_1": [],
+            "enable_tab_2": false,
+            "heading_2": "Tab heading 2",
+            "menu_2": "",
+            "layout_2": "products",
+            "product_list_2": [],
+            "collection_list_2": [],
+            "enable_tab_3": false,
+            "heading_3": "Tab heading 3",
+            "menu_3": "",
+            "layout_3": "products",
+            "product_list_3": [],
+            "collection_list_3": [],
+            "enable_tab_4": false,
+            "heading_4": "Tab heading 4",
+            "menu_4": "",
+            "layout_4": "products",
+            "product_list_4": [],
+            "collection_list_4": [],
+            "collection_image_ratio": "16/9",
+            "collection_image_fit": "cover",
+            "collection_show_desc": true,
+            "collection_show_button": true,
+            "collection_button_label": "Shop Now",
+            "collection_full_link": true,
+            "product_image_ratio": "3/4",
+            "product_image_fit": "cover",
+            "show_secondary_image": true,
+            "show_vendor": true
+          }
+        },
+        "desktop_burger_menu_8rRN7n": {
+          "type": "desktop_burger_menu",
+          "settings": {
+            "burger_menu": "main-menu",
+            "enable_burger_promo": true,
+            "color_scheme_burger_promo": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+            "subheading_burger_promo": "",
+            "heading_burger_promo": "",
+            "link_burger_promo": "",
+            "image_ratio_burger_promo": "16/9",
+            "overlay_opacity_burger_promo": 0.2
+          }
+        },
+        "mega_menu_3FmbyH": {
+          "type": "mega_menu",
+          "disabled": true,
+          "settings": {
+            "mega_menu_trigger": "",
+            "inner_menu_type": "main-menu",
+            "enable_column_1": true,
+            "column_heading_1": "Column heading 1",
+            "column_menu_1": "main-menu",
+            "enable_column_2": true,
+            "column_heading_2": "Column heading 2",
+            "column_menu_2": "main-menu",
+            "enable_column_3": false,
+            "column_heading_3": "Column heading 3",
+            "column_menu_3": "",
+            "enable_column_4": false,
+            "column_heading_4": "Column heading 4",
+            "column_menu_4": "",
+            "mega_menu_collection_list": [],
+            "image_ratio_mobile": "16/9",
+            "image_ratio_desktop": "16/9",
+            "image_fit": "cover",
+            "show_desc": true,
+            "show_button": true,
+            "button_label": "Shop Now",
+            "full_link": true,
+            "enable_carousel": true
+          }
+        }
+      },
+      "block_order": [
+        "search",
+        "desktop_burger_menu_8rRN7n",
+        "mega_menu_3FmbyH"
+      ],
+      "settings": {
+        "logo_position": "center-logo",
+        "enable_border": true,
+        "logo": "shopify://shop_images/rArOZG772n6jswJQnKO8gU6afFM.png",
+        "logo_width": 120,
+        "menu": "main-menu",
+        "enable_country_selector": false,
+        "show_country_flag": true,
+        "enable_language_selector": true,
+        "enable_region_label": true,
+        "enable_social": true,
+        "sticky_header_type": "on-scroll-up",
+        "enable_account_btn": true,
+        "enable_account_modal_component": true,
+        "customer_account_menu": "customer-account-main-menu",
+        "enable_mobile_promo": false,
+        "color_scheme_promo": "scheme-29a5b044-89b4-4b4a-9dbf-1c279b4ce9b2",
+        "subheading_promo": "Promo Highlight",
+        "heading_promo": "Promo Heading",
+        "link_promo": "shopify://collections/tops",
+        "image_promo": "shopify://shop_images/IMG_8005.webp",
+        "image_ratio_promo": "3/4",
+        "overlay_opacity_promo": 0.2
+      }
+    }
+  },
+  "order": [
+    "countdown-timer-bar",
+    "announcement-bar",
+    "header"
+  ]
+}

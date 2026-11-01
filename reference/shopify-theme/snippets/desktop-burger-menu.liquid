@@ -1,0 +1,293 @@
+{% liquid
+  assign enable_burger_menu = false
+  for block in section.blocks
+    if block.type == 'desktop_burger_menu'
+      assign enable_burger_menu = true
+      assign burger_block = block
+    endif
+  endfor
+%}
+
+{% if enable_burger_menu %}
+  <burger-menu {{ burger_block.shopify_attributes }}>
+    <button
+      class="burger-menu__toggle burger-menu__toggle--open-btn button--unstyled focus-inset no-js-hidden"
+      aria-label="{{ 'sections.header.burger_menu_open' | t }}"
+    >
+      {% render 'icon-hamburger' %}
+    </button>
+
+    <div class="burger-menu">
+      <div class="burger-menu__overlay"></div>
+      <div
+        class="burger-menu__wrapper"
+        role="dialog"
+        aria-modal="true"
+        aria-label="{{ 'sections.header.burger_menu' | t }}"
+        tabindex="-1"
+      >
+        <div class="burger-menu__top">
+          <div class="burger-menu__header">
+            <button
+              type="button"
+              class="burger-menu__toggle burger-menu__toggle--close-btn modal-close-button focus-inset"
+              aria-label="{{ 'accessibility.close' | t }}"
+            >
+              {% render 'icon-close' %}
+            </button>
+          </div>
+
+          <ul class="burger-menu__list" role="list">
+            {% if burger_block.settings.burger_menu.links != blank %}
+              {% for item in burger_block.settings.burger_menu.links %}
+                <li>
+                  {% if item.links != blank %}
+                    <menu-drawer>
+                      <details id="Details-BurgerMenu-Link-{{ forloop.index }}">
+                        <summary
+                          class="burger-menu__item burger-menu__summary focus-inset"
+                          {% if forloop.length < 10 %}
+                            style="transition-delay: calc(100ms * {{ forloop.index }})"
+                          {% elsif forloop.length < 20 %}
+                            style="transition-delay: calc(50ms * {{ forloop.index }})"
+                          {% elsif forloop.length < 50 %}
+                            style="transition-delay: calc(20ms * {{ forloop.index }})"
+                          {% else %}
+                            style="transition-delay: calc(5ms * {{ forloop.index }})"
+                          {% endif %}
+                        >
+                          <a
+                            href="{{ item.url }}"
+                            class="burger-menu__link link-hover-line body-xl focus-inset"
+                            {% if item.current %}
+                              aria-current="page"
+                            {% endif %}
+                          >
+                            <span>{{ item.title | escape }}</span>
+                          </a>
+                          <div class="burger-menu__arrow">{% render 'icon-caret-right' %}</div>
+                        </summary>
+                        <div
+                          id="link-{{ forloop.index }}-{{ item.title | escape }}"
+                          class="burger-menu__submenu"
+                          tabindex="-1"
+                        >
+                          <div class="burger-menu__submenu-inner">
+                            <div class="burger-menu__header">
+                              <button
+                                type="button"
+                                class="burger-menu__submenu-back modal-close-button focus-inset"
+                                aria-label="{{ 'accessibility.back' | t }}"
+                                aria-expanded="true"
+                              >
+                                {% render 'icon-caret-left' %}
+                              </button>
+                            </div>
+                            <ul
+                              class="burger-menu__list"
+                              role="list"
+                              tabindex="-1"
+                            >
+                              {% for childlink in item.links %}
+                                <li>
+                                  {% if childlink.links == blank %}
+                                    <a
+                                      href="{{ childlink.url }}"
+                                      class="burger-menu__item burger-menu__link link-hover-line body-xl focus-inset"
+                                      {% if childlink.current %}
+                                        aria-current="page"
+                                      {% endif %}
+                                      {% if forloop.length < 10 %}
+                                        style="transition-delay: calc(100ms * {{ forloop.index }})"
+                                      {% elsif forloop.length < 20 %}
+                                        style="transition-delay: calc(50ms * {{ forloop.index }})"
+                                      {% elsif forloop.length < 50 %}
+                                        style="transition-delay: calc(20ms * {{ forloop.index }})"
+                                      {% else %}
+                                        style="transition-delay: calc(5ms * {{ forloop.index }})"
+                                      {% endif %}
+                                    >
+                                      <span>{{ childlink.title | escape }}</span>
+                                    </a>
+                                  {% else %}
+                                    <menu-drawer>
+                                      <details id="Details-BurgerMenu-ChildLink-{{ forloop.index }}">
+                                        <summary
+                                          class="burger-menu__item burger-menu__summary focus-inset"
+                                          {% if forloop.length < 10 %}
+                                            style="transition-delay: calc(100ms * {{ forloop.index }})"
+                                          {% elsif forloop.length < 20 %}
+                                            style="transition-delay: calc(50ms * {{ forloop.index }})"
+                                          {% elsif forloop.length < 50 %}
+                                            style="transition-delay: calc(20ms * {{ forloop.index }})"
+                                          {% else %}
+                                            style="transition-delay: calc(5ms * {{ forloop.index }})"
+                                          {% endif %}
+                                        >
+                                          <a
+                                            href="{{ childlink.url }}"
+                                            class="burger-menu__link link-hover-line body-xl  focus-inset"
+                                            {% if childlink.current %}
+                                              aria-current="page"
+                                            {% endif %}
+                                          >
+                                            <span>{{ childlink.title | escape }}</span>
+                                          </a>
+                                          <div class="burger-menu__arrow">{% render 'icon-caret-right' %}</div>
+                                        </summary>
+                                        <div
+                                          id="childlink-{{ forloop.index }}-{{ childlink.title | escape }}"
+                                          class="burger-menu__submenu"
+                                        >
+                                          <div class="burger-menu__submenu-inner">
+                                            <div class="burger-menu__header">
+                                              <button
+                                                type="button"
+                                                class="burger-menu__submenu-back modal-close-button focus-inset"
+                                                aria-label="{{ 'accessibility.back' | t }}"
+                                                aria-expanded="true"
+                                              >
+                                                {% render 'icon-caret-left' %}
+                                              </button>
+                                            </div>
+                                            <ul
+                                              class="burger-menu__list"
+                                              role="list"
+                                              tabindex="-1"
+                                            >
+                                              {% for grandchildlink in childlink.links %}
+                                                <li>
+                                                  <a
+                                                    href="{{ grandchildlink.url }}"
+                                                    class="burger-menu__item burger-menu__link link-hover-line body-xl focus-inset"
+                                                    {% if grandchildlink.current %}
+                                                      aria-current="page"
+                                                    {% endif %}
+                                                    {% if forloop.length < 10 %}
+                                                      style="transition-delay: calc(100ms * {{ forloop.index }})"
+                                                    {% elsif forloop.length < 20 %}
+                                                      style="transition-delay: calc(50ms * {{ forloop.index }})"
+                                                    {% elsif forloop.length < 50 %}
+                                                      style="transition-delay: calc(20ms * {{ forloop.index }})"
+                                                    {% else %}
+                                                      style="transition-delay: calc(5ms * {{ forloop.index }})"
+                                                    {% endif %}
+                                                  >
+                                                    <span>{{ grandchildlink.title | escape }}</span>
+                                                  </a>
+                                                </li>
+                                              {% endfor %}
+                                            </ul>
+                                          </div>
+                                        </div>
+                                      </details>
+                                    </menu-drawer>
+                                  {% endif %}
+                                </li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        </div>
+                      </details>
+                    </menu-drawer>
+                  {%- else -%}
+                    <a
+                      href="{{ item.url }}"
+                      {% if item.type == 'http_link' and settings.open_new_tab %}
+                        target="_blank"
+                      {% endif %}
+                      class="burger-menu__item burger-menu__link link-hover-line body-xl focus-inset"
+                      {% if forloop.length < 10 %}
+                        style="transition-delay: calc(100ms * {{ forloop.index }})"
+                      {% elsif forloop.length < 20 %}
+                        style="transition-delay: calc(50ms * {{ forloop.index }})"
+                      {% elsif forloop.length < 50 %}
+                        style="transition-delay: calc(20ms * {{ forloop.index }})"
+                      {% else %}
+                        style="transition-delay: calc(5ms * {{ forloop.index }})"
+                      {% endif %}
+                    >
+                      <span>{{ item.title }}</span>
+                    </a>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
+          </ul>
+        </div>
+        {% if burger_block.settings.enable_burger_promo %}
+          <div class="burger-menu__bottom">
+            {% liquid
+              if burger_block.settings.image_ratio_burger_promo == '1/1'
+                assign padding_bottom = 100
+              elsif burger_block.settings.image_ratio_burger_promo == '16/9'
+                assign padding_bottom = 56.25
+              elsif burger_block.settings.image_ratio_burger_promo == '3/4'
+                assign padding_bottom = 133.33
+              elsif burger_block.settings.image_burger_promo != blank and burger_block.settings.image_ratio_burger_promo == 'adapt'
+                assign padding_bottom = 1 | divided_by: burger_block.settings.image_burger_promo.aspect_ratio | times: 100 | round: 2
+              else
+                assign padding_bottom = 0
+              endif
+            %}
+            <div
+              class="burger-menu__promo color-{{ burger_block.settings.color_scheme_burger_promo }}"
+              style="--promo-height: {{ padding_bottom }}%;"
+            >
+              {% if burger_block.settings.link_burger_promo != blank %}
+                <a
+                  href="{{ burger_block.settings.link_burger_promo }}"
+                  class="burger-menu__promo-overlay-link"
+                  {% if burger_block.settings.heading_burger_promo != blank %}
+                    aria-label="{{ burger_block.settings.heading_burger_promo | escape }}"
+                  {% else %}
+                    aria-label="{{ 'accessibility.open' | t }}"
+                  {% endif %}
+                >
+                  <span class="visually-hidden">
+                    {% if burger_block.settings.heading_burger_promo != blank %}
+                      {{ burger_block.settings.heading_burger_promo | escape }}
+                    {% else %}
+                      {{ 'accessibility.open' | t }}
+                    {% endif %}
+                  </span>
+                </a>
+              {% endif %}
+              {% if burger_block.settings.image_burger_promo != blank %}
+                {{
+                  burger_block.settings.image_burger_promo
+                  | image_url: width: burger_block.settings.image_burger_promo.width
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '295, 590, 885',
+                    sizes: '100%',
+                    class: 'burger-menu__promo-image'
+                }}
+              {% endif %}
+              <div
+                class="burger-menu__promo-overlay"
+                style="opacity: {{ burger_block.settings.overlay_opacity_burger_promo }}"
+              ></div>
+              {% if burger_block.settings.subheading_burger_promo != blank
+                or burger_block.settings.heading_burger_promo != blank
+              %}
+                <div class="burger-menu__promo-content">
+                  {% if burger_block.settings.subheading_burger_promo != blank %}
+                    <div class="burger-menu__promo-subheading body-xs">
+                      {{ burger_block.settings.subheading_burger_promo }}
+                    </div>
+                  {% endif %}
+                  {% if burger_block.settings.heading_burger_promo != blank %}
+                    <div class="burger-menu__promo-heading body-large">
+                      {{ burger_block.settings.heading_burger_promo }}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </burger-menu>
+{% endif %}

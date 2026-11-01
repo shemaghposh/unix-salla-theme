@@ -1,0 +1,24 @@
+{% comment %}
+  Compact AR/EN language toggle for the header.
+  Switches language instantly on click (no popup) and keeps the visitor on the same page.
+  Renders only when more than one language is published.
+{% endcomment %}
+{%- if localization.available_languages.size > 1 -%}
+  <div class="header__lang-toggle">
+    {%- form 'localization', id: 'HeaderLangToggle', class: 'header__lang-toggle-form' -%}
+      <input type="hidden" name="return_to" value="{{ request.path }}">
+      {%- for language in localization.available_languages -%}
+        <button
+          type="submit"
+          name="locale_code"
+          value="{{ language.iso_code }}"
+          class="header__lang-toggle-btn{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}"
+          {% if language.iso_code == localization.language.iso_code %}aria-current="true"{% endif %}
+          aria-label="{{ language.endonym_name | capitalize }}"
+        >
+          {{ language.iso_code | upcase }}
+        </button>
+      {%- endfor -%}
+    {%- endform -%}
+  </div>
+{%- endif -%}

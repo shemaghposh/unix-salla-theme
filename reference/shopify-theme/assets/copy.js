@@ -1,0 +1,1 @@
+(()=>{function e(e){e.preventDefault(),navigator.clipboard.writeText(window.location.href)}var t;for(t of document.querySelectorAll(".copy-btn"))t.addEventListener("click",e)})();

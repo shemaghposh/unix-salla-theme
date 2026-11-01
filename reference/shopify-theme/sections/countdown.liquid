@@ -1,0 +1,1426 @@
+{{ 'section-countdown.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  {% render 'section-margin' %}
+{%- endstyle -%}
+
+{% liquid
+  assign timezone = 'now' | date: '%Z' | plus: 0 | append: ''
+
+  if timezone.size > 1
+    assign timezone = 'now' | date: '%Z' | divided_by: 100 | times: 3600.0 | plus: 1800
+  else
+    assign timezone = 'now' | date: '%Z' | minus: 1 | times: 3600.0
+  endif
+
+  assign date_merge = section.settings.date_picker | append: '-' | append: section.settings.time_picker | append: ':00'
+  assign date_now = 'now' | date: '%s' | minus: 0
+  assign date_settings = date_merge | date: '%s' | minus: 0
+
+  if date_now < date_settings
+    assign distance = date_settings | minus: date_now
+    assign days = distance | divided_by: 3600 | divided_by: 24 | floor | append: ''
+    assign hours = distance | modulo: 86400 | divided_by: 3600 | floor | append: ''
+    assign minutes = distance | modulo: 3600 | divided_by: 60 | floor | append: ''
+    assign seconds = distance | modulo: 60 | floor | append: ''
+  else
+    assign days = '00'
+    assign hours = '00'
+    assign minutes = '00'
+    assign seconds = '00'
+  endif
+%}
+
+{% if section.settings.heading_color == 'accent' %}
+  {% assign scheme = section.settings.main_color_scheme %}
+  {% if scheme.settings.color_accent != 'rgba(0,0,0,0)' %}
+    {% capture accent %}
+      {{ scheme.settings.color_accent.red }},{{ scheme.settings.color_accent.green }},{{ scheme.settings.color_accent.blue }}
+    {% endcapture %}
+  {% else %}
+    {% capture accent %}
+      {{ scheme.settings.colors_text_title.red }},{{ scheme.settings.colors_text_title.green }},{{ scheme.settings.colors_text_title.blue }}
+    {% endcapture %}
+  {% endif %}
+{% endif %}
+
+<countdown-timer
+  class="countdown js-countdown countdown--{{ section.settings.layout }} section-{{ section.id }}-padding color-{{ section.settings.heading_color }} js-countdown-{{ section.id }} {{ scheme.settings.color_accent }}"
+  data-date="{{ section.settings.date_picker }}"
+  data-time="{{ section.settings.time_picker }}"
+  data-completed="{{ section.settings.completed_countdown }}"
+  data-enable-mock-timer="{{ section.settings.enable_mock_timer | default: false }}"
+	data-enable-mock-picker-day="{{ section.settings.mock_date_picker_day | default: 2 }}"
+  data-enable-mock-picker-hours="{{ section.settings.mock_date_picker_hours | default: 3 }}"
+  {% if section.settings.heading_color == 'accent' %}
+    style="--color-heading-accent: {{ accent }};"
+  {% endif %}
+>
+  <div class="countdown__container">
+    <div class="container">
+      <div class="countdown__wrapper color-{{ section.settings.main_color_scheme }}">
+        {% liquid
+          if section.settings.desktop_height != 'adapt'
+            assign aspect_ratio = section.settings.desktop_height | split: '/'
+            assign temp = aspect_ratio[0] | append: '.0'
+            assign padding_bottom_desktop = aspect_ratio[1] | divided_by: temp | times: 100 | round: 2
+          elsif section.settings.desktop_height == 'adapt'
+            if section.settings.desktop_image != blank
+              assign padding_bottom_desktop = 1 | divided_by: section.settings.desktop_image.aspect_ratio | times: 100 | round: 2
+            else
+              assign padding_bottom_desktop = 0
+            endif
+          else
+            assign padding_bottom_desktop = 0
+          endif
+
+          if section.settings.mobile_height != 'adapt'
+            assign aspect_ratio_mobile = section.settings.mobile_height | split: '/'
+            assign temp_mobile = aspect_ratio_mobile[0] | append: '.0'
+            assign padding_bottom_mobile = aspect_ratio_mobile[1] | divided_by: temp_mobile | times: 100 | round: 2
+          elsif section.settings.mobile_height == 'adapt'
+            if section.settings.mobile_image != blank
+              assign padding_bottom_mobile = 1 | divided_by: section.settings.mobile_image.aspect_ratio | times: 100 | round: 2
+            else
+              assign padding_bottom_mobile = 0
+            endif
+          else
+            assign padding_bottom_mobile = 0
+          endif
+        %}
+
+        {% if section.settings.layout == 'simple' %}
+          {% style %}
+            #shopify-section-{{ section.id }} .countdown__timer::before {
+              content: "";
+              display: block;
+              padding-bottom: {{ padding_bottom_mobile }}%;
+            }
+
+            @media screen and (min-width: 576px) {
+              #shopify-section-{{ section.id }} .countdown__timer::before {
+                content: "";
+                display: block;
+                padding-bottom: {{ padding_bottom_desktop }}%;
+              }
+            }
+          {% endstyle %}
+
+          <div class="countdown__inner countdown__inner--timer-{{ section.settings.timer_position }}">
+            <div class="countdown__timer countdown__timer--{{ section.settings.timer_align_mobile }} color-{{ section.settings.timer_color_scheme }}">
+              <div class="countdown__timer-wrapper">
+                {% if section.settings.show_badge %}
+                  <div class="countdown__badge">
+                    {% if section.settings.badge_text != blank %}
+                      <span class="countdown__badge-text h1">
+                        {{ section.settings.badge_text | truncate: 16, '' | newline_to_br }}
+                      </span>
+                    {% endif %}
+                  </div>
+                {% endif %}
+                {% if section.settings.date_picker != blank %}
+                  <div class="countdown__main">
+                    {% liquid
+                      assign delimetr_width = 1
+                      assign delimetr_height = 4
+                      if section.settings.countdown_block_font == 'recommended'
+                        assign font_1600 = 9
+                        assign font_1360 = 9
+                        assign font_990 = 6
+                        assign font_750 = 8
+                        assign font_mobile = 4.8
+
+                        assign delimetr_scale_1360 = 1
+                        assign delimetr_scale_990 = 0.75
+                        assign delimetr_scale_750 = 0.9
+                        assign delimetr_scale_mobile = 0.5
+
+                        assign font_label_1360 = 1.8
+                        assign font_label_990 = 1.5
+                        assign font_label_750 = 1.6
+                        assign font_label_mobile = 1.2
+                      elsif section.settings.countdown_block_font == 'large'
+                        assign font_1600 = 12.4
+                        assign font_1360 = 10
+                        assign font_990 = 6.4
+                        assign font_750 = 10
+                        assign font_mobile = 5
+
+                        assign delimetr_scale_1360 = 1
+                        assign delimetr_scale_990 = 0.75
+                        assign delimetr_scale_750 = 1
+                        assign delimetr_scale_mobile = 0.5
+
+                        assign font_label_1360 = 1.8
+                        assign font_label_990 = 1.5
+                        assign font_label_750 = 1.6
+                        assign font_label_mobile = 1.2
+                      elsif section.settings.countdown_block_font == 'medium'
+                        assign font_1600 = 10
+                        assign font_1360 = 8
+                        assign font_990 = 4.8
+                        assign font_750 = 6.4
+                        assign font_mobile = 4.4
+
+                        assign delimetr_scale_1360 = 1
+                        assign delimetr_scale_990 = 0.75
+                        assign delimetr_scale_750 = 0.8
+                        assign delimetr_scale_mobile = 0.5
+
+                        assign font_label_1360 = 1.6
+                        assign font_label_990 = 1.4
+                        assign font_label_750 = 1.5
+                        assign font_label_mobile = 1.2
+                      elsif section.settings.countdown_block_font == 'small'
+                        assign font_1600 = 8
+                        assign font_1360 = 6.4
+                        assign font_990 = 4.4
+                        assign font_750 = 6.4
+                        assign font_mobile = 3.2
+
+                        assign delimetr_scale_1360 = 0.8
+                        assign delimetr_scale_990 = 0.6
+                        assign delimetr_scale_750 = 0.8
+                        assign delimetr_scale_mobile = 0.4
+
+                        assign font_label_1360 = 1.4
+                        assign font_label_990 = 1.2
+                        assign font_label_750 = 1.3
+                        assign font_label_mobile = 1
+                      endif
+                    %}
+
+                    {% style %}
+                      #shopify-section-{{ section.id }} .countdown__number {
+                        font-size: {{font_mobile}}rem;
+                      }
+                      #shopify-section-{{ section.id }} .countdown__label {
+                        font-size: {{font_label_mobile}}rem;
+                      }
+                      #shopify-section-{{ section.id }} .countdown__delimiter {
+                        height: calc({{ delimetr_height }}rem * {{ delimetr_scale_mobile }});
+                        margin-top: calc(({{ font_mobile }}rem - ({{ delimetr_height }}rem * {{ delimetr_scale_mobile }})) / 2);
+                      }
+                      #shopify-section-{{ section.id }} .countdown__delimiter svg {
+                        width: calc({{ delimetr_width }}rem * {{ delimetr_scale_mobile }});
+                        height: calc({{ delimetr_height }}rem * {{ delimetr_scale_mobile }});
+                      }
+
+                      @media screen and (min-width: 750px) {
+                        #shopify-section-{{ section.id }} .countdown__number {
+                          font-size: {{font_750}}rem;
+                        }
+                        #shopify-section-{{ section.id }} .countdown__label {
+                          font-size: {{font_label_750}}rem;
+                        }
+                        #shopify-section-{{ section.id }} .countdown__delimiter {
+                          height: calc({{ delimetr_height }}rem * {{ delimetr_scale_750 }});
+                          margin-top: calc(({{ font_750 }}rem - ({{ delimetr_height }}rem * {{ delimetr_scale_750 }})) / 2);
+                        }
+                        #shopify-section-{{ section.id }} .countdown__delimiter svg {
+                          width: calc({{ delimetr_width }}rem * {{ delimetr_scale_750 }});
+                          height: calc({{ delimetr_height }}rem * {{ delimetr_scale_750 }});
+                        }
+                      }
+
+                      @media screen and (min-width: 990px) {
+                        #shopify-section-{{ section.id }} .countdown__number {
+                          font-size: {{font_990}}rem;
+                        }
+                        #shopify-section-{{ section.id }} .countdown__label {
+                          font-size: {{font_label_990}}rem;
+                        }
+                        #shopify-section-{{ section.id }} .countdown__delimiter {
+                          height: calc({{ delimetr_height }}rem * {{ delimetr_scale_990 }});
+                          margin-top: calc(({{ font_990 }}rem - ({{ delimetr_height }}rem * {{ delimetr_scale_990 }})) / 2);
+                        }
+                        #shopify-section-{{ section.id }} .countdown__delimiter svg {
+                          width: calc({{ delimetr_width }}rem * {{ delimetr_scale_990 }});
+                          height: calc({{ delimetr_height }}rem * {{ delimetr_scale_990 }});
+                        }
+                      }
+
+                      @media screen and (min-width: 1360px) {
+                        #shopify-section-{{ section.id }} .countdown__number {
+                          font-size: {{font_1360}}rem;
+                        }
+                        #shopify-section-{{ section.id }} .countdown__label {
+                          font-size: {{font_label_1360}}rem;
+                        }
+                        #shopify-section-{{ section.id }} .countdown__delimiter {
+                          height: calc({{ delimetr_height }}rem * {{ delimetr_scale_1360 }});
+                          margin-top: calc(({{ font_1360 }}rem - ({{ delimetr_height }}rem * {{ delimetr_scale_1360 }})) / 2);
+                        }
+                        #shopify-section-{{ section.id }} .countdown__delimiter svg {
+                          width: calc({{ delimetr_width }}rem * {{ delimetr_scale_1360 }});
+                          height: calc({{ delimetr_height }}rem * {{ delimetr_scale_1360 }});
+                        }
+                      }
+
+                      @media screen and (min-width: 1600px) {
+                        #shopify-section-{{ section.id }} .countdown__number {
+                          font-size: {{font_1600}}rem;
+                        }
+                        #shopify-section-{{ section.id }} .countdown__delimiter {
+                          margin-top: calc(({{ font_1600 }}rem - ({{ delimetr_height }}rem * {{ delimetr_scale_1360 }})) / 2);
+                        }
+                      }
+                    {% endstyle %}
+
+                    <div class="countdown__block">
+                      <span class="countdown__number countdown__days">
+                        {% if days.size > 1 %}
+                          {{ days }}
+                        {% else %}
+                          {{ 0 | append: days }}
+                        {% endif %}
+                      </span>
+                      <span class="countdown__label">
+                        {{- 'general.countdown.days' | t }}
+                      </span>
+                    </div>
+                    <div class="countdown__delimiter">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="{{delimetr_width | times: 10 }}"
+                        height="{{delimetr_height | times: 10 }}"
+                        viewBox="0 0 10 40"
+                        fill="none"
+                      >
+                        <path d="M4.80874 40C3.35155 40 2.18579 39.5628 1.31148 38.6885C0.437159 37.8142 0 36.6849 0 35.3005C0 33.9162 0.437159 32.8233 1.31148 32.0219C2.18579 31.1475 3.35155 30.7104 4.80874 30.7104C6.3388 30.7104 7.50456 31.1111 8.30601 31.9126C9.18033 32.714 9.61749 33.8434 9.61749 35.3005C9.61749 36.7577 9.18033 37.9235 8.30601 38.7978C7.50456 39.5993 6.3388 40 4.80874 40ZM4.80874 9.28962C3.35155 9.28962 2.18579 8.85246 1.31148 7.97814C0.437159 7.10383 0 5.9745 0 4.59016C0 3.20583 0.437159 2.11293 1.31148 1.31147C2.18579 0.437158 3.35155 0 4.80874 0C6.3388 0 7.50456 0.40073 8.30601 1.20219C9.18033 2.00364 9.61749 3.13297 9.61749 4.59016C9.61749 6.04736 9.18033 7.21311 8.30601 8.08743C7.50456 8.88889 6.3388 9.28962 4.80874 9.28962Z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                    <div class="countdown__block">
+                      <div class="countdown__spacer">
+                        <span class="countdown__number countdown__spacer-number">00</span>
+                        <span class="countdown__number countdown__hours">
+                          {% if hours.size > 1 %}
+                            {{ hours }}
+                          {% else %}
+                            {{ 0 | append: hours }}
+                          {% endif %}
+                        </span>
+                      </div>
+                      <span class="countdown__label">
+                        {{- 'general.countdown.hours' | t -}}
+                      </span>
+                    </div>
+                    <div class="countdown__delimiter">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="{{delimetr_width | times: 10 }}"
+                        height="{{delimetr_height | times: 10 }}"
+                        viewBox="0 0 10 40"
+                        fill="none"
+                      >
+                        <path d="M4.80874 40C3.35155 40 2.18579 39.5628 1.31148 38.6885C0.437159 37.8142 0 36.6849 0 35.3005C0 33.9162 0.437159 32.8233 1.31148 32.0219C2.18579 31.1475 3.35155 30.7104 4.80874 30.7104C6.3388 30.7104 7.50456 31.1111 8.30601 31.9126C9.18033 32.714 9.61749 33.8434 9.61749 35.3005C9.61749 36.7577 9.18033 37.9235 8.30601 38.7978C7.50456 39.5993 6.3388 40 4.80874 40ZM4.80874 9.28962C3.35155 9.28962 2.18579 8.85246 1.31148 7.97814C0.437159 7.10383 0 5.9745 0 4.59016C0 3.20583 0.437159 2.11293 1.31148 1.31147C2.18579 0.437158 3.35155 0 4.80874 0C6.3388 0 7.50456 0.40073 8.30601 1.20219C9.18033 2.00364 9.61749 3.13297 9.61749 4.59016C9.61749 6.04736 9.18033 7.21311 8.30601 8.08743C7.50456 8.88889 6.3388 9.28962 4.80874 9.28962Z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                    <div class="countdown__block">
+                      <div class="countdown__spacer">
+                        <span class="countdown__number countdown__spacer-number">00</span>
+                        <span class="countdown__number countdown__minutes">
+                          {% if minutes.size > 1 %}
+                            {{ minutes }}
+                          {% else %}
+                            {{ 0 | append: minutes }}
+                          {% endif %}
+                        </span>
+                      </div>
+                      <span class="countdown__label">
+                        {{- 'general.countdown.minutes' | t -}}
+                      </span>
+                    </div>
+                    <div class="countdown__delimiter">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="{{delimetr_width | times: 10 }}"
+                        height="{{delimetr_height | times: 10 }}"
+                        viewBox="0 0 10 40"
+                        fill="none"
+                      >
+                        <path d="M4.80874 40C3.35155 40 2.18579 39.5628 1.31148 38.6885C0.437159 37.8142 0 36.6849 0 35.3005C0 33.9162 0.437159 32.8233 1.31148 32.0219C2.18579 31.1475 3.35155 30.7104 4.80874 30.7104C6.3388 30.7104 7.50456 31.1111 8.30601 31.9126C9.18033 32.714 9.61749 33.8434 9.61749 35.3005C9.61749 36.7577 9.18033 37.9235 8.30601 38.7978C7.50456 39.5993 6.3388 40 4.80874 40ZM4.80874 9.28962C3.35155 9.28962 2.18579 8.85246 1.31148 7.97814C0.437159 7.10383 0 5.9745 0 4.59016C0 3.20583 0.437159 2.11293 1.31148 1.31147C2.18579 0.437158 3.35155 0 4.80874 0C6.3388 0 7.50456 0.40073 8.30601 1.20219C9.18033 2.00364 9.61749 3.13297 9.61749 4.59016C9.61749 6.04736 9.18033 7.21311 8.30601 8.08743C7.50456 8.88889 6.3388 9.28962 4.80874 9.28962Z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                    <div class="countdown__block">
+                      <div class="countdown__spacer">
+                        <span class="countdown__number countdown__spacer-number">00</span>
+                        <span class="countdown__number countdown__seconds">
+                          {% if seconds.size > 1 %}
+                            {{ seconds }}
+                          {% else %}
+                            {{ 0 | append: seconds }}
+                          {% endif %}
+                        </span>
+                      </div>
+                      <span class="countdown__label">
+                        {{- 'general.countdown.seconds' | t -}}
+                      </span>
+                    </div>
+                  </div>
+                {% endif %}
+                {% if section.settings.countdown_heading %}
+                  <div class="countdown__end">
+                    <div class="countdown__end-wrapper">
+                      <h2 class="h2 countdown__end-text">
+                        {{ section.settings.countdown_heading }}
+                      </h2>
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
+              {% if section.settings.mobile_image != blank or section.settings.desktop_image != blank %}
+                {% liquid
+                  if section.settings.desktop_image != blank and section.settings.mobile_image == blank
+                    assign image = section.settings.desktop_image
+                  elsif section.settings.desktop_image == blank and section.settings.mobile_image != blank
+                    assign image = section.settings.mobile_image
+                  elsif section.settings.desktop_image == blank and section.settings.mobile_image == blank
+                    assign image = blank
+                  elsif section.settings.desktop_image != blank and section.settings.mobile_image != blank
+                    assign image = 1
+                  endif
+                %}
+                <div class="countdown__bg {% if section.settings.enable_image_parallax %}jarallax{% endif %}">
+                  <span class="countdown__bg-overlay"
+                    style="background-color: rgba(var(--color-overlay), {{ section.settings.opacity_overlay }})"></span>
+                
+                  {% capture sizes %}
+                  (min-width: 990px) calc(50vw - 40px), 100vw
+                  {% endcapture %}
+                
+                  {% if image != blank and image != 1 %}
+                  {% liquid
+                  assign class = 'countdown__image'
+                  assign style = ''
+                  assign parallax_type = ''
+                  assign parallax_value = ''
+                  assign parallax_steps = ''
+                  if section.settings.enable_image_parallax
+                  assign class = 'countdown__image jarallax-img'
+                  assign style = 'height: calc(100% + 100px);'
+                  assign parallax_type = 'translateY'
+                  assign parallax_value = '100'
+                  assign parallax_steps = '0, 100'
+                  endif
+                  %}
+                
+                  {% if section.settings.enable_image_parallax %}
+                  <div class="countdown__parallax-wrapper">
+                    {% endif %}
+                
+                    {{
+                    image
+                    | image_url: width: image.width
+                    | image_tag:
+                    class: class,
+                    data-parallax-property: parallax_type,
+                    data-parallax-property-value: parallax_value,
+                    data-parallax-steps: parallax_steps,
+                    style: style,
+                    sizes: sizes,
+                    loading: 'lazy',
+                    widths: '375, 425, 576, 768, 990, 1100, 1360, 1600, 1920, 2200, 2400, 2600'
+                    }}
+                
+                    {% if section.settings.enable_image_parallax %}
+                  </div>
+                  {% endif %}
+                
+                  {% elsif image == 1 %}
+                  {% assign desktop_image = section.settings.desktop_image %}
+                  {% assign mobile_image = section.settings.mobile_image %}
+                
+                  {% if section.settings.enable_image_parallax %}
+                  <div class="countdown__parallax-wrapper jarallax">
+                    {% endif %}
+                
+                    <picture class="{% if section.settings.enable_image_parallax %}jarallax-img{% endif %}">
+                      <source
+                        srcset="{{ mobile_image | image_url: width: 375 }} 1x, {{ mobile_image | image_url: width: 750 }} 2x, {{ mobile_image | image_url: width: 1125 }} 3x"
+                        media="(max-width: 375px)">
+                      <source
+                        srcset="{{ mobile_image | image_url: width: 575 }} 1x, {{ mobile_image | image_url: width: 1150 }} 2x, {{ mobile_image | image_url: width: 1725 }} 3x"
+                        media="(max-width: 575px)">
+                      <source
+                        srcset="{{ desktop_image | image_url: width: 750 }} 1x, {{ desktop_image | image_url: width: 1500 }} 2x, {{ desktop_image | image_url: width: 2250 }} 3x"
+                        media="(max-width: 750px)">
+                      {%- if desktop_image.width > 750 -%}
+                      <source
+                        srcset="{{ desktop_image | image_url: width: 1100 }} 1x, {%- if desktop_image.width > 1500 -%} {{ desktop_image | image_url: width: 2200 }} 2x {%- endif -%}"
+                        media="(max-width: 1100px)">
+                      {%- endif -%}
+                      {%- if desktop_image.width > 1100 -%}
+                      <source
+                        srcset="{{ desktop_image | image_url: width: 1500 }} 1x, {%- if desktop_image.width > 2200 -%} {{ desktop_image | image_url: width: 3000 }} 2x {%- endif -%}"
+                        media="(max-width: 1500px)">
+                      {%- endif -%}
+                      {%- if desktop_image.width > 1500 -%}
+                      <source
+                        srcset="{{ desktop_image | image_url: width: 1780 }} 1x, {%- if desktop_image.width > 3000 -%} {{ desktop_image | image_url: width: 3560 }} 2x {%- endif -%}"
+                        media="(max-width: 1780px)">
+                      {%- endif -%}
+                      {%- if desktop_image.width > 1780 -%}
+                      <source
+                        srcset="{{ desktop_image | image_url: width: 2000 }} 1x, {%- if desktop_image.width > 3560 -%} {{ desktop_image | image_url: width: 4000 }} 2x {%- endif -%}"
+                        media="(max-width: 2000px)">
+                      {%- endif -%}
+                      <img sizes="{{ sizes }}" src="{{ desktop_image | image_url: width: desktop_image.width }}" loading="lazy"
+                        alt="{{ desktop_image.alt | escape }}"
+                        class="countdown__image{% if section.settings.enable_image_parallax %} jarallax-img{% endif %}" {% if
+                        section.settings.enable_image_parallax %} data-parallax-property="translateY" data-parallax-property-value="100"
+                        data-parallax-steps="0, 100" {% endif %} width="{{ desktop_image.width }}"
+                        height="{{ desktop_image.width | divided_by: desktop_image.aspect_ratio }}"
+                        style="--focal_point_desktop: {{ desktop_image.presentation.focal_point }}; --focal_point_mobile: {{ mobile_image.presentation.focal_point }};{% if section.settings.enable_image_parallax %} height: calc(100% + 100px);{% endif %}">
+                    </picture>
+                
+                    {% if section.settings.enable_image_parallax %}
+                  </div>
+                  {% endif %}
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+            <div class="countdown__content">
+              <div class="countdown__content-wrapper">
+                {%- if section.settings.subheading != blank -%}
+                  <div class="countdown__subheading subtitle">
+                    {{ section.settings.subheading }}
+                  </div>
+                {% endif %}
+
+                {%- if section.settings.heading != blank -%}
+                  <{{ section.settings.heading_tag | default: 'h2' }} class="countdown__heading {{ section.settings.heading_size }}">
+                    {{ section.settings.heading }}
+                  </{{ section.settings.heading_tag | default: 'h2' }}>
+                {%- endif -%}
+
+                {%- if section.settings.text != blank -%}
+                  <div class="countdown__text body-xl">
+                    {{ section.settings.text | newline_to_br }}
+                  </div>
+                {%- endif -%}
+
+                {%- if section.settings.show_link -%}
+                  {% render 'button',
+                    link: section.settings.button_link,
+                    label: section.settings.button_label,
+                    style: section.settings.button_style,
+                    class: 'countdown'
+                  %}
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {% elsif section.settings.layout == 'overlay' %}
+          {% style %}
+            #shopify-section-{{ section.id }} .countdown__wrapper::before {
+              content: "";
+              display: block;
+              padding-bottom: {{ padding_bottom_mobile }}%;
+            }
+
+            @media screen and (min-width: 576px) {
+              #shopify-section-{{ section.id }} .countdown__wrapper::before {
+                content: "";
+                display: block;
+                padding-bottom: {{ padding_bottom_desktop }}%;
+              }
+            }
+          {% endstyle %}
+
+          <div class="countdown__inner countdown__inner--overlay countdown__inner--timer-{{ section.settings.timer_position }} countdown__inner--timer-{{ section.settings.timer_align_mobile }}-mobile-vertical">
+            {%- if section.settings.subheading != blank -%}
+              <div class="countdown__subheading subtitle">
+                {{ section.settings.subheading }}
+              </div>
+            {% endif %}
+            {% if section.settings.show_badge %}
+              <div class="countdown__badge">
+                {% if section.settings.badge_text != blank %}
+                  <span class="countdown__badge-text h1">
+                    {{ section.settings.badge_text | truncate: 16, '' | newline_to_br }}
+                  </span>
+                {% endif %}
+              </div>
+            {% endif %}
+            {%- if section.settings.heading != blank or section.settings.text != blank -%}
+              <div class="countdown__text-block">
+                {%- if section.settings.heading != blank -%}
+                  <h2 class="countdown__heading {{ section.settings.heading_size }}">
+                    {{ section.settings.heading }}
+                  </h2>
+                {%- endif -%}
+                {%- if section.settings.text != blank -%}
+                  <div class="countdown__text body-xl">
+                    {{ section.settings.text | newline_to_br }}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if section.settings.show_link -%}
+              {% render 'button',
+                link: section.settings.button_link,
+                label: section.settings.button_label,
+                style: section.settings.button_style,
+                class: 'countdown'
+              %}
+            {%- endif -%}
+            {% if section.settings.date_picker != blank %}
+              <div class="countdown__main">
+                {% liquid
+                  assign delimetr_width = 1
+                  assign delimetr_height = 4
+                  if section.settings.countdown_block_font == 'recommended'
+                    assign font_1600 = 12
+                    assign font_1360 = 9
+                    assign font_990 = 6.4
+                    assign font_750 = 8
+                    assign font_mobile = 4.2
+
+                    assign delimetr_scale_1360 = 1
+                    assign delimetr_scale_990 = 0.75
+                    assign delimetr_scale_750 = 1
+                    assign delimetr_scale_mobile = 0.5
+
+                    assign font_label_1360 = 1.8
+                    assign font_label_990 = 1.6
+                    assign font_label_750 = 1.6
+                    assign font_label_mobile = 1.6
+                  elsif section.settings.countdown_block_font == 'large'
+                    assign font_1600 = 10
+                    assign font_1360 = 9
+                    assign font_990 = 6.4
+                    assign font_750 = 8
+                    assign font_mobile = 4.4
+
+                    assign delimetr_scale_1360 = 1
+                    assign delimetr_scale_990 = 0.75
+                    assign delimetr_scale_750 = 1
+                    assign delimetr_scale_mobile = 0.5
+
+                    assign font_label_1360 = 1.8
+                    assign font_label_990 = 1.6
+                    assign font_label_750 = 1.6
+                    assign font_label_mobile = 1.6
+                  elsif section.settings.countdown_block_font == 'medium'
+                    assign font_1600 = 7
+                    assign font_1360 = 6.4
+                    assign font_990 = 4.4
+                    assign font_750 = 6.4
+                    assign font_mobile = 4.2
+
+                    assign delimetr_scale_1360 = 0.75
+                    assign delimetr_scale_990 = 0.65
+                    assign delimetr_scale_750 = 0.75
+                    assign delimetr_scale_mobile = 0.5
+
+                    assign font_label_1360 = 1.8
+                    assign font_label_990 = 1.6
+                    assign font_label_750 = 1.6
+                    assign font_label_mobile = 1.6
+                  elsif section.settings.countdown_block_font == 'small'
+                    assign font_1600 = 4.8
+                    assign font_1360 = 4.4
+                    assign font_990 = 3.8
+                    assign font_750 = 4.8
+                    assign font_mobile = 3.6
+
+                    assign delimetr_scale_1360 = 0.7
+                    assign delimetr_scale_990 = 0.5
+                    assign delimetr_scale_750 = 0.7
+                    assign delimetr_scale_mobile = 0.5
+
+                    assign font_label_1360 = 1.8
+                    assign font_label_990 = 1.6
+                    assign font_label_750 = 1.6
+                    assign font_label_mobile = 1.2
+                  endif
+                %}
+
+                {% style %}
+                  #shopify-section-{{ section.id }} .countdown__number {
+                    font-size: {{font_mobile}}rem;
+                  }
+                  #shopify-section-{{ section.id }} .countdown__label {
+                    font-size: {{font_label_mobile}}rem;
+                  }
+                  #shopify-section-{{ section.id }} .countdown__delimiter {
+                    height: calc({{ delimetr_height }}rem * {{ delimetr_scale_mobile }});
+                    margin-top: calc(({{ font_mobile }}rem - ({{ delimetr_height }}rem * {{ delimetr_scale_mobile }})) / 2);
+                  }
+                  #shopify-section-{{ section.id }} .countdown__delimiter svg {
+                    width: calc({{ delimetr_width }}rem * {{ delimetr_scale_mobile }});
+                    height: calc({{ delimetr_height }}rem * {{ delimetr_scale_mobile }});
+                  }
+
+                  @media screen and (min-width: 750px) {
+                    #shopify-section-{{ section.id }} .countdown__number {
+                      font-size: {{font_750}}rem;
+                    }
+                    #shopify-section-{{ section.id }} .countdown__label {
+                      font-size: {{font_label_750}}rem;
+                    }
+                    #shopify-section-{{ section.id }} .countdown__delimiter {
+                      height: calc({{ delimetr_height }}rem * {{ delimetr_scale_750 }});
+                      margin-top: calc(({{ font_750 }}rem - ({{ delimetr_height }}rem * {{ delimetr_scale_750 }})) / 2);
+                    }
+                    #shopify-section-{{ section.id }} .countdown__delimiter svg {
+                      width: calc({{ delimetr_width }}rem * {{ delimetr_scale_750 }});
+                      height: calc({{ delimetr_height }}rem * {{ delimetr_scale_750 }});
+                    }
+                  }
+
+                  @media screen and (min-width: 990px) {
+                    #shopify-section-{{ section.id }} .countdown__number {
+                      font-size: {{font_990}}rem;
+                    }
+                    #shopify-section-{{ section.id }} .countdown__label {
+                      font-size: {{font_label_990}}rem;
+                    }
+                    #shopify-section-{{ section.id }} .countdown__delimiter {
+                      height: calc({{ delimetr_height }}rem * {{ delimetr_scale_990 }});
+                      margin-top: calc(({{ font_990 }}rem - ({{ delimetr_height }}rem * {{ delimetr_scale_990 }})) / 2);
+                    }
+                    #shopify-section-{{ section.id }} .countdown__delimiter svg {
+                      width: calc({{ delimetr_width }}rem * {{ delimetr_scale_990 }});
+                      height: calc({{ delimetr_height }}rem * {{ delimetr_scale_990 }});
+                    }
+                  }
+
+                  @media screen and (min-width: 1360px) {
+                    #shopify-section-{{ section.id }} .countdown__number {
+                      font-size: {{font_1360}}rem;
+                    }
+                    #shopify-section-{{ section.id }} .countdown__label {
+                      font-size: {{font_label_1360}}rem;
+                    }
+                    #shopify-section-{{ section.id }} .countdown__delimiter {
+                      height: calc({{ delimetr_height }}rem * {{ delimetr_scale_1360 }});
+                      margin-top: calc(({{ font_1360 }}rem - ({{ delimetr_height }}rem * {{ delimetr_scale_1360 }})) / 2);
+                    }
+                    #shopify-section-{{ section.id }} .countdown__delimiter svg {
+                      width: calc({{ delimetr_width }}rem * {{ delimetr_scale_1360 }});
+                      height: calc({{ delimetr_height }}rem * {{ delimetr_scale_1360 }});
+                    }
+                  }
+
+                  /*@media screen and (min-width: 1600px) {
+                    #shopify-section-{{ section.id }} .countdown__number {
+                      font-size: {{font_1600}}rem;
+                    }
+                    #shopify-section-{{ section.id }} .countdown__delimiter {
+                      margin-top: calc(({{ font_1600 }}rem - ({{ delimetr_height }}rem * {{ delimetr_scale_1360 }})) / 2);
+                    }
+                  }*/
+                {% endstyle %}
+
+                <div class="countdown__block">
+                  <span class="countdown__number countdown__days">
+                    {% if days.size > 1 %}
+                      {{ days }}
+                    {% else %}
+                      {{ 0 | append: days }}
+                    {% endif %}
+                  </span>
+                  <span class="countdown__label">
+                    {{- 'general.countdown.days' | t }}
+                  </span>
+                </div>
+                <div class="countdown__delimiter">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="{{delimetr_width | times: 10 }}"
+                    height="{{delimetr_height | times: 10 }}"
+                    viewBox="0 0 10 40"
+                    fill="none"
+                  >
+                    <path d="M4.80874 40C3.35155 40 2.18579 39.5628 1.31148 38.6885C0.437159 37.8142 0 36.6849 0 35.3005C0 33.9162 0.437159 32.8233 1.31148 32.0219C2.18579 31.1475 3.35155 30.7104 4.80874 30.7104C6.3388 30.7104 7.50456 31.1111 8.30601 31.9126C9.18033 32.714 9.61749 33.8434 9.61749 35.3005C9.61749 36.7577 9.18033 37.9235 8.30601 38.7978C7.50456 39.5993 6.3388 40 4.80874 40ZM4.80874 9.28962C3.35155 9.28962 2.18579 8.85246 1.31148 7.97814C0.437159 7.10383 0 5.9745 0 4.59016C0 3.20583 0.437159 2.11293 1.31148 1.31147C2.18579 0.437158 3.35155 0 4.80874 0C6.3388 0 7.50456 0.40073 8.30601 1.20219C9.18033 2.00364 9.61749 3.13297 9.61749 4.59016C9.61749 6.04736 9.18033 7.21311 8.30601 8.08743C7.50456 8.88889 6.3388 9.28962 4.80874 9.28962Z" fill="currentColor"/>
+                  </svg>
+                </div>
+                <div class="countdown__block">
+                  <div class="countdown__spacer">
+                    <span class="countdown__number countdown__spacer-number">00</span>
+                    <span class="countdown__number countdown__hours">
+                      {% if hours.size > 1 %}
+                        {{ hours }}
+                      {% else %}
+                        {{ 0 | append: hours }}
+                      {% endif %}
+                    </span>
+                  </div>
+                  <span class="countdown__label">
+                    {{- 'general.countdown.hours' | t -}}
+                  </span>
+                </div>
+                <div class="countdown__delimiter">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="{{delimetr_width | times: 10 }}"
+                    height="{{delimetr_height | times: 10 }}"
+                    viewBox="0 0 10 40"
+                    fill="none"
+                  >
+                    <path d="M4.80874 40C3.35155 40 2.18579 39.5628 1.31148 38.6885C0.437159 37.8142 0 36.6849 0 35.3005C0 33.9162 0.437159 32.8233 1.31148 32.0219C2.18579 31.1475 3.35155 30.7104 4.80874 30.7104C6.3388 30.7104 7.50456 31.1111 8.30601 31.9126C9.18033 32.714 9.61749 33.8434 9.61749 35.3005C9.61749 36.7577 9.18033 37.9235 8.30601 38.7978C7.50456 39.5993 6.3388 40 4.80874 40ZM4.80874 9.28962C3.35155 9.28962 2.18579 8.85246 1.31148 7.97814C0.437159 7.10383 0 5.9745 0 4.59016C0 3.20583 0.437159 2.11293 1.31148 1.31147C2.18579 0.437158 3.35155 0 4.80874 0C6.3388 0 7.50456 0.40073 8.30601 1.20219C9.18033 2.00364 9.61749 3.13297 9.61749 4.59016C9.61749 6.04736 9.18033 7.21311 8.30601 8.08743C7.50456 8.88889 6.3388 9.28962 4.80874 9.28962Z" fill="currentColor"/>
+                  </svg>
+                </div>
+                <div class="countdown__block">
+                  <div class="countdown__spacer">
+                    <span class="countdown__number countdown__spacer-number">00</span>
+                    <span class="countdown__number countdown__minutes">
+                      {% if minutes.size > 1 %}
+                        {{ minutes }}
+                      {% else %}
+                        {{ 0 | append: minutes }}
+                      {% endif %}
+                    </span>
+                  </div>
+                  <span class="countdown__label">
+                    {{- 'general.countdown.minutes' | t -}}
+                  </span>
+                </div>
+                <div class="countdown__delimiter">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="{{delimetr_width | times: 10 }}"
+                    height="{{delimetr_height | times: 10 }}"
+                    viewBox="0 0 10 40"
+                    fill="none"
+                  >
+                    <path d="M4.80874 40C3.35155 40 2.18579 39.5628 1.31148 38.6885C0.437159 37.8142 0 36.6849 0 35.3005C0 33.9162 0.437159 32.8233 1.31148 32.0219C2.18579 31.1475 3.35155 30.7104 4.80874 30.7104C6.3388 30.7104 7.50456 31.1111 8.30601 31.9126C9.18033 32.714 9.61749 33.8434 9.61749 35.3005C9.61749 36.7577 9.18033 37.9235 8.30601 38.7978C7.50456 39.5993 6.3388 40 4.80874 40ZM4.80874 9.28962C3.35155 9.28962 2.18579 8.85246 1.31148 7.97814C0.437159 7.10383 0 5.9745 0 4.59016C0 3.20583 0.437159 2.11293 1.31148 1.31147C2.18579 0.437158 3.35155 0 4.80874 0C6.3388 0 7.50456 0.40073 8.30601 1.20219C9.18033 2.00364 9.61749 3.13297 9.61749 4.59016C9.61749 6.04736 9.18033 7.21311 8.30601 8.08743C7.50456 8.88889 6.3388 9.28962 4.80874 9.28962Z" fill="currentColor"/>
+                  </svg>
+                </div>
+                <div class="countdown__block">
+                  <div class="countdown__spacer">
+                    <span class="countdown__number countdown__spacer-number">00</span>
+                    <span class="countdown__number countdown__seconds">
+                      {% if seconds.size > 1 %}
+                        {{ seconds }}
+                      {% else %}
+                        {{ 0 | append: seconds }}
+                      {% endif %}
+                    </span>
+                  </div>
+                  <span class="countdown__label">
+                    {{- 'general.countdown.seconds' | t -}}
+                  </span>
+                </div>
+              </div>
+            {% endif %}
+            {% if section.settings.countdown_heading %}
+              <div class="countdown__end">
+                <div class="countdown__end-wrapper">
+                  <h2 class="h2 countdown__end-text">
+                    {{ section.settings.countdown_heading }}
+                  </h2>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+
+          {% if section.settings.mobile_image != blank or section.settings.desktop_image != blank %}
+            {% liquid
+              if section.settings.desktop_image != blank and section.settings.mobile_image == blank
+                assign image = section.settings.desktop_image
+              elsif section.settings.desktop_image == blank and section.settings.mobile_image != blank
+                assign image = section.settings.mobile_image
+              elsif section.settings.desktop_image == blank and section.settings.mobile_image == blank
+                assign image = blank
+              elsif section.settings.desktop_image != blank and section.settings.mobile_image != blank
+                assign image = 1
+              endif
+            %}
+            <div class="countdown__bg {% if section.settings.enable_image_parallax %}jarallax{% endif %}">
+              <span
+                class="countdown__bg-overlay"
+                style="background-color: rgba(var(--color-overlay), {{ section.settings.opacity_overlay }})"
+              ></span>
+              {% capture sizes %}
+                (min-width: 990px) calc(50vw - 40px), 100vw
+              {% endcapture %}
+              {% if image != blank and image != 1 %}
+                {% liquid
+                  assign class = 'countdown__image'
+                  assign style = ''
+                  assign parallax_type = ''
+                  assign parallax_value = ''
+                  assign parallax_steps = ''
+                  if section.settings.enable_image_parallax
+                    assign class = 'countdown__image js-parallax'
+                    assign style = 'height: calc(100% + 100px);'
+                    assign parallax_type = 'translateY'
+                    assign parallax_value = '100'
+                    assign parallax_steps = '0, 100'
+                  endif
+                %}
+                {{
+                  image
+                  | image_url: width: image.width
+                  | image_tag:
+                    class: class,
+                    data-parallax-property: parallax_type,
+                    data-parallax-property-value: parallax_value,
+                    data-parallax-steps: parallax_steps,
+                    style: style,
+                    loading: 'lazy',
+                    widths: '375, 425, 576, 768, 990, 1100, 1360, 1600, 1920, 2200, 2400, 2600'
+                }}
+              {% elsif image == 1 %}
+                {% assign desktop_image = section.settings.desktop_image %}
+                {% assign mobile_image = section.settings.mobile_image %}
+                <picture class="{% if section.settings.enable_image_parallax %}jarallax-img{% endif %}">
+                  <source
+                    srcset=" {{ mobile_image | image_url: width: 375 }} 1x, {{ mobile_image | image_url: width: 750 }} 2x"
+                    media="(max-width: 375px)"
+                  >
+                  <source
+                    srcset=" {{ mobile_image | image_url: width: 575 }} 1x, {{ mobile_image | image_url: width: 1150 }} 2x"
+                    media="(max-width: 575px)"
+                  >
+                  <source
+                    srcset=" {{ desktop_image | image_url: width: 750 }} 1x, {{ desktop_image | image_url: width: 1500 }} 2x"
+                    media="(max-width: 750px)"
+                  >
+                  {%- if desktop_image.width > 750 -%}
+                    <source
+                      srcset=" {{ desktop_image | image_url: width: 1100 }} 1x, {%- if desktop_image.width > 1500 -%} {{ desktop_image | image_url: width: 2200 }} 2x {%- endif -%}"
+                      media="(max-width: 1100px)"
+                    >
+                  {%- endif -%}
+                  {%- if desktop_image.width > 1100 -%}
+                    <source
+                      srcset=" {{ desktop_image | image_url: width: 1500 }} 1x, {%- if desktop_image.width > 2200 -%} {{ desktop_image | image_url: width: 3000 }} 2x {%- endif -%}"
+                      media="(max-width: 1500px)"
+                    >
+                  {%- endif -%}
+                  {%- if desktop_image.width > 1500 -%}
+                    <source
+                      srcset=" {{ desktop_image | image_url: width: 1780 }} 1x, {%- if desktop_image.width > 3000 -%} {{ desktop_image | image_url: width: 3560 }} 2x {%- endif -%}"
+                      media="(max-width: 1780px) "
+                    >
+                  {%- endif -%}
+                  {%- if desktop_image.width > 1780 -%}
+                    <source
+                      srcset=" {{ desktop_image | image_url: width: 2000 }} 1x, {%- if desktop_image.width > 3560 -%} {{ desktop_image | image_url: width: 4000 }} 2x {%- endif -%}"
+                      media="(max-width: 2000px) "
+                    >
+                  {%- endif -%}
+                  <img
+                    sizes="{{ sizes }}"
+                    src="{{ desktop_image | image_url: width: desktop_image.width }}"
+                    loading="lazy"
+                    alt="{{ desktop_image.alt | escape }}"
+                    class="countdown__image{% if section.settings.enable_image_parallax %} js-parallax{% endif %}"
+                    {% if section.settings.enable_image_parallax %}
+                      data-parallax-property="translateY"
+                      data-parallax-property-value="100"
+                      data-parallax-steps="0, 100"
+                    {% endif %}
+                    width="{{ desktop_image.width }}"
+                    height="{{ desktop_image.width | divided_by: desktop_image.aspect_ratio }}"
+                    style="--focal_point_desktop: {{ desktop_image.presentation.focal_point }}; --focal_point_mobile: {{ mobile_image.presentation.focal_point }};{% if section.settings.enable_image_parallax %} height: calc(100% + 100px);{% endif %}"
+                  >
+                </picture>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</countdown-timer>
+
+<script src="{{ 'countdown.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "t:sections.countdown.name",
+  "tag": "section",
+  "class": "countdown-section spaced-section",
+  "enabled_on": {
+    "templates": ["*"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "t:sections.countdown.settings.layout.label",
+      "options": [
+        {
+          "value": "simple",
+          "label": "t:sections.countdown.settings.layout.options_1.label"
+        },
+        {
+          "value": "overlay",
+          "label": "t:sections.countdown.settings.layout.options_2.label"
+        }
+      ],
+      "default": "simple"
+    },
+    {
+      "type": "color_scheme",
+      "id": "main_color_scheme",
+      "default": "background-2",
+      "label": "t:sections.all.color_scheme.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "timer_color_scheme",
+      "default": "background-3",
+      "label": "t:sections.countdown.settings.timer_color_scheme.label",
+      "info": "t:sections.countdown.settings.timer_color_scheme.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mock_timer",
+      "default": false,
+      "label": "t:sections.countdown.settings.enable_mock_timer.label",
+      "info": "t:sections.countdown.settings.enable_mock_timer.info"
+    },
+    {
+      "type": "text",
+      "id": "date_picker",
+      "default": "2025-08-01",
+      "info": "YYYY-MM-DD",
+      "label": "t:sections.countdown.settings.date_picker.label",
+      "visible_if": "{{ section.settings.enable_mock_timer == false }}"
+    },
+    {
+      "type": "text",
+      "id": "time_picker",
+      "default": "00:00",
+      "info": "hh:mm",
+      "label": "t:sections.countdown.settings.time_picker.label",
+      "visible_if": "{{ section.settings.enable_mock_timer == false }}"
+    },
+    {
+      "type": "range",
+      "id": "mock_date_picker_day",
+      "min": 1,
+      "max": 31,
+      "step": 1,
+      "default": 2,
+      "label": "t:sections.countdown.settings.mock_date_picker_day.label",
+      "visible_if": "{{ section.settings.enable_mock_timer }}"
+    },
+    {
+      "type": "range",
+      "id": "mock_date_picker_hours",
+      "min": 1,
+      "max": 23,
+      "step": 1,
+      "default": 3,
+      "label": "t:sections.countdown.settings.mock_date_picker_hours.label",
+      "visible_if": "{{ section.settings.enable_mock_timer }}"
+    },
+    {
+      "type": "select",
+      "id": "countdown_block_font",
+      "options": [
+        {
+          "value": "recommended",
+          "label": "t:sections.countdown.settings.countdown_block_font.options__1.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.countdown.settings.countdown_block_font.options__2.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.countdown.settings.countdown_block_font.options__3.label"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.countdown.settings.countdown_block_font.options__4.label"
+        }
+      ],
+      "default": "recommended",
+      "label": "t:sections.countdown.settings.countdown_block_font.label"
+    },
+    {
+      "type": "select",
+      "id": "timer_position",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.countdown.settings.timer_position.options__1.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.countdown.settings.timer_position.options__2.label"
+        }
+      ],
+      "default": "left",
+      "label": "t:sections.countdown.settings.timer_position.label",
+      "info": "t:sections.countdown.settings.timer_position.info"
+    },
+    {
+      "type": "select",
+      "id": "timer_align_mobile",
+      "options": [
+        {
+          "value": "top",
+          "label": "t:sections.countdown.settings.timer_align_mobile.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.countdown.settings.timer_align_mobile.options__2.label"
+        },
+        {
+          "value": "bottom",
+          "label": "t:sections.countdown.settings.timer_align_mobile.options__3.label"
+        }
+      ],
+      "default": "bottom",
+      "label": "t:sections.countdown.settings.timer_align_mobile.label"
+    },
+    {
+      "type": "select",
+      "id": "completed_countdown",
+      "options": [
+        {
+          "value": "hide_section",
+          "label": "t:sections.countdown.settings.completed_countdown.options_1.label"
+        },
+        {
+          "value": "show_text",
+          "label": "t:sections.countdown.settings.completed_countdown.options_2.label"
+        }
+      ],
+      "default": "show_text",
+      "label": "t:sections.countdown.settings.completed_countdown.label",
+      "visible_if": "{{ section.settings.enable_mock_timer == false }}"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "countdown_heading",
+      "label": "t:sections.countdown.settings.countdown_heading.label",
+      "info": "t:sections.countdown.settings.countdown_heading.info",
+      "default": "t:sections.countdown.settings.countdown_heading.default",
+      "visible_if": "{{ section.settings.enable_mock_timer == false }}"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.countdown.settings.header__1.content"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "t:sections.all.mobile_image.label"
+    },
+    {
+      "type": "select",
+      "id": "mobile_height",
+      "options": [
+        {
+          "value": "1/1",
+          "label": "t:sections.all.aspect_ratio.options__1.label"
+        },
+        {
+          "value": "3/2",
+          "label": "t:sections.all.aspect_ratio.options__2.label"
+        },
+        {
+          "value": "4/3",
+          "label": "t:sections.all.aspect_ratio.options__3.label"
+        },
+        {
+          "value": "16/9",
+          "label": "t:sections.all.aspect_ratio.options__4.label"
+        },
+        {
+          "value": "21/9",
+          "label": "t:sections.all.aspect_ratio.options__5.label"
+        },
+        {
+          "value": "3/4",
+          "label": "t:sections.all.aspect_ratio.options__8.label"
+        },
+        {
+          "value": "adapt",
+          "label": "t:sections.all.aspect_ratio.options__6.label"
+        }
+      ],
+      "default": "3/2",
+      "label": "t:sections.countdown.settings.image_ratio_mobile.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "t:sections.all.desktop_image.label"
+    },
+    {
+      "type": "select",
+      "id": "desktop_height",
+      "options": [
+        {
+          "value": "1/1",
+          "label": "t:sections.all.aspect_ratio.options__1.label"
+        },
+        {
+          "value": "3/2",
+          "label": "t:sections.all.aspect_ratio.options__2.label"
+        },
+        {
+          "value": "4/3",
+          "label": "t:sections.all.aspect_ratio.options__3.label"
+        },
+        {
+          "value": "16/9",
+          "label": "t:sections.all.aspect_ratio.options__4.label"
+        },
+        {
+          "value": "21/9",
+          "label": "t:sections.all.aspect_ratio.options__5.label"
+        },
+        {
+          "value": "3/4",
+          "label": "t:sections.all.aspect_ratio.options__8.label"
+        },
+        {
+          "value": "adapt",
+          "label": "t:sections.all.aspect_ratio.options__6.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.countdown.settings.image_ratio_desktop.label"
+    },
+    {
+      "type": "range",
+      "id": "opacity_overlay",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "t:sections.countdown.settings.opacity_overlay.label",
+      "default": 0.3
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_parallax",
+      "default": false,
+      "label": "t:sections.countdown.settings.enable_image_parallax.label"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.all.subheading.label",
+      "default": "t:sections.countdown.settings.subheading.default"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:sections.all.heading.label",
+      "default": "t:sections.countdown.settings.heading.default"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "medium",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "recommended",
+          "label": "t:sections.all.heading_size.options__7.label"
+        }
+      ],
+      "default": "recommended",
+      "label": "t:sections.all.heading_size.label",
+      "visible_if": "{{ section.settings.heading != blank }}"
+    },
+    {
+      "type": "select",
+      "id": "heading_color",
+      "options": [
+        {
+          "value": "basic",
+          "label": "t:sections.countdown.settings.heading_color.options__1.label"
+        },
+        {
+          "value": "accent",
+          "label": "t:sections.countdown.settings.heading_color.options__2.label"
+        }
+      ],
+      "default": "basic",
+      "label": "t:sections.countdown.settings.heading_color.label",
+      "visible_if": "{{ section.settings.heading != blank }}"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_tag.options__1.label"
+        },
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_tag.options__2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:sections.all.heading_tag.options__3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:sections.all.heading_tag.options__4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:sections.all.heading_tag.options__5.label"
+        },
+        {
+          "value": "h6",
+          "label": "t:sections.all.heading_tag.options__6.label"
+        },
+        {
+          "value": "div",
+          "label": "t:sections.all.heading_tag.options__7.label"
+        }
+      ],
+      "default": "h2",
+      "label": "t:sections.all.heading_tag.label",
+      "info": "t:sections.all.heading_tag.info",
+      "visible_if": "{{ section.settings.heading != blank }}"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "t:sections.all.text.label",
+      "default": "t:sections.countdown.settings.text.default"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "default": false,
+      "label": "t:sections.countdown.settings.show_badge.label"
+    },
+    {
+      "type": "textarea",
+      "id": "badge_text",
+      "label": "t:sections.countdown.settings.badge_text.label",
+      "info": "t:sections.countdown.settings.badge_text.info",
+      "default": "t:sections.countdown.settings.badge_text.default"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.button.header_button.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_link",
+      "default": true,
+      "label": "t:sections.all.button.button_show.label"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.all.button.button_label.label",
+      "default": "t:sections.countdown.settings.button_label.default"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "t:sections.all.button.button_style.options__1.label"
+        },
+        {
+          "value": "secondary",
+          "label": "t:sections.all.button.button_style.options__2.label"
+        },
+        {
+          "value": "tertiary",
+          "label": "t:sections.all.button.button_style.options__3.label"
+        }
+      ],
+      "default": "primary",
+      "label": "t:sections.all.button.button_style.label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.all.button.button_link.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section-margin.header.content"
+    },
+    {
+      "type": "select",
+      "id": "margin_top",
+      "options": [
+        {
+          "value": "no-indent",
+          "label": "t:sections.all.section-margin.options__1.label"
+        },
+        {
+          "value": "xs",
+          "label": "t:sections.all.section-margin.options__2.label"
+        },
+        {
+          "value": "s",
+          "label": "t:sections.all.section-margin.options__3.label"
+        },
+        {
+          "value": "m",
+          "label": "t:sections.all.section-margin.options__4.label"
+        },
+        {
+          "value": "l",
+          "label": "t:sections.all.section-margin.options__5.label"
+        },
+        {
+          "value": "xl",
+          "label": "t:sections.all.section-margin.options__6.label"
+        }
+      ],
+      "default": "l",
+      "label": "t:sections.all.section-margin.margin_top.label"
+    },
+    {
+      "type": "select",
+      "id": "margin_bottom",
+      "options": [
+        {
+          "value": "no-indent",
+          "label": "t:sections.all.section-margin.options__1.label"
+        },
+        {
+          "value": "xs",
+          "label": "t:sections.all.section-margin.options__2.label"
+        },
+        {
+          "value": "s",
+          "label": "t:sections.all.section-margin.options__3.label"
+        },
+        {
+          "value": "m",
+          "label": "t:sections.all.section-margin.options__4.label"
+        },
+        {
+          "value": "l",
+          "label": "t:sections.all.section-margin.options__5.label"
+        },
+        {
+          "value": "xl",
+          "label": "t:sections.all.section-margin.options__6.label"
+        }
+      ],
+      "default": "l",
+      "label": "t:sections.all.section-margin.margin_bottom.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.countdown.presets.name"
+    }
+  ]
+}
+{% endschema %}

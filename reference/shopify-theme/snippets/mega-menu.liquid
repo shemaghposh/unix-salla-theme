@@ -1,0 +1,137 @@
+{% for block in blocks %}
+  {% assign mega_menu_trigger = block.settings.mega_menu_trigger | handle | strip %}
+  {% if link.handle == mega_menu_trigger and block.type == 'mega_menu' %}
+    <div
+      class="header__mega-menu mega-menu color-background-1"
+      {{ block.shopify_attributes }}
+    >
+      <div class="mega-menu__inner">
+        <div class="mega-menu__wrapper container">
+          {% if block.settings.inner_menu_type == 'submenu' %}
+            <div class="mega-menu__columns{% if block.settings.mega_menu_collection_list == blank %} mega-menu__columns--full-width{% endif %}">
+              {% for childLink in link.links %}
+                <div class="mega-menu__column">
+                  <a
+                    href="{{ childLink.url }}"
+                    class="mega-menu__column-heading body-small"
+                    aria-label="{{ childLink.title | escape }}"
+                  >
+                    {{ childLink.title | escape }}
+                  </a>
+                  <ul class="mega-menu__column-list list-unstyled" role="list">
+                    {% for grandChildLink in childLink.links %}
+                      <li class="mega-menu__column-list-item">
+                        <a
+                          href="{{ grandChildLink.url }}"
+                          class="mega-menu__column-list-link link-hover-line focus-inset"
+                          aria-label="{{ grandChildLink.title | escape }}"
+                        >
+                          <span>{{ grandChildLink.title | escape }}</span>
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endfor %}
+            </div>
+          {% elsif block.settings.inner_menu_type == 'columns' %}
+            {% liquid
+              assign has_columns = false
+              for i in (1..4)
+                assign enable_column_setting = 'enable_column_' | append: i
+                assign heading_setting = 'column_heading_' | append: i
+                assign menu_setting = 'menu_' | append: i
+                if block.settings[enable_column_setting] and block.settings[heading_setting] != blank
+                  assign has_columns = true
+                endif
+              endfor
+            %}
+            {% if has_columns %}
+              <div class="mega-menu__columns{% if block.settings.mega_menu_collection_list == blank %} mega-menu__columns--full-width{% endif %}">
+                {% for i in (1..4) %}
+                  {% liquid
+                    assign is_visible_column = false
+                    assign enable_column_setting = 'enable_column_' | append: i
+                    assign heading_setting = 'column_heading_' | append: i
+                    assign menu_setting = 'column_menu_' | append: i
+                    if block.settings[enable_column_setting] and block.settings[heading_setting] != blank
+                      assign is_visible_column = true
+                    endif
+                  %}
+                  {% if is_visible_column %}
+                    <div class="mega-menu__column">
+                      <div class="mega-menu__column-heading body-small">
+                        {{ block.settings[heading_setting] }}
+                      </div>
+                      {% if block.settings[menu_setting] != blank and block.settings[menu_setting].links != blank %}
+                        <ul class="mega-menu__column-list list-unstyled" role="list">
+                          {% for link in block.settings[menu_setting].links %}
+                            <li class="mega-menu__column-list-item">
+                              <a
+                                href="{{ link.url }}"
+                                class="mega-menu__column-list-link link-hover-line focus-inset"
+                                aria-label="{{ link.title | escape }}"
+                              >
+                                <span>{{ link.title | escape }}</span>
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {% if block.settings.mega_menu_collection_list != blank %}
+            {% liquid
+              assign has_swiper = false
+              if block.settings.mega_menu_collection_list.count > 4 and block.settings.enable_carousel
+                assign has_swiper = true
+              endif
+
+              if block.settings.mega_menu_collection_list.count > 4 and block.settings.enable_carousel == false
+                assign has_wrap = true
+              endif
+
+              if block.settings.inner_menu_type == 'columns'
+                assign is_full_width = true
+                for i in (1..4)
+                  assign is_visible_column = false
+                  assign enable_column_setting = 'enable_column_' | append: i
+                  assign heading_setting = 'column_heading_' | append: i
+                  assign menu_setting = 'column_menu_' | append: i
+                  if block.settings[enable_column_setting] and block.settings[heading_setting] != blank
+                    assign is_full_width = false
+                  endif
+                endfor
+              endif
+            %}
+            <div class="mega-menu__collections{% if has_swiper %} swiper swiper--mega-menu-desktop{% elsif has_wrap %} mega-menu__collections--wrap{% endif %}{% if is_full_width %} mega-menu__collections--full-width{% endif %}">
+              <div class="mega-menu__collections-wrapper{% if has_swiper %} swiper-wrapper{% endif %}">
+                {% for item in block.settings.mega_menu_collection_list %}
+                  <div class="mega-menu__collections-item{% if has_swiper %} swiper-slide{% endif %}">
+                    {% render 'collection-card',
+                      collection: item,
+                      media_ratio: block.settings.image_ratio_desktop,
+                      media_fit: block.settings.image_fit,
+                      show_desc: block.settings.show_desc,
+                      show_button: block.settings.show_button,
+                      button_label: block.settings.button_label,
+                      full_link: block.settings.full_link
+                    %}
+                  </div>
+                {% endfor %}
+              </div>
+              {% if has_swiper %}
+                <div class="mega-menu__pagination swiper-pagination no-js-hidden"></div>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}

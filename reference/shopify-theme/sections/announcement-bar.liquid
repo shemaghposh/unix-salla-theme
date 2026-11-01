@@ -1,0 +1,106 @@
+<style>
+  :root {
+    --announcement-height: {{ section.settings.height_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    :root {
+      --announcement-height: {{ section.settings.height }}px;
+    }
+  }
+</style>
+
+<script src="{{ 'announcement.js' | asset_url }}" defer></script>
+
+<div
+  class="announcement-bar color-{{ section.settings.color_scheme }} background{% if section.blocks.size > 1 %} announcement-bar--swiper swiper{% endif %}"
+  role="region"
+  aria-label="{{ 'sections.header.announcement' | t }}"
+  data-delay="{{ section.settings.slide_duration | times: 1000 }}"
+  data-speed="{{ section.settings.speed | times: 1000 }}"
+>
+  <div class="announcement-bar__wrapper container{% if section.blocks.size > 1 %} swiper-wrapper{% endif %}">
+    {% for block in section.blocks %}
+      <div
+        class="announcement-bar__slide{% if section.blocks.size > 1 %} swiper-slide{% endif %}"
+        {{ block.shopify_attributes }}
+      >
+        {% if block.settings.text != blank %}
+          <div class="announcement-bar__text">
+            <span class="span">{{ block.settings.text }}</span>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.announcement-bar.name",
+  "class": "section-announcement",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "range",
+      "id": "height",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "label": "t:sections.announcement-bar.settings.height.label"
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "label": "t:sections.announcement-bar.settings.height_mobile.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "background-2",
+      "label": "t:sections.all.color_scheme.label"
+    },
+    {
+      "type": "range",
+      "id": "slide_duration",
+      "default": 2,
+      "min": 1,
+      "max": 10,
+      "unit": "s",
+      "label": "t:sections.all.slider.slide_duration.label"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 0,
+      "max": 6,
+      "step": 0.1,
+      "default": 0.8,
+      "unit": "s",
+      "label": "t:sections.all.slider.speed.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement-slide",
+      "name": "t:sections.announcement-bar.blocks.slide.name",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "t:sections.announcement-bar.blocks.slide.settings.text.label",
+          "default": "t:sections.announcement-bar.blocks.slide.settings.text.default"
+        }
+      ]
+    }
+  ],
+  "default": {}
+}
+{% endschema %}

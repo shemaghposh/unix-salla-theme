@@ -1,0 +1,83 @@
+{%- comment -%}
+  UNIX — National Day promo code on the product page.
+
+  Replaces the retired UNIX10 pill. Same one-tap copy behaviour, dressed in
+  the campaign's deep green so it reads as part of the occasion rather than
+  a permanent store fixture.
+
+  Self-gating: prints nothing outside the campaign window, so the product
+  page returns to normal at the end with no edit needed.
+
+  Campaign ends 14 Oct 2026, 11:00 Riyadh (08:00 UTC), matching the
+  discounts, the gift bar and the announcement bar.
+{%- endcomment -%}
+
+{%- assign nd_start = '2026-09-07T21:00:00Z' | date: '%s' | plus: 0 -%}
+{%- assign nd_end   = '2026-10-14T07:59:59Z' | date: '%s' | plus: 0 -%}
+{%- assign nd_now   = 'now' | date: '%s' | plus: 0 -%}
+
+{%- if nd_now >= nd_start and nd_now <= nd_end -%}
+  {{ 'unix-nd-code.css' | asset_url | stylesheet_tag }}
+
+  {%- assign promo_code = 'KSA96' -%}
+  {%- assign is_ar = false -%}
+  {%- if request.locale.iso_code contains 'ar' -%}{%- assign is_ar = true -%}{%- endif -%}
+
+  {%- if is_ar -%}
+    {%- assign occasion = 'اليوم الوطني ٩٦' -%}
+    {%- assign offer    = '١٥٪ خصم بكود' -%}
+    {%- assign cta      = 'نسخ' -%}
+    {%- assign done     = 'تم النسخ ✓' -%}
+  {%- else -%}
+    {%- assign occasion = 'National Day 96' -%}
+    {%- assign offer    = '15% off with code' -%}
+    {%- assign cta      = 'Copy' -%}
+    {%- assign done     = 'Copied ✓' -%}
+  {%- endif -%}
+
+  <div class='unix-ndc'>
+    <button type='button' class='unix-ndc__btn' data-code='{{ promo_code }}' aria-label='{{ cta }} {{ promo_code }}'>
+      <span class='unix-ndc__occasion'>{{ occasion }}</span>
+      <span class='unix-ndc__offer'>{{ offer }}</span>
+      <span class='unix-ndc__code'>{{ promo_code }}</span>
+      <span class='unix-ndc__cta' data-done='{{ done }}'>{{ cta }}</span>
+    </button>
+  </div>
+
+  <script>
+  (function () {
+    var wrap = document.currentScript.previousElementSibling;
+    var btn = wrap && wrap.querySelector('.unix-ndc__btn');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var code = btn.getAttribute('data-code');
+      var cta = btn.querySelector('.unix-ndc__cta');
+      var original = cta.textContent;
+      function confirmCopy() {
+        cta.textContent = cta.getAttribute('data-done');
+        btn.classList.add('is-copied');
+        setTimeout(function () {
+          cta.textContent = original;
+          btn.classList.remove('is-copied');
+        }, 2000);
+      }
+      function legacyCopy() {
+        var tmp = document.createElement('textarea');
+        tmp.value = code;
+        tmp.setAttribute('readonly', '');
+        tmp.style.position = 'absolute';
+        tmp.style.left = '-9999px';
+        document.body.appendChild(tmp);
+        tmp.select();
+        try { document.execCommand('copy'); confirmCopy(); } catch (err) {}
+        document.body.removeChild(tmp);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(confirmCopy).catch(legacyCopy);
+      } else {
+        legacyCopy();
+      }
+    });
+  })();
+  </script>
+{%- endif -%}

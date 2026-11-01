@@ -1,0 +1,35 @@
+{% comment %} 
+{%- if section.settings.header_overlay == true %}
+  {% render 'section-overlay', section: section %}
+{% endif -%}
+{% endcomment %}
+<script>
+  (function () {
+    const initOverlay = (section) => {
+      const header = document.querySelector('.shopify-section-header');
+      const main = document.querySelector('main');
+      const headerGroupSections = document.querySelectorAll(".shopify-section-group-header-group");
+      const breadcrumbs = document.querySelector('.breadcrumb');
+      if (main.querySelectorAll('.shopify-section')[0] === section && headerGroupSections[headerGroupSections.length - 1] === header) {
+        if (breadcrumbs) {
+          breadcrumbs.classList.add(`color-{{ section.settings.color_scheme }}`);
+        }
+      }
+    };
+
+    const currentSection = document.currentScript.parentElement;
+    initOverlay(currentSection);
+
+    document.addEventListener('shopify:section:load', function (event) {
+      initOverlay(event.target);
+    });
+
+    document.addEventListener('shopify:section:unload', function (event) {
+      initOverlay(event.target);
+    });
+
+    document.addEventListener('shopify:section:reorder', function (event) {
+      initOverlay(event.target);
+    });
+  })();
+</script>

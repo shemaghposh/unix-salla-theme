@@ -1,0 +1,82 @@
+{%- comment -%}
+  UNIX — Cashback note.  Usage: {% render 'cashback-note' %}
+{%- endcomment -%}
+{%- liquid
+  assign cbk_en = false
+  if request.locale.iso_code == 'en'
+    assign cbk_en = true
+  endif
+
+  assign cbk_base = 0
+  if template.name == 'product' and product != blank
+    assign cbk_base = product.selected_or_first_available_variant.price
+  else
+    assign cbk_base = cart.items_subtotal_price
+  endif
+  assign cbk_amount = cbk_base | times: 0.10 | round
+
+  assign cbk_balance = 0
+  if customer and customer.store_credit_account
+    assign cbk_balance = customer.store_credit_account.balance.amount | times: 100 | round
+  endif
+-%}
+
+{%- if cbk_amount > 0 -%}
+<div class="cbk-note" dir="{% if cbk_en %}ltr{% else %}rtl{% endif %}">
+  <span class="cbk-note__dot" aria-hidden="true"></span>
+  <span class="cbk-note__body">
+
+    {%- if cbk_balance > 0 -%}
+      <span class="cbk-note__lead">
+        {%- if cbk_en -%}
+          You have <strong>{{ customer.store_credit_account.balance | money }}</strong> in credit — apply it at checkout
+        {%- else -%}
+          عندكِ <strong>{{ customer.store_credit_account.balance | money }}</strong> رصيد — طبّقيه عند إتمام الطلب
+        {%- endif -%}
+      </span>
+      <span class="cbk-note__fine">
+        {%- if cbk_en -%}
+          Plus {{ cbk_amount | money }} more once this order is delivered
+        {%- else -%}
+          ويرجع لكِ {{ cbk_amount | money }} إضافي بعد استلام هذا الطلب
+        {%- endif -%}
+      </span>
+
+    {%- else -%}
+      <span class="cbk-note__lead">
+        {%- if cbk_en -%}
+          Earn <strong>{{ cbk_amount | money }}</strong> back as store credit once delivered
+        {%- else -%}
+          يرجع لكِ <strong>{{ cbk_amount | money }}</strong> رصيدًا بعد استلام طلبك
+        {%- endif -%}
+      </span>
+      <span class="cbk-note__fine">
+        {%- if cbk_en -%}
+          10% cashback · valid 6 months
+        {%- else -%}
+          كاش باك ١٠٪ · صالح ٦ أشهر
+        {%- endif -%}
+        {%- unless customer -%}
+          <a class="cbk-note__link" href="{{ routes.account_login_url }}">{% if cbk_en %}Sign in to use your credit{% else %}سجّلي دخولك لاستخدام رصيدك{% endif %}</a>
+        {%- endunless -%}
+      </span>
+    {%- endif -%}
+
+  </span>
+</div>
+<style>
+  .cbk-note{display:flex;align-items:flex-start;gap:11px;padding:15px 16px;margin:14px 0;border-radius:14px;background:rgba(55,53,66,.05);line-height:1.6}
+  .cbk-note__dot{flex:0 0 7px;width:7px;height:7px;border-radius:50%;background:#8a7f6d;margin-top:.55em}
+  .cbk-note__body{flex:1;min-width:0}
+  .cbk-note__lead{display:block;font-size:.95rem;opacity:.95}
+  .cbk-note strong{font-weight:600;white-space:nowrap}
+  .cbk-note__fine{display:block;margin-top:5px;font-size:.85rem;opacity:.7}
+  .cbk-note__link{display:inline-block;margin-inline-start:6px;color:inherit;text-decoration:underline;text-underline-offset:3px;font-weight:600;opacity:1}
+  .cbk-note__link:hover{opacity:.7}
+  @media (max-width:749px){
+    .cbk-note__lead{font-size:1rem}
+    .cbk-note__fine{font-size:.875rem}
+    .cbk-note__link{display:block;margin-inline-start:0;margin-top:4px}
+  }
+</style>
+{%- endif -%}

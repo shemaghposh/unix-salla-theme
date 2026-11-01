@@ -1,0 +1,24 @@
+{%- comment -%}
+  UNIX — Offers & pricing calculator (internal, hidden page).
+  Prices come live from the store (Liquid). Costs and assumptions are
+  AES-GCM encrypted in a Shopify file (unix-calc-data.json); the page decrypts them in the browser with the
+  password, so they cannot be read from the page source without it.
+{%- endcomment -%}
+<meta name="robots" content="noindex, nofollow">
+{{ 'unix-calc.css' | asset_url | stylesheet_tag }}
+{%- paginate collections.all.products by 250 -%}
+<script type="application/json" id="uc-products">[
+{%- for p in collections.all.products -%}{"handle":{{ p.handle | json }},"title":{{ p.title | json }},"price":{{ p.price | divided_by: 100.0 | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}
+]</script>
+{%- endpaginate -%}
+<script type="application/json" id="uc-blob-url">"https://cdn.shopify.com/s/files/1/0710/2791/6967/files/unix-calc-data.json?v=1792589809"</script>
+<div class="uc" dir="rtl" id="uc">
+  <div class="uc-lock" id="uc-lock">
+    <h1>حاسبة العروض والأسعار</h1>
+    <p>الصفحة دي داخلية. اكتبي كلمة المرور عشان تفتح التكاليف.</p>
+    <div class="uc-row"><input id="uc-pw" type="password" autocomplete="current-password" placeholder="كلمة المرور"><button id="uc-open" type="button">افتحي</button></div>
+    <p class="uc-err" id="uc-err" hidden>كلمة المرور غلط.</p>
+  </div>
+  <div id="uc-app" hidden></div>
+</div>
+<script src="{{ 'unix-calc.js' | asset_url }}" defer></script>

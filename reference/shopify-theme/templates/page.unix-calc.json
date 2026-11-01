@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "calc": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'unix-calc' %}"
+      }
+    }
+  },
+  "order": [
+    "calc"
+  ]
+}

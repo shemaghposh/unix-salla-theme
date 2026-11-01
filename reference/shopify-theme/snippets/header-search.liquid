@@ -1,0 +1,93 @@
+{% liquid
+  assign has_search = false
+  for block in section.blocks
+    if block.type == 'search'
+      assign has_search = true
+      assign search_block = block
+    endif
+  endfor
+%}
+
+{% if has_search %}
+  <details-modal
+    class="header__search"
+    {{ search_block.shopify_attributes }}
+  >
+    <details>
+      <summary
+        class="header__icon header__icon--search link--text header__icon--summary focus-inset modal__toggle"
+        aria-haspopup="dialog"
+        role="button"
+      >
+        <span>
+          {% render 'icon-search' %}
+        </span>
+      </summary>
+      <div
+        class="header__search-inner search color-background-1"
+        role="dialog"
+        aria-modal="true"
+        aria-label="{{ 'general.search.search' | t }}"
+        tabindex="-1"
+      >
+        <div class="search__content">
+          <div class="container">
+            {%- if settings.predictive_search_enabled -%}
+              <predictive-search class="search-modal__form" data-loading-text="{{ 'accessibility.loading' | t }}">
+            {%- endif -%}
+            <form action="{{ routes.search_url }}" method="get" role="search" class="search search__form">
+              <div class="field">
+                <span class="search__icon">
+                  {% render 'icon-search' %}
+                </span>
+                <input
+                  dir="ltr"
+                  class="search__input field__input"
+                  id="Search-In-Modal-1"
+                  type="search"
+                  name="q"
+                  value="{{ search.terms | escape }}"
+                  placeholder="{{ 'general.search.placeholder' | t }}"
+                  {%- if settings.predictive_search_enabled -%}
+                    role="combobox"
+                    aria-expanded="false"
+                    aria-owns="predictive-search-results-list"
+                    aria-controls="predictive-search-results-list"
+                    aria-haspopup="listbox"
+                    aria-autocomplete="list"
+                    autocorrect="off"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                  {%- endif -%}
+                >
+                <label class="visually-hidden" for="Search-In-Modal-1">{{ 'general.search.search' | t }}</label>
+                <input type="hidden" name="options[prefix]" value="last">
+                <button
+                  class="search__button button button--primary search__button field__button focus-inset"
+                  aria-label="{{ 'general.search.search' | t }}"
+                >
+                  <span>{{ 'general.search.search' | t }}</span>
+                </button>
+              </div>
+
+              {%- if settings.predictive_search_enabled -%}
+                <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+                  <div class="predictive-search__loading-state">
+                    <div class="spinner"></div>
+                  </div>
+                </div>
+
+                <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+              {%- endif -%}
+            </form>
+            {%- if settings.predictive_search_enabled -%}
+              </predictive-search>
+            {%- endif -%}
+          </div>
+          {% render 'search-modal', section: section, block: search_block %}
+        </div>
+      </div>
+    </details>
+  </details-modal>
+{% endif %}

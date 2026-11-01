@@ -1,0 +1,117 @@
+/* ============================================================
+   UNIX × Judge.me — STAR OVERRIDE + cart cleanup
+
+   This store runs the NEW Judge.me widget, a Vue app whose class set is
+   completely different from the legacy one:
+
+     new:    <span class="jm-star-rating__font-icon">
+     legacy: <span class="jdgm-star jdgm--on">
+
+   The stars are icon-font characters and that font never resolves here, so
+   every star rendered as an empty square. Each icon is repainted with an
+   inline SVG background instead, so nothing depends on the font loading.
+   Legacy selectors are kept below in case an older placement is still on
+   the page.
+
+   Loaded at the end of <body> so it lands after the app stylesheet, which
+   Judge.me injects at runtime.
+   ============================================================ */
+
+/* ---------- NEW widget ---------- */
+
+/* kill the icon-font glyph */
+.jm-star-rating__font-icon::before,
+.jm-star-rating__font-icon::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* paint each star */
+.jm-star-rating .jm-star-rating__font-icon,
+.jm-star-rating__font-icon {
+  display: inline-block !important;
+  width: 1em !important;
+  height: 1em !important;
+  font-size: 1.5em !important;
+  line-height: 1 !important;
+  text-indent: -9999px !important;
+  overflow: hidden !important;
+  vertical-align: middle !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: contain !important;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238b7355'%3E%3Cpath d='M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z'/%3E%3C/svg%3E") !important;
+}
+
+/* empty state */
+.jm-star-rating__font-icon--empty,
+.jm-star-rating__font-icon--off,
+.jm-star-rating__font-icon.is-empty {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ddd3c6'%3E%3Cpath d='M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z'/%3E%3C/svg%3E") !important;
+}
+
+/* half state */
+.jm-star-rating__font-icon--half {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='h'%3E%3Cstop offset='50%25' stop-color='%238b7355'/%3E%3Cstop offset='50%25' stop-color='%23ddd3c6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23h)' d='M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z'/%3E%3C/svg%3E") !important;
+}
+
+/* ============================================================
+   Keep reviews out of the cart drawer.
+
+   Judge.me injects its review widget into the drawer at runtime. It filled
+   half the panel with a review of an unrelated product, right at the moment
+   the shopper is trying to check out. Reviews belong on the product page,
+   where they answer a question; in the cart they only compete with the
+   checkout button.
+
+   Hidden rather than removed because the widget is injected by the app, not
+   by the theme, so there is no markup here to delete.
+   ============================================================ */
+.cart-drawer .jdgm-widget,
+.cart-drawer .jm-review-widget,
+.cart-drawer [class*='jdgm-'],
+.cart-drawer [class*='jm-review'],
+.cart-drawer [class*='jm-widget'],
+cart-drawer .jdgm-widget,
+cart-drawer .jm-review-widget,
+cart-drawer [class*='jdgm-'],
+cart-drawer [class*='jm-review'],
+cart-drawer [class*='jm-widget'],
+#CartDrawer [class*='jdgm-'],
+#CartDrawer [class*='jm-review'] {
+  display: none !important;
+}
+
+/* ---------- LEGACY widget (safety net) ---------- */
+
+.jdgm-star.jdgm-star::before,
+.jdgm-star.jdgm-star::after {
+  content: none !important;
+  display: none !important;
+}
+.jdgm-star.jdgm-star,
+.jdgm-widget .jdgm-star.jdgm-star,
+.jdgm-prev-badge .jdgm-star.jdgm-star {
+  display: inline-block !important;
+  width: 1.7rem !important;
+  height: 1.7rem !important;
+  margin: 0 .12rem !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  text-indent: -9999px !important;
+  overflow: hidden !important;
+  vertical-align: middle !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: contain !important;
+}
+.jdgm-star.jdgm-star.jdgm--on {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238b7355'%3E%3Cpath d='M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z'/%3E%3C/svg%3E") !important;
+}
+.jdgm-star.jdgm-star.jdgm--off,
+.jdgm-star.jdgm-star.jdgm--offhalf {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ddd3c6'%3E%3Cpath d='M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z'/%3E%3C/svg%3E") !important;
+}
+.jdgm-star.jdgm-star.jdgm--half {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='h2'%3E%3Cstop offset='50%25' stop-color='%238b7355'/%3E%3Cstop offset='50%25' stop-color='%23ddd3c6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23h2)' d='M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z'/%3E%3C/svg%3E") !important;
+}

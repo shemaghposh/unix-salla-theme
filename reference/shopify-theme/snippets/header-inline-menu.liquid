@@ -1,0 +1,64 @@
+<nav class="header__inline-menu">
+  {%- if section.settings.menu != blank -%}
+    <ul class="list-menu list-menu--inline" role="list">
+      {%- for link in section.settings.menu.links -%}
+        {% liquid
+          assign mega_menu = false
+          assign mega_submenu = false
+          assign link_handleized = link.title | handle | strip
+        %}
+
+        {% for block in section.blocks %}
+          {% liquid
+            assign mega_menu_trigger = block.settings.mega_menu_trigger | handle | strip
+            assign mega_submenu_trigger = block.settings.mega_submenu_trigger | handle | strip
+
+            if link.handle == mega_menu_trigger
+              if block.settings.inner_menu_type == 'columns'
+                for i in (1..4)
+                  assign enable_column_setting = 'enable_column_' | append: i
+                  assign heading_setting = 'column_heading_' | append: i
+                  if block.settings[enable_column_setting] and block.settings[heading_setting] != blank
+                    assign mega_menu = true
+                  endif
+                endfor
+              elsif block.settings.inner_menu_type == 'submenu'
+                if link.links != blank
+                  assign mega_menu = true
+                endif
+              endif
+            endif
+
+            assign mega_submenu_trigger = block.settings.mega_submenu_trigger | handle | strip
+            if block.type == 'mega_submenu' and link.links != blank
+              if link.handle == mega_submenu_trigger or link_handleized == mega_submenu_trigger
+                assign mega_submenu = true
+              endif
+            endif
+          %}
+        {% endfor %}
+        <li class="{{test}} list-menu-item{% if mega_menu %} list-menu--megamenu{% elsif mega_submenu and link.links != blank %} list-menu--mega_submenu{% elsif link.links != blank %} list-menu--submenu{% endif %}">
+          <a
+            href="{{ link.url }}"
+            class="header__menu-item list-menu__item link focus-inset"
+            {% if link.current %}
+              aria-current="page"
+            {% endif %}
+            aria-label="{{ link.title | escape }}"
+          >
+            <span title="{{ link.title | escape }}">
+              {{ link.title | escape }}
+            </span>
+          </a>
+          {% if mega_menu %}
+            {% render 'mega-menu', link: link, blocks: section.blocks %}
+          {% elsif mega_submenu %}
+            {% render 'header-mega-submenu', link: link, blocks: section.blocks %}
+          {% elsif link.links != blank %}
+            {% render 'submenu', link: link %}
+          {% endif %}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</nav>
