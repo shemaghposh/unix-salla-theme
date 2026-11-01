@@ -2,10 +2,12 @@
   UNIX Size Finder (ROADMAP 3.3 · DS §8.11 · SPEC §8.1)
   Port of unix.sa snippets/unix-size-finder.liquid + assets/unix-size-finder.js.
 
-  Usage: include ONCE on the product page, directly under the product options
-  (pages/partials/product/options.twig is rendered inside the product form):
+  Usage: include ONCE on the product page, inside the product form, directly
+  after {% include 'pages.partials.product.options' %} (pages/product/single.twig):
     {% include 'components.product.unix-size-finder' %}
-  (repo convention: dot paths, same file as components/product/unix-size-finder.twig)
+  (repo convention for include paths = dots; it is this file.)
+  JS: src/assets/js/partials/unix-size-finder-loader.js (in product.js) lazy-imports
+  unix-size-finder.js + unix-size-finder-model.js on first open.
 
   Renders only when the product has a size option (name contains «مقاس» / "size",
   same test as the original) and the setting `unix_size_finder_enabled` is on.
