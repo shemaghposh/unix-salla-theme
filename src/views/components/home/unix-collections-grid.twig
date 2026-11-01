@@ -1,5 +1,5 @@
 {#
-| «حركة. رياضة. استرخاء.» — collections grid (ROADMAP 2.5 · DS §8.13 · SPEC §4.5)
+| «حركة. رياضة. استرخاء.» — collections grid (ROADMAP 2.5 · DS §8.14 · SPEC §4.5)
 | Ground truth: reference/shopify-theme/sections/featured-collections.liquid
 |
 | Variable                 | Type      | Description                                                  |
@@ -9,7 +9,8 @@
 | component.button_label   | ?string   | CTA label, multilanguage (default «تسوقي الآن»)               |
 | component.button_url     | ?string   | CTA link; empty = no button                                  |
 | component.cards          | object[]  | collection cards                                             |
-| component.cards[].title  | string    | category name shown on the card                              |
+| component.cards[].title  | ?string   | category name, multilanguage; null on cards 1–3 falls back   |
+|                          |           | to trans('…default_card_N') (AR + EN)                         |
 | component.cards[].image  | ?string   | 3:4 image                                                    |
 | component.cards[].url    | ?string   | category link; empty = card is not a link                    |
 | component.cards[].overlay| ?int      | overlay opacity in % (0–60)                                  |
@@ -17,6 +18,7 @@
 |
 | Text defaults: null falls back to trans('blocks.unix.collections_grid.default_*');
 | '' means the merchant cleared it on purpose.
+| Arrows (only with more than 3 cards, like unix.sa): partials/unix-collections-grid.js
 #}
 {% set title = component.title %}
 {% if title is iterable %}{% set title = title[language.code] is defined ? title[language.code] : null %}{% endif %}
@@ -35,6 +37,9 @@
 {% set button_url = button_url|trim %}
 
 {% set heading_id = 'unix-collections-grid-' ~ position %}
+{% set list_id = 'unix-collections-grid-list-' ~ position %}
+{% set cards = component.cards ?: [] %}
+{% set has_arrows = cards|length > 3 %}
 
 <section class="unix-collections-grid"
          component-id="{{ componentId }}"
@@ -51,30 +56,57 @@
       <a class="unix-btn unix-btn--outline unix-collections-grid__cta" href="{{ button_url }}">{{ button_label|trim }}</a>
     {% endif %}
 
-    {% if component.cards|length %}
-      <ul class="unix-collections-grid__list" role="list">
-        {% for card in component.cards %}
-          {% set card_title = card.title %}
-          {% if card_title is iterable %}{% set card_title = card_title[language.code] is defined ? card_title[language.code] : '' %}{% endif %}
-          {% set card_url = card.url is iterable ? card.url.url|default('') : card.url|default('') %}
-          {% set card_url = card_url|trim == '#' ? '' : card_url|trim %}
-          {% set card_overlay = card.overlay is null ? 20 : card.overlay %}
-          {% set card_overlay = card_overlay < 0 ? 0 : (card_overlay > 60 ? 60 : card_overlay) %}
-          <li class="unix-collections-grid__item{{ card.image ? '' : ' is-empty' }}">
-            {% if card.image %}
-              <img class="unix-collections-grid__img" src="{{ card.image }}" alt="" width="600" height="800" loading="lazy" decoding="async">
-              <span class="unix-collections-grid__overlay" style="--overlay-opacity: {{ card_overlay / 100 }}" aria-hidden="true"></span>
+    {% if cards|length %}
+      <div class="unix-collections-grid__rail">
+        {% if has_arrows %}
+          <button type="button" class="unix-collections-grid__arrow unix-collections-grid__arrow--prev" data-unix-arrow="prev" hidden
+                  aria-controls="{{ list_id }}" aria-label="{{ trans('blocks.unix.collections_grid.prev') }}">
+            <svg class="icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+                 fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 6l-6 6 6 6"/>
+            </svg>
+          </button>
+        {% endif %}
+
+        {# The row itself is focusable so it scrolls by keyboard even when cards have no links #}
+        <ul id="{{ list_id }}" class="unix-collections-grid__list" role="list" tabindex="0"
+            aria-label="{{ trans('blocks.unix.collections_grid.list_label') }}">
+          {% for card in cards %}
+            {% set card_title = card.title %}
+            {% if card_title is iterable %}{% set card_title = card_title[language.code] is defined ? card_title[language.code] : null %}{% endif %}
+            {% if card_title is null and loop.index <= 3 %}
+              {% set card_title = trans('blocks.unix.collections_grid.default_card_' ~ loop.index) %}
             {% endif %}
-            <h3 class="unix-collections-grid__name">
-              {% if card_url %}
-                <a class="unix-collections-grid__link" href="{{ card_url }}">{{ card_title|trim }}</a>
-              {% else %}
-                {{ card_title|trim }}
+            {% set card_url = card.url is iterable ? card.url.url|default('') : card.url|default('') %}
+            {% set card_url = card_url|trim == '#' ? '' : card_url|trim %}
+            {% set card_overlay = card.overlay is null ? 20 : card.overlay %}
+            {% set card_overlay = card_overlay < 0 ? 0 : (card_overlay > 60 ? 60 : card_overlay) %}
+            <li class="unix-collections-grid__item{{ card.image ? '' : ' is-empty' }}">
+              {% if card.image %}
+                <img class="unix-collections-grid__img" src="{{ card.image }}" alt="" width="600" height="800" loading="lazy" decoding="async">
+                <span class="unix-collections-grid__overlay" style="--overlay-opacity: {{ card_overlay / 100 }}" aria-hidden="true"></span>
               {% endif %}
-            </h3>
-          </li>
-        {% endfor %}
-      </ul>
+              <h3 class="unix-collections-grid__name">
+                {% if card_url %}
+                  <a class="unix-collections-grid__link" href="{{ card_url }}">{{ card_title|trim }}</a>
+                {% else %}
+                  {{ card_title|trim }}
+                {% endif %}
+              </h3>
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% if has_arrows %}
+          <button type="button" class="unix-collections-grid__arrow unix-collections-grid__arrow--next" data-unix-arrow="next" hidden
+                  aria-controls="{{ list_id }}" aria-label="{{ trans('blocks.unix.collections_grid.next') }}">
+            <svg class="icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+                 fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 6l6 6-6 6"/>
+            </svg>
+          </button>
+        {% endif %}
+      </div>
     {% endif %}
   </div>
 </section>

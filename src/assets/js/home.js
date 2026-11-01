@@ -3,12 +3,14 @@ import BasePage from "./base-page";
 import Lightbox from "fslightbox";
 import initHeroes from "./partials/unix-hero";
 import initCollectionOverlays from "./partials/unix-collection-overlay";
+import initCollectionsGrids from "./partials/unix-collections-grid";
 window.fslightbox = Lightbox;
 
 class Home extends BasePage {
     onReady() {
         initHeroes();
         initCollectionOverlays();
+        initCollectionsGrids();
         this.initFeaturedTabs();
     }
 

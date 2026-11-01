@@ -1943,19 +1943,19 @@
                     "maxLength": 6,
                     "value": [
                         {
-                            "cards.title": "أطقم رياضية",
+                            "cards.title": null,
                             "cards.image": null,
                             "cards.url__type": "categories",
                             "cards.overlay": 10
                         },
                         {
-                            "cards.title": "أطقم كومفي",
+                            "cards.title": null,
                             "cards.image": null,
                             "cards.url__type": "categories",
                             "cards.overlay": 20
                         },
                         {
-                            "cards.title": "إكسسوارات",
+                            "cards.title": null,
                             "cards.image": null,
                             "cards.url__type": "categories",
                             "cards.overlay": 20
@@ -1969,9 +1969,9 @@
                             "multilanguage": true,
                             "id": "cards.title",
                             "value": null,
-                            "required": true,
+                            "required": false,
                             "format": "text",
-                            "description": null,
+                            "description": "لو فاضي في أول 3 كروت بيظهر الاسم الافتراضي (أطقم رياضية / أطقم كومفي / إكسسوارات) بالعربي والإنجليزي",
                             "placeholder": "مثلًا: أطقم كومفي",
                             "minLength": 1,
                             "maxLength": 60
