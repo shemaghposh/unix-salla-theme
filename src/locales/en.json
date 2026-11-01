@@ -29,6 +29,18 @@
         "main": "Main menu",
         "my_account": "My account",
         "login": "Sign in"
+      },
+      "footer": {
+        "shop": "Shop",
+        "help": "Help",
+        "contact": "Contact us",
+        "call": "Call us",
+        "whatsapp": "Message us on WhatsApp",
+        "instagram": "Follow us on Instagram",
+        "tiktok": "Follow us on TikTok",
+        "cr": "Commercial registration",
+        "cr_badge": "Saudi Business Center",
+        "tm": "Trademark"
       }
     }
   },

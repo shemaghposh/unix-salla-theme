@@ -5,6 +5,7 @@ import AppHelpers from "./app-helpers";
 import initAnnouncement from "./partials/unix-announcement";
 import initHeader from "./partials/unix-header";
 import initMenuDrawer from "./partials/unix-drawer";
+import initFooter from "./partials/unix-footer";
 
 class App extends AppHelpers {
   constructor() {
@@ -18,6 +19,7 @@ class App extends AppHelpers {
     this.initiateNotifier();
     initMenuDrawer();
     initHeader({ sticky: !!window.header_is_sticky });
+    initFooter();
     this.initAddToCart();
     this.initiateDropdowns();
     this.initiateModals();

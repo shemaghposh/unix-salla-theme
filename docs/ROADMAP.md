@@ -34,7 +34,7 @@
 | 1.1 | شريط الإعلانات: رسالتين بيتبدلوا، والنصوص من الإعدادات | DS §8.6 · SPEC §2 | ✅ | `header/announcement-bar.twig`، والإعدادات `unix_announcement_*` و `unix_free_shipping_threshold` (500، D1) |
 | 1.2 | الهيدر: اللوجو في النص، و AR/EN، و sticky بيختفي ويرجع، وشفاف فوق الهيرو | DS §8.7 | ✅ | `header.twig` و `lang-toggle.twig` و `unix-header.js`. الشفاف بيشتغل بس لما الهيرو (2.1) يحط `data-header-overlay`. الإعدادات `unix_header_transparent_home` و `unix_header_logo_inverse` |
 | 1.3 | المنيو: mega menu على الديسكتوب، و drawer accordion على الموبايل | DS §8.7, §8.9 | ✅ | `main-menu.js` (بيانات `salla.api.component.getMenus()`، وصورتين من صور المنيو، وإلا منتجات رائد) و `unix-drawer.js` (focus trap و Esc ورجوع الفوكس). mmenu-light فاضلة للفلاتر بس لحد المرحلة 4 |
-| 1.4 | الفوتر وشريط الثقة | DS §8.8 · SPEC §3 | ⬜ | |
+| 1.4 | الفوتر وشريط الثقة | DS §8.8 · SPEC §3 | ✅ | 4 أعمدة (accordion على الموبايل)، و `salla-menu` header/footer و `salla-contacts` و `salla-social` و `salla-payments` بالرمادي. السجل التجاري والعلامة التجارية والتواصل من الإعدادات `unix_cr_*` و `unix_tm_number` و `unix_contact_*` و `unix_social_*`. سلة مافيهاش نشرة بريدية مدمجة، فاتساب `{% hook 'footer:newsletter' %}` لتطبيق النشرة |
 | 1.5 | البحث: مودال بنتايج فورية (`salla-search` بستايلنا) | — | ⬜ | |
 | 1.6 | ستايل الأزرار والحقول ومكونات `salla-*` الأساسية | DS §8.2, §8.5 | ⬜ | |
 
