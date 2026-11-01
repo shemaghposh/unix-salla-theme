@@ -1,0 +1,479 @@
+/*
+ * UNIX product gallery (ROADMAP 3.1 · DS §8.20 · SPEC §5.1) for components/product/unix-gallery.twig.
+ * Mobile: full-bleed salla-slider + segmented progress line. ≥768: main slider with a thumbnail
+ * column on the inline-start side (unix.sa `slider_previews`). Zoom: native <dialog>.
+ * Every image box is a reserved --ratio-pdp (4:5), so nothing shifts while images load.
+ */
+
+.unix-gallery {
+  --pager: 0px;   // height of the mobile progress line under the image (bottom overlays sit above it)
+  --dir-x: 1;     // sign for horizontal nudges; flipped in RTL
+
+  position: relative;
+
+  &--many { --pager: var(--tap); }
+
+  @media (min-width: 768px) {
+    --pager: 0px;
+
+    &--many {
+      display: grid;
+      grid-template-columns: var(--gallery-thumb-w) minmax(0, 1fr);
+      gap: var(--s-1);
+    }
+  }
+}
+
+[dir="rtl"] .unix-gallery { --dir-x: -1; }
+
+/* ── Main slider ─────────────────────────────── */
+.unix-gallery__main {
+  position: relative;
+  min-inline-size: 0;
+
+  // Mobile: edge to edge under the header, no radius (unix.sa margin -2rem)
+  @media (max-width: 767px) {
+    margin-inline: calc(50% - 50vw);
+  }
+
+  @media (min-width: 768px) {
+    .unix-gallery--many & { grid-column: 2; grid-row: 1; }
+  }
+}
+
+.unix-gallery__slider {
+  --swiper-pagination-bullet-horizontal-gap: 0;
+
+  display: block;
+
+  .s-slider-container {
+    margin: 0;
+    background: transparent;
+    border-radius: 0;
+
+    @media (min-width: 768px) { border-radius: var(--r-md); }
+  }
+
+  // Swiper forces height: 100% on slides; the 4:5 box needs its own height
+  .swiper-slide { block-size: auto; }
+}
+
+// Before salla-slider hydrates, its slot is a plain block: show only the first slide (no CLS)
+.unix-gallery__slider:not(.hydrated) [slot="items"] > :not(:first-child) { display: none; }
+
+.unix-gallery__slide {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  inline-size: 100%;
+  aspect-ratio: var(--ratio-pdp);
+  overflow: hidden;
+  background: var(--c-surface-muted);
+
+  @media (min-width: 768px) { border-radius: var(--r-md); }
+}
+
+.unix-gallery__img,
+.unix-gallery__model {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.unix-gallery__img {
+  max-inline-size: none;
+  object-fit: contain;
+
+  .unix-gallery--cover & { object-fit: cover; }
+}
+
+// Video slide: Raed's play glyph (salla-slider css), recoloured to the system
+.unix-gallery__slide--video {
+  &::before {
+    background-color: var(--c-bg);
+    color: var(--c-text);
+  }
+
+  &:focus-visible {
+    outline: var(--ring-w) solid var(--c-accent);
+    outline-offset: calc(-1 * (var(--ring-w) + var(--s-1)));
+  }
+}
+
+/* ── Zoom trigger: transparent button over the image + lens chip at the top end ── */
+.unix-gallery__zoom {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+
+  &:focus-visible {
+    outline: var(--ring-w) solid var(--c-accent);
+    outline-offset: calc(-1 * (var(--ring-w) + var(--s-1)));
+  }
+}
+
+.unix-gallery__zoom-icon {
+  position: absolute;
+  inset-block-start: var(--s-3);
+  inset-inline-end: var(--s-3);
+  display: grid;
+  place-items: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-pill);
+  background: var(--c-bg);
+  color: var(--c-text);
+  transition: transform var(--d-fast) var(--ease-out);
+
+  svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
+
+  .unix-gallery__zoom:hover & { transform: scale(var(--zoom-hover)); }
+  .unix-gallery__zoom:active & { transform: translateY(var(--press-y)); }
+}
+
+/* ── Overlays: badge (top start), calories (bottom end), wishlist (mobile, bottom start) ── */
+.unix-gallery__badge {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: var(--s-3);
+  inset-inline-start: var(--s-3);
+  max-inline-size: calc(100% - 2 * var(--s-3) - var(--tap) - var(--s-2));
+  min-block-size: var(--s-5);
+  padding-inline: var(--s-3);
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  line-height: var(--s-5);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.unix-gallery__calories {
+  position: absolute;
+  z-index: 2;
+  inset-block-end: calc(var(--pager) + var(--s-3));
+  inset-inline-end: var(--s-3);
+  display: grid;
+  place-content: center;
+  inline-size: var(--s-8);
+  block-size: var(--s-8);
+  border-radius: var(--r-pill);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-size: var(--t-micro);
+  line-height: 1.2;
+  text-align: center;
+  pointer-events: none;
+
+  strong { font-size: var(--t-body); font-weight: 700; }
+}
+
+.unix-gallery__wishlist {
+  position: absolute;
+  z-index: 2;
+  inset-block-end: calc(var(--pager) + var(--s-3));
+  inset-inline-start: var(--s-3);
+
+  // ≥640 (Raed `sm`) the info column shows its own wishlist button
+  @media (min-width: 640px) { display: none; }
+}
+
+/* ── Prev / next arrows over the image (≥768) ── */
+.unix-gallery__arrow {
+  display: none;
+
+  @media (min-width: 768px) {
+    position: absolute;
+    z-index: 2;
+    inset-block-start: 50%;
+    display: grid;
+    place-items: center;
+    inline-size: var(--tap);
+    block-size: var(--tap);
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--c-text);
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: transform var(--d-fast) var(--ease-out), opacity var(--d-fast) var(--ease-out);
+
+    svg { inline-size: var(--icon-md); block-size: var(--icon-md); }
+
+    &--prev { inset-inline-start: var(--s-2); }
+    &--next { inset-inline-end: var(--s-2); }
+
+    &--prev:hover:not(:disabled) { transform: translate(calc(-1 * var(--dir-x) * var(--s-2)), -50%); }
+    &--next:hover:not(:disabled) { transform: translate(calc(var(--dir-x) * var(--s-2)), -50%); }
+    &:active:not(:disabled) { transform: translateY(calc(-50% + var(--press-y))); }
+
+    &:focus-visible {
+      outline: var(--ring-w) solid var(--c-accent);
+      outline-offset: calc(-1 * var(--ring-w));
+    }
+
+    &:disabled {
+      opacity: var(--o-disabled);
+      cursor: default;
+    }
+  }
+}
+
+/* ── Mobile progress line (Swiper bullets as flex segments) ── */
+.unix-gallery__slider .swiper-pagination.swiper-pagination-bullets {
+  position: static;
+  display: flex;
+  gap: var(--s-1);
+  inline-size: auto;
+  padding-inline: var(--page-margin);
+  transform: none;
+
+  @media (min-width: 768px) { display: none; }
+}
+
+.unix-gallery__slider .swiper-pagination-bullet {
+  flex: 1 1 0;
+  block-size: var(--tap);  // touch target; the visible part is the 1px line in the middle
+  border-radius: 0;
+  background: linear-gradient(var(--c-border), var(--c-border)) center / 100% var(--line-w) no-repeat;
+  opacity: 1;
+  transform: none;
+
+  &-active { background-image: linear-gradient(var(--c-text), var(--c-text)); }
+
+  &:focus-visible {
+    outline: var(--ring-w) solid var(--c-accent);
+    outline-offset: calc(-1 * var(--ring-w));
+  }
+}
+
+/* ── Thumbnail column (≥768, start side) ── */
+.unix-gallery__thumbs {
+  display: none;
+
+  @media (min-width: 768px) {
+    .unix-gallery--many & {
+      position: relative;
+      display: block;
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+}
+
+// Absolutely placed so the column never sets the height: it matches the main image and scrolls
+.unix-gallery__thumb-list {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.unix-gallery__thumb-item { flex: 0 0 auto; }
+
+.unix-gallery__thumb {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: var(--ratio-pdp);
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--c-surface-muted);
+  opacity: var(--o-thumb);
+  cursor: pointer;
+  transition: opacity var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out);
+
+  img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  &:hover,
+  &[aria-current="true"] { opacity: 1; }
+
+  &:focus-visible {
+    opacity: 1;
+    outline: var(--ring-w) solid var(--c-accent);
+    outline-offset: calc(-1 * var(--ring-w));
+  }
+
+  &:active { transform: translateY(var(--press-y)); }
+}
+
+/* ── Zoom dialog ─────────────────────────────── */
+html:has(.unix-gallery-dialog[open]) { overflow: hidden; }
+
+.unix-gallery-dialog {
+  position: fixed;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  max-inline-size: none;
+  max-block-size: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--c-bg);
+  color: var(--c-text);
+
+  &[open] {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    animation: unix-gallery-fade var(--d-base) var(--ease-out);
+  }
+
+  &::backdrop { background: var(--c-bg); }
+}
+
+@keyframes unix-gallery-fade {
+  from { opacity: 0; }
+}
+
+.unix-gallery-dialog__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  padding-block: var(--s-2);
+  padding-inline: var(--page-margin);
+}
+
+.unix-gallery-dialog__counter {
+  margin: 0;
+  color: var(--c-text);
+  font-size: var(--t-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.unix-gallery-dialog__actions {
+  display: flex;
+  gap: var(--s-1);
+}
+
+.unix-gallery-dialog__btn,
+.unix-gallery-dialog__arrow {
+  display: grid;
+  place-items: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--c-bg);
+  color: var(--c-text);
+  cursor: pointer;
+  transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out), opacity var(--d-fast) var(--ease-out);
+
+  svg { inline-size: var(--icon-md); block-size: var(--icon-md); }
+
+  &:hover:not(:disabled) { background: var(--c-surface-muted); }
+  &:active:not(:disabled) { transform: translateY(var(--press-y)); }
+
+  &:focus-visible {
+    outline: var(--ring-w) solid var(--c-accent);
+    outline-offset: var(--ring-w);
+  }
+
+  &:disabled {
+    opacity: var(--o-disabled);
+    cursor: default;
+  }
+
+  &[aria-pressed="true"] {
+    background: var(--c-action);
+    color: var(--c-text-inverse);
+  }
+}
+
+.unix-gallery-dialog__arrow {
+  position: absolute;
+  inset-block-start: 50%;
+  display: none;
+  transform: translateY(-50%);
+
+  &--prev { inset-inline-start: var(--page-margin); }
+  &--next { inset-inline-end: var(--page-margin); }
+  &:active:not(:disabled) { transform: translateY(calc(-50% + var(--press-y))); }
+
+  @media (min-width: 768px) { display: grid; }
+
+  .unix-gallery-dialog.is-zoomed & { display: none; }
+}
+
+// Native swipe: one image per snap point (RTL scrolls the right way on its own)
+.unix-gallery-dialog__track {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+
+  // While zoomed, a drag pans the image instead of changing it
+  .unix-gallery-dialog.is-zoomed & { overflow-x: hidden; }
+}
+
+.unix-gallery-dialog__item {
+  position: relative;
+  flex: 0 0 100%;
+  min-inline-size: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.unix-gallery-dialog__pan {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+
+  .unix-gallery-dialog__item.is-zoomed > & { overflow: auto; }
+}
+
+.unix-gallery-dialog__img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  max-inline-size: none;
+  object-fit: contain;
+  cursor: zoom-in;
+
+  .unix-gallery-dialog__item.is-zoomed & {
+    inline-size: calc(100% * var(--zoom-scale));
+    block-size: calc(100% * var(--zoom-scale));
+    cursor: zoom-out;
+  }
+}

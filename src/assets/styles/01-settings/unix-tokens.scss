@@ -190,6 +190,16 @@
   :root { --d-stagger: 0ms; --zoom-hover: 1; }
 }
 
+/* ── Phase 3 · 3.1 additions (DS §13.1, §8.20 product gallery) ── */
+:root {
+  --ratio-pdp: 4 / 5;                  /* product page images + thumbnails (DS §6; unix.sa 2:3) */
+  --gallery-thumb-w: 72px;             /* desktop thumbnail column (unix.sa 10rem → 14.7rem) */
+  --o-thumb: .4;                       /* idle thumbnail (unix.sa .2) */
+  --zoom-scale: 2;                     /* image magnification inside the zoom dialog */
+}
+
+@media (min-width: 1280px) { :root { --gallery-thumb-w: 96px; } }
+
 /* ── Base ─────────────────────────────────────── */
 .theme-unix {
   background-color: var(--c-bg);
