@@ -36,9 +36,9 @@
 | 1.3 | المنيو: mega menu على الديسكتوب، و drawer accordion على الموبايل | DS §8.7, §8.9 | ✅ | `main-menu.js` (بيانات `salla.api.component.getMenus()`، وصورتين من صور المنيو، وإلا منتجات رائد) و `unix-drawer.js` (focus trap و Esc ورجوع الفوكس). mmenu-light فاضلة للفلاتر بس لحد المرحلة 4 |
 | 1.4 | الفوتر وشريط الثقة | DS §8.8 · SPEC §3 | ✅ | 4 أعمدة (accordion على الموبايل)، و `salla-menu` header/footer و `salla-contacts` و `salla-social` و `salla-payments` بالرمادي. السجل التجاري والعلامة التجارية والتواصل من الإعدادات `unix_cr_*` و `unix_tm_number` و `unix_contact_*` و `unix_social_*`. سلة مافيهاش نشرة بريدية مدمجة، فاتساب `{% hook 'footer:newsletter' %}` لتطبيق النشرة |
 | 1.5 | البحث: مودال بنتايج فورية (`salla-search` بستايلنا) | — | ✅ | `salla-search` كان متوصل أصلًا في `master.twig`. أيقونة البحث في الهيدر بتفتحه، والستايل في `unix-search.scss` من خلال `.s-search-*` بس |
-| 1.6 | ستايل الأزرار والحقول ومكونات `salla-*` الأساسية | DS §8.2, §8.5 | ⬜ | |
+| 1.6 | ستايل الأزرار والحقول ومكونات `salla-*` الأساسية | DS §8.2, §8.5 | ✅ | `unix-controls.scss`: `.unix-btn` اتنقل من ملف الـ tokens وزاد عليه active و loading، و `salla-button` (`.s-button-*`) وأزرار رائد `.btn--*` بنفس الشكل، والحقول `.form-input` و `.s-form-control` |
 
-**DoD:**
+**DoD:** *(لسه محتاج تأكيد في المعاينة: المرحلة فاضلة 🟨 لحد ما الـ build والمعاينة و Lighthouse يتعملوا ويعدّوا مراجعة `unix-design-reviewer`)*
 - RTL و LTR سليمين.
 - مقاسات 360 و 768 و 1280 و 1920 من غير scroll أفقي.
 - كيبورد كامل، و Lighthouse Accessibility ≥ 95.

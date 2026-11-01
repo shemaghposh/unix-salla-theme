@@ -1,0 +1,278 @@
+/*
+ * UNIX buttons and fields (ROADMAP 1.6 · DS §8.2, §8.5)
+ * - .unix-btn: the theme's own button (variants: --secondary, --outline, --ghost, --link; sizes --sm, --lg).
+ * - salla-button (.s-button-*) and Raed's .btn--primary / .btn--outline* are mapped onto the same look.
+ * - Fields: Raed's .form-input / .form-label and Salla's .s-form-control.
+ * Every button: hover fill slides up from the bottom (--d-base), focus-visible ring, active press,
+ * disabled at --o-disabled, loading spinner that keeps the button width.
+ */
+
+@keyframes unix-spin {
+  to { transform: rotate(360deg); }
+}
+
+// Shared button look, used by .unix-btn and salla-button's .s-button-btn.
+@mixin unix-button-base {
+  --_bg: var(--c-action);
+  --_fg: var(--c-text-inverse);
+  --_fill: var(--c-action-hover);
+  --_fill-fg: var(--_fg);
+  --_ring: none;
+
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-block-size: var(--btn-h);
+  padding-inline: var(--s-6);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--_bg);
+  color: var(--_fg);
+  box-shadow: var(--_ring);
+  font-family: var(--f-body);
+  font-size: var(--t-small);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--d-base) var(--ease-out), transform var(--d-fast) var(--ease-out);
+
+  // Hover fill (DS §5 "Button fill")
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--_fill);
+    transform: translateY(calc(100% + var(--line-w)));
+    transition: transform var(--d-base) var(--ease-out);
+  }
+
+  &:hover,
+  &:focus-visible { color: var(--_fill-fg); }
+  &:hover::before,
+  &:focus-visible::before { transform: none; }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  &:active { transform: translateY(var(--line-w)); }
+
+  &:disabled,
+  &[disabled],
+  &[aria-disabled="true"] {
+    opacity: var(--o-disabled);
+    pointer-events: none;
+    cursor: default;
+    &::before { display: none; }
+  }
+}
+
+@mixin unix-button-secondary {
+  --_bg: var(--c-surface-muted);
+  --_fg: var(--c-text);
+  --_fill: var(--c-border);
+}
+
+@mixin unix-button-outline {
+  --_bg: transparent;
+  --_fg: var(--c-action);
+  --_fill: var(--c-action);
+  --_fill-fg: var(--c-text-inverse);
+  --_ring: inset 0 0 0 var(--line-w-strong) var(--c-action);
+}
+
+@mixin unix-button-ghost {
+  --_bg: transparent;
+  --_fg: currentColor;
+  --_ring: inset 0 0 0 var(--line-w) currentColor;
+  backdrop-filter: blur(var(--blur-ghost));
+  &::before { display: none; }
+}
+
+@mixin unix-button-link {
+  min-block-size: var(--tap);
+  padding: 0;
+  border-radius: 0;
+  background: linear-gradient(currentColor, currentColor) no-repeat 100% calc(100% - var(--s-2)) / 0 var(--line-w);
+  color: var(--c-text);
+  box-shadow: none;
+  transition: background-size var(--d-base) var(--ease-out);
+  &::before { display: none; }
+  &:hover,
+  &:focus-visible { background-size: 100% var(--line-w); color: var(--c-text); }
+  [dir="ltr"] & { background-position-x: 0; }
+}
+
+// Spinner that replaces the label without changing the width (DS §8.2 Loading).
+@mixin unix-button-loading {
+  color: transparent;
+  pointer-events: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    inline-size: var(--s-4);
+    block-size: var(--s-4);
+    margin: auto;
+    border: var(--ring-w) solid var(--_fg);
+    border-inline-end-color: transparent;
+    border-radius: var(--r-pill);
+    animation: unix-spin var(--d-reveal) linear infinite;
+  }
+}
+
+// ── .unix-btn ───────────────────────────────────
+.unix-btn {
+  @include unix-button-base;
+
+  &--sm { min-block-size: var(--btn-h-sm); }
+  &--lg { min-block-size: var(--btn-h-lg); }
+  &--block { inline-size: 100%; }
+
+  &--secondary { @include unix-button-secondary; }
+  &--outline { @include unix-button-outline; }
+  &--ghost { @include unix-button-ghost; }
+  &--link { @include unix-button-link; }
+
+  &.is-loading,
+  &[aria-busy="true"] { @include unix-button-loading; }
+}
+
+// ── salla-button (shape="btn") ──────────────────
+body.theme-unix .s-button-btn {
+  @include unix-button-base;
+
+  &.s-button-small { min-block-size: var(--btn-h-sm); padding-inline: var(--s-5); }
+  &.s-button-large { min-block-size: var(--btn-h-lg); }
+  &.s-button-wide { inline-size: 100%; }
+
+  // color="light" / "gray" → secondary
+  &.s-button-light,
+  &.s-button-gray { @include unix-button-secondary; }
+
+  // fill="outline"
+  &.s-button-outline { @include unix-button-outline; }
+
+  // color="danger" keeps its meaning but in the system's sale red
+  &.s-button-danger {
+    --_bg: var(--c-price-sale);
+    --_fg: var(--c-text-inverse);
+    --_fill: var(--c-text);
+  }
+
+  &.s-button-outline.s-button-danger {
+    --_bg: transparent;
+    --_fg: var(--c-price-sale);
+    --_fill: var(--c-price-sale);
+    --_fill-fg: var(--c-text-inverse);
+    --_ring: inset 0 0 0 var(--line-w-strong) var(--c-price-sale);
+  }
+
+  &.s-button-loading { @include unix-button-loading; }
+  .s-button-text { position: relative; }
+}
+
+salla-button[loading] .s-button-btn { @include unix-button-loading; }
+
+// shape="link" and shape="icon"
+.theme-unix .s-button-link {
+  color: var(--c-text);
+  text-decoration: underline;
+  text-decoration-thickness: var(--line-w);
+  text-underline-offset: var(--s-1);
+  transition: color var(--d-fast) var(--ease-out);
+  &:hover { color: var(--c-accent-text); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); border-radius: var(--r-sm); }
+  &:disabled { opacity: var(--o-disabled); }
+}
+
+.theme-unix .s-button-icon {
+  min-inline-size: var(--tap);
+  min-block-size: var(--tap);
+  border-radius: var(--r-pill);
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  &:disabled { opacity: var(--o-disabled); }
+}
+
+// ── Raed .btn variants ──────────────────────────
+.theme-unix {
+  .btn--primary { @include unix-button-base; }
+  .btn--outline-primary,
+  .btn--outline { @include unix-button-base; @include unix-button-outline; }
+  .btn--rounded-full { border-radius: var(--r-pill); }
+}
+
+// ── Fields (DS §8.5) ────────────────────────────
+.theme-unix {
+  .form-label {
+    display: block;
+    margin-block-end: var(--s-2);
+    color: var(--c-text);
+    font-size: var(--t-small);
+    font-weight: 500;
+  }
+
+  .form-input,
+  .s-form-control {
+    inline-size: 100%;
+    min-block-size: var(--field-h);
+    padding-inline: var(--s-4);
+    border: 0;
+    border-radius: var(--r-sm);
+    background: var(--c-field);
+    color: var(--c-text);
+    font-family: var(--f-body);
+    box-shadow: none;
+    transition: box-shadow var(--d-fast) var(--ease-out);
+
+    &::placeholder { color: var(--c-text-muted); opacity: 1; }
+    &:hover { box-shadow: inset 0 0 0 var(--line-w) var(--c-border); }
+    &:focus,
+    &:focus-visible {
+      outline: var(--ring-w) solid var(--c-accent);
+      outline-offset: var(--ring-w);
+      border-color: transparent;
+      box-shadow: none;
+    }
+    &:disabled,
+    &[readonly] { opacity: var(--o-disabled); cursor: not-allowed; }
+  }
+
+  textarea.form-input,
+  textarea.s-form-control {
+    min-block-size: calc(var(--field-h) * 2);
+    padding-block: var(--s-3);
+  }
+
+  select.form-input,
+  select.s-form-control { padding-inline-end: var(--s-7); }
+
+  // Error: border in --c-price-sale (DS §8.5)
+  .has-error,
+  .form-input.has-error,
+  .s-form-has-error .s-form-control {
+    box-shadow: inset 0 0 0 var(--line-w) var(--c-price-sale);
+  }
+
+  .s-form-error-message,
+  .form-error {
+    display: flex;
+    align-items: center;
+    gap: var(--s-1);
+    margin-block-start: var(--s-1);
+    color: var(--c-price-sale);
+    font-size: var(--t-small);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-btn,
+  .theme-unix .s-button-btn {
+    transition: none;
+    &::before { transition: none; }
+    &:active { transform: none; }
+  }
+}

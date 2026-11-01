@@ -167,70 +167,7 @@ html[lang="en"] .theme-unix :is(h1, h2, h3, h4) { letter-spacing: -.01em; }
   padding-inline: var(--page-margin);
 }
 
-/* ── Button (DS §8.2) ─────────────────────────── */
-.unix-btn {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--s-2);
-  min-height: 48px;
-  padding-inline: var(--s-6);
-  font-size: var(--t-small);
-  font-weight: 500;
-  border-radius: var(--r-pill);
-  background: var(--c-action);
-  color: var(--c-text-inverse);
-  transition: color var(--d-base) var(--ease-out);
-
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: var(--c-action-hover);
-    transform: translateY(calc(100% + 1px));
-    transition: transform var(--d-base) var(--ease-out);
-  }
-  &:hover::before, &:focus-visible::before { transform: none; }
-  &:disabled, &[aria-disabled="true"] { opacity: .5; pointer-events: none; }
-
-  &--sm { min-height: 40px; }
-  &--lg { min-height: 56px; }
-  &--block { width: 100%; }
-
-  &--secondary {
-    background: var(--c-surface-muted);
-    color: var(--c-text);
-    &::before { background: var(--c-border); }
-  }
-  &--outline {
-    background: transparent;
-    color: var(--c-action);
-    box-shadow: inset 0 0 0 1.2px var(--c-action);
-    &::before { background: var(--c-action); }
-    &:hover, &:focus-visible { color: var(--c-text-inverse); }
-  }
-  &--ghost {
-    background: transparent;
-    color: currentColor;
-    box-shadow: inset 0 0 0 1px currentColor;
-    backdrop-filter: blur(6px);
-    &::before { display: none; }
-  }
-  &--link {
-    min-height: auto;
-    padding: 0 0 var(--s-1);
-    border-radius: 0;
-    background: linear-gradient(currentColor, currentColor) no-repeat 100% 100% / 0 1px;
-    color: var(--c-text);
-    transition: background-size var(--d-base) var(--ease-out);
-    &::before { display: none; }
-    &:hover, &:focus-visible { background-size: 100% 1px; }
-  }
-}
+/* Buttons and fields (DS §8.2, §8.5) live in 04-components/unix-controls.scss */
 
 /* Cards & media (DS §4, §8.3): radius, no shadows on images */
 .theme-unix .s-product-card-entry,
