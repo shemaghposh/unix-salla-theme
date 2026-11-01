@@ -206,7 +206,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .unix-collections-grid__item:hover .unix-collections-grid__img { transform: scale(1.04); }
+  .unix-collections-grid__item:hover .unix-collections-grid__img { transform: scale(var(--zoom-hover)); }
 }
 
 /* `.theme-unix h3` sets --c-text; card names sit on the scrim */

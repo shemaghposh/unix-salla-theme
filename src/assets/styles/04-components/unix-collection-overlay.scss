@@ -176,26 +176,34 @@
       }
     }
 
-    /* unix.sa: transparent card, white media, copy on the overlay */
-    .s-product-card-entry {
-      background-color: transparent;
-      color: var(--c-text-inverse);
-    }
+  }
+}
 
-    .s-product-card-image { background-color: var(--c-surface); }
+/* ── Cards on the image (unix.sa: transparent card, white media, copy on the
+ * overlay). The shared card styles live under `.unix-products`
+ * (unix-product-card.scss, imported earlier); the extra section class keeps
+ * these overrides one class stronger. */
+.unix-collection-overlay .unix-products .s-product-card-entry {
+  background-color: transparent;
+  color: var(--c-text-inverse);
 
-    :is(.s-product-card-content-title, .s-product-card-content-title a,
-        .s-product-card-content-subtitle, .s-product-card-price,
-        .s-product-card-sale-price, .s-product-card-sale-price h4,
-        .s-product-card-starting-price) {
-      color: var(--c-text-inverse);
-    }
+  .s-product-card-image { background-color: var(--c-surface); }
 
-    /* Old price: same cream, muted */
-    :is(.s-product-card-sale-price span, .s-product-card-price del, .s-product-card-entry del) {
-      color: var(--c-text-inverse);
-      opacity: var(--o-muted);
-    }
+  .s-product-card-content-title a,
+  .s-product-card-content-title a:hover,
+  .s-product-card-price,
+  .s-product-card-sale-price h4,
+  .s-product-card-starting-price h4,
+  .s-product-card-starting-price p {
+    color: var(--c-text-inverse);
+  }
+
+  .s-product-card-content-title a:hover { text-decoration: underline; }
+
+  /* Old price: same cream, muted */
+  .s-product-card-sale-price span {
+    color: var(--c-text-inverse);
+    opacity: var(--o-muted);
   }
 }
 

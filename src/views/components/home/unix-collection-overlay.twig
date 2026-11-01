@@ -87,7 +87,8 @@
         </div>
 
         {% if category_id %}
-          <div class="unix-collection-overlay__products">
+          {# .unix-products opts into the shared card styles (unix-product-card.scss, DS §8.3) #}
+          <div class="unix-collection-overlay__products unix-products">
             <salla-products-slider
               source="categories"
               source-value="[{{ category_id }}]"

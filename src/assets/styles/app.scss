@@ -97,6 +97,10 @@
 @import './04-components/unix-controls';
 @import './04-components/unix-hero';
 @import './04-components/unix-offer-strip';
+@import './04-components/unix-product-card';
+@import './04-components/unix-products-tabs';
+@import './04-components/unix-featured-products';
+/* after unix-product-card: the overlay section re-colours cards on its image */
 @import './04-components/unix-collection-overlay';
 @import './04-components/unix-collections-grid';
 

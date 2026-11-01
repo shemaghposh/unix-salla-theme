@@ -1,0 +1,278 @@
+/*
+ * UNIX product card (DS §8.3, §8.4) + product carousel chrome.
+ * SHARED FILE: styles the theme's `custom-salla-product-card` (js/partials/product-card.js),
+ * scoped to `.unix-products` (home 2.3 today; Phase 4 grids can opt in by adding the class),
+ * plus the carousel arrows used by 2.3 (.unix-carousel-arrow) and 2.6 (salla-slider arrows).
+ *
+ * Layout contract (no CLS): image 4:5 (--ratio-card) → title (two reserved lines) → price (one
+ * line). The quick-add button sits OVER the image bottom, outside the flow, so every card has the
+ * same height as the skeleton in unix-products-tabs.scss.
+ */
+
+// Secondary image (product-card.js renders it only inside .unix-products): never shown elsewhere.
+.s-product-card-image-secondary { display: none; }
+
+.unix-products {
+  // ── Card shell ────────────────────────────────
+  .s-products-slider-card { block-size: auto; }
+
+  // The card itself does not clip (focus rings, quick add); the image box does.
+  // Same specificity as the `.theme-unix .s-product-card-entry` rule in unix-tokens.scss, later in source.
+  .s-product-card-entry {
+    flex-direction: column;
+    justify-content: flex-start;
+    block-size: 100%;
+    overflow: visible;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  // ── Media ─────────────────────────────────────
+  .s-product-card-entry .s-product-card-image {
+    position: relative;
+    overflow: hidden;
+    flex: none;
+    inline-size: 100%;
+    block-size: auto;
+    max-block-size: none;
+    aspect-ratio: var(--ratio-card);
+    border-radius: var(--r-md);
+    background: var(--c-surface-muted);
+
+    &:hover { opacity: 1; }
+
+    > a {
+      position: absolute;
+      inset: 0;
+      display: block;
+      border-radius: inherit;
+
+      &:focus-visible { outline-offset: calc(-1 * var(--ring-w) * 2); }
+    }
+
+    img,
+    img.loaded {
+      position: absolute;
+      inset: 0;
+      inline-size: 100%;
+      block-size: 100%;
+      transition: transform var(--d-reveal) var(--ease-out), opacity var(--d-reveal) var(--ease-out);
+    }
+  }
+
+  // Secondary image crossfade (DS §5 "Image hover"): pointer devices only
+  @media (hover: hover) {
+    .s-product-card-entry .s-product-card-image .s-product-card-image-secondary {
+      display: block;
+      opacity: 0;
+    }
+    .s-product-card-entry:hover .s-product-card-image img { transform: scale(var(--zoom-hover)); }
+    .s-product-card-entry:hover .s-product-card-image .s-product-card-image-secondary { opacity: 1; }
+  }
+
+  // ── Badge: one pill at the top start (DS §8.4) ─
+  .s-product-card-entry .s-product-card-promotion-title {
+    inset-block-start: var(--s-3);
+    inset-inline-start: var(--s-3);
+    inset-inline-end: auto;
+    max-inline-size: calc(100% - 2 * var(--s-3) - var(--tap));
+    min-block-size: var(--s-5);
+    padding-block: 0;
+    padding-inline: var(--s-3);
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--c-surface);
+    color: var(--c-text);
+    font-size: var(--t-micro);
+    font-weight: 500;
+    line-height: var(--s-5);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  // Out of quiet scope on the card (DS §8.3: no stars; one calm line of price)
+  .s-product-card-rating,
+  .s-product-card-content-subtitle,
+  .s-product-card-quantity,
+  .s-product-card-content salla-free-shipping-tag { display: none; }
+
+  // ── Text ──────────────────────────────────────
+  .s-product-card-entry .s-product-card-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: var(--s-3) 0 0;
+    font-size: var(--t-body);
+    line-height: 1.7; // DS §2.2 --t-body line-height; `lh` below depends on it
+  }
+
+  .s-product-card-content-main { margin: 0; }
+
+  .s-product-card-entry .s-product-card-content-title {
+    margin: 0;
+    font-family: var(--f-body);
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: 0;
+
+    a {
+      display: -webkit-box;
+      overflow: hidden;
+      min-block-size: 2lh;
+      color: var(--c-text);
+      font-size: inherit;
+      font-weight: 500;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      transition: color var(--d-fast) var(--ease-out);
+
+      &:hover { color: var(--c-accent-text); }
+    }
+  }
+
+  .s-product-card-entry .s-product-card-content-sub {
+    justify-content: flex-start;
+    margin: 0;
+    min-block-size: 1lh;
+  }
+
+  .s-product-card-entry {
+    .s-product-card-price,
+    .s-product-card-sale-price h4,
+    .s-product-card-starting-price h4 {
+      margin: 0;
+      color: var(--c-text);
+      font-family: var(--f-body);
+      font-size: inherit;
+      font-weight: 500;
+      line-height: inherit;
+      letter-spacing: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .s-product-card-sale-price {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: var(--s-2);
+
+      h4 { color: var(--c-price-sale); }
+      span {
+        color: var(--c-price-old);
+        font-size: var(--t-small);
+        text-decoration: line-through;
+      }
+    }
+
+    .s-product-card-starting-price {
+      justify-content: flex-start;
+      gap: var(--s-2);
+
+      p {
+        margin: 0;
+        color: var(--c-text-muted);
+        font-size: var(--t-small);
+      }
+    }
+  }
+
+  // ── Quick add: over the image bottom ──────────
+  .s-product-card-entry .s-product-card-content-footer {
+    position: absolute;
+    inset-block-end: calc(100% + var(--s-3));
+    inset-inline: var(--s-3);
+    z-index: 1;
+    margin: 0;
+  }
+
+  body.theme-unix & .s-product-card-content-footer .s-button-btn {
+    --_bg: var(--c-surface);
+    --_fg: var(--c-text);
+    --_ring: none;
+    --_fill: var(--c-action);
+    --_fill-fg: var(--c-text-inverse);
+    min-block-size: var(--btn-h-sm);
+  }
+
+  // Desktop with a real pointer: revealed on hover / keyboard focus (DS §8.3)
+  @media (hover: hover) and (min-width: 1024px) {
+    .s-product-card-entry .s-product-card-content-footer {
+      opacity: 0;
+      transform: translateY(var(--s-2));
+      transition: opacity var(--d-base) var(--ease-out), transform var(--d-base) var(--ease-out);
+    }
+
+    .s-product-card-entry:hover .s-product-card-content-footer,
+    .s-product-card-entry:focus-within .s-product-card-content-footer {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  // Touch / smaller screens: a bag icon at the end corner, label kept for screen readers
+  @media not all and (hover: hover) and (min-width: 1024px) {
+    .s-product-card-entry .s-product-card-content-footer { inset-inline-start: auto; }
+
+    // No empty disc: out-of-stock cards and buttons without an icon get no touch quick add
+    .s-product-card-out-of-stock .s-product-card-content-footer,
+    .s-product-card-entry .s-product-card-content-footer:not(:has(salla-add-product-button i)) { display: none; }
+
+    body.theme-unix & .s-product-card-content-footer .s-button-btn {
+      inline-size: var(--tap);
+      min-inline-size: var(--tap);
+      min-block-size: var(--tap);
+      padding-inline: 0;
+    }
+
+    .s-product-card-content-footer salla-add-product-button span:not([class]) {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+}
+
+// ── Carousel arrows for UNIX product rows ──
+// .unix-carousel-arrow: the theme's own arrows in the products-tabs heading row (2.3).
+// .s-slider-nav-arrow: salla-slider's arrows (featured products, 2.6).
+// Hidden below 576px, like unix.sa (swipe only).
+.unix-carousel-arrow,
+.unix-fprods .s-slider-nav-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--c-surface);
+  color: var(--c-text);
+  box-shadow: inset 0 0 0 var(--line-w) var(--c-border);
+  transition: background-color var(--d-fast) var(--ease-out);
+
+  &:hover { background: var(--c-surface-muted); }
+  &:active { transform: translateY(var(--press-y)); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  &:disabled,
+  &.swiper-button-disabled { opacity: var(--o-disabled); cursor: default; }
+
+  svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
+}
+
+.unix-fprods .s-slider-nav-arrow svg { fill: currentColor; }
+
+@media (max-width: 575px) {
+  .unix-carousel-arrow,
+  .unix-fprods .s-slider-block__title-nav { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-products .s-product-card-entry .s-product-card-content-footer { transform: none; }
+  .unix-carousel-arrow:active,
+  .unix-fprods .s-slider-nav-arrow:active { transform: none; }
+}
