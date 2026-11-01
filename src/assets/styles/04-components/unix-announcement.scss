@@ -1,0 +1,57 @@
+/*
+ * UNIX announcement bar (ROADMAP 1.1 · DS §8.6)
+ * 40px, announce background, --t-small text, messages cross-fade in --d-base.
+ */
+.unix-announcement {
+  background: var(--c-announce);
+  color: var(--c-announce-text);
+  font-size: var(--t-small);
+  line-height: 1.6;
+
+  &__track {
+    display: grid;
+    align-items: center;
+    min-block-size: var(--announce-h);
+  }
+
+  &__item {
+    grid-area: 1 / 1;
+    max-width: none;
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--d-base) var(--ease-out), visibility 0s linear var(--d-base);
+
+    &.is-active {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity var(--d-base) var(--ease-out), visibility 0s;
+    }
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--announce-h);
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: var(--line-w);
+    text-underline-offset: var(--s-1);
+    transition: opacity var(--d-fast) var(--ease-out);
+
+    &:hover { opacity: var(--o-muted); }
+    &:active { opacity: var(--o-disabled); }
+    &:focus-visible {
+      outline: var(--ring-w) solid currentColor;
+      outline-offset: calc(var(--ring-w) * -1);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-announcement__item { transition: none; }
+}

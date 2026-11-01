@@ -7,6 +7,8 @@
 #}
 {% set important_links = theme.settings.get('important_links') %}
 <header data-testid="store-header" class="store-header">
+  {% include 'components.header.announcement-bar' %}
+
   {# Bullet Delivery tag — mobile: own full-width row above the top nav
      (Figma "Mobile version"). Desktop keeps the inline pill below, next to
      scopes. Both instances self-gate on the same backend flag; `lg:hidden`

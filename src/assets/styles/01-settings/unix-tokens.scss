@@ -51,6 +51,8 @@
   --c-success: var(--unix-success);
   --c-scrim: linear-gradient(to top, rgb(36 30 26 / .55), transparent 60%);
   --c-backdrop: rgb(36 30 26 / .32);
+  --c-announce: var(--unix-announce);
+  --c-announce-text: var(--unix-announce-text);
 
   /* ── 2 Typography ───────────────────────────── */
   --f-body: var(--font-main);
@@ -92,6 +94,29 @@
   --ease-out: cubic-bezier(.22, 1, .36, 1);
   --ease-in-out: cubic-bezier(.65, 0, .35, 1);
 
+  /* ── 4.1 Component tokens (DS §4.1) ─────────── */
+  --announce-h: 40px;
+  --header-h: 60px;
+  --logo-w: 120px;
+  --tap: 44px;
+  --icon-sm: 20px;
+  --icon-md: 24px;
+  --btn-h: 48px;
+  --btn-h-sm: 40px;
+  --btn-h-lg: 56px;
+  --field-h: 52px;
+  --drawer-w: min(440px, 92vw);
+  --line-w: 1px;
+  --line-w-strong: 1.2px;
+  --ring-w: 2px;
+  --blur-backdrop: 4px;
+  --blur-ghost: 6px;
+  --o-muted: .7;
+  --o-disabled: .5;
+  --z-header: 40;
+  --z-dropdown: 45;
+  --z-drawer: 60;
+
   /* Salla base theme radius follows ours */
   --s-radius: var(--r-md);
 }
@@ -99,7 +124,7 @@
 /* Grid gutters/margins per breakpoint (DS §3.3) */
 @media (min-width: 576px)  { :root { --gutter: 16px; --page-margin: 24px; } }
 @media (min-width: 768px)  { :root { --gutter: 20px; --page-margin: 32px; } }
-@media (min-width: 1024px) { :root { --gutter: 24px; --page-margin: 40px; } }
+@media (min-width: 1024px) { :root { --gutter: 24px; --page-margin: 40px; --header-h: 72px; } }
 @media (min-width: 1440px) { :root { --gutter: 32px; --page-margin: 64px; } }
 
 @media (prefers-reduced-motion: reduce) {

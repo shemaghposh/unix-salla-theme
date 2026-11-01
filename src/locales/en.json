@@ -5,6 +5,13 @@
     },
     "appBanner": {
       "download_now": "download now"
+    },
+    "unix": {
+      "announcement": {
+        "label": "Store announcements",
+        "default_1": "Our new collection has landed: Sailor, Halo Back and Soft Angle",
+        "default_2": "Free shipping across Saudi Arabia on orders over :amount"
+      }
     }
   },
   "pages": {

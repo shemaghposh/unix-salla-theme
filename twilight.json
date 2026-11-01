@@ -91,6 +91,90 @@
         {
             "type": "static",
             "format": "title",
+            "id": "unix-static-announcement",
+            "value": "شريط الإعلانات",
+            "variant": "h6"
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "إظهار شريط الإعلانات",
+            "description": "رسالتان تتبدلان كل 5 ثوانٍ أعلى كل الصفحات",
+            "id": "unix_announcement_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "الرسالة الأولى",
+            "description": "اتركيها فارغة لعرض النص الافتراضي: «وصلت مجموعتنا الجديدة: Sailor وHalo Back وSoft Angle»",
+            "id": "unix_announcement_1_text",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "وصلت مجموعتنا الجديدة...",
+            "minLength": 0,
+            "maxLength": 120
+        },
+        {
+            "type": "string",
+            "icon": "sicon-link",
+            "label": "رابط الرسالة الأولى (اختياري)",
+            "description": "مثال: https://unix.sa/category/new أو اتركيه فارغًا",
+            "id": "unix_announcement_1_link",
+            "format": "text",
+            "value": null,
+            "required": false,
+            "placeholder": "https://"
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "الرسالة الثانية",
+            "description": "اتركيها فارغة لعرض النص الافتراضي: «شحن مجاني داخل السعودية للطلبات فوق» + حد الشحن المجاني",
+            "id": "unix_announcement_2_text",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "شحن مجاني داخل السعودية...",
+            "minLength": 0,
+            "maxLength": 120
+        },
+        {
+            "type": "string",
+            "icon": "sicon-link",
+            "label": "رابط الرسالة الثانية (اختياري)",
+            "description": null,
+            "id": "unix_announcement_2_link",
+            "format": "text",
+            "value": null,
+            "required": false,
+            "placeholder": "https://"
+        },
+        {
+            "id": "unix_free_shipping_threshold",
+            "type": "number",
+            "format": "integer",
+            "icon": "sicon-pencil-ruler",
+            "label": "حد الشحن المجاني (ر.س)",
+            "description": "يظهر في الرسالة الثانية الافتراضية، ويُستخدم في شريط الشحن المجاني بالسلة",
+            "placeholder": "500",
+            "value": 500,
+            "required": false
+        },
+        {
+            "type": "static",
+            "id": "unix-static-line-announcement",
+            "format": "line"
+        },
+        {
+            "type": "static",
+            "format": "title",
             "id": "static-label2",
             "value": "<div class='rounded-lg' style='background-color: #21636d; display: flex; justify-content: center; align-items: center;padding: 15px;margin-bottom: 20px !important; flex-direction: column;gap: 15px;'><h6 style='color: #ffffff;font-size: 15px; font-weight: bold;'> خيارات أعلى الصفحة</h6></div>",
             "variant": "h6"

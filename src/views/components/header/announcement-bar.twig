@@ -1,0 +1,42 @@
+{#
+  UNIX announcement bar (ROADMAP 1.1 · DS §8.6 · SPEC §2).
+  Two messages that cross-fade every 5s (src/assets/js/partials/unix-announcement.js),
+  paused on hover and focus. Texts and links come from twilight.json settings:
+    unix_announcement_enabled, unix_announcement_{1,2}_text (multilanguage), unix_announcement_{1,2}_link,
+    unix_free_shipping_threshold (used by the default second message; D1 = 500).
+  An empty text falls back to the translated default in src/locales/*.json.
+#}
+{% if theme.settings.get('unix_announcement_enabled', true) %}
+  {% set threshold = theme.settings.get('unix_free_shipping_threshold', 500)|default(500) %}
+  {% set announcement_defaults = [
+    trans('blocks.unix.announcement.default_1'),
+    trans('blocks.unix.announcement.default_2', {'amount': threshold|money})
+  ] %}
+  {% set announcement_items = [] %}
+  {% for i in 1..2 %}
+    {% set text = theme.settings.get('unix_announcement_' ~ i ~ '_text') %}
+    {% if text is iterable %}
+      {% set text = text[language.code]|default('') %}
+    {% endif %}
+    {% set text = text|default('')|trim %}
+    {% set announcement_items = announcement_items|merge([{
+      'text': text ?: announcement_defaults[i - 1],
+      'url': theme.settings.get('unix_announcement_' ~ i ~ '_link')|default('')|trim
+    }]) %}
+  {% endfor %}
+
+  <div class="unix-announcement" data-unix-announcement role="region"
+       aria-label="{{ trans('blocks.unix.announcement.label') }}">
+    <div class="unix-container unix-announcement__track">
+      {% for item in announcement_items %}
+        <p class="unix-announcement__item{{ loop.first ? ' is-active' }}" aria-hidden="{{ loop.first ? 'false' : 'true' }}">
+          {% if item.url %}
+            <a class="unix-announcement__link" href="{{ item.url }}"{{ loop.first ? '' : ' tabindex="-1"' }}>{{ item.text }}</a>
+          {% else %}
+            <span>{{ item.text }}</span>
+          {% endif %}
+        </p>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
