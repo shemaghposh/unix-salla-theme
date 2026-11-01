@@ -47,6 +47,11 @@
       "collection_overlay": {
         "default_subtitle": "NEW COLLECTION",
         "default_title": "New from UNIX"
+      },
+      "collections_grid": {
+        "default_title": "Move. Train. Unwind.",
+        "default_text": "A collection designed with care to be beautiful and practical at once, taking you from your morning workout to your evening unwind.",
+        "default_button": "Shop now"
       }
     }
   },

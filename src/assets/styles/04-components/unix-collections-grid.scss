@@ -1,0 +1,158 @@
+/* ── «حركة. رياضة. استرخاء.» collections grid (ROADMAP 2.5 · DS §8.13 · SPEC §4.5) ──
+ * Sand band, start-aligned copy + outline CTA, then a CSS scroll-snap row of
+ * 3:4 category cards: 1.5 per view on mobile, 2.5 from 576px, 3 from lg
+ * (unix.sa Swiper slidesPerView). No JS. */
+.unix-collections-grid {
+  --cards-per-view: 1.5;
+
+  margin-block: 0; /* unix.sa: no-indent */
+  padding-block: var(--section-sm);
+  background-color: var(--c-surface-sand);
+  color: var(--c-text-brand);
+  overflow-x: clip; /* the bleeding row never scrolls the page */
+
+  @media (min-width: 576px) { --cards-per-view: 2.5; }
+  @screen lg { --cards-per-view: 3; }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__title {
+    margin: 0;
+    max-inline-size: 65ch;
+    font-size: var(--t-h2);
+    line-height: 1.3;
+  }
+
+  /* `.theme-unix h2/h3/p` set --c-text; this band uses --c-text-brand */
+  .theme-unix &__title,
+  .theme-unix &__text { color: inherit; }
+
+  &__text {
+    margin: var(--s-6) 0 0;
+    font-size: var(--t-body);
+    line-height: 1.7;
+    font-weight: 700;
+  }
+
+  &__cta { margin-block-start: var(--s-5); }
+
+  /* ── Card row ── */
+  &__list {
+    display: flex;
+    gap: var(--s-2);
+    inline-size: calc(100% + 2 * var(--page-margin));
+    max-inline-size: none;
+    margin: var(--s-7) calc(-1 * var(--page-margin)) 0;
+    padding: 0 var(--page-margin);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--page-margin);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+
+    @screen lg {
+      inline-size: 100%;
+      max-inline-size: var(--collections-max);
+      margin-inline: 0;
+      padding-inline: 0;
+      scroll-padding-inline: 0;
+    }
+  }
+
+  &__item {
+    position: relative;
+    isolation: isolate;
+    /* Swiper's slide size: (row - (perView - 1) * gap) / perView */
+    flex: 0 0 calc((100% - (var(--cards-per-view) - 1) * var(--s-2)) / var(--cards-per-view));
+    display: flex;
+    align-items: flex-end;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: var(--r-md);
+    background-color: var(--c-surface-muted);
+    scroll-snap-align: start;
+
+    /* Whole-card focus ring (the stretched link carries keyboard focus) */
+    &:has(.unix-collections-grid__link:focus-visible) {
+      outline: var(--ring-w) solid var(--c-accent);
+      outline-offset: var(--ring-w);
+    }
+  }
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: transform var(--d-reveal) var(--ease-out);
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: var(--c-scrim);
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: var(--c-overlay);
+      opacity: var(--overlay-opacity);
+    }
+  }
+
+  &__name {
+    margin: 0;
+    padding: var(--s-3);
+    font-size: var(--t-h4);
+    line-height: 1.4;
+    color: var(--c-text-inverse);
+
+    @screen lg { padding: var(--s-5); }
+  }
+
+
+  &__link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: var(--line-w);
+    text-underline-offset: var(--s-1);
+    transition: text-decoration-color var(--d-fast) var(--ease-out);
+
+    /* Stretched link: the whole card is the hit area */
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+
+    &:focus-visible { outline: none; }
+    &:hover,
+    &:focus-visible { text-decoration-color: currentColor; }
+    &:active { opacity: var(--o-muted); }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &__item:hover &__img { transform: scale(1.04); }
+  }
+}
+
+/* `.theme-unix h3` sets --c-text; card names sit on the scrim */
+.theme-unix .unix-collections-grid__name { color: var(--c-text-inverse); }
+.theme-unix .unix-collections-grid__item.is-empty .unix-collections-grid__name { color: var(--c-text-brand); }
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-collections-grid__img { transition: none; }
+  .unix-collections-grid__item:hover .unix-collections-grid__img { transform: none; }
+}

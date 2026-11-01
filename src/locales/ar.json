@@ -47,6 +47,11 @@
       "collection_overlay": {
         "default_subtitle": "NEW COLLECTION",
         "default_title": "جديد من يونكس"
+      },
+      "collections_grid": {
+        "default_title": "حركة. رياضة. استرخاء.",
+        "default_text": "مجموعة صُممت بعناية لتكون جميلة وعملية في الوقت ذاته، لتأخذك من تمارينك الصباحية إلى استرخائك المسائي",
+        "default_button": "تسوقي الآن"
       }
     }
   },

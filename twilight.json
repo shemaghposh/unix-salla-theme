@@ -1528,6 +1528,176 @@
                     "description": "من 0 لـ 60. فيه تدرّج غامق ثابت تحت العنوان والكروت عشان النص يفضل واضح"
                 }
             ]
+        },
+        {
+            "key": "e3b9d6f1-8a2c-4f7e-b5d0-1c6a9e4f7b38",
+            "title": {
+                "en": "UNIX · Collections grid (Move. Train. Unwind.)",
+                "ar": "يونكس · كروت التصنيفات (حركة. رياضة. استرخاء.)"
+            },
+            "icon": "sicon-layout-grid-rearrange",
+            "path": "home.unix-collections-grid",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "static-desc",
+                    "value": "<div>عنوان ووصف وزرار، وتحتهم كروت تصنيفات بنسبة 3:4، زي سكشن «حركة. رياضة. استرخاء.» في unix.sa. لو سبتي النصوص فاضية من غير حفظ، بيظهر النص الافتراضي.</div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: حركة. رياضة. استرخاء.",
+                    "placeholder": "حركة. رياضة. استرخاء.",
+                    "minLength": 0,
+                    "maxLength": 100
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-typography",
+                    "label": "الوصف",
+                    "multilanguage": true,
+                    "id": "text",
+                    "value": null,
+                    "required": false,
+                    "format": "textarea",
+                    "description": null,
+                    "placeholder": "مجموعة صُممت بعناية...",
+                    "minLength": 0,
+                    "maxLength": 300
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "نص الزرار",
+                    "multilanguage": true,
+                    "id": "button_label",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: تسوقي الآن",
+                    "placeholder": "تسوقي الآن",
+                    "minLength": 0,
+                    "maxLength": 40
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-link",
+                    "label": "رابط الزرار",
+                    "id": "button_url",
+                    "value": null,
+                    "description": "لو الرابط فاضي، الزرار مابيظهرش. في unix.sa بيودّي لصفحة كل التصنيفات",
+                    "required": false,
+                    "format": "variable-list",
+                    "searchable": true,
+                    "source": "custom",
+                    "sources": [
+                        { "label": "تصنيف", "key": "categories", "value": "categories" },
+                        { "label": "منتج", "key": "products", "value": "products" },
+                        { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
+                        { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
+                        { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                    ]
+                },
+                {
+                    "id": "cards",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "كروت التصنيفات",
+                    "item_label": "كارت",
+                    "icon": "sicon-list-add",
+                    "required": true,
+                    "minLength": 1,
+                    "maxLength": 6,
+                    "value": [
+                        {
+                            "cards.title": "أطقم رياضية",
+                            "cards.image": null,
+                            "cards.url__type": "categories",
+                            "cards.overlay": 10
+                        },
+                        {
+                            "cards.title": "أطقم كومفي",
+                            "cards.image": null,
+                            "cards.url__type": "categories",
+                            "cards.overlay": 20
+                        },
+                        {
+                            "cards.title": "إكسسوارات",
+                            "cards.image": null,
+                            "cards.url__type": "categories",
+                            "cards.overlay": 20
+                        }
+                    ],
+                    "fields": [
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "اسم التصنيف",
+                            "multilanguage": true,
+                            "id": "cards.title",
+                            "value": null,
+                            "required": true,
+                            "format": "text",
+                            "description": null,
+                            "placeholder": "مثلًا: أطقم كومفي",
+                            "minLength": 1,
+                            "maxLength": 60
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-image",
+                            "label": "الصورة",
+                            "id": "cards.image",
+                            "format": "image",
+                            "value": null,
+                            "required": false,
+                            "placeholder": null,
+                            "description": "* المقاس المناسب 600×800 بكسل (3:4)",
+                            "settings": {
+                                "height": 800,
+                                "width": 600
+                            }
+                        },
+                        {
+                            "type": "items",
+                            "icon": "sicon-link",
+                            "label": "الرابط",
+                            "id": "cards.url",
+                            "value": null,
+                            "description": null,
+                            "required": false,
+                            "format": "variable-list",
+                            "searchable": true,
+                            "source": "custom",
+                            "sources": [
+                                { "label": "تصنيف", "key": "categories", "value": "categories" },
+                                { "label": "منتج", "key": "products", "value": "products" },
+                                { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
+                                { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                            ]
+                        },
+                        {
+                            "type": "number",
+                            "format": "integer",
+                            "icon": "sicon-sun",
+                            "label": "درجة التعتيم (%)",
+                            "id": "cards.overlay",
+                            "value": 20,
+                            "required": false,
+                            "minimum": 0,
+                            "maximum": 60
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "support_url": "https://salla.com/",

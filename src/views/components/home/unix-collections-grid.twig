@@ -1,0 +1,80 @@
+{#
+| «حركة. رياضة. استرخاء.» — collections grid (ROADMAP 2.5 · DS §8.13 · SPEC §4.5)
+| Ground truth: reference/shopify-theme/sections/featured-collections.liquid
+|
+| Variable                 | Type      | Description                                                  |
+|--------------------------|-----------|--------------------------------------------------------------|
+| component.title          | ?string   | heading, multilanguage (default «حركة. رياضة. استرخاء.»)      |
+| component.text           | ?string   | description, multilanguage (default: the unix.sa copy)       |
+| component.button_label   | ?string   | CTA label, multilanguage (default «تسوقي الآن»)               |
+| component.button_url     | ?string   | CTA link; empty = no button                                  |
+| component.cards          | object[]  | collection cards                                             |
+| component.cards[].title  | string    | category name shown on the card                              |
+| component.cards[].image  | ?string   | 3:4 image                                                    |
+| component.cards[].url    | ?string   | category link; empty = card is not a link                    |
+| component.cards[].overlay| ?int      | overlay opacity in % (0–60)                                  |
+| position                 | int       | sorting number, starts from zero                             |
+|
+| Text defaults: null falls back to trans('blocks.unix.collections_grid.default_*');
+| '' means the merchant cleared it on purpose.
+#}
+{% set title = component.title %}
+{% if title is iterable %}{% set title = title[language.code] is defined ? title[language.code] : null %}{% endif %}
+{% if title is null %}{% set title = trans('blocks.unix.collections_grid.default_title') %}{% endif %}
+
+{% set text = component.text %}
+{% if text is iterable %}{% set text = text[language.code] is defined ? text[language.code] : null %}{% endif %}
+{% if text is null %}{% set text = trans('blocks.unix.collections_grid.default_text') %}{% endif %}
+
+{% set button_label = component.button_label %}
+{% if button_label is iterable %}{% set button_label = button_label[language.code] is defined ? button_label[language.code] : null %}{% endif %}
+{% if button_label is null %}{% set button_label = trans('blocks.unix.collections_grid.default_button') %}{% endif %}
+
+{% set button_url = component.button_url %}
+{% if button_url is iterable %}{% set button_url = button_url.url|default('') %}{% endif %}
+{% set button_url = button_url|trim %}
+
+{% set heading_id = 'unix-collections-grid-' ~ position %}
+
+<section class="unix-collections-grid"
+         component-id="{{ componentId }}"
+         data-testid="unix-collections-grid"
+         {% if title|trim %}aria-labelledby="{{ heading_id }}"{% endif %}>
+  <div class="unix-container unix-collections-grid__inner">
+    {% if title|trim %}
+      <h2 id="{{ heading_id }}" class="unix-collections-grid__title">{{ title|trim }}</h2>
+    {% endif %}
+    {% if text|trim %}
+      <p class="unix-collections-grid__text">{{ text|trim }}</p>
+    {% endif %}
+    {% if button_url and button_url != '#' and button_label|trim %}
+      <a class="unix-btn unix-btn--outline unix-collections-grid__cta" href="{{ button_url }}">{{ button_label|trim }}</a>
+    {% endif %}
+
+    {% if component.cards|length %}
+      <ul class="unix-collections-grid__list" role="list">
+        {% for card in component.cards %}
+          {% set card_title = card.title %}
+          {% if card_title is iterable %}{% set card_title = card_title[language.code] is defined ? card_title[language.code] : '' %}{% endif %}
+          {% set card_url = card.url is iterable ? card.url.url|default('') : card.url|default('') %}
+          {% set card_url = card_url|trim == '#' ? '' : card_url|trim %}
+          {% set card_overlay = card.overlay is null ? 20 : card.overlay %}
+          {% set card_overlay = card_overlay < 0 ? 0 : (card_overlay > 60 ? 60 : card_overlay) %}
+          <li class="unix-collections-grid__item{{ card.image ? '' : ' is-empty' }}">
+            {% if card.image %}
+              <img class="unix-collections-grid__img" src="{{ card.image }}" alt="" width="600" height="800" loading="lazy" decoding="async">
+              <span class="unix-collections-grid__overlay" style="--overlay-opacity: {{ card_overlay / 100 }}" aria-hidden="true"></span>
+            {% endif %}
+            <h3 class="unix-collections-grid__name">
+              {% if card_url %}
+                <a class="unix-collections-grid__link" href="{{ card_url }}">{{ card_title|trim }}</a>
+              {% else %}
+                {{ card_title|trim }}
+              {% endif %}
+            </h3>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</section>
