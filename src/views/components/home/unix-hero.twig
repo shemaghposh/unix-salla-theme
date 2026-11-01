@@ -16,7 +16,9 @@
     image_alt                         string (multilanguage); empty → decorative (alt="")
     video_desktop, video_mobile       string   direct MP4 URLs; loaded by unix-hero.js after load
     full_height                       boolean  100svh instead of the media ratio
-    header_overlay                    boolean  transparent header over the hero (data-header-overlay)
+    header_overlay                    boolean  transparent header over the hero (first hero with an image only)
+  No image → .unix-hero--no-media: ink text on sand, no scrim, until a video is actually playing.
+  Images/videos switch at 750px like unix.sa; the ratio switches at 576px (DS §8.1).
     show_scroll_indicator             boolean  chevron button to the next section
   `position` is the component's index on the page (0 = first → eager + fetchpriority high).
 #}
@@ -46,26 +48,40 @@
 {% set video_desktop = component.video_desktop|default('')|trim %}
 {% set video_mobile = component.video_mobile|default('')|trim %}
 {% set is_first = position is defined and position == 0 %}
-{% set header_overlay = component.header_overlay is null or component.header_overlay %}
+{% set has_image = img_desktop or img_mobile %}
+{#
+  Transparent header (DS §8.1): rendered server-side so nothing shifts. Only for the first
+  component, with the field on, the theme's transparent-home setting on, and an image (cream
+  header icons on bare sand would fail contrast). The hero CSS pulls itself under the header.
+#}
+{% set header_overlay = is_first
+  and (component.header_overlay is null or component.header_overlay)
+  and theme.settings.get('unix_header_transparent_home', true)
+  and has_image %}
 {% set show_scroll = component.show_scroll_indicator is null or component.show_scroll_indicator %}
 
 <section component-id="{{ componentId }}"
-         class="unix-hero{{ component.full_height ? ' unix-hero--full' }}{{ show_scroll ? ' unix-hero--has-scroll' }}"
+         class="unix-hero{{ component.full_height ? ' unix-hero--full' }}{{ has_image ? '' : ' unix-hero--no-media' }}"
          data-unix-hero
          {% if header_overlay %}data-header-overlay{% endif %}
          {% if hero.title %}aria-labelledby="unix-hero-title-{{ componentId }}"{% endif %}>
   <div class="unix-hero__media">
-    {% if img_desktop or img_mobile %}
+    {% if has_image %}
+      {# Salla's cdn(width) filter serves resized copies (as header/footer do for the logo) #}
+      {% set src_mobile = img_mobile ?: img_desktop %}
       <picture class="unix-hero__picture">
         {% if img_desktop and img_mobile %}
-          <source media="(min-width: 576px)" srcset="{{ img_desktop }}" width="1920" height="1080">
+          <source media="(min-width: 750px)"
+                  srcset="{{ img_desktop|cdn(1280) }} 1280w, {{ img_desktop|cdn(1920) }} 1920w, {{ img_desktop|cdn(2560) }} 2560w"
+                  sizes="100vw" width="1920" height="1080">
         {% endif %}
         <img class="unix-hero__image"
-             src="{{ img_mobile ?: img_desktop }}"
+             src="{{ src_mobile|cdn(1080) }}"
+             srcset="{{ src_mobile|cdn(480) }} 480w, {{ src_mobile|cdn(768) }} 768w, {{ src_mobile|cdn(1080) }} 1080w{{ img_mobile ? '' : ', ' ~ src_mobile|cdn(1920) ~ ' 1920w' }}"
+             sizes="100vw"
              alt="{{ hero.image_alt|e('html_attr') }}"
              {% if img_mobile %}width="1080" height="1620"{% else %}width="1920" height="1080"{% endif %}
-             {% if is_first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
-             decoding="async">
+             {% if is_first %}loading="eager" fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}>
       </picture>
     {% endif %}
 
@@ -111,9 +127,7 @@
 
   {% if video_desktop or video_mobile %}
     <button type="button" class="unix-hero__control unix-hero__toggle" data-unix-hero-toggle hidden
-            aria-label="{{ trans('blocks.unix.hero.pause_video') }}"
-            data-label-pause="{{ trans('blocks.unix.hero.pause_video')|e('html_attr') }}"
-            data-label-play="{{ trans('blocks.unix.hero.play_video')|e('html_attr') }}">
+            aria-label="{{ trans('blocks.unix.hero.pause_video') }}" aria-pressed="false">
       <svg class="unix-hero__toggle-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
            fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
         <path d="M9 6v12M15 6v12"/>

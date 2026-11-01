@@ -9,7 +9,9 @@
  */
 
 // The transparent look applies only while the bar sits over the hero and nobody is using it.
-$overlay-active: '.unix-header.is-overlay:not(.is-stuck):not(:hover):not(:focus-within)';
+// Colours only, never layout: the hero pulls itself under the bar server-side (DS §8.1, unix-hero.scss).
+// `:has()` applies it in the first paint; `.is-overlay` (added by JS) is the fallback without :has().
+$overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .unix-header[data-overlay-capable]):not(.is-stuck):not(:hover):not(:focus-within)';
 
 .unix-header {
   position: relative;
@@ -43,9 +45,6 @@ $overlay-active: '.unix-header.is-overlay:not(.is-stuck):not(:hover):not(:focus-
 
   &.is-stuck.is-hidden &__bar { transform: translateY(-100%); }
   &.is-settling &__bar { transition: none; }
-
-  // Over the hero the next section starts under the bar (Phase 2 hero needs no offset of its own).
-  &.is-overlay &__nav { margin-block-end: calc(var(--header-h) * -1); }
 
   &__inner {
     display: grid;

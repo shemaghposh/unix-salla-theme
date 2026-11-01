@@ -573,7 +573,7 @@
                     "type": "static",
                     "format": "description",
                     "id": "unix-hero-desc",
-                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>واجهة بعرض الشاشة: فيديو أو صورة، وتدرّج غامق تحت النص، وعنوان وزر. ضعيها أول عنصر في الصفحة الرئيسية. اتركي أي نص فارغاً لعرض النص الافتراضي، أو امسحيه لإخفائه.</small></div>"
+                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>واجهة بعرض الشاشة: فيديو أو صورة، وتدرّج غامق تحت النص، وعنوان وزر. ضعيها أول عنصر في الصفحة الرئيسية. تظهر نصوص يونكس الافتراضية (بالعربي والإنجليزي) إلى أن تكتبي نصك الخاص في الحقول.</small></div>"
                 },
                 {
                     "type": "string",
@@ -676,7 +676,7 @@
                     "format": "image",
                     "required": false,
                     "placeholder": null,
-                    "description": "16:9، المقاس المناسب 1920×1080 بكسل (WebP أقل من 300KB). تظهر قبل تشغيل الفيديو وبدلاً منه",
+                    "description": "16:9، المقاس المناسب 1920×1080 بكسل (WebP أقل من 300KB). تظهر من عرض 750px، وقبل تشغيل الفيديو وبدلاً منه",
                     "settings": {
                         "width": 1920,
                         "height": 1080
@@ -754,7 +754,7 @@
                     "type": "boolean",
                     "icon": "sicon-toggle-off",
                     "label": "هيدر شفاف فوق الواجهة",
-                    "description": "يعمل مع خيار الهيدر الشفاف في إعدادات الثيم",
+                    "description": "يعمل فقط عندما تكون الواجهة أول عنصر في الصفحة وفيها صورة، ومع تفعيل خيار الهيدر الشفاف في إعدادات الثيم",
                     "id": "header_overlay",
                     "format": "switch",
                     "required": false,

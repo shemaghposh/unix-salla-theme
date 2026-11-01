@@ -38,6 +38,16 @@
     @media (min-width: 576px) { aspect-ratio: auto; }
   }
 
+  // Transparent header (DS §8.1): the attribute is rendered server-side only for the first hero,
+  // so pulling up under the header bar happens in the first paint (no layout shift).
+  &[data-header-overlay] { margin-block-start: calc(var(--header-h) * -1); }
+
+  // No image (DS §8.1): cream on sand fails (1.7), so ink text and no scrim until a video plays.
+  &--no-media:not(.is-video-playing) {
+    color: var(--c-text);
+    .unix-hero__scrim { display: none; }
+  }
+
   :focus-visible {
     outline: var(--ring-w) solid currentColor;
     outline-offset: var(--ring-w);
@@ -80,14 +90,13 @@
 .unix-hero__scrim {
   position: absolute;
   inset: 0;
-  background: var(--c-scrim);
+  background: var(--c-hero-scrim);
 }
 
 /* ── Content ───────────────────────────────────── */
+// The bottom padding always clears the scroll indicator and the video toggle.
 .unix-hero__inner {
-  padding-block: var(--section-md);
-
-  .unix-hero--has-scroll & { padding-block-end: var(--s-9); }
+  padding-block: var(--section-md) max(var(--section-md), var(--s-9));
 }
 
 .unix-hero__content {
@@ -214,6 +223,7 @@
   block-size: var(--tap);
 
   .unix-hero__toggle-play { display: none; }
+  // Fixed label, aria-pressed="true" while paused: only the icon swaps.
   &[aria-pressed="true"] {
     .unix-hero__toggle-pause { display: none; }
     .unix-hero__toggle-play { display: block; }

@@ -164,7 +164,8 @@
 /* ── Phase 2 additions (DS §13.1) ──────────────────
  * Kept in one block so merges stay easy; folded into the sections above when Phase 2 closes. */
 :root {
-  --c-hero-bg: var(--unix-sand-300);   /* hero backdrop before/without media (2.1) */
+  --c-hero-bg: var(--unix-sand-300);   /* hero backdrop before/without media (2.1); text on it = --c-text */
+  --c-hero-scrim: linear-gradient(to top, rgb(36 30 26 / .55), rgb(36 30 26 / .3) 50%, transparent 85%); /* covers the text on 2:3 mobile */
   --hero-ratio: 2 / 3;                 /* hero, mobile (unix.sa mobile_image_ratio) */
   --hero-ratio-wide: 16 / 9;           /* hero, ≥576px (unix.sa desktop_image_ratio) */
   --hero-min-h: 560px;

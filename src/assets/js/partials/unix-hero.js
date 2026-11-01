@@ -1,6 +1,6 @@
 /**
  * UNIX hero (ROADMAP 2.1 · DS §8.1, §13.2).
- * - Background video: picks the desktop/mobile MP4 (≥576px = desktop, like the CSS ratio switch)
+ * - Background video: picks the desktop/mobile MP4 (≥750px = desktop, like unix.sa's media switch)
  *   and only starts loading after window `load`, so it never competes with the LCP image. The
  *   image stays underneath as the poster until the video fires `playing`.
  *   Skipped entirely with prefers-reduced-motion or Save-Data.
@@ -9,7 +9,7 @@
  * - Scroll indicator: hides after the first scroll, scrolls to the next section on click.
  * Text reveal is CSS only (unix-hero.scss); nothing here gates content.
  */
-const WIDE = '(min-width: 576px)';
+const WIDE = '(min-width: 750px)'; // unix.sa switches desktop/mobile media at 750px (DS §8.1)
 const SCROLL_HIDE_AFTER = 60; // px, same threshold as unix.sa's media-banner.js
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -27,10 +27,9 @@ function initVideo(hero) {
   const toggle = hero.querySelector('[data-unix-hero-toggle]');
   let userPaused = false;
 
+  // Fixed label ("pause video") + aria-pressed=true while paused; only the icon swaps.
   const setToggle = paused => {
-    if (!toggle) return;
-    toggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
-    toggle.setAttribute('aria-label', paused ? toggle.dataset.labelPlay : toggle.dataset.labelPause);
+    if (toggle) toggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
   };
 
   const play = () => {
