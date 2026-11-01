@@ -7,8 +7,11 @@
 <div class="unix-lang" role="group" aria-label="{{ trans('blocks.unix.header.language') }}" data-unix-lang>
   {% for code in ['ar', 'en'] %}
     {% set is_current = language.code == code %}
-    <button type="button" class="unix-lang__btn{{ is_current ? ' is-active' }}" data-lang="{{ code }}" lang="{{ code }}"
-            aria-pressed="{{ is_current ? 'true' : 'false' }}"
-            aria-label="{{ trans('blocks.unix.header.lang_' ~ code) }}">{{ trans('blocks.unix.header.lang_' ~ code ~ '_short') }}</button>
+    {# Visible short label stays in the accessible name (WCAG 2.5.3); the full name is added for screen readers. #}
+    <button type="button" class="unix-lang__btn{{ is_current ? ' is-active' }}" data-lang="{{ code }}"
+            aria-pressed="{{ is_current ? 'true' : 'false' }}">
+      <span aria-hidden="true">{{ trans('blocks.unix.header.lang_' ~ code ~ '_short') }}</span>
+      <span class="sr-only" lang="{{ code }}">{{ trans('blocks.unix.header.lang_' ~ code ~ '_short') }} {{ trans('blocks.unix.header.lang_' ~ code) }}</span>
+    </button>
   {% endfor %}
 </div>

@@ -118,8 +118,8 @@ $overlay-active: '.unix-header.is-overlay:not(.is-stuck):not(:hover):not(:focus-
       background: transparent;
       transition: background-color var(--d-fast) var(--ease-out);
 
-      &:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
-      &:active { background: color-mix(in srgb, currentColor 14%, transparent); }
+      &:hover { background: var(--c-hover-tint); }
+      &:active { background: var(--c-press-tint); }
     }
 
     :is(.s-user-menu-trigger-avatar, img) {
@@ -146,8 +146,8 @@ $overlay-active: '.unix-header.is-overlay:not(.is-stuck):not(:hover):not(:focus-
       color: inherit;
       transition: background-color var(--d-fast) var(--ease-out);
 
-      &:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
-      &:active { background: color-mix(in srgb, currentColor 14%, transparent); }
+      &:hover { background: var(--c-hover-tint); }
+      &:active { background: var(--c-press-tint); }
     }
 
     .s-cart-summary-content { display: none; }
@@ -198,8 +198,8 @@ $overlay-active: '.unix-header.is-overlay:not(.is-stuck):not(:hover):not(:focus-
   line-height: 1;
   transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);
 
-  &:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
-  &:active { background: color-mix(in srgb, currentColor 14%, transparent); }
+  &:hover { background: var(--c-hover-tint); }
+  &:active { background: var(--c-press-tint); }
   &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
   &:disabled, &[aria-disabled="true"] { opacity: var(--o-disabled); pointer-events: none; }
 }
@@ -225,8 +225,9 @@ $overlay-active: '.unix-header.is-overlay:not(.is-stuck):not(:hover):not(:focus-
     color: inherit;
     font-size: var(--t-micro);
     font-weight: 500;
-    letter-spacing: .04em;
     line-height: 1;
+
+    html[lang="en"] & { letter-spacing: .04em; } // DS §2.2: +0.04em for English micro only
 
     // Visible pill sits inside the 44px hit area.
     &::before {
@@ -239,8 +240,8 @@ $overlay-active: '.unix-header.is-overlay:not(.is-stuck):not(:hover):not(:focus-
       transition: background-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out);
     }
 
-    &:hover::before { background: color-mix(in srgb, currentColor 8%, transparent); }
-    &:active::before { background: color-mix(in srgb, currentColor 14%, transparent); }
+    &:hover::before { background: var(--c-hover-tint); }
+    &:active::before { background: var(--c-press-tint); }
     &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
     &:disabled { opacity: var(--o-disabled); pointer-events: none; }
 
@@ -269,7 +270,7 @@ $overlay-active: '.unix-header.is-overlay:not(.is-stuck):not(:hover):not(:focus-
   // Without an inverse logo, keep the regular one visible.
   .unix-header__logo:not(:has(.unix-header__logo-img--inverse)) .unix-header__logo-img { display: block; }
 
-  .unix-lang { background: color-mix(in srgb, currentColor 14%, transparent); color: inherit; }
+  .unix-lang { background: var(--c-press-tint); color: inherit; }
   .unix-lang__btn.is-active { color: var(--c-text); }
 
   .s-cart-summary-count {

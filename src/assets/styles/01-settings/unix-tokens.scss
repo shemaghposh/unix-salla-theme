@@ -53,6 +53,9 @@
   --c-backdrop: rgb(36 30 26 / .32);
   --c-announce: var(--unix-announce);
   --c-announce-text: var(--unix-announce-text);
+  /* Hover / press tints that follow the current text colour (solid bar and transparent hero bar alike) */
+  --c-hover-tint: color-mix(in srgb, currentColor 8%, transparent);
+  --c-press-tint: color-mix(in srgb, currentColor 14%, transparent);
 
   /* ── 2 Typography ───────────────────────────── */
   --f-body: var(--font-main);
