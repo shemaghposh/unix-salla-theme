@@ -62,6 +62,19 @@
         "default_cta_label": "اكتشفي المجموعة",
         "pause_video": "أوقفي الفيديو مؤقتًا",
         "scroll_down": "انتقلي إلى القسم التالي"
+      },
+      "gallery": {
+        "label": "صور المنتج",
+        "thumbs": "اختاري صورة",
+        "show_image": "اعرضي الصورة :index من :total",
+        "zoom_image": "كبّري الصورة :index من :total",
+        "prev": "الصورة السابقة",
+        "next": "الصورة التالية",
+        "dialog": "صور المنتج مكبّرة",
+        "close": "أغلقي التكبير",
+        "zoom_in": "كبّري الصورة أكثر",
+        "counter": ":index من :total",
+        "play_video": "شغّلي الفيديو"
       }
     }
   },
