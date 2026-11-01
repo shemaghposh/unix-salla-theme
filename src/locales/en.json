@@ -44,6 +44,14 @@
         "cr_badge": "Saudi Business Center",
         "tm": "Trademark"
       },
+      "hero": {
+        "default_eyebrow": "UNIX NEW COLLECTION",
+        "default_title": "Move with confidence.",
+        "default_text": "Activewear and loungewear designed for every moment of your day",
+        "default_cta_label": "Discover the collection",
+        "pause_video": "Pause video",
+        "scroll_down": "Scroll to the next section"
+      },
       "collection_overlay": {
         "default_subtitle": "NEW COLLECTION",
         "default_title": "New from UNIX"
@@ -51,7 +59,13 @@
       "collections_grid": {
         "default_title": "Move. Train. Unwind.",
         "default_text": "A collection designed with care to be beautiful and practical at once, taking you from your morning workout to your evening unwind.",
-        "default_button": "Shop now"
+        "default_button": "Shop now",
+        "default_card_1": "Sets",
+        "default_card_2": "Comfy sets",
+        "default_card_3": "Accessories",
+        "list_label": "Collection categories, scroll sideways to see more",
+        "prev": "Previous categories",
+        "next": "Next categories"
       }
     }
   },

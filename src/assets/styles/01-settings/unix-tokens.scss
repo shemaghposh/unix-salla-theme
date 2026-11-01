@@ -134,16 +134,6 @@
   --mega-media-max: 640px;
   --dropdown-min: 256px;
 
-  /* ── Phase 2 · collection sections 2.4 / 2.5 (DS §1.2 additions, §4.2) ── */
-  --c-surface-sand: var(--unix-sand-300);
-  --c-overlay: var(--unix-ink-900);
-  --c-scrim-top: linear-gradient(to bottom, rgb(36 30 26 / .55), transparent 60%);
-  --card-w-sm: 164px;
-  --card-w-md: 264px;
-  --c-text-brand: var(--unix-ink-700);
-  --collections-max: 1036px;
-  /* ── end Phase 2 · 2.4 / 2.5 ── */
-
   /* Salla base theme radius follows ours */
   --s-radius: var(--r-md);
 }
@@ -169,6 +159,31 @@
 
 @media (prefers-reduced-motion: reduce) {
   :root { --d-fast: 0ms; --d-base: 0ms; --d-slow: 0ms; --d-reveal: 0ms; --d-announce-slide: 0ms; }
+}
+
+/* ── Phase 2 additions (DS §13.1) ──────────────────
+ * Kept in one block so merges stay easy; folded into the sections above when Phase 2 closes. */
+:root {
+  --c-surface-sand: var(--unix-sand-300); /* general «Sand» scheme surface (2.4, 2.5) */
+  --c-hero-bg: var(--c-surface-sand);  /* alias: hero backdrop before/without media (2.1); text on it = --c-text */
+  --c-text-brand: var(--unix-ink-700); /* text on --c-surface-sand, 7.2:1 (2.5) */
+  --c-overlay: var(--unix-ink-900);    /* image overlay colour; opacity comes from the merchant field (2.4, 2.5) */
+  --c-scrim-top: linear-gradient(to bottom, rgb(36 30 26 / .55), transparent 60%); /* heading over image (2.4) */
+  --card-w-sm: 164px;                  /* product card in the 2.4 carousel, mobile (unix.sa 163px) */
+  --card-w-md: 264px;                  /* same from lg (unix.sa 265px) */
+  --collections-max: 1036px;           /* 2.5 card row max width (unix.sa 103.6rem) */
+  --c-hero-scrim: linear-gradient(to top, rgb(36 30 26 / .55), rgb(36 30 26 / .3) 50%, transparent 85%); /* covers the text on 2:3 mobile */
+  --hero-ratio: 2 / 3;                 /* hero, mobile (unix.sa mobile_image_ratio) */
+  --hero-ratio-wide: 16 / 9;           /* hero, ≥576px (unix.sa desktop_image_ratio) */
+  --hero-min-h: 560px;
+  --hero-max-h: 920px;
+  --hero-cta-line: .55;                /* underline CTA length on hover (unix.sa scaleX(.55)) */
+  --d-stagger: 60ms;                   /* reveal stagger step (DS §5) */
+  --d-hint: 2s;                        /* scroll-indicator bob cycle */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --d-stagger: 0ms; }
 }
 
 /* ── Base ─────────────────────────────────────── */
