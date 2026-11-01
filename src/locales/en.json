@@ -74,7 +74,8 @@
         "close": "Close zoom",
         "zoom_in": "Zoom in further",
         "counter": ":index of :total",
-        "play_video": "Play video"
+        "play_video": "Play video",
+        "wishlist": "Add to wishlist"
       }
     }
   },
