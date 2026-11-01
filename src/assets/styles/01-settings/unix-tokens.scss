@@ -191,6 +191,14 @@
   --faq-max: 908px;                    /* FAQ column from lg (unix.sa collapsible-content__wrapper 90.8rem) (2.9) */
   --o-teaser: .3;                      /* faded 4th question while collapsed (unix.sa item--opacity) (2.9) */
   --c-teaser-fade: linear-gradient(to bottom, color-mix(in srgb, var(--c-bg) 30%, transparent) 20%, var(--c-bg)); /* fade over the teaser (2.9) */
+
+  /* ── Phase 3 · 3.3 Size Finder (DS §8.11, §13.1) ── */
+  --sf-dialog-w: 560px;                /* dialog width from md */
+  --sf-progress-h: 2px;                /* step progress bar (unix.sa 2px) */
+  --sf-ico: 36px;                      /* ruler icon circle in the entry row (unix.sa 3.4rem, on the 4px grid) */
+  --sf-fig: 44px;                      /* body-shape figure (unix.sa 4.4rem) */
+  --sf-think-w: 120px;                 /* "finding your size" scan line (unix.sa 12rem) */
+  --d-sf-scan: 1.1s;                   /* scan line cycle (unix.sa 1.1s) */
 }
 
 @media (prefers-reduced-motion: reduce) {
