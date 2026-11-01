@@ -6,7 +6,12 @@
 
 // Dropdown menu items (salla-user-menu and other Raed dropdowns)
 .menu-item {
-  @apply flex items-center px-6 py-2.5 sm:text-sm transition-colors;
+  display: flex;
+  align-items: center;
+  padding-inline: var(--s-5);
+  padding-block: var(--s-3);
+  font-size: var(--t-small);
+  transition-property: color, background-color;
   color: var(--c-text-muted);
   transition-duration: var(--d-fast);
 

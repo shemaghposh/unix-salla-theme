@@ -18,7 +18,8 @@
         "lang_ar": "العربية",
         "lang_en": "English",
         "lang_ar_short": "AR",
-        "lang_en_short": "EN"
+        "lang_en_short": "EN",
+        "currency": "Currency"
       },
       "menu": {
         "display_all": "View all",

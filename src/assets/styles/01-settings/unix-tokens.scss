@@ -119,6 +119,10 @@
   --z-header: 40;
   --z-dropdown: 45;
   --z-drawer: 60;
+  --z-legacy-offcanvas: 10000; /* product filters on mmenu-light, until Phase 4 */
+  --mega-col-min: 192px;
+  --mega-media-max: 640px;
+  --dropdown-min: 256px;
 
   /* Salla base theme radius follows ours */
   --s-radius: var(--r-md);

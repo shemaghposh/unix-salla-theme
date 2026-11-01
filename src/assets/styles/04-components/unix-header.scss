@@ -204,6 +204,24 @@ $overlay-active: '.unix-header.is-overlay:not(.is-stuck):not(:hover):not(:focus-
   &:disabled, &[aria-disabled="true"] { opacity: var(--o-disabled); pointer-events: none; }
 }
 
+// ── Text button (currency trigger) ─────────────────
+.unix-text-btn {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap);
+  padding-inline: var(--s-3);
+  border-radius: var(--r-pill);
+  color: inherit;
+  font-size: var(--t-small);
+  font-weight: 500;
+  transition: background-color var(--d-fast) var(--ease-out);
+
+  &:hover { background: var(--c-hover-tint); }
+  &:active { background: var(--c-press-tint); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+  &:disabled { opacity: var(--o-disabled); pointer-events: none; }
+}
+
 // ── AR/EN pill (DS §8.7, SPEC §2 header-lang-toggle) ─
 .unix-lang {
   display: inline-flex;

@@ -35,6 +35,7 @@ export class Drawer {
     el.addEventListener('click', event => {
       if (event.target.closest('[data-drawer-close]')) this.close();
     });
+    el.addEventListener('drawer:request-close', () => this.close());
 
     document.addEventListener('click', event => {
       const trigger = event.target.closest(`a[href="#${this.id}"], [aria-controls="${this.id}"]`);
@@ -72,7 +73,11 @@ export class Drawer {
     this.el.dispatchEvent(new CustomEvent('drawer:open', { bubbles: true }));
   }
 
-  close() {
+  /**
+   * @param {{focusTarget?: HTMLElement}} [options] focusTarget replaces the trigger as the element
+   *   that gets focus back (used when the trigger is no longer visible).
+   */
+  close({ focusTarget } = {}) {
     if (!this.isOpen) return;
     this.isOpen = false;
 
@@ -83,9 +88,8 @@ export class Drawer {
 
     this.closeTimer = setTimeout(() => { this.el.hidden = true; }, cssDuration('--d-slow'));
 
-    if (this.returnFocusTo && document.contains(this.returnFocusTo)) {
-      this.returnFocusTo.focus({ preventScroll: true });
-    }
+    const target = focusTarget || this.returnFocusTo;
+    if (target && document.contains(target)) target.focus({ preventScroll: true });
     this.el.dispatchEvent(new CustomEvent('drawer:close', { bubbles: true }));
   }
 
@@ -126,7 +130,14 @@ export default function initMenuDrawer() {
 
   const drawer = new Drawer(el);
   const desktop = window.matchMedia('(min-width: 1024px)');
-  const onChange = event => event.matches && drawer.close();
+  // The hamburger is hidden from lg up, so focus goes to the first inline menu link, or the page.
+  const onChange = event => {
+    if (!event.matches || !drawer.isOpen) return;
+    const inlineLink = document.querySelector('.unix-nav__link');
+    const main = document.getElementById('main-content');
+    if (!inlineLink && main && !main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+    drawer.close({ focusTarget: inlineLink || main || document.body });
+  };
   if (desktop.addEventListener) desktop.addEventListener('change', onChange);
   else desktop.addListener(onChange);
 

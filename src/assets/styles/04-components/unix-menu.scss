@@ -152,7 +152,7 @@ custom-main-menu {
 
   &__links {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(calc(var(--s-10) + var(--s-8)), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(var(--mega-col-min), 1fr));
     gap: var(--s-5) var(--s-6);
     inline-size: 100%;
     margin: 0;
@@ -193,7 +193,7 @@ custom-main-menu {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--s-5);
-    max-inline-size: calc(var(--s-10) * 5);
+    max-inline-size: var(--mega-media-max);
     justify-self: end;
     inline-size: 100%;
   }
@@ -237,7 +237,7 @@ custom-main-menu {
 .unix-dropdown {
   inset-block-start: 100%;
   inset-inline-start: 0;
-  min-inline-size: calc(var(--s-10) * 2);
+  min-inline-size: var(--dropdown-min);
   max-block-size: calc(100vh - var(--header-h) * 2);
   overflow-y: auto;
   padding-block: var(--s-2);
@@ -438,12 +438,21 @@ body.unix-drawer-open { overflow: hidden; }
     .unix-mmenu__link--all { color: var(--c-accent-text); font-weight: 500; }
   }
 
-  &__group[open] > &__panel { animation: unix-menu-fade var(--d-base) var(--ease-out); }
 }
 
-@keyframes unix-menu-fade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+// Accordion motion (DS §8.10): grid-template-rows 0fr → 1fr on the native <details> content box.
+// Browsers without ::details-content open instantly.
+@supports selector(::details-content) {
+  .unix-mmenu__group::details-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition:
+      grid-template-rows var(--d-base) var(--ease-out),
+      content-visibility var(--d-base) allow-discrete;
+  }
+
+  .unix-mmenu__group[open]::details-content { grid-template-rows: 1fr; }
+  .unix-mmenu__panel { min-block-size: 0; overflow: hidden; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -451,4 +460,6 @@ body.unix-drawer-open { overflow: hidden; }
   .unix-nav__link::after,
   .unix-mmenu__icon,
   .unix-mega__img { transition: none; }
+
+  .unix-mmenu__group::details-content { transition: none; }
 }

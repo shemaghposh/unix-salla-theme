@@ -14,8 +14,10 @@
 const DESKTOP_QUERY = '(min-width: 1024px)';
 const MAX_MEGA_IMAGES = 2; // DS §8.7: "column of links and two large images"
 
+// Menu titles and URLs come from the merchant: escape them in text and attributes.
 const escapeAttr = value => String(value ?? '')
-  .replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  .replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const escapeHtml = escapeAttr;
 
 class NavigationMenu extends HTMLElement {
   connectedCallback() {
@@ -65,11 +67,11 @@ class NavigationMenu extends HTMLElement {
   getMegaLinks(menu) {
     return menu.children.map(child => `
       <li class="unix-mega__group">
-        <a class="unix-mega__heading" href="${child.url}" ${child.link_attrs || ''}>${child.title || ''}</a>
+        <a class="unix-mega__heading" href="${escapeAttr(child.url)}" ${child.link_attrs || ''}>${escapeHtml(child.title)}</a>
         ${this.hasChildren(child) ? `
           <ul class="unix-mega__sublist">
             ${child.children.map(grandChild => `
-              <li><a class="unix-mega__link" href="${grandChild.url}" ${grandChild.link_attrs || ''}>${grandChild.title || ''}</a></li>
+              <li><a class="unix-mega__link" href="${escapeAttr(grandChild.url)}" ${grandChild.link_attrs || ''}>${escapeHtml(grandChild.title)}</a></li>
             `).join('')}
           </ul>` : ''}
       </li>`).join('');
@@ -80,11 +82,11 @@ class NavigationMenu extends HTMLElement {
     const media = images.length
       ? `<div class="unix-mega__media">
           ${images.map(child => `
-            <a class="unix-mega__tile" href="${child.url}" tabindex="-1">
+            <a class="unix-mega__tile" href="${escapeAttr(child.url)}" tabindex="-1">
               <span class="unix-mega__frame">
-                <img class="unix-mega__img" src="${child.image}" alt="${escapeAttr(child.title)}" width="400" height="500" loading="lazy">
+                <img class="unix-mega__img" src="${escapeAttr(child.image)}" alt="${escapeAttr(child.title)}" width="400" height="500" loading="lazy">
               </span>
-              <span class="unix-mega__caption">${child.title || ''}</span>
+              <span class="unix-mega__caption">${escapeHtml(child.title)}</span>
             </a>`).join('')}
         </div>`
       : (this.hasProducts(menu)
@@ -97,7 +99,7 @@ class NavigationMenu extends HTMLElement {
       <div class="sub-menu unix-mega${media ? ' has-media' : ''}">
         <div class="unix-container unix-mega__inner">
           <div class="unix-mega__nav">
-            <a class="unix-mega__all" href="${menu.url}">${this.displayAllText}</a>
+            <a class="unix-mega__all" href="${escapeAttr(menu.url)}">${escapeHtml(this.displayAllText)}</a>
             <ul class="unix-mega__links">${this.getMegaLinks(menu)}</ul>
           </div>
           ${media}
@@ -109,8 +111,8 @@ class NavigationMenu extends HTMLElement {
     const children = this.hasChildren(menu);
     return `
       <li class="root-level unix-nav__item${children ? ' has-children' : ''}" ${menu.attrs || ''} data-menu-item data-index="${index}">
-        <a class="unix-nav__link" href="${menu.url}" ${menu.link_attrs || ''}${children ? ' aria-expanded="false"' : ''}>
-          <span>${menu.title || ''}</span>
+        <a class="unix-nav__link" href="${escapeAttr(menu.url)}" ${menu.link_attrs || ''}${children ? ' aria-expanded="false"' : ''}>
+          <span>${escapeHtml(menu.title)}</span>
         </a>
         ${children ? this.getMegaPanel(menu) : ''}
       </li>`;
@@ -121,12 +123,12 @@ class NavigationMenu extends HTMLElement {
     return `
       <li class="root-level unix-nav__item unix-nav__more has-children" id="more-menu-dropdown">
         <button type="button" class="unix-nav__link" aria-expanded="false">
-          <span>${this.moreText}</span>
+          <span>${escapeHtml(this.moreText)}</span>
         </button>
         <div class="sub-menu unix-dropdown">
           <ul>
             ${this.overflowMenus.map(menu => `
-              <li><a class="unix-dropdown__link" href="${menu.url}" ${menu.link_attrs || ''}>${menu.title || ''}</a></li>
+              <li><a class="unix-dropdown__link" href="${escapeAttr(menu.url)}" ${menu.link_attrs || ''}>${escapeHtml(menu.title)}</a></li>
             `).join('')}
           </ul>
         </div>
@@ -272,7 +274,7 @@ class NavigationMenu extends HTMLElement {
     if (!this.hasChildren(menu)) {
       return `
         <li class="unix-mmenu__item">
-          <a class="unix-mmenu__link" href="${menu.url}" ${menu.link_attrs || ''}>${menu.title || ''}</a>
+          <a class="unix-mmenu__link" href="${escapeAttr(menu.url)}" ${menu.link_attrs || ''}>${escapeHtml(menu.title)}</a>
         </li>`;
     }
 
@@ -280,12 +282,12 @@ class NavigationMenu extends HTMLElement {
       <li class="unix-mmenu__item">
         <details class="unix-mmenu__group" data-depth="${depth}">
           <summary class="unix-mmenu__summary">
-            <span>${menu.title || ''}</span>
+            <span>${escapeHtml(menu.title)}</span>
             <span class="unix-mmenu__icon" aria-hidden="true"></span>
           </summary>
           <ul class="unix-mmenu__panel">
             <li class="unix-mmenu__item">
-              <a class="unix-mmenu__link unix-mmenu__link--all" href="${menu.url}">${this.displayAllText}</a>
+              <a class="unix-mmenu__link unix-mmenu__link--all" href="${escapeAttr(menu.url)}">${escapeHtml(this.displayAllText)}</a>
             </li>
             ${menu.children.map(child => this.getMobileMenu(child, depth + 1)).join('')}
           </ul>

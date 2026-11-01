@@ -20,7 +20,7 @@
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
-        z-index: var(--z-drawer);
+        z-index: var(--z-legacy-offcanvas); // above mmenu-light's overlay (~9994)
       }
     }
   }

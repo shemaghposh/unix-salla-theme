@@ -86,11 +86,11 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
             </div>
           {% endif %}
 
-          {# Currency picker (and the fallback language picker used by unix-header.js) #}
-          {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
-            <div class="unix-header__desktop-only header-buttons">
-              <salla-localization-modal data-testid="store-header-localization"{{ store.settings.currencies_enabled ? ' show-trigger' }}></salla-localization-modal>
-            </div>
+          {# Currency picker trigger (desktop). The drawer footer has the mobile one. #}
+          {% if store.settings.currencies_enabled %}
+            <button type="button" class="unix-text-btn unix-header__desktop-only" data-unix-localization-open aria-haspopup="dialog">
+              {{ trans('blocks.unix.header.currency') }}
+            </button>
           {% endif %}
 
           <salla-cart-summary data-testid="store-header-cart" class="unix-header__cart">
@@ -101,6 +101,14 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
       </div>
     </div>
   </div>
+
+  {#
+    One Salla localization modal for the whole page, outside any hidden wrapper so it can open on every
+    breakpoint. Opened by [data-unix-localization-open] (currency) and as the AR/EN fallback (unix-header.js).
+  #}
+  {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
+    <salla-localization-modal data-testid="store-header-localization"></salla-localization-modal>
+  {% endif %}
 
   {#
     Mobile menu drawer (ROADMAP 1.3 · DS §8.9). Opens from the inline-start side.
@@ -136,10 +144,14 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
             <span>{{ trans('blocks.unix.menu.my_account') }}</span>
           </a>
         {% else %}
-          <button type="button" class="unix-drawer__account" data-drawer-close
-                  onclick="salla.event.dispatch('login::open')">
+          <button type="button" class="unix-drawer__account" data-unix-login-open aria-haspopup="dialog">
             <i class="sicon-user" aria-hidden="true"></i>
             <span>{{ trans('blocks.unix.menu.login') }}</span>
+          </button>
+        {% endif %}
+        {% if store.settings.currencies_enabled %}
+          <button type="button" class="unix-drawer__account" data-unix-localization-open aria-haspopup="dialog">
+            <span>{{ trans('blocks.unix.header.currency') }}</span>
           </button>
         {% endif %}
         {% if store.settings.is_multilingual %}

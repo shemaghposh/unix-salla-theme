@@ -100,6 +100,37 @@ export function languageUrl(target) {
   return url.toString();
 }
 
+function openLocalizationModal() {
+  const modal = document.querySelector('salla-localization-modal');
+  if (modal && typeof modal.open === 'function') modal.open();
+}
+
+/**
+ * Run `open` after closing the drawer the trigger sits in, so the drawer's focus restore
+ * doesn't pull focus back out of the modal that `open` shows.
+ */
+function afterDrawer(trigger, open) {
+  const drawer = trigger.closest('[data-unix-drawer]');
+  if (!drawer) {
+    open();
+    return;
+  }
+  drawer.dispatchEvent(new CustomEvent('drawer:request-close'));
+  requestAnimationFrame(() => requestAnimationFrame(open));
+}
+
+function initModalTriggers() {
+  document.addEventListener('click', event => {
+    const login = event.target.closest('[data-unix-login-open]');
+    if (login) {
+      afterDrawer(login, () => salla.event.dispatch('login::open'));
+      return;
+    }
+    const localization = event.target.closest('[data-unix-localization-open]');
+    if (localization) afterDrawer(localization, openLocalizationModal);
+  });
+}
+
 function initLanguageToggle() {
   document.querySelectorAll('[data-unix-lang] [data-lang]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -113,8 +144,7 @@ function initLanguageToggle() {
       } catch (error) {
         salla.logger && salla.logger.warn('unix-header::language url', error);
       }
-      const modal = document.querySelector('salla-localization-modal');
-      if (modal && typeof modal.open === 'function') modal.open();
+      afterDrawer(btn, openLocalizationModal);
     });
   });
 }
@@ -125,5 +155,6 @@ export default function initHeader({ sticky = true } = {}) {
   initOverlay(header);
   initSearch(header);
   initLanguageToggle();
+  initModalTriggers();
   if (sticky) initSticky(header);
 }
