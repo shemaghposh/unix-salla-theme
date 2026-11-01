@@ -885,6 +885,264 @@
             ]
         },
         {
+            "key": "3e8a1f5c-7b2d-4c9e-a6f4-1d0b9c8e2a73",
+            "title": {
+                "en": "UNIX video tiles",
+                "ar": "يونكس: فيديوهين جنب بعض"
+            },
+            "icon": "sicon-camera",
+            "path": "home.unix-video-tiles",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-video-tiles-desc",
+                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>فيديوهات قصيرة بنسبة 3:4، بدون صوت وتتكرر، عمودين على الشاشات الكبيرة وسحب أفقي على الجوال. تبدأ عند ظهورها فقط، وتتوقف عند تفعيل تقليل الحركة. (صورة المعاينة مؤقتة)</small></div>"
+                },
+                {
+                    "id": "tiles",
+                    "type": "collection",
+                    "format": "collection",
+                    "required": true,
+                    "minLength": 1,
+                    "maxLength": 4,
+                    "label": "الفيديوهات",
+                    "item_label": "فيديو",
+                    "value": [
+                        {
+                            "tiles.video": null,
+                            "tiles.poster": null,
+                            "tiles.caption": null,
+                            "tiles.link": null,
+                            "tiles.link_label": null
+                        },
+                        {
+                            "tiles.video": null,
+                            "tiles.poster": null,
+                            "tiles.caption": null,
+                            "tiles.link": null,
+                            "tiles.link_label": null
+                        }
+                    ],
+                    "fields": [
+                        {
+                            "type": "string",
+                            "icon": "sicon-link",
+                            "label": "رابط الفيديو (MP4)",
+                            "multilanguage": false,
+                            "id": "tiles.video",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "رابط مباشر لملف MP4 عمودي (3:4)، بدون صوت، أقل من 4MB",
+                            "placeholder": "https://.../video.mp4",
+                            "minLength": 0,
+                            "maxLength": 500
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-image",
+                            "value": null,
+                            "label": "صورة الغلاف",
+                            "id": "tiles.poster",
+                            "format": "image",
+                            "required": false,
+                            "placeholder": null,
+                            "description": "3:4، المقاس المناسب 720×960 بكسل. تظهر قبل تشغيل الفيديو وبدلاً منه عند تقليل الحركة",
+                            "settings": {
+                                "width": 720,
+                                "height": 960
+                            }
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "نص على الفيديو (اختياري)",
+                            "multilanguage": true,
+                            "id": "tiles.caption",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "الأصل بدون نص",
+                            "placeholder": "مثال: حركة بثقة",
+                            "minLength": 0,
+                            "maxLength": 80
+                        },
+                        {
+                            "type": "items",
+                            "icon": "sicon-link",
+                            "label": "رابط البطاقة",
+                            "id": "tiles.link",
+                            "value": null,
+                            "description": "عند إضافة رابط تصبح البطاقة كلها رابطاً. في الأصل: الفيديو الأول يفتح صفحة كل المنتجات، فاختاريها هنا للفيديو الأول",
+                            "required": false,
+                            "format": "variable-list",
+                            "searchable": true,
+                            "source": "custom",
+                            "sources": [
+                                { "label": "منتج", "key": "products", "value": "products" },
+                                { "label": "تصنيف", "key": "categories", "value": "categories" },
+                                { "label": "ماركة تجارية", "key": "brands", "value": "brands" },
+                                { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
+                                { "label": "مقالة", "key": "blog_articles", "value": "blog_articles" },
+                                { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
+                                { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                            ]
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "اسم الرابط لقارئ الشاشة",
+                            "multilanguage": true,
+                            "id": "tiles.link_label",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "يُستخدم عند عدم وجود نص على الفيديو. الافتراضي: تسوقي الآن",
+                            "placeholder": "تسوقي الآن",
+                            "minLength": 0,
+                            "maxLength": 60
+                        }
+                    ]
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "اسم القسم لقارئ الشاشة",
+                    "multilanguage": true,
+                    "id": "label",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "لا يظهر على الصفحة. الافتراضي: يونكس في الحركة",
+                    "placeholder": "يونكس في الحركة",
+                    "minLength": 0,
+                    "maxLength": 60
+                }
+            ]
+        },
+        {
+            "key": "9b4d2e6f-1a3c-4f8b-b7e2-5c0a8d1f4e96",
+            "title": {
+                "en": "UNIX FAQ",
+                "ar": "يونكس: الأسئلة الشائعة"
+            },
+            "icon": "sicon-chat-conversation-alt",
+            "path": "home.unix-faq",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-faq-desc",
+                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>أسئلة وأجوبة بعنوان في المنتصف، وإجابة واحدة مفتوحة في كل مرة. اتركي الأسئلة فارغة لعرض أسئلة يونكس الافتراضية (7 أسئلة باللغتين). (صورة المعاينة مؤقتة)</small></div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: إجابات لكل تفصيلة",
+                    "placeholder": "إجابات لكل تفصيلة",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-typography",
+                    "label": "نص قصير تحت العنوان",
+                    "multilanguage": true,
+                    "id": "text",
+                    "value": null,
+                    "required": false,
+                    "format": "textarea",
+                    "description": "الافتراضي: جمعنا لكِ أكثر الأسئلة تكرارًا، لتتسوّقي بثقة وراحة",
+                    "placeholder": "أدخلي النص هنا...",
+                    "minLength": 0,
+                    "maxLength": 200
+                },
+                {
+                    "id": "items",
+                    "type": "collection",
+                    "format": "collection",
+                    "required": false,
+                    "minLength": 0,
+                    "maxLength": 20,
+                    "label": "الأسئلة",
+                    "item_label": "سؤال",
+                    "value": [],
+                    "fields": [
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "السؤال",
+                            "multilanguage": true,
+                            "id": "items.question",
+                            "value": null,
+                            "required": true,
+                            "format": "text",
+                            "description": null,
+                            "placeholder": "مثال: كيف أعرف مقاسي المناسب؟",
+                            "minLength": 1,
+                            "maxLength": 150
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-typography",
+                            "label": "الإجابة",
+                            "multilanguage": true,
+                            "id": "items.answer",
+                            "value": null,
+                            "required": false,
+                            "format": "textarea",
+                            "description": "نص عادي، والأسطر الجديدة تظهر كما هي",
+                            "placeholder": "أدخلي الإجابة هنا...",
+                            "minLength": 0,
+                            "maxLength": 1000
+                        },
+                        {
+                            "type": "boolean",
+                            "icon": "sicon-toggle-off",
+                            "label": "مفتوح افتراضياً",
+                            "description": "يُفتح سؤال واحد فقط في كل مرة",
+                            "id": "items.opened",
+                            "format": "switch",
+                            "required": false,
+                            "value": false,
+                            "selected": false
+                        }
+                    ]
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "زر «عرض المزيد»",
+                    "description": "مع أكثر من 3 أسئلة: يظهر 3 أسئلة ورابع باهت، والباقي بعد الضغط على الزر (مثل الأصل)",
+                    "id": "show_more",
+                    "format": "switch",
+                    "required": false,
+                    "value": true,
+                    "selected": true
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "بيانات الأسئلة لمحركات البحث (FAQPage)",
+                    "description": "تساعد جوجل على عرض الأسئلة في نتائج البحث",
+                    "id": "schema",
+                    "format": "switch",
+                    "required": false,
+                    "value": true,
+                    "selected": true
+                }
+            ]
+        },
+        {
             "key": "186b3f4f-25cf-4d3c-abca-cef7eed6f0ab",
             "title": {
                 "en": "Enhances Animated Images",

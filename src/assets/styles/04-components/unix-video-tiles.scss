@@ -1,0 +1,169 @@
+/*
+ * UNIX video tiles (ROADMAP 2.7 · DS §8.18, §13 · SPEC §4.8)
+ * unix.sa banner-grid: 3:4 video tiles, two columns (gap --s-5) from md; below md one tile per
+ * view with horizontal swipe (gap --s-2, like Swiper spaceBetween 8). Cream section, top padding
+ * only (padding_top l / padding_bottom none in the original).
+ */
+.unix-video-tiles {
+  padding-block-start: var(--section-md);
+  background-color: var(--c-bg);
+}
+
+// Mobile: native scroll-snap carousel (no Swiper). The page itself never scrolls sideways:
+// overflow is contained in the track.
+.unix-video-tiles__track {
+  display: grid;
+  gap: var(--s-2);
+
+  &--many {
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  @screen md {
+    &,
+    &--many {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-5);
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+  }
+}
+
+.unix-video-tiles__tile {
+  position: relative;
+  aspect-ratio: var(--tile-ratio);
+  overflow: hidden;
+  border-radius: var(--r-md);
+  background-color: var(--c-surface-muted);
+  scroll-snap-align: start;
+  isolation: isolate;
+}
+
+.unix-video-tiles__media {
+  position: absolute;
+  inset: 0;
+  transition: transform var(--d-reveal) var(--ease-out);
+}
+
+.unix-video-tiles__poster,
+.unix-video-tiles__video {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+// The video fades in over the poster once it is actually playing (no flash of black).
+.unix-video-tiles__video {
+  opacity: 0;
+  transition: opacity var(--d-base) var(--ease-out);
+
+  .is-playing & { opacity: 1; }
+}
+
+.unix-video-tiles__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--c-tile-overlay);
+  pointer-events: none;
+}
+
+// Optional caption (empty on unix.sa): bottom inline-start on the DS scrim.
+.unix-video-tiles__caption {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 1;
+  margin: 0;
+  padding-block: var(--s-7) var(--s-5);
+  padding-inline: var(--s-5) calc(var(--tap) + var(--s-5)); // keep clear of the pause button
+  background: var(--c-scrim);
+  color: var(--c-text-inverse);
+  font-family: var(--f-heading);
+  font-size: var(--t-h4);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+// Whole-card link (unix.sa full_link)
+.unix-video-tiles__link {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+
+  // Two rings: cream outline + ink inner ring, so one of them clears 3:1 on any frame
+  // and on the sand fallback (DS §8.18).
+  &:focus-visible {
+    outline: var(--ring-w) solid var(--c-text-inverse);
+    outline-offset: calc(var(--ring-w) * -2);
+    box-shadow: inset 0 0 0 calc(var(--ring-w) * 3) var(--c-action);
+  }
+}
+
+// DS §5 "Image hover": linked tiles only; hover on pointer devices only.
+@media (hover: hover) {
+  .unix-video-tiles__tile--link:hover .unix-video-tiles__media {
+    transform: scale(var(--zoom-hover));
+  }
+}
+
+// Keyboard focus on the card link (not on the play button) zooms on every device.
+.unix-video-tiles__tile--link:has(.unix-video-tiles__link:focus-visible) .unix-video-tiles__media,
+.unix-video-tiles__tile--link:active .unix-video-tiles__media {
+  transform: scale(var(--zoom-hover));
+}
+
+// Pause / play (WCAG 2.2.2): paper disc, ink icon, so it reads on any frame.
+.unix-video-tiles__toggle {
+  position: absolute;
+  inset-block-end: var(--s-3);
+  inset-inline-end: var(--s-3);
+  z-index: 3;
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background-color: var(--c-surface);
+  color: var(--c-action);
+  cursor: pointer;
+  transition: background-color var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out);
+
+  &[hidden] { display: none; }
+
+  svg {
+    inline-size: var(--icon-sm);
+    block-size: var(--icon-sm);
+  }
+
+  &:hover { background-color: var(--c-surface-muted); }
+  // Inset ink ring on the paper disc: full contrast whatever the video frame behind it.
+  &:focus-visible { outline: var(--ring-w) solid var(--c-action); outline-offset: calc(var(--ring-w) * -2); }
+  &:active { transform: translateY(var(--press-y)); }
+  &:disabled { opacity: var(--o-disabled); cursor: default; }
+
+  // aria-pressed="true" = paused → show "play"
+  .unix-video-tiles__icon-play { display: none; }
+  &[aria-pressed="true"] {
+    .unix-video-tiles__icon-pause { display: none; }
+    .unix-video-tiles__icon-play { display: block; }
+  }
+}
+
+// --zoom-hover is 1 under reduced motion (tokens), so the zoom is already off.
+@media (prefers-reduced-motion: reduce) {
+  .unix-video-tiles__media { transition: none; }
+}

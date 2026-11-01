@@ -1,0 +1,117 @@
+{#
+  UNIX video tiles (ROADMAP 2.7 · DS §8.18, §13 · SPEC §4.8).
+  Matches unix.sa (reference/shopify-theme/sections/banner-grid.liquid, assets/section-banner-grid.css,
+  assets/banner-grid.js, templates/index.json → banner-grid): two muted, looping, inline videos at 3:4,
+  no text, a light overlay; on unix.sa the first tile links to all products as a whole card (here the
+  link field is empty by default: the merchant picks it, DS §13.2). Two columns from md, one tile per
+  view with horizontal swipe (CSS scroll-snap) below md.
+  Below the fold, so nothing loads eagerly: posters are lazy images, and unix-video-tiles.js sets the
+  video src only when a tile nears the viewport, plays it while visible and pauses it off screen.
+  No autoplay with prefers-reduced-motion or Save-Data: the poster stays and the play button starts it.
+  The 3:4 box is reserved in CSS, so there is no layout shift.
+
+  Fields (twilight.json → components → home.unix-video-tiles):
+    tiles                 collection (1–4)
+      tiles.video         string   direct MP4 URL (D14 approach: Salla has no video upload field)
+      tiles.poster        image    shown until the video plays, and instead of it (reduced motion).
+                                   Decorative (alt=""): the tile's meaning is the caption / link name.
+      tiles.caption       string (multilanguage)  optional visible text on the tile; empty = no text (unix.sa)
+      tiles.link          link picker; set = the whole tile is a link (unix.sa full_link)
+      tiles.link_label    string (multilanguage)  link name for screen readers when there is no caption;
+                          null/empty → blocks.unix.video_tiles.default_link_label
+    label                 string (multilanguage)  section name for screen readers;
+                          null → blocks.unix.video_tiles.default_label
+#}
+{% set section_label = component.label %}
+{% if section_label is iterable %}
+  {% set section_label = section_label[language.code] is defined ? section_label[language.code] : null %}
+{% endif %}
+{% set section_label = section_label|default(trans('blocks.unix.video_tiles.default_label'))|trim %}
+
+{% set tiles = [] %}
+{% for tile in component.tiles|default([]) %}
+  {% set t = {} %}
+  {% for key in ['caption', 'link_label'] %}
+    {% set value = attribute(tile, key) %}
+    {# multilanguage values may arrive as {ar, en}; resolve to the current language #}
+    {% if value is iterable %}
+      {% set value = value[language.code] is defined ? value[language.code] : null %}
+    {% endif %}
+    {% set t = t|merge({ (key): value|default('')|trim }) %}
+  {% endfor %}
+  {# link picker (variable-list) returns an object with .url; tolerate a plain string too #}
+  {% set url = tile.link %}
+  {% if url is iterable %}
+    {% set url = url.url|default('') %}
+  {% endif %}
+  {% set url = url|default('')|trim %}
+  {% if url == '#' %}{% set url = '' %}{% endif %}
+  {% set t = t|merge({
+    'video': tile.video|default('')|trim,
+    'poster': tile.poster|default('')|trim,
+    'url': url
+  }) %}
+  {% if t.video or t.poster %}
+    {% set tiles = tiles|merge([t]) %}
+  {% endif %}
+{% endfor %}
+
+{% if tiles|length %}
+  <section component-id="{{ componentId }}"
+           class="unix-video-tiles"
+           aria-label="{{ section_label|e('html_attr') }}"
+           data-unix-video-tiles>
+    <div class="unix-container">
+      <div class="unix-video-tiles__track{{ tiles|length > 1 ? ' unix-video-tiles__track--many' }}"
+           {% if tiles|length > 1 %}role="list"{% endif %}>
+        {% for t in tiles %}
+          <div class="unix-video-tiles__tile{{ t.url ? ' unix-video-tiles__tile--link' }}"
+               {% if tiles|length > 1 %}role="listitem"{% endif %}
+               data-unix-video-tile>
+            <div class="unix-video-tiles__media">
+              {% if t.poster %}
+                <img class="unix-video-tiles__poster"
+                     src="{{ t.poster }}"
+                     alt=""
+                     width="720" height="960"
+                     loading="lazy" decoding="async">
+              {% endif %}
+              {% if t.video %}
+                <video class="unix-video-tiles__video"
+                       data-unix-video-tile-video
+                       data-src="{{ t.video|e('html_attr') }}"
+                       muted playsinline loop preload="none"
+                       aria-hidden="true" tabindex="-1"></video>
+              {% endif %}
+              <span class="unix-video-tiles__overlay" aria-hidden="true"></span>
+            </div>
+
+            {% if t.caption %}
+              <p class="unix-video-tiles__caption">{{ t.caption }}</p>
+            {% endif %}
+
+            {% if t.url %}
+              <a class="unix-video-tiles__link" href="{{ t.url }}"
+                 aria-label="{{ (t.caption ?: (t.link_label ?: trans('blocks.unix.video_tiles.default_link_label')))|e('html_attr') }}"></a>
+            {% endif %}
+
+            {% if t.video %}
+              <button type="button" class="unix-video-tiles__toggle" data-unix-video-tile-toggle hidden
+                      aria-pressed="true"
+                      aria-label="{{ trans('blocks.unix.video_tiles.pause_video') }}">
+                <svg class="unix-video-tiles__icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+                     fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                  <path d="M9 6v12M15 6v12"/>
+                </svg>
+                <svg class="unix-video-tiles__icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+                     fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+                  <path d="M8 5.5v13l10.5-6.5z"/>
+                </svg>
+              </button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
