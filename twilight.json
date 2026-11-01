@@ -115,7 +115,7 @@
             "required": false,
             "format": "text",
             "description": "سطر واحد في المنتصف. اتركي الحقل فارغاً لإخفاء الرسالة",
-            "placeholder": "أدخل النص هنا...",
+            "placeholder": "أدخلي النص هنا...",
             "minLength": 0,
             "maxLength": 100
         },
@@ -198,7 +198,7 @@
             "required": false,
             "format": "text",
             "description": null,
-            "placeholder": "أدخل النص هنا...",
+            "placeholder": "أدخلي النص هنا...",
             "minLength": 0,
             "maxLength": 100
         },
@@ -281,7 +281,7 @@
             "required": false,
             "format": "text",
             "description": null,
-            "placeholder": "أدخل النص هنا...",
+            "placeholder": "أدخلي النص هنا...",
             "minLength": 0,
             "maxLength": 100
         },

@@ -1,9 +1,14 @@
 {#
 | Announcement bar (ROADMAP 1.1 · DS §8.6 · SPEC §2)
 | Source: twilight.json → settings
-|   announcement_enabled            boolean  show/hide the bar
-|   announcement_message_{1..3}     string   multilanguage, one line, empty = skipped
+|   announcement_enabled            boolean  show/hide the bar (true until saved)
+|   announcement_message_{1..3}     string   multilanguage, one line
 |   announcement_link_{1..3}        link     optional, empty = plain text (Shopify default)
+| Defaults: Salla applies twilight.json `value`s only after the merchant saves,
+| so a message that is null (never saved, or empty for this language) falls back
+| to trans('blocks.header.announcement_default_N') for N = 1, 2. An empty string
+| ('') means the merchant cleared it on purpose and the message is skipped.
+| Caveat: if Salla stores a cleared field as null, the default comes back (DS §8.6).
 | Rotation (2+ messages) is driven by src/assets/js/partials/announcement-bar.js.
 #}
 {% if theme.settings.get('announcement_enabled', true) %}
@@ -12,7 +17,10 @@
     {% set text = theme.settings.get('announcement_message_' ~ i) %}
     {# multilanguage values may arrive as {ar, en}; resolve to the current language #}
     {% if text is iterable %}
-      {% set text = text[language.code]|default('') %}
+      {% set text = text[language.code] is defined ? text[language.code] : null %}
+    {% endif %}
+    {% if text is null and i <= 2 %}
+      {% set text = trans('blocks.header.announcement_default_' ~ i) %}
     {% endif %}
     {% set url = theme.settings.get('announcement_link_' ~ i) %}
     {% if url is iterable %}
@@ -27,7 +35,10 @@
     {% set rotates = messages|length > 1 %}
     <section class="unix-announce"
              aria-label="{{ trans('blocks.header.announcements') }}"
-             {% if rotates %}data-unix-announce tabindex="0"{% endif %}>
+             {% if rotates %}data-unix-announce tabindex="0" aria-describedby="unix-announce-hint"{% endif %}>
+      {% if rotates %}
+        <span id="unix-announce-hint" class="sr-only">{{ trans('blocks.header.announcements_pause_hint') }}</span>
+      {% endif %}
       <div class="unix-container">
         <ul class="unix-announce__track" role="list">
           {% for message in messages %}

@@ -2,7 +2,10 @@
   "blocks": {
     "header": {
       "cart": "السلة",
-      "announcements": "إعلانات المتجر"
+      "announcements": "إعلانات المتجر",
+      "announcements_pause_hint": "تتبدّل الإعلانات تلقائيًا. انتقلي إلى الشريط لإيقافها مؤقتًا.",
+      "announcement_default_1": "وصلت مجموعتنا الجديدة: Sailor وHalo Back وSoft Angle",
+      "announcement_default_2": "شحن مجاني داخل السعودية للطلبات فوق 500 ر.س"
     },
     "appBanner": {
       "download_now": "حمله الان"
