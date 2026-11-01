@@ -15,7 +15,7 @@
 | 0.1 | هيكل الثيم من «رائد» وتغيير الاسم لـ UNIX | ✅ |
 | 0.2 | `docs/SPEC.md`: مواصفات ثيم شوبيفاي | ✅ |
 | 0.3 | `docs/DESIGN-SYSTEM.md` v1.0 | ✅ |
-| 0.4 | `unix-tokens.scss` مطابق للـ Design System (primitives و semantic) | ✅ |
+| 0.4 | `unix-tokens.scss` مطابق للـ Design System (primitives و semantic). لون سلة الأساسي متقفل على الـ tokens (قرار D6) | ✅ |
 | 0.5 | الـ agents: `unix-theme-architect` و `unix-design-reviewer` | ✅ |
 | 0.6 | أول build ينجح (`pnpm prod`) و `salla theme preview` على المتجر التجريبي | ⛔ مستني حساب الشركاء والمتجر التجريبي |
 | 0.7 | ملف خط `Somar-Bold.woff2` | ⛔ مستني الملف من العميل |
@@ -121,3 +121,4 @@
 | D3 | بديل Swym (المفضلة): مفضلة سلة المدمجة؟ | 5 |
 | D4 | بديل Saudi Address Finder: عناوين سلة الوطنية المدمجة؟ | 4.3 |
 | D5 | الصور والفيديوهات الأصلية للهيرو والبنرات | 2 |
+| D6 | ✅ لون البراند متقفل في الكود (`unix-tokens.scss` ← `:root:root`)، وميزة `color` اتشالت من `twilight.json`، فلون اللوحة مالوش تأثير. الهدف الأول تطابق تام مع unix.sa، والمرونة للتاجر تيجي بعدين (قرار المالك 2026-11-01) | 0.4, 1.6 |
