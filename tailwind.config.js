@@ -20,7 +20,7 @@ module.exports = {
                 'BlinkMacSystemFont',
             ],
             primary: "var(--font-main)",
-            heading: ["Somar", "var(--font-main)", "sans-serif"]
+            heading: "var(--f-heading)"
         },
         extend    : {
             transitionTimingFunction: {
@@ -38,19 +38,21 @@ module.exports = {
                 'primary-l'       : 'var(--color-primary-light)',
                 'primary-reverse' : 'var(--color-primary-reverse)',
                 'primary-dark' : 'var(--color-primary-dark)',
-                /* UNIX brand palette (see docs/SPEC.md §1.2) */
-                'unix-ink'      : '#373542',
-                'unix-ink-hover': '#4b4960',
-                'unix-text'     : '#241e1a',
-                'unix-cream'    : '#f5f1ea',
-                'unix-sand'     : '#e8e0d5',
-                'unix-input'    : '#efeae1',
-                'unix-line'     : '#ddd3c6',
-                'unix-taupe'    : '#8b7355',
-                'unix-muted'    : '#8a8079',
-                'unix-hero'     : '#d8c5b8',
-                'unix-announce' : '#363441',
-                'unix-announce-text': '#f3eeea'
+                /* UNIX semantic colors (docs/DESIGN-SYSTEM.md §1.2) */
+                'u-bg'          : 'var(--c-bg)',
+                'u-surface'     : 'var(--c-surface)',
+                'u-muted-bg'    : 'var(--c-surface-muted)',
+                'u-text'        : 'var(--c-text)',
+                'u-text-muted'  : 'var(--c-text-muted)',
+                'u-inverse'     : 'var(--c-text-inverse)',
+                'u-action'      : 'var(--c-action)',
+                'u-action-hover': 'var(--c-action-hover)',
+                'u-accent'      : 'var(--c-accent)',
+                'u-accent-text' : 'var(--c-accent-text)',
+                'u-border'      : 'var(--c-border)',
+                'u-field'       : 'var(--c-field)',
+                'u-sale'        : 'var(--c-price-sale)',
+                'u-success'     : 'var(--c-success)'
             },
             spacing: {
               '3.75': '15px',
@@ -64,8 +66,10 @@ module.exports = {
             },
             borderRadius       : {
                 'large': '22px',
-                'unix-card'  : '16px',
-                'unix-pill'  : '30px',
+                'u-sm'   : 'var(--r-sm)',
+                'u-md'   : 'var(--r-md)',
+                'u-lg'   : 'var(--r-lg)',
+                'u-pill' : 'var(--r-pill)',
                 'big'  : '40px',
                 'tiny' : '3px',
                 DEFAULT: '.75rem',

@@ -1,11 +1,12 @@
 /*
- * UNIX brand tokens — ported from the Shopify theme (docs/SPEC.md §1).
- * Salla's own --color-primary comes from the store dashboard; set it to #373542
- * there. Everything UNIX-specific lives under --unix-* so the dashboard can't break it.
+ * UNIX design tokens: the code form of docs/DESIGN-SYSTEM.md v1.0.
+ * RULE: components use SEMANTIC tokens (--c-*, --t-*, --s-*, --r-*, --e-*, --d-*, --ease-*) only.
+ * Primitives (--unix-*) are referenced here and nowhere else.
+ * Salla's --color-primary comes from the store dashboard; set it to #373542 there.
  */
 
-/* Somar Bold for Arabic headings. Drop the licensed file at src/assets/fonts/Somar-Bold.woff2.
-   Until then headings fall back to IBM Plex Sans Arabic. */
+/* Somar Bold for Arabic headings: put the licensed file at src/assets/fonts/Somar-Bold.woff2.
+   Until it's there, headings fall back to IBM Plex Sans Arabic 700. */
 @font-face {
   font-family: "Somar";
   src: url("fonts/Somar-Bold.woff2") format("woff2");
@@ -14,58 +15,134 @@
 }
 
 :root {
-  /* palette */
-  --unix-ink: #373542;
-  --unix-ink-hover: #4b4960;
-  --unix-text: #241e1a;
-  --unix-cream: #f5f1ea;
-  --unix-sand: #e8e0d5;
-  --unix-input: #efeae1;
+  /* ── 1.1 Primitives ─────────────────────────── */
+  --unix-ink-900: #241e1a;
+  --unix-ink-700: #373542;
+  --unix-ink-600: #4b4960;
+  --unix-stone-600: #736a63;
+  --unix-taupe-700: #6f5c44;
+  --unix-taupe-500: #8b7355;
+  --unix-sand-300: #d8c5b8;
+  --unix-sand-200: #e8e0d5;
   --unix-line: #ddd3c6;
-  --unix-taupe: #8b7355;
-  --unix-muted: #8a8079;
-  --unix-hero: #d8c5b8;
+  --unix-input: #efeae1;
+  --unix-cream-50: #f5f1ea;
+  --unix-paper: #fbf9f5;
   --unix-announce: #363441;
   --unix-announce-text: #f3eeea;
+  --unix-success: #2f5d46;
+  --unix-danger: #b3261e;
 
-  /* shape + motion */
-  --unix-radius-card: 16px;
-  --unix-radius-pill: 30px;
-  --unix-duration: 250ms;
+  /* ── 1.2 Semantic colors ────────────────────── */
+  --c-bg: var(--unix-cream-50);
+  --c-surface: var(--unix-paper);
+  --c-surface-muted: var(--unix-sand-200);
+  --c-text: var(--unix-ink-900);
+  --c-text-muted: var(--unix-stone-600);
+  --c-text-inverse: var(--unix-cream-50);
+  --c-action: var(--unix-ink-700);
+  --c-action-hover: var(--unix-ink-600);
+  --c-accent: var(--unix-taupe-500);
+  --c-accent-text: var(--unix-taupe-700);
+  --c-border: var(--unix-line);
+  --c-field: var(--unix-input);
+  --c-price-sale: var(--unix-danger);
+  --c-price-old: var(--unix-stone-600);
+  --c-success: var(--unix-success);
+  --c-scrim: linear-gradient(to top, rgb(36 30 26 / .55), transparent 60%);
+  --c-backdrop: rgb(36 30 26 / .32);
 
-  /* type */
-  --unix-font-heading: "Somar", var(--font-main);
-  --unix-section-title: clamp(24px, 15.5px + 3.9vw, 46px);
-  --unix-hero-title: clamp(36px, 22px + 6vw, 80px);
+  /* ── 2 Typography ───────────────────────────── */
+  --f-body: var(--font-main);
+  --f-heading: "Somar", var(--font-main);
+  --t-display: clamp(40px, 6vw + 16px, 88px);
+  --t-h1: clamp(32px, 3.5vw + 16px, 56px);
+  --t-h2: clamp(26px, 2.6vw + 14px, 44px);
+  --t-h3: clamp(20px, 1.2vw + 14px, 28px);
+  --t-h4: clamp(18px, .4vw + 16px, 20px);
+  --t-body-lg: clamp(17px, .2vw + 16px, 18px);
+  --t-body: clamp(15px, .2vw + 14px, 16px);
+  --t-small: clamp(13px, .2vw + 12px, 14px);
+  --t-micro: 12px;
+
+  /* ── 3 Spacing ──────────────────────────────── */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
+  --section-sm: clamp(40px, 5vw, 64px);
+  --section-md: clamp(64px, 8vw, 112px);
+  --section-lg: clamp(96px, 11vw, 160px);
+  --content-max: 1440px;
+  --gutter: 12px;
+  --page-margin: 16px;
+
+  /* ── 4 Shape & depth ────────────────────────── */
+  --r-sm: 8px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+  --e-0: none;
+  --e-1: 0 1px 2px rgb(36 30 26 / .04), 0 4px 16px rgb(36 30 26 / .04);
+  --e-2: 0 8px 40px rgb(36 30 26 / .10);
+
+  /* ── 5 Motion ───────────────────────────────── */
+  --d-fast: 150ms;
+  --d-base: 280ms;
+  --d-slow: 480ms;
+  --d-reveal: 800ms;
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+
+  /* Salla base theme radius follows ours */
+  --s-radius: var(--r-md);
 }
 
+/* Grid gutters/margins per breakpoint (DS §3.3) */
+@media (min-width: 576px)  { :root { --gutter: 16px; --page-margin: 24px; } }
+@media (min-width: 768px)  { :root { --gutter: 20px; --page-margin: 32px; } }
+@media (min-width: 1024px) { :root { --gutter: 24px; --page-margin: 40px; } }
+@media (min-width: 1440px) { :root { --gutter: 32px; --page-margin: 64px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --d-fast: 0ms; --d-base: 0ms; --d-slow: 0ms; --d-reveal: 0ms; }
+}
+
+/* ── Base ─────────────────────────────────────── */
 .theme-unix {
-  background-color: var(--unix-cream);
-  color: var(--unix-text);
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  line-height: 1.7;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Arabic headings: Somar Bold, tight tracking (SPEC §1.3) */
-html[lang="ar"] .theme-unix {
-  h1, h2, h3, h4, .s-block__title h2, .section-title {
-    font-family: var(--unix-font-heading);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    line-height: 1.32;
-    word-spacing: .02em;
-  }
-  h1 strong, h2 strong, h3 strong, h4 strong { font-weight: 800; }
-}
-@media (max-width: 749px) {
-  .theme-unix :is(h1, h2, h3, h4) { line-height: 1.4; text-wrap: balance; overflow-wrap: break-word; }
+.theme-unix :is(h1, h2, h3, h4) { font-family: var(--f-heading); font-weight: 700; color: var(--c-text); }
+.theme-unix h1 { font-size: var(--t-h1); line-height: 1.25; }
+.theme-unix h2 { font-size: var(--t-h2); line-height: 1.3; }
+.theme-unix h3 { font-size: var(--t-h3); line-height: 1.35; }
+.theme-unix h4 { font-size: var(--t-h4); line-height: 1.4; }
+.theme-unix :is(h1, h2, h3, h4) strong { font-weight: 800; }
+
+html[lang="ar"] .theme-unix { letter-spacing: 0; }
+html[lang="en"] .theme-unix :is(h1, h2, h3, h4) { letter-spacing: -.01em; }
+
+@media (max-width: 767px) {
+  .theme-unix :is(h1, h2, h3, h4) { text-wrap: balance; overflow-wrap: break-word; }
 }
 
-.theme-unix .s-block__title h2,
-.theme-unix .section-title {
-  font-size: var(--unix-section-title);
-  line-height: 1.3;
+.theme-unix p { max-width: 65ch; }
+.theme-unix :focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+
+[dir="rtl"] .icon-dir { transform: scaleX(-1); }
+
+.unix-container {
+  width: 100%;
+  max-width: calc(var(--content-max) + 2 * var(--page-margin));
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
 }
 
-/* Buttons: pill + slide-up hover fill (SPEC §1.4) */
+/* ── Button (DS §8.2) ─────────────────────────── */
 .unix-btn {
   position: relative;
   overflow: hidden;
@@ -73,49 +150,68 @@ html[lang="ar"] .theme-unix {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 0 24px;
-  font-size: 14px;
-  border-radius: var(--unix-radius-pill);
-  background: var(--unix-ink);
-  color: var(--unix-cream);
-  transition: color var(--unix-duration);
+  gap: var(--s-2);
+  min-height: 48px;
+  padding-inline: var(--s-6);
+  font-size: var(--t-small);
+  font-weight: 500;
+  border-radius: var(--r-pill);
+  background: var(--c-action);
+  color: var(--c-text-inverse);
+  transition: color var(--d-base) var(--ease-out);
 
   &::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: var(--unix-ink-hover);
+    background: var(--c-action-hover);
     transform: translateY(calc(100% + 1px));
-    transition: transform var(--unix-duration);
+    transition: transform var(--d-base) var(--ease-out);
   }
   &:hover::before, &:focus-visible::before { transform: none; }
-  &:disabled { opacity: .5; }
+  &:disabled, &[aria-disabled="true"] { opacity: .5; pointer-events: none; }
 
-  &--secondary::before { background: var(--unix-line); }
-  &--secondary:hover { color: var(--unix-text); }
+  &--sm { min-height: 40px; }
+  &--lg { min-height: 56px; }
+  &--block { width: 100%; }
 
+  &--secondary {
+    background: var(--c-surface-muted);
+    color: var(--c-text);
+    &::before { background: var(--c-border); }
+  }
   &--outline {
     background: transparent;
-    color: var(--unix-ink);
-    box-shadow: inset 0 0 0 1.2px var(--unix-ink);
-    &::before { background: var(--unix-ink); }
-    &:hover, &:focus-visible { color: var(--unix-cream); }
+    color: var(--c-action);
+    box-shadow: inset 0 0 0 1.2px var(--c-action);
+    &::before { background: var(--c-action); }
+    &:hover, &:focus-visible { color: var(--c-text-inverse); }
   }
-
-  &--tertiary {
+  &--ghost {
     background: transparent;
-    color: var(--unix-text);
-    box-shadow: inset 0 0 0 1px var(--unix-line);
-    &::before { background: var(--unix-sand); }
+    color: currentColor;
+    box-shadow: inset 0 0 0 1px currentColor;
+    backdrop-filter: blur(6px);
+    &::before { display: none; }
+  }
+  &--link {
+    min-height: auto;
+    padding: 0 0 var(--s-1);
+    border-radius: 0;
+    background: linear-gradient(currentColor, currentColor) no-repeat 100% 100% / 0 1px;
+    color: var(--c-text);
+    transition: background-size var(--d-base) var(--ease-out);
+    &::before { display: none; }
+    &:hover, &:focus-visible { background-size: 100% 1px; }
   }
 }
 
-/* Cards and media use the 16px radius */
+/* Cards & media (DS §4, §8.3): radius, no shadows on images */
 .theme-unix .s-product-card-entry,
 .theme-unix .s-product-card-image,
 .theme-unix .banner-entry {
-  border-radius: var(--unix-radius-card);
+  border-radius: var(--r-md);
   overflow: hidden;
+  box-shadow: var(--e-0);
 }
