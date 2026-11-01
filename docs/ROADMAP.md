@@ -17,7 +17,7 @@
 | 0.3 | `docs/DESIGN-SYSTEM.md` v1.0 | ✅ |
 | 0.4 | `unix-tokens.scss` مطابق للـ Design System (primitives و semantic). لون سلة الأساسي متقفل على الـ tokens (قرار D6) | ✅ |
 | 0.5 | الـ agents: `unix-theme-architect` و `unix-design-reviewer` | ✅ |
-| 0.6 | أول build ينجح (`pnpm prod`) و `salla theme preview` على المتجر التجريبي | ⛔ مستني حساب الشركاء والمتجر التجريبي |
+| 0.6 | أول build ينجح (`pnpm prod`) و `salla theme preview` على المتجر التجريبي. الثيم رقم 705562203 على UNIX Demo، واتأكدنا من الخلفية الكريمي وخط IBM Plex Sans Arabic والـ RTL والأزرار الكحلي (2026-11-01) | ✅ |
 | 0.7 | ملف خط `Somar-Bold.woff2` | ⛔ مستني الملف من العميل |
 
 **DoD:** الـ build بينجح، والمعاينة شغالة، والـ tokens كلها موجودة وبتتستخدم.
