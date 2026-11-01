@@ -343,7 +343,7 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
   - eyebrow (`--t-micro`، uppercase و +0.08em في الإنجليزي بس) ← عنوان h2 (`--t-h2`) ← نص (`--t-small`، `65ch`) ← CTA. المسافة `--s-2`، وقبل الـ CTA `--s-3` زيادة.
   - **من غير opacity** على النصوص (الأصل .7 و .8)، زي الهيرو (§13.2).
 - **الشريط كله لينك** لو فيه رابط (زي الأصل)، وإلا `div` عادي من غير CTA.
-- **CTA:** شكل `.unix-btn--ghost` بلون cream (pill، §12)، مش عنصر تفاعلي لوحده (الشريط هو اللينك). مع الـ hover/focus/active على الشريط بيتملي `--c-text-inverse` والنص `--c-action`، في `--d-base`.
+- **CTA:** `span` بالـ classes `.unix-btn.unix-btn--ghost` بلون cream (pill، §12)، مش عنصر تفاعلي لوحده (الشريط هو اللينك). مع الـ hover/focus/active على الشريط بيتملي `--c-text-inverse` والنص `--c-action`، في `--d-base`.
 - **Focus:** حلقة `--ring-w` بلون `--c-text-inverse` جوه الشريط (offset سالب `--s-1`). **Active:** زي الـ hover.
 
 ---

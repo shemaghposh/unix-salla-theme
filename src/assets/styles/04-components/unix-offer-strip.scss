@@ -46,18 +46,10 @@
   line-height: 1.6;
 }
 
+// The pill itself is .unix-btn.unix-btn--ghost (DS §8.2); only the band-driven fill lives here,
+// because the band, not the pill, is the link.
 .unix-offer__cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-block-size: var(--btn-h);
   margin-block-start: var(--s-3);
-  padding-inline: var(--s-6);
-  border-radius: var(--r-pill);
-  box-shadow: inset 0 0 0 var(--line-w) currentColor;
-  font-size: var(--t-small);
-  font-weight: 500;
-  line-height: 1.6;
   transition: background-color var(--d-base) var(--ease-out), color var(--d-base) var(--ease-out);
 
   .unix-offer__inner:hover &,
