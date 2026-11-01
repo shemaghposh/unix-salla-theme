@@ -1,8 +1,11 @@
 /**
  * UNIX featured products (ROADMAP 2.6 · DS §8.16) for views/components/home/unix-featured-products.twig.
- * Fills cards that Twig could only render by product id (data-unix-fprod-pending): one
- * salla.product.api.fetch per page for all pending ids, then name, price, thumbnail, link and,
- * when the merchant left the lifestyle image empty, the product image as the lifestyle image.
+ * Per section, fills the cards Twig could only render by product id (data-unix-fprod-pending) with
+ * one salla.product.api.fetch: name, price, thumbnail, link and, when the merchant left the
+ * lifestyle image empty, the product image as the lifestyle image.
+ * - data-unix-fprods-latest: nothing picked yet → the pending slides take the latest products.
+ * - A product the API no longer returns (deleted/hidden) loses its slide and the slider updates;
+ *   with no slide left, or if the request fails, the whole section hides.
  * Nothing here touches cart or product logic.
  */
 function priceHTML(product) {
@@ -40,24 +43,62 @@ function fill(item, product) {
     card.removeAttribute('aria-busy');
     card.removeAttribute('tabindex');
   }
+  item.dataset.unixFprod = product.id;
   item.removeAttribute('data-unix-fprod-pending');
 }
 
-export default function initFeaturedProducts(root = document) {
-  const pending = Array.from(root.querySelectorAll('[data-unix-fprod-pending]'));
-  if (!pending.length || !window.salla?.product?.api?.fetch) return;
+function removeSlides(section, items) {
+  items.forEach(item => item.closest('.unix-fprods__slide')?.remove());
+  if (!section.querySelector('.unix-fprods__slide')) {
+    section.hidden = true;
+    return;
+  }
+  section.querySelector('.swiper')?.swiper?.update();
+}
 
+function hydrateSection(section) {
+  const pending = Array.from(section.querySelectorAll('[data-unix-fprod-pending]'));
+  if (!pending.length) return;
+  if (!window.salla?.product?.api?.fetch) {
+    section.hidden = true;
+    return;
+  }
+
+  const latest = Number(section.dataset.unixFprodsLatest || 0);
   const ids = [...new Set(pending.map(item => item.dataset.unixFprod).filter(Boolean))];
-  if (!ids.length) return;
+  const query = latest
+    ? { source: 'latest', limit: latest }
+    : { source: 'selected', source_value: ids, limit: ids.length };
 
-  salla.product.api.fetch({ source: 'selected', source_value: ids, limit: ids.length })
+  if (!latest && !ids.length) {
+    removeSlides(section, pending);
+    return;
+  }
+
+  salla.product.api.fetch(query)
     .then(response => {
-      const byId = new Map((response?.data || []).map(product => [String(product.id), product]));
-      pending.forEach(item => {
-        const product = byId.get(String(item.dataset.unixFprod));
-        if (product) fill(item, product);
-        else item.closest('.unix-fprods__slide')?.setAttribute('hidden', ''); // deleted / hidden product
-      });
+      const products = response?.data || [];
+      const gone = [];
+
+      if (latest) {
+        pending.forEach((item, index) => (products[index] ? fill(item, products[index]) : gone.push(item)));
+      } else {
+        const byId = new Map(products.map(product => [String(product.id), product]));
+        pending.forEach(item => {
+          const product = byId.get(String(item.dataset.unixFprod));
+          if (product) fill(item, product);
+          else gone.push(item);
+        });
+      }
+
+      if (gone.length) removeSlides(section, gone);
     })
-    .catch(error => salla.logger?.warn('unix-featured-products: could not load products', error));
+    .catch(error => {
+      section.hidden = true;
+      salla.logger?.warn('unix-featured-products: could not load products', error);
+    });
+}
+
+export default function initFeaturedProducts(root = document) {
+  root.querySelectorAll('[data-unix-fprods]').forEach(hydrateSection);
 }

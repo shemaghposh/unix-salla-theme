@@ -1989,18 +1989,13 @@
                     "type": "collection",
                     "format": "collection",
                     "label": "المنتجات",
-                    "description": null,
+                    "description": "إذا لم تضيفي منتجات تظهر أحدث 4 منتجات بصورها",
                     "item_label": "منتج",
                     "icon": "sicon-list-add",
-                    "required": true,
-                    "minLength": 1,
+                    "required": false,
+                    "minLength": 0,
                     "maxLength": 8,
-                    "value": [
-                        { "items.image": null },
-                        { "items.image": null },
-                        { "items.image": null },
-                        { "items.image": null }
-                    ],
+                    "value": [],
                     "fields": [
                         {
                             "type": "items",

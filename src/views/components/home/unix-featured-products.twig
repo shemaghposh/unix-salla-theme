@@ -16,6 +16,8 @@
   Otherwise only the id is known: the card renders a same-size skeleton marked
   data-unix-fprod-pending and src/assets/js/partials/unix-featured-products.js fills it from
   salla.product.api (one request for the whole section).
+  With no product picked, 4 pending slides are filled from the latest products (data-unix-fprods-latest).
+  Deleted/hidden products are removed from the slider; if the request fails, the section hides.
 #}
 {% set uid = 'unix-fprods-' ~ position %}
 {% set lang = language.code|default('ar') %}
@@ -24,7 +26,9 @@
 {% if title is iterable %}{% set title = title[lang]|default('') %}{% endif %}
 {% if title is null %}{% set title = trans('blocks.unix.featured_products.default_title') %}{% endif %}
 
-{# Swiper config (salla-slider): per-view 1 / 2 / 3 and the DS §3.3 gutters per breakpoint #}
+{# Swiper config (salla-slider): per-view 1 / 2 / 3. The spaceBetween numbers MIRROR --gutter
+   (DS §3.3: 12 / 16 @576 / 20 @768 / 24 @1024 / 32 @1440); Swiper needs px numbers, not CSS vars.
+   Keep them in sync with unix-tokens.scss. #}
 {% set slider_config = '{"slidesPerView":1,"spaceBetween":12,"breakpoints":{"576":{"slidesPerView":1,"spaceBetween":16},"768":{"slidesPerView":2,"spaceBetween":20},"1024":{"slidesPerView":3,"spaceBetween":24},"1440":{"slidesPerView":3,"spaceBetween":32}}}' %}
 
 {% set slides = [] %}
@@ -45,10 +49,19 @@
   {% endif %}
 {% endfor %}
 
+{% set use_latest = not slides|length %}
+{% if use_latest %}
+  {# nothing picked yet: 4 latest products (product image as the lifestyle image), like 2.3's fallback #}
+  {% for n in 1..4 %}
+    {% set slides = slides|merge([{ 'id': '', 'resolved': false, 'product': null, 'image': '' }]) %}
+  {% endfor %}
+{% endif %}
+
 {% if slides|length %}
 <section component-id="{{ componentId }}"
          class="s-block unix-fprods"
          data-unix-fprods
+         {% if use_latest %}data-unix-fprods-latest="{{ slides|length }}"{% endif %}
          {% if title|trim %}aria-labelledby="{{ uid }}-title"{% endif %}>
   <div class="unix-container">
     {% if title|trim %}
