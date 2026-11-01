@@ -11,6 +11,19 @@
         "label": "إعلانات المتجر",
         "default_1": "وصلت مجموعتنا الجديدة: Sailor وHalo Back وSoft Angle",
         "default_2": "شحن مجاني داخل السعودية للطلبات فوق :amount"
+      },
+      "header": {
+        "open_menu": "افتحي القائمة",
+        "search": "ابحثي في المتجر",
+        "language": "اختاري اللغة",
+        "lang_ar": "العربية",
+        "lang_en": "English",
+        "lang_ar_short": "AR",
+        "lang_en_short": "EN"
+      },
+      "menu": {
+        "display_all": "عرض الكل",
+        "more": "المزيد"
       }
     }
   },

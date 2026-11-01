@@ -1,0 +1,286 @@
+/*
+ * UNIX header (ROADMAP 1.2 · DS §8.7)
+ * 60px mobile / 72px desktop (--header-h). Grid: start (menu) · centre (logo) · end (actions).
+ * States set by src/assets/js/partials/unix-header.js:
+ *   .is-stuck    bar is fixed to the top with --e-1 and --c-bg
+ *   .is-hidden   bar slid out while scrolling down
+ *   .is-settling one-frame flag that suppresses the slide when the bar first becomes fixed
+ *   .is-overlay  transparent bar with cream icons over a [data-header-overlay] hero
+ */
+
+// The transparent look applies only while the bar sits over the hero and nobody is using it.
+$overlay-active: '.unix-header.is-overlay:not(.is-stuck):not(:hover):not(:focus-within)';
+
+.unix-header {
+  position: relative;
+  z-index: var(--z-header);
+
+  // Reserves the bar height in the flow while the bar itself is fixed.
+  &__nav {
+    position: relative;
+    block-size: var(--header-h);
+  }
+
+  &__bar {
+    position: relative;
+    background: var(--c-bg);
+    color: var(--c-action);
+    border-block-end: var(--line-w) solid var(--c-border);
+    transition:
+      transform var(--d-base) var(--ease-out),
+      background-color var(--d-base) var(--ease-out),
+      color var(--d-base) var(--ease-out),
+      box-shadow var(--d-base) var(--ease-out);
+  }
+
+  &.is-stuck &__bar {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    box-shadow: var(--e-1);
+    border-block-end-color: transparent;
+  }
+
+  &.is-stuck.is-hidden &__bar { transform: translateY(-100%); }
+  &.is-settling &__bar { transition: none; }
+
+  // Over the hero the next section starts under the bar (Phase 2 hero needs no offset of its own).
+  &.is-overlay &__nav { margin-block-end: calc(var(--header-h) * -1); }
+
+  &__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--s-2);
+    block-size: var(--header-h);
+  }
+
+  &__start {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-inline-size: 0;
+    justify-self: start;
+  }
+
+  &__end {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--s-1);
+    justify-self: end;
+  }
+
+  &__menu-toggle {
+    @screen lg { display: none; }
+  }
+
+  &__wide-only {
+    display: none;
+    @screen md { display: flex; align-items: center; }
+  }
+
+  &__desktop-only {
+    display: none;
+    @screen lg { display: flex; align-items: center; }
+  }
+
+  // ── Logo ──────────────────────────────────────
+  &__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: var(--tap);
+    border-radius: var(--r-sm);
+  }
+
+  &__logo-img {
+    inline-size: var(--logo-w);
+    block-size: auto;
+    max-block-size: calc(var(--header-h) - var(--s-5));
+    object-fit: contain;
+
+    &--inverse { display: none; }
+  }
+
+  // ── Account (salla-user-menu) ─────────────────
+  &__account {
+    salla-user-menu { display: flex; align-items: center; }
+
+    :is(.s-user-menu-trigger, .s-user-menu-login-btn, button) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-inline-size: var(--tap);
+      min-block-size: var(--tap);
+      border-radius: var(--r-pill);
+      color: inherit;
+      background: transparent;
+      transition: background-color var(--d-fast) var(--ease-out);
+
+      &:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+      &:active { background: color-mix(in srgb, currentColor 14%, transparent); }
+    }
+
+    :is(.s-user-menu-trigger-avatar, img) {
+      inline-size: var(--icon-md);
+      block-size: var(--icon-md);
+      border-radius: var(--r-pill);
+    }
+
+    i { font-size: var(--icon-sm); }
+  }
+
+  // ── Cart (salla-cart-summary) ─────────────────
+  &__cart {
+    display: flex;
+
+    .s-cart-summary-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-inline-size: var(--tap);
+      min-block-size: var(--tap);
+      border-radius: var(--r-pill);
+      color: inherit;
+      transition: background-color var(--d-fast) var(--ease-out);
+
+      &:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+      &:active { background: color-mix(in srgb, currentColor 14%, transparent); }
+    }
+
+    .s-cart-summary-content { display: none; }
+
+    .header-btn__icon {
+      display: inline-flex;
+      inline-size: auto;
+      block-size: auto;
+      margin: 0;
+      border: 0;
+      font-size: var(--icon-sm);
+      color: inherit;
+    }
+
+    .s-cart-summary-count {
+      position: absolute;
+      inset-block-start: var(--s-1);
+      inset-inline-end: var(--s-1);
+      inset-inline-start: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-inline-size: var(--s-4);
+      block-size: var(--s-4);
+      padding-inline: var(--s-1);
+      border-radius: var(--r-pill);
+      background: var(--c-action);
+      color: var(--c-text-inverse);
+      font-size: var(--t-micro);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}
+
+// ── Icon button (search, menu, scope) ─────────────
+.unix-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  border-radius: var(--r-pill);
+  color: inherit;
+  background: transparent;
+  font-size: var(--icon-sm);
+  line-height: 1;
+  transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);
+
+  &:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+  &:active { background: color-mix(in srgb, currentColor 14%, transparent); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+  &:disabled, &[aria-disabled="true"] { opacity: var(--o-disabled); pointer-events: none; }
+}
+
+// ── AR/EN pill (DS §8.7, SPEC §2 header-lang-toggle) ─
+.unix-lang {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--r-pill);
+  background: var(--c-field);
+  color: var(--c-text);
+
+  &__btn {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--tap);
+    min-block-size: var(--tap);
+    padding-inline: var(--s-3);
+    border-radius: var(--r-pill);
+    color: inherit;
+    font-size: var(--t-micro);
+    font-weight: 500;
+    letter-spacing: .04em;
+    line-height: 1;
+
+    // Visible pill sits inside the 44px hit area.
+    &::before {
+      content: "";
+      position: absolute;
+      inset: var(--s-1);
+      z-index: -1;
+      border-radius: var(--r-pill);
+      background: transparent;
+      transition: background-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out);
+    }
+
+    &:hover::before { background: color-mix(in srgb, currentColor 8%, transparent); }
+    &:active::before { background: color-mix(in srgb, currentColor 14%, transparent); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+    &:disabled { opacity: var(--o-disabled); pointer-events: none; }
+
+    &.is-active {
+      font-weight: 700;
+      cursor: default;
+
+      &::before {
+        background: var(--c-surface);
+        box-shadow: inset 0 0 0 var(--line-w) var(--c-border);
+      }
+    }
+  }
+}
+
+// ── Transparent variant over the hero (DS §8.1, §8.7) ─
+#{$overlay-active} {
+  .unix-header__bar {
+    background: transparent;
+    color: var(--c-text-inverse);
+    border-block-end-color: transparent;
+  }
+
+  .unix-header__logo-img { display: none; }
+  .unix-header__logo-img--inverse { display: block; }
+  // Without an inverse logo, keep the regular one visible.
+  .unix-header__logo:not(:has(.unix-header__logo-img--inverse)) .unix-header__logo-img { display: block; }
+
+  .unix-lang { background: color-mix(in srgb, currentColor 14%, transparent); color: inherit; }
+  .unix-lang__btn.is-active { color: var(--c-text); }
+
+  .s-cart-summary-count {
+    background: var(--c-text-inverse);
+    color: var(--c-action);
+  }
+
+  .unix-icon-btn:focus-visible,
+  .unix-lang__btn:focus-visible { outline-color: currentColor; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-header__bar { transition: none; }
+}

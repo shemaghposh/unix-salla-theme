@@ -11,6 +11,19 @@
         "label": "Store announcements",
         "default_1": "Our new collection has landed: Sailor, Halo Back and Soft Angle",
         "default_2": "Free shipping across Saudi Arabia on orders over :amount"
+      },
+      "header": {
+        "open_menu": "Open menu",
+        "search": "Search the store",
+        "language": "Choose language",
+        "lang_ar": "العربية",
+        "lang_en": "English",
+        "lang_ar_short": "AR",
+        "lang_en_short": "EN"
+      },
+      "menu": {
+        "display_all": "View all",
+        "more": "More"
       }
     }
   },

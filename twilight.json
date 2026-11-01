@@ -181,8 +181,8 @@
         },
         {
             "id": "header_is_sticky",
-            "label": "تثبت القائمة الرئيسية أعلى الصفحة عند التمرير لأسفل",
-            "description": "يُنصح بالغاء تفعيلها في حالة وجود عناصر كثيرة في القائمة المنسدلة",
+            "label": "تثبيت الهيدر أعلى الصفحة",
+            "description": "يختفي الهيدر عند التمرير لأسفل ويرجع عند التمرير لأعلى",
             "type": "boolean",
             "icon": "sicon-toggle-off",
             "format": "switch",
@@ -193,24 +193,24 @@
         {
             "type": "boolean",
             "icon": "sicon-toggle-off",
-            "label": "شريط علوي داكن",
-            "description": null,
-            "id": "topnav_is_dark",
-            "format": "switch",
-            "required": false,
-            "value": true,
-            "selected": false
-        },
-        {
-            "type": "boolean",
-            "icon": "sicon-toggle-off",
-            "label": "عرض روابط الصفحات الهامة في الشريط العلوي",
-            "description": "مثل صفحة الهبوط ، المدونة ،الصفحات التعريفية",
-            "id": "important_links",
+            "label": "هيدر شفاف فوق صورة الرئيسية",
+            "description": "يظهر الهيدر شفافًا بأيقونات فاتحة فوق الهيرو في الصفحة الرئيسية، ويرجع لخلفيته عند التمرير",
+            "id": "unix_header_transparent_home",
             "format": "switch",
             "required": false,
             "value": true,
             "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-image",
+            "label": "لوجو فاتح للهيدر الشفاف (اختياري)",
+            "description": "نسخة فاتحة من اللوجو تظهر فوق الهيرو. العرض المناسب 240 بكسل بخلفية شفافة (PNG أو SVG)",
+            "id": "unix_header_logo_inverse",
+            "format": "image",
+            "value": null,
+            "required": false,
+            "placeholder": null
         },
         {
             "type": "boolean",

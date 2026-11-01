@@ -4,6 +4,7 @@ import Anime from './partials/anime';
 import initTootTip from './partials/tooltip';
 import AppHelpers from "./app-helpers";
 import initAnnouncement from "./partials/unix-announcement";
+import initHeader from "./partials/unix-header";
 
 class App extends AppHelpers {
   constructor() {
@@ -16,9 +17,7 @@ class App extends AppHelpers {
     initAnnouncement();
     this.initiateNotifier();
     this.initiateMobileMenu();
-    if (header_is_sticky) {
-      this.initiateStickyMenu();
-    }
+    initHeader({ sticky: !!window.header_is_sticky });
     this.initAddToCart();
     this.initiateDropdowns();
     this.initiateModals();
@@ -175,29 +174,6 @@ isElementLoaded(selector){
   });
   });
 
-  }
-
-  initiateStickyMenu() {
-    let header = this.element('#mainnav'),
-      height = this.element('#mainnav .inner')?.clientHeight;
-    //when it's landing page, there is no header
-    if (!header) {
-      return;
-    }
-
-    window.addEventListener('load', () => setTimeout(() => this.setHeaderHeight(), 500))
-    window.addEventListener('resize', () => this.setHeaderHeight())
-
-    window.addEventListener('scroll', () => {
-      window.scrollY >= header.offsetTop + height ? header.classList.add('fixed-pinned', 'animated') : header.classList.remove('fixed-pinned');
-      window.scrollY >= 200 ? header.classList.add('fixed-header') : header.classList.remove('fixed-header', 'animated');
-    }, { passive: true });
-  }
-
-  setHeaderHeight() {
-    let height = this.element('#mainnav .inner').clientHeight,
-      header = this.element('#mainnav');
-    header.style.height = height + 'px';
   }
 
   initiateDropdowns() {
