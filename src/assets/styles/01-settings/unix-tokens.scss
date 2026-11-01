@@ -1,0 +1,121 @@
+/*
+ * UNIX brand tokens — ported from the Shopify theme (docs/SPEC.md §1).
+ * Salla's own --color-primary comes from the store dashboard; set it to #373542
+ * there. Everything UNIX-specific lives under --unix-* so the dashboard can't break it.
+ */
+
+/* Somar Bold for Arabic headings. Drop the licensed file at src/assets/fonts/Somar-Bold.woff2.
+   Until then headings fall back to IBM Plex Sans Arabic. */
+@font-face {
+  font-family: "Somar";
+  src: url("fonts/Somar-Bold.woff2") format("woff2");
+  font-weight: 600 800;
+  font-display: swap;
+}
+
+:root {
+  /* palette */
+  --unix-ink: #373542;
+  --unix-ink-hover: #4b4960;
+  --unix-text: #241e1a;
+  --unix-cream: #f5f1ea;
+  --unix-sand: #e8e0d5;
+  --unix-input: #efeae1;
+  --unix-line: #ddd3c6;
+  --unix-taupe: #8b7355;
+  --unix-muted: #8a8079;
+  --unix-hero: #d8c5b8;
+  --unix-announce: #363441;
+  --unix-announce-text: #f3eeea;
+
+  /* shape + motion */
+  --unix-radius-card: 16px;
+  --unix-radius-pill: 30px;
+  --unix-duration: 250ms;
+
+  /* type */
+  --unix-font-heading: "Somar", var(--font-main);
+  --unix-section-title: clamp(24px, 15.5px + 3.9vw, 46px);
+  --unix-hero-title: clamp(36px, 22px + 6vw, 80px);
+}
+
+.theme-unix {
+  background-color: var(--unix-cream);
+  color: var(--unix-text);
+}
+
+/* Arabic headings: Somar Bold, tight tracking (SPEC §1.3) */
+html[lang="ar"] .theme-unix {
+  h1, h2, h3, h4, .s-block__title h2, .section-title {
+    font-family: var(--unix-font-heading);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.32;
+    word-spacing: .02em;
+  }
+  h1 strong, h2 strong, h3 strong, h4 strong { font-weight: 800; }
+}
+@media (max-width: 749px) {
+  .theme-unix :is(h1, h2, h3, h4) { line-height: 1.4; text-wrap: balance; overflow-wrap: break-word; }
+}
+
+.theme-unix .s-block__title h2,
+.theme-unix .section-title {
+  font-size: var(--unix-section-title);
+  line-height: 1.3;
+}
+
+/* Buttons: pill + slide-up hover fill (SPEC §1.4) */
+.unix-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 24px;
+  font-size: 14px;
+  border-radius: var(--unix-radius-pill);
+  background: var(--unix-ink);
+  color: var(--unix-cream);
+  transition: color var(--unix-duration);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--unix-ink-hover);
+    transform: translateY(calc(100% + 1px));
+    transition: transform var(--unix-duration);
+  }
+  &:hover::before, &:focus-visible::before { transform: none; }
+  &:disabled { opacity: .5; }
+
+  &--secondary::before { background: var(--unix-line); }
+  &--secondary:hover { color: var(--unix-text); }
+
+  &--outline {
+    background: transparent;
+    color: var(--unix-ink);
+    box-shadow: inset 0 0 0 1.2px var(--unix-ink);
+    &::before { background: var(--unix-ink); }
+    &:hover, &:focus-visible { color: var(--unix-cream); }
+  }
+
+  &--tertiary {
+    background: transparent;
+    color: var(--unix-text);
+    box-shadow: inset 0 0 0 1px var(--unix-line);
+    &::before { background: var(--unix-sand); }
+  }
+}
+
+/* Cards and media use the 16px radius */
+.theme-unix .s-product-card-entry,
+.theme-unix .s-product-card-image,
+.theme-unix .banner-entry {
+  border-radius: var(--unix-radius-card);
+  overflow: hidden;
+}
