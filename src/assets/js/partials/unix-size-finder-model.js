@@ -3,8 +3,9 @@
 
    Faithful port of unix.sa `assets/unix-size-finder.js` (CONFIG +
    HELPERS + MODEL sections). Same inputs, same steps, same rounding,
-   same thresholds. Pure functions only: no DOM, no Salla. The UI lives
-   in `unix-size-finder.js` and is lazy-loaded on first open.
+   same thresholds. No DOM and no Salla: the model is pure; only the
+   profile helpers at the end touch localStorage. The UI lives in
+   `unix-size-finder.js` (imported statically by product.js).
 
    Every table in DEFAULTS is unix.sa's data. The merchant can override
    any top-level key through the theme setting `unix_size_finder_data`
@@ -245,14 +246,15 @@ export function createModel(cfg = DEFAULTS) {
 }
 
 /**
- * Product category from the product type / name (snippet logic, Liquid
- * `product.type`). Salla has no product type, so the caller passes the
- * product name + category names. (قرار مؤقت – محتاج مراجعة)
+ * Product category from text (snippet logic on Liquid `product.type`, same
+ * order: legging, bra, hood, pant/short/jogger, else topFitted). Salla has
+ * no product type, so the caller passes the product NAME; the merchant can
+ * override per product via cfg.PRODUCTS. (قرار مؤقت – محتاج مراجعة)
  */
 export function baseCatFromText(text) {
   const t = (text || '').toLowerCase();
   if (/legging|ليقنز|ليجنز/.test(t)) return 'leggings';
-  if (/\bbra\b|صدري/.test(t)) return 'bra';
+  if (/bra|صدري/.test(t)) return 'bra'; // substring like unix.sa `contains 'bra'` (so "bralette" counts)
   if (/hood|هودي/.test(t)) return 'hoodie';
   if (/pant|short|jogger|بنطلون|شورت|جوقر|جوجر/.test(t)) return 'wide';
   return 'topFitted';

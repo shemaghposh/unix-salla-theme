@@ -161,6 +161,7 @@
         "pref_comfy_1": "Comfortable",
         "pref_comfy_2": "Loose and flowing",
         "your_size": "Your size",
+        "result_title": "Your size: :size",
         "conf_high": "High confidence",
         "conf_mid": "Medium confidence",
         "conf_low": "Between sizes",

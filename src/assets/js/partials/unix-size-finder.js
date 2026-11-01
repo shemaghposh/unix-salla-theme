@@ -2,9 +2,9 @@
    UNIX — Size finder v2, UI (ROADMAP 3.3 · DS §8.11)
 
    Port of the PAGE INTEGRATION + UI parts of unix.sa
-   assets/unix-size-finder.js, inside a native <dialog>. Loaded as a
-   separate chunk by unix-size-finder-loader.js on first open (or on
-   idle when a saved profile exists, to show her size on the trigger).
+   assets/unix-size-finder.js, inside a native <dialog>. Imported
+   statically by product.js (no lazy chunk: avoids depending on Salla's
+   CDN serving webpack chunks). The step DOM is only built on open.
 
    Salla integration: the size option(s) come from the twig include
    (`data-sf-options`: id, name, details[id,name,out]). A recommendation
@@ -25,12 +25,11 @@ const t = (key, params) => {
   return typeof value === 'string' ? value : key;
 };
 
-function cssMs(name, fallback) {
-  const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  if (!raw) return fallback;
-  const v = parseFloat(raw) || 0;
-  return raw.endsWith('ms') ? v : v * 1000;
-}
+// Content timing from unix.sa, not motion: unchanged under prefers-reduced-motion (DS §8.11).
+const THINK_MS = 800;   // "finding your size" screen
+const PICKED_MS = 650;  // "size selected" before the dialog closes
+
+const capitalise = s => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
 function h(tag, cls, text) {
   const el = document.createElement(tag);
@@ -64,7 +63,7 @@ function shapeSvg(i) {
 class SizeFinder {
   constructor(root) {
     this.root = root;
-    this.dialog = root._sfDialog || root.querySelector('[data-sf-dialog]');
+    this.dialog = root.querySelector('[data-sf-dialog]');
     this.trigger = root.querySelector('[data-sf-open]');
     this.isEn = (document.documentElement.lang || '').toLowerCase().startsWith('en');
 
@@ -88,15 +87,35 @@ class SizeFinder {
     this.bar = this.dialog.querySelector('[data-sf-bar]');
     this.body = this.dialog.querySelector('[data-sf-body]');
 
-    // Close button, backdrop and focus return are wired by the loader (they work before this chunk loads).
-    this.dialog.addEventListener('close', () => this.renderEntry());
+    // Radios/selects are looked up inside the product form only.
+    this.form = root.closest('form') || document;
 
     // If she taps a size herself, stop auto-selecting on her behalf.
+    // Registered at boot (page start), before any auto-select can run.
     document.addEventListener('change', (e) => {
       if (e.isTrusted && this.isSizeControl(e.target)) root.dataset.touched = '1';
     }, true);
 
+    this.wireDialog();
     this.renderEntry();
+  }
+
+  /** Native <dialog>: moved out of the product form, close button, backdrop, Esc (native), focus return. */
+  wireDialog() {
+    const { dialog, trigger } = this;
+    document.body.appendChild(dialog);
+    dialog.addEventListener('close', () => {
+      this.renderEntry();
+      if (document.contains(trigger)) trigger.focus({ preventScroll: true });
+    });
+    dialog.addEventListener('click', (e) => {
+      if (e.target !== dialog) return;
+      const r = dialog.getBoundingClientRect();
+      const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+      if (!inside) this.close();
+    });
+    dialog.querySelector('[data-sf-close]')?.addEventListener('click', () => this.close());
+    trigger.addEventListener('click', () => this.open());
   }
 
   /* ---------- Salla option controls ---------- */
@@ -109,13 +128,13 @@ class SizeFinder {
   /** { 'M': { detail, control }, … } for one size option. */
   sizeMap(opt) {
     const map = {};
-    const form = this.root.closest('form') || document;
+    const { form } = this;
     (opt.details || []).forEach((d) => {
       const label = sizeOf(d.name);
       if (!label || map[label]) return;
       const name = `options[${opt.id}]`;
-      const radio = document.querySelector(`input[name="${name}"][value="${d.id}"]`);
-      const select = radio ? null : (form.querySelector(`select[name="${name}"]`) || document.querySelector(`select[name="${name}"]`));
+      const radio = form.querySelector(`input[name="${name}"][value="${d.id}"]`);
+      const select = radio ? null : form.querySelector(`select[name="${name}"]`);
       const optionEl = select ? Array.from(select.options).find(o => o.value === String(d.id)) : null;
       map[label] = { detail: d, radio, select, optionEl };
     });
@@ -205,12 +224,23 @@ class SizeFinder {
     res.forEach((r) => { if (!r.soldOut) this.markSuggested(r.piece.opt, SIZES[r.shown]); });
   }
 
+  /** Does this size option's control already hold a value? */
+  hasValue(opt) {
+    const name = `options[${opt.id}]`;
+    if (this.form.querySelector(`input[name="${name}"]:checked`)) return true;
+    const select = this.form.querySelector(`select[name="${name}"]`);
+    return !!(select && select.value);
+  }
+
   /** Pre-select her saved size once the page has settled, unless she picked one by hand. */
   autoSelect() {
     if (!hasProfile(this.profile)) return;
     const run = () => {
       if (this.root.dataset.touched) return;
-      this.currentResults().forEach((r) => { if (!r.soldOut) this.selectIn(r.piece.opt, SIZES[r.shown]); });
+      this.currentResults().forEach((r) => {
+        // never overwrite a size that already has a value (her pick, or a store/URL preselect)
+        if (!r.soldOut && !this.hasValue(r.piece.opt)) this.selectIn(r.piece.opt, SIZES[r.shown]);
+      });
       this.renderEntry();
     };
     const later = () => setTimeout(run, 400);
@@ -415,7 +445,7 @@ class SizeFinder {
     box.appendChild(line);
     this.body.appendChild(box);
     this.body.querySelector('h2').focus({ preventScroll: true });
-    setTimeout(() => { if (this.dialog.open) this.result(); }, cssMs('--d-reveal', 800));
+    setTimeout(() => { if (this.dialog.open) this.result(); }, THINK_MS);
   }
 
   prefLabelFor(cat) {
@@ -442,7 +472,10 @@ class SizeFinder {
     this.setHead(0, 0);
     const body = this.body;
     body.textContent = '';
-    body.appendChild(this.title(t('your_size'), true));
+    const heading = res.length > 1
+      ? res.map(it => `${it.piece.label}: ${SIZES[it.shown]}`).join(t('list_sep'))
+      : t('result_title', { size: res[0] ? SIZES[res[0].shown] : '' });
+    body.appendChild(this.title(heading, true));
 
     const box = h('div', 'unix-sf__result');
     box.setAttribute('aria-live', 'polite');
@@ -459,7 +492,7 @@ class SizeFinder {
     if (res[0]) {
       const lines = [];
       const why = this.explain(res[0].r);
-      if (why) lines.push(`${why}.`);
+      if (why) lines.push(`${this.isEn ? capitalise(why) : why}.`);
       res.forEach((it) => {
         if (it.soldOut) lines.push(t('gone', { size: SIZES[it.r.size] }));
         else if (it.swapped) lines.push(t('soldout', { size: SIZES[it.r.size], alt: SIZES[it.shown] }));
@@ -487,7 +520,7 @@ class SizeFinder {
         cta.dataset.done = '1';
         avail.forEach(it => this.selectIn(it.piece.opt, SIZES[it.shown]));
         cta.textContent = t('picked');
-        setTimeout(() => this.close(), cssMs('--d-reveal', 800));
+        setTimeout(() => this.close(), PICKED_MS);
       });
       box.appendChild(cta);
     }
@@ -504,8 +537,21 @@ class SizeFinder {
   }
 }
 
-/** One controller per [data-unix-sf] root. */
-export default function sizeFinder(root) {
-  if (!instances.has(root)) instances.set(root, new SizeFinder(root));
-  return instances.get(root);
+// Exposed for testing and for the calibration sheet (unix.sa window.UnixFit).
+function exposeModel(model) {
+  window.UnixFit = { recommend: model.recommend, estimateBody: model.estimateBody, SIZES, CATS: model.CATS };
+}
+
+/** Boot every [data-unix-sf] root on the page (called once from product.js). */
+export default function initSizeFinder() {
+  exposeModel(createModel());
+  document.querySelectorAll('[data-unix-sf]').forEach((root) => {
+    if (instances.has(root)) return;
+    const dialog = root.querySelector('[data-sf-dialog]');
+    if (!dialog || typeof dialog.showModal !== 'function') { root.hidden = true; return; } // no <dialog> support
+    const finder = new SizeFinder(root);
+    instances.set(root, finder);
+    exposeModel(finder.model); // the store's configured model
+    finder.autoSelect();
+  });
 }

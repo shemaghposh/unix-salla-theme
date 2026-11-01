@@ -4,6 +4,7 @@ import BasePage from './base-page';
 import Fslightbox from 'fslightbox';
 window.fslightbox = Fslightbox;
 import initGallery from './partials/unix-gallery';
+import initSizeFinder from './partials/unix-size-finder'; // ROADMAP 3.3 (DS §8.11)
 
 class Product extends BasePage {
     onReady() {
@@ -89,7 +90,6 @@ class Product extends BasePage {
 
 Product.initiateWhenReady(['product.single']);
 
-// ROADMAP 3.3 Size Finder: tiny loader; the finder itself is a lazy chunk.
-import initSizeFinder from './partials/unix-size-finder-loader';
+// ROADMAP 3.3 Size Finder: boot at page start so a manual size pick is seen before any auto-select.
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initSizeFinder);
 else initSizeFinder();

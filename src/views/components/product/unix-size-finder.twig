@@ -6,19 +6,19 @@
   after {% include 'pages.partials.product.options' %} (pages/product/single.twig):
     {% include 'components.product.unix-size-finder' %}
   (repo convention for include paths = dots; it is this file.)
-  JS: src/assets/js/partials/unix-size-finder-loader.js (in product.js) lazy-imports
-  unix-size-finder.js + unix-size-finder-model.js on first open.
+  JS: src/assets/js/partials/unix-size-finder.js (+ -model.js), imported statically
+  by product.js; the step DOM is built only when the dialog opens.
 
   Renders only when the product has a size option (name contains «مقاس» / "size",
   same test as the original) and the setting `unix_size_finder_enabled` is on.
-  The trigger is server-rendered; the finder JS (model + UI) is a separate chunk
-  loaded on first open (src/assets/js/partials/unix-size-finder.js).
+  The trigger is server-rendered.
   Merchant data override: theme setting `unix_size_finder_data` (JSON, empty = unix.sa data).
 #}
 {% set sf_options = [] %}
 {% for option in product.options %}
   {% set sf_name = option.name|lower %}
-  {% if 'مقاس' in sf_name or 'size' in sf_name %}
+  {# name test as unix.sa, AND a pick-one type (not text/date/number/multi/etc.) #}
+  {% if ('مقاس' in sf_name or 'size' in sf_name) and option.type in ['single-option', 'thumbnail'] %}
     {% set sf_details = [] %}
     {% for detail in option.details %}
       {% set sf_details = sf_details|merge([{ 'id': detail.id, 'name': detail.name, 'out': detail.is_out ? true : false }]) %}

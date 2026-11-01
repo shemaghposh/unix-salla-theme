@@ -73,6 +73,7 @@
   margin: 0;
   padding: 0 var(--page-margin) calc(var(--s-5) + env(safe-area-inset-bottom, 0px));
   border: 0;
+  border-radius: 0;
   background: var(--c-surface);
   color: var(--c-text);
   overflow-y: auto;
@@ -91,7 +92,7 @@
     max-block-size: calc(100dvh - 2 * var(--s-6));
     margin: auto;
     padding: 0 var(--s-5) var(--s-5);
-    border-radius: var(--r-md);
+    border-radius: var(--r-lg); /* DS §4: modals; full screen below md has no radius */
     box-shadow: var(--e-2);
   }
 }
@@ -118,8 +119,9 @@ html:has(.unix-sf__dialog[open]) { overflow: hidden; }
 .unix-sf__step {
   font-size: var(--t-micro);
   color: var(--c-text-muted);
-  letter-spacing: .04em;
 }
+
+html[lang="en"] .unix-sf__step { letter-spacing: .04em; }
 
 .unix-sf__close {
   display: grid;
@@ -271,7 +273,7 @@ html:has(.unix-sf__dialog[open]) { overflow: hidden; }
   font: inherit;
   font-size: var(--t-small);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: var(--s-1);
   cursor: pointer;
 
   &:active { opacity: var(--o-muted); }
@@ -373,14 +375,14 @@ html:has(.unix-sf__dialog[open]) { overflow: hidden; }
   max-inline-size: 65ch;
   margin: 0 auto var(--s-2);
   font-size: var(--t-small);
-  line-height: 1.75;
+  line-height: 1.7; /* body role (DS §2) */
   color: var(--c-text-muted);
 }
 
 .unix-sf__cta { margin-block-start: var(--s-4); }
 
 .unix-sf__note {
-  margin: var(--s-4) 0 0;
+  margin: var(--s-4) auto 0;
   padding-block-start: var(--s-3);
   border-block-start: var(--line-w) solid var(--c-border);
   font-size: var(--t-micro);
@@ -388,15 +390,23 @@ html:has(.unix-sf__dialog[open]) { overflow: hidden; }
 }
 
 /* ── "suggested" mark under the size inside salla-product-options ── */
+label:has(> .unix-sf-mark) { position: relative; }
+
 .unix-sf-mark {
-  display: block;
-  margin-block-start: var(--s-1);
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: var(--s-1);
   font-size: var(--t-micro);
   line-height: 1;
   color: var(--c-success);
   text-align: center;
   pointer-events: none;
 }
+
+/* on the selected (dark) size button */
+input:checked + label > .unix-sf-mark,
+label[aria-checked="true"] > .unix-sf-mark,
+.is-selected > .unix-sf-mark { color: var(--c-text-inverse); }
 
 /* ── reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
