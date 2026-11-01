@@ -1,8 +1,8 @@
-/* ── «جديد من يونكس» collection overlay (ROADMAP 2.4 · DS §8.12 · SPEC §4.4) ──
- * Background image + overlay + scrims, heading on top, a salla-products-slider
- * of the chosen category at the bottom. The box reserves a minimum ratio
- * (4:5 → 16:9) so nothing shifts while the image loads (CLS); aspect-ratio
- * boxes grow with their content, so long content is never clipped. */
+/* ── «جديد من يونكس» collection overlay (ROADMAP 2.4 · DS §8.13 · SPEC §4.4) ──
+ * Background image + overlay + scrims; heading row on top (arrows at its end,
+ * unix.sa "info info buttons"); a salla-products-slider of the chosen category
+ * at the bottom. The box reserves a minimum ratio (4:5, then 16:9 from 576px like
+ * unix.sa) so nothing shifts while the image loads (CLS); it grows with content. */
 .unix-collection-overlay {
   margin-block: 0; /* unix.sa: no-indent */
 
@@ -26,10 +26,8 @@
     background-color: var(--c-surface-sand);
     color: var(--c-text-inverse);
 
-    @screen md {
-      aspect-ratio: 16 / 9;
-      border-radius: var(--r-md);
-    }
+    @media (min-width: 576px) { aspect-ratio: 16 / 9; }
+    @screen md { border-radius: var(--r-md); }
   }
 
   &__media {
@@ -45,7 +43,7 @@
     }
   }
 
-  /* Merchant overlay (opacity from the field) under both DS scrims (§12) */
+  /* Merchant overlay (opacity from the field) under both DS scrims (§13.2) */
   &__overlay {
     position: absolute;
     inset: 0;
@@ -61,6 +59,12 @@
     }
   }
 
+  /* Focus inside the section is drawn in the text colour (cream), like the hero */
+  :focus-visible {
+    outline: var(--ring-w) solid currentColor;
+    outline-offset: var(--ring-w);
+  }
+
   &__content {
     display: flex;
     flex-direction: column;
@@ -73,13 +77,21 @@
     @screen lg { padding-block: var(--s-6); }
   }
 
+  &__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-5);
+    padding-inline: var(--s-5);
+
+    @screen lg { padding-inline: var(--s-8); }
+  }
+
   &__header {
     display: flex;
     flex-direction: column;
     gap: var(--s-1);
-    padding-inline: var(--s-5);
-
-    @screen lg { padding-inline: var(--s-8); }
+    min-inline-size: 0;
   }
 
   &__eyebrow {
@@ -99,52 +111,52 @@
   /* `.theme-unix h2` sets --c-text; the heading sits on the scrim */
   .theme-unix &__title { color: inherit; }
 
+  /* ── Arrows (heading row, from lg; JS un-hides them when the slider is ready) ── */
+  &__arrows {
+    display: none;
+    flex-shrink: 0;
+    gap: var(--s-2);
+    margin-inline-start: auto;
+
+    @screen lg { display: flex; }
+  }
+
+  &__arrow {
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--tap);
+    block-size: var(--tap);
+    border: var(--line-w) solid currentColor;
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color var(--d-fast) var(--ease-out);
+
+    &[hidden] { display: none; }
+
+    svg {
+      inline-size: var(--icon-sm);
+      block-size: var(--icon-sm);
+    }
+
+    &:hover { background-color: var(--c-hover-tint); }
+    &:active { background-color: var(--c-press-tint); }
+    &:disabled {
+      opacity: var(--o-disabled);
+      cursor: default;
+      background-color: transparent;
+    }
+  }
+
   /* ── salla-products-slider inside the overlay ── */
   &__products {
     min-inline-size: 0;
 
     .s-products-slider-wrapper { margin-block-end: 0; }
 
-    .s-slider-block__title {
-      display: none;
-      justify-content: flex-end;
-      margin-block-end: var(--s-5);
-      padding-inline: var(--s-8);
-
-      @screen lg { display: flex; }
-    }
-
-    .s-slider-block__title-right,
-    .s-slider-block__display-all { display: none; }
-
-    .s-slider-block__title-nav {
-      display: flex;
-      gap: var(--s-2);
-    }
-
-    .s-slider-nav-arrow {
-      display: inline-grid;
-      place-items: center;
-      inline-size: var(--tap);
-      block-size: var(--tap);
-      border: var(--line-w) solid currentColor;
-      border-radius: var(--r-pill);
-      background: transparent;
-      color: var(--c-text-inverse);
-      transition: background-color var(--d-fast) var(--ease-out);
-
-      &:hover { background-color: var(--c-hover-tint); }
-      &:active { background-color: var(--c-press-tint); }
-      &:focus-visible {
-        outline: var(--ring-w) solid currentColor;
-        outline-offset: var(--ring-w);
-      }
-      &.swiper-button-disabled,
-      &:disabled {
-        opacity: var(--o-disabled);
-        pointer-events: none;
-      }
-    }
+    /* Our arrows replace salla-slider's title bar (empty title + its own nav) */
+    .s-slider-block__title { display: none; }
 
     .s-slider-container {
       padding-inline: var(--s-5);
@@ -152,27 +164,37 @@
       @screen lg { padding-inline: var(--s-8); }
     }
 
-    /* Card widths and spacing from unix.sa (DS §4.2): padding = half the gap */
+    /* Card widths and gaps from unix.sa (DS §13.1): padding = half the gap (8 → 24) */
     .s-products-slider-card {
       inline-size: var(--card-w-sm);
       max-inline-size: none;
-      padding-inline: calc(var(--s-2) / 2);
+      padding-inline: var(--s-1);
 
       @screen lg {
         inline-size: var(--card-w-md);
-        padding-inline: calc(var(--s-5) / 2);
+        padding-inline: var(--s-3);
       }
     }
 
-    /* Card copy sits on the bottom scrim */
-    :is(custom-salla-product-card, salla-product-card) {
+    /* unix.sa: transparent card, white media, copy on the overlay */
+    .s-product-card-entry {
+      background-color: transparent;
       color: var(--c-text-inverse);
+    }
 
-      :is(.s-product-card-content-title, .s-product-card-content-title a,
-          .s-product-card-content-subtitle, .s-product-card-price,
-          .s-product-card-sale-price, .s-product-card-starting-price) {
-        color: inherit;
-      }
+    .s-product-card-image { background-color: var(--c-surface); }
+
+    :is(.s-product-card-content-title, .s-product-card-content-title a,
+        .s-product-card-content-subtitle, .s-product-card-price,
+        .s-product-card-sale-price, .s-product-card-sale-price h4,
+        .s-product-card-starting-price) {
+      color: var(--c-text-inverse);
+    }
+
+    /* Old price: same cream, muted */
+    :is(.s-product-card-sale-price span, .s-product-card-price del, .s-product-card-entry del) {
+      color: var(--c-text-inverse);
+      opacity: var(--o-muted);
     }
   }
 }
@@ -180,4 +202,8 @@
 html[lang="en"] .unix-collection-overlay__eyebrow {
   text-transform: uppercase;
   letter-spacing: .08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-collection-overlay__arrow { transition: none; }
 }

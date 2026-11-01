@@ -54,7 +54,9 @@
       },
       "collection_overlay": {
         "default_subtitle": "NEW COLLECTION",
-        "default_title": "جديد من يونكس"
+        "default_title": "جديد من يونكس",
+        "prev": "المنتجات السابقة",
+        "next": "المنتجات التالية"
       },
       "collections_grid": {
         "default_title": "حركة. رياضة. استرخاء.",
