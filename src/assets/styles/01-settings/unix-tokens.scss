@@ -134,6 +134,14 @@
   --mega-media-max: 640px;
   --dropdown-min: 256px;
 
+  /* ── Phase 2 · collection sections 2.4 / 2.5 (DS §1.2 additions, §4.2) ── */
+  --c-surface-sand: var(--unix-sand-300);
+  --c-overlay: var(--unix-ink-900);
+  --c-scrim-top: linear-gradient(to bottom, rgb(36 30 26 / .55), transparent 60%);
+  --card-w-sm: 164px;
+  --card-w-md: 264px;
+  /* ── end Phase 2 · 2.4 / 2.5 ── */
+
   /* Salla base theme radius follows ours */
   --s-radius: var(--r-md);
 }

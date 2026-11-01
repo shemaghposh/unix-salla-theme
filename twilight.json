@@ -1414,6 +1414,120 @@
                     "maxLength": 30
                 }
             ]
+        },
+        {
+            "key": "c7a1e2d4-3b5f-4e8a-9c21-5d4f0a7b2e14",
+            "title": {
+                "en": "UNIX · Collection over image (New from UNIX)",
+                "ar": "يونكس · تصنيف فوق صورة (جديد من يونكس)"
+            },
+            "icon": "sicon-image",
+            "path": "home.unix-collection-overlay",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/slider-products-with-bg.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "static-desc",
+                    "value": "<div>منتجات تصنيف مختار في كاروسيل فوق صورة كبيرة، زي سكشن «جديد من يونكس» في unix.sa. لو سبتي العنوان فاضي من غير حفظ، بيظهر النص الافتراضي.</div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان الصغير (فوق العنوان)",
+                    "multilanguage": true,
+                    "id": "subtitle",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: NEW COLLECTION",
+                    "placeholder": "NEW COLLECTION",
+                    "minLength": 0,
+                    "maxLength": 60
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: جديد من يونكس",
+                    "placeholder": "جديد من يونكس",
+                    "minLength": 0,
+                    "maxLength": 100
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-keyboard_arrow_down",
+                    "label": "التصنيف",
+                    "id": "category",
+                    "format": "dropdown-list",
+                    "description": "منتجات التصنيف ده هي اللي بتظهر في الكاروسيل (في unix.sa: New Collection)",
+                    "selected": [],
+                    "options": [],
+                    "source": "categories",
+                    "multichoice": false,
+                    "searchable": true,
+                    "required": true,
+                    "value": []
+                },
+                {
+                    "type": "number",
+                    "format": "integer",
+                    "icon": "sicon-list",
+                    "label": "عدد المنتجات",
+                    "id": "limit",
+                    "value": 8,
+                    "required": false,
+                    "minimum": 2,
+                    "maximum": 20
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-image",
+                    "label": "صورة الخلفية (ديسكتوب)",
+                    "id": "image",
+                    "format": "image",
+                    "value": null,
+                    "required": false,
+                    "placeholder": null,
+                    "description": "* المقاس المناسب 1920×1080 بكسل (16:9). لو فاضية بنستخدم صورة التصنيف",
+                    "settings": {
+                        "height": 1080,
+                        "width": 1920
+                    }
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-image",
+                    "label": "صورة الخلفية (موبايل)",
+                    "id": "image_mobile",
+                    "format": "image",
+                    "value": null,
+                    "required": false,
+                    "placeholder": null,
+                    "description": "* اختيارية. المقاس المناسب 800×1000 بكسل (4:5)",
+                    "settings": {
+                        "height": 1000,
+                        "width": 800
+                    }
+                },
+                {
+                    "type": "number",
+                    "format": "integer",
+                    "icon": "sicon-sun",
+                    "label": "درجة التعتيم فوق الصورة (%)",
+                    "id": "overlay",
+                    "value": 30,
+                    "required": false,
+                    "minimum": 0,
+                    "maximum": 60,
+                    "description": "من 0 لـ 60. فيه تدرّج غامق ثابت تحت العنوان والكروت عشان النص يفضل واضح"
+                }
+            ]
         }
     ],
     "support_url": "https://salla.com/",

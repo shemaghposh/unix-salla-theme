@@ -43,6 +43,10 @@
         "cr": "Commercial registration",
         "cr_badge": "Saudi Business Center",
         "tm": "Trademark"
+      },
+      "collection_overlay": {
+        "default_subtitle": "NEW COLLECTION",
+        "default_title": "New from UNIX"
       }
     }
   },

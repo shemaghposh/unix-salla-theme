@@ -43,6 +43,10 @@
         "cr": "السجل التجاري",
         "cr_badge": "المركز السعودي للأعمال",
         "tm": "العلامة التجارية"
+      },
+      "collection_overlay": {
+        "default_subtitle": "NEW COLLECTION",
+        "default_title": "جديد من يونكس"
       }
     }
   },

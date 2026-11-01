@@ -1,0 +1,183 @@
+/* ── «جديد من يونكس» collection overlay (ROADMAP 2.4 · DS §8.12 · SPEC §4.4) ──
+ * Background image + overlay + scrims, heading on top, a salla-products-slider
+ * of the chosen category at the bottom. The box reserves a minimum ratio
+ * (4:5 → 16:9) so nothing shifts while the image loads (CLS); aspect-ratio
+ * boxes grow with their content, so long content is never clipped. */
+.unix-collection-overlay {
+  margin-block: 0; /* unix.sa: no-indent */
+
+  &__frame {
+    @screen md {
+      inline-size: 100%;
+      max-inline-size: calc(var(--content-max) + 2 * var(--page-margin));
+      margin-inline: auto;
+      padding-inline: var(--page-margin);
+    }
+  }
+
+  &__inner {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    aspect-ratio: 4 / 5;
+    /* clip, not hidden: a scroll container loses the aspect-ratio
+       content-based minimum and would cut the carousel off */
+    overflow: clip;
+    background-color: var(--c-surface-sand);
+    color: var(--c-text-inverse);
+
+    @screen md {
+      aspect-ratio: 16 / 9;
+      border-radius: var(--r-md);
+    }
+  }
+
+  &__media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+
+    img {
+      display: block;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
+  }
+
+  /* Merchant overlay (opacity from the field) under both DS scrims (§12) */
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: var(--c-scrim-top), var(--c-scrim);
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: var(--c-overlay);
+      opacity: var(--overlay-opacity);
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--s-7);
+    inline-size: 100%;
+    min-inline-size: 0;
+    padding-block: var(--s-5);
+
+    @screen lg { padding-block: var(--s-6); }
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding-inline: var(--s-5);
+
+    @screen lg { padding-inline: var(--s-8); }
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-size: var(--t-micro);
+    line-height: 1.5;
+    font-weight: 500;
+    color: inherit;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--t-h2);
+    line-height: 1.3;
+  }
+
+  /* `.theme-unix h2` sets --c-text; the heading sits on the scrim */
+  .theme-unix &__title { color: inherit; }
+
+  /* ── salla-products-slider inside the overlay ── */
+  &__products {
+    min-inline-size: 0;
+
+    .s-products-slider-wrapper { margin-block-end: 0; }
+
+    .s-slider-block__title {
+      display: none;
+      justify-content: flex-end;
+      margin-block-end: var(--s-5);
+      padding-inline: var(--s-8);
+
+      @screen lg { display: flex; }
+    }
+
+    .s-slider-block__title-right,
+    .s-slider-block__display-all { display: none; }
+
+    .s-slider-block__title-nav {
+      display: flex;
+      gap: var(--s-2);
+    }
+
+    .s-slider-nav-arrow {
+      display: inline-grid;
+      place-items: center;
+      inline-size: var(--tap);
+      block-size: var(--tap);
+      border: var(--line-w) solid currentColor;
+      border-radius: var(--r-pill);
+      background: transparent;
+      color: var(--c-text-inverse);
+      transition: background-color var(--d-fast) var(--ease-out);
+
+      &:hover { background-color: var(--c-hover-tint); }
+      &:active { background-color: var(--c-press-tint); }
+      &:focus-visible {
+        outline: var(--ring-w) solid currentColor;
+        outline-offset: var(--ring-w);
+      }
+      &.swiper-button-disabled,
+      &:disabled {
+        opacity: var(--o-disabled);
+        pointer-events: none;
+      }
+    }
+
+    .s-slider-container {
+      padding-inline: var(--s-5);
+
+      @screen lg { padding-inline: var(--s-8); }
+    }
+
+    /* Card widths and spacing from unix.sa (DS §4.2): padding = half the gap */
+    .s-products-slider-card {
+      inline-size: var(--card-w-sm);
+      max-inline-size: none;
+      padding-inline: calc(var(--s-2) / 2);
+
+      @screen lg {
+        inline-size: var(--card-w-md);
+        padding-inline: calc(var(--s-5) / 2);
+      }
+    }
+
+    /* Card copy sits on the bottom scrim */
+    :is(custom-salla-product-card, salla-product-card) {
+      color: var(--c-text-inverse);
+
+      :is(.s-product-card-content-title, .s-product-card-content-title a,
+          .s-product-card-content-subtitle, .s-product-card-price,
+          .s-product-card-sale-price, .s-product-card-starting-price) {
+        color: inherit;
+      }
+    }
+  }
+}
+
+html[lang="en"] .unix-collection-overlay__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
