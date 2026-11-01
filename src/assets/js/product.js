@@ -134,3 +134,8 @@ class Product extends BasePage {
 }
 
 Product.initiateWhenReady(['product.single']);
+
+// ROADMAP 3.3 Size Finder: tiny loader; the finder itself is a lazy chunk.
+import initSizeFinder from './partials/unix-size-finder-loader';
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initSizeFinder);
+else initSizeFinder();

@@ -4,7 +4,8 @@
 
   Usage: include ONCE on the product page, directly under the product options
   (pages/partials/product/options.twig is rendered inside the product form):
-    {% include 'components/product/unix-size-finder.twig' %}
+    {% include 'components.product.unix-size-finder' %}
+  (repo convention: dot paths, same file as components/product/unix-size-finder.twig)
 
   Renders only when the product has a size option (name contains «مقاس» / "size",
   same test as the original) and the setting `unix_size_finder_enabled` is on.
@@ -12,19 +13,24 @@
   loaded on first open (src/assets/js/partials/unix-size-finder.js).
   Merchant data override: theme setting `unix_size_finder_data` (JSON, empty = unix.sa data).
 #}
-{% set sf_has_size = false %}
+{% set sf_options = [] %}
 {% for option in product.options %}
   {% set sf_name = option.name|lower %}
   {% if 'مقاس' in sf_name or 'size' in sf_name %}
-    {% set sf_has_size = true %}
+    {% set sf_details = [] %}
+    {% for detail in option.details %}
+      {% set sf_details = sf_details|merge([{ 'id': detail.id, 'name': detail.name, 'out': detail.is_out ? true : false }]) %}
+    {% endfor %}
+    {% set sf_options = sf_options|merge([{ 'id': option.id, 'name': option.name, 'details': sf_details }]) %}
   {% endif %}
 {% endfor %}
 
-{% if sf_has_size and theme.settings.get('unix_size_finder_enabled', true) %}
+{% if sf_options|length and theme.settings.get('unix_size_finder_enabled', true) %}
   {% set sf_id = 'unix-sf-' ~ product.id %}
   <div class="unix-sf" data-unix-sf
        data-product-id="{{ product.id }}"
-       data-product-name="{{ product.name }}">
+       data-product-name="{{ product.name }}"
+       data-sf-options="{{ sf_options|json_encode }}">
     <script type="application/json" data-sf-config>{{ theme.settings.get('unix_size_finder_data')|default('')|json_encode|raw }}</script>
 
     <button type="button" class="unix-sf__open" data-sf-open

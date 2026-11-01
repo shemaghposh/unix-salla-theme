@@ -88,7 +88,7 @@ class SizeFinder {
     this.bar = this.dialog.querySelector('[data-sf-bar]');
     this.body = this.dialog.querySelector('[data-sf-body]');
 
-    this.dialog.querySelector('[data-sf-close]')?.addEventListener('click', () => this.close());
+    // Close button, backdrop and focus return are wired by the loader (they work before this chunk loads).
     this.dialog.addEventListener('close', () => this.renderEntry());
 
     // If she taps a size herself, stop auto-selecting on her behalf.
