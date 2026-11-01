@@ -1,5 +1,5 @@
 /**
- * UNIX products tabs (ROADMAP 2.3 · DS §8.12) for views/components/home/unix-products-tabs.twig.
+ * UNIX products tabs (ROADMAP 2.3 · DS §8.15) for views/components/home/unix-products-tabs.twig.
  * - ARIA tabs pattern with manual activation: arrows/Home/End move focus (arrows follow the
  *   reading direction, so in RTL ArrowLeft is "next"); Enter/Space or click activates.
  * - Panels after the first keep their salla-products-slider inside a <template>; it is mounted

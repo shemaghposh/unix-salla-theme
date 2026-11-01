@@ -1,5 +1,5 @@
 /**
- * UNIX featured products (ROADMAP 2.6 · DS §8.13) for views/components/home/unix-featured-products.twig.
+ * UNIX featured products (ROADMAP 2.6 · DS §8.16) for views/components/home/unix-featured-products.twig.
  * Fills cards that Twig could only render by product id (data-unix-fprod-pending): one
  * salla.product.api.fetch per page for all pending ids, then name, price, thumbnail, link and,
  * when the merchant left the lifestyle image empty, the product image as the lifestyle image.

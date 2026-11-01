@@ -134,11 +134,6 @@
   --mega-media-max: 640px;
   --dropdown-min: 256px;
 
-  /* ── 4.2 Component tokens, Phase 2 product sections (DS §4.2) ── */
-  --ratio-card: 4 / 5;        /* product card + featured lifestyle tile image (DS §6) */
-  --zoom-hover: 1.04;         /* image hover scale (DS §5 "Image hover") */
-  --overlay-card-max: 376px;  /* mini product card over a lifestyle image (unix.sa 37.5rem, on the 4px grid) */
-
   /* Salla base theme radius follows ours */
   --s-radius: var(--r-md);
 }
@@ -163,7 +158,29 @@
 @media (min-width: 1440px) { :root { --gutter: 32px; --page-margin: 64px; } }
 
 @media (prefers-reduced-motion: reduce) {
-  :root { --d-fast: 0ms; --d-base: 0ms; --d-slow: 0ms; --d-reveal: 0ms; --d-announce-slide: 0ms; --zoom-hover: 1; }
+  :root { --d-fast: 0ms; --d-base: 0ms; --d-slow: 0ms; --d-reveal: 0ms; --d-announce-slide: 0ms; }
+}
+
+/* ── Phase 2 additions (DS §13.1) ──────────────────
+ * Kept in one block so merges stay easy; folded into the sections above when Phase 2 closes. */
+:root {
+  --c-hero-bg: var(--unix-sand-300);   /* hero backdrop before/without media (2.1); text on it = --c-text */
+  --c-hero-scrim: linear-gradient(to top, rgb(36 30 26 / .55), rgb(36 30 26 / .3) 50%, transparent 85%); /* covers the text on 2:3 mobile */
+  --hero-ratio: 2 / 3;                 /* hero, mobile (unix.sa mobile_image_ratio) */
+  --hero-ratio-wide: 16 / 9;           /* hero, ≥576px (unix.sa desktop_image_ratio) */
+  --hero-min-h: 560px;
+  --hero-max-h: 920px;
+  --hero-cta-line: .55;                /* underline CTA length on hover (unix.sa scaleX(.55)) */
+  --d-stagger: 60ms;                   /* reveal stagger step (DS §5) */
+  --d-hint: 2s;                        /* scroll-indicator bob cycle */
+  /* product sections (2.3, 2.6) */
+  --ratio-card: 4 / 5;                 /* product card + featured lifestyle image (DS §6) */
+  --zoom-hover: 1.04;                  /* image hover scale (DS §5 "Image hover") */
+  --overlay-card-max: 376px;           /* mini card over a lifestyle image (unix.sa 37.5rem, on the 4px grid) */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --d-stagger: 0ms; --zoom-hover: 1; }
 }
 
 /* ── Base ─────────────────────────────────────── */
