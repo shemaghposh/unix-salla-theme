@@ -1628,6 +1628,84 @@
                     ]
                 }
             ]
+        },
+        {
+            "key": "3b9e6a1d-2f47-4c8e-b5d0-8a6c4e2f1b97",
+            "title": {
+                "en": "UNIX · Featured products with lifestyle images",
+                "ar": "يونكس · منتجات مختارة مع صور"
+            },
+            "icon": "sicon-image",
+            "path": "home.unix-featured-products",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-fprods-desc",
+                    "value": "<div>كاروسيل: لكل عنصر صورة لايف ستايل وفوقها بطاقة صغيرة للمنتج (الصورة والاسم والسعر) تفتح صفحته. 3 في الشاشة على الكمبيوتر، وسحب على الجوال.</div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": "اختاري قطعتك المفضلة لوقت الاسترخاء",
+                    "required": false,
+                    "format": "text",
+                    "description": "اتركيه فارغاً لإخفاء العنوان",
+                    "placeholder": "أدخلي العنوان هنا...",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "id": "items",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "المنتجات",
+                    "description": null,
+                    "item_label": "منتج",
+                    "icon": "sicon-list-add",
+                    "required": true,
+                    "minLength": 1,
+                    "maxLength": 8,
+                    "value": [
+                        { "items.image": null },
+                        { "items.image": null },
+                        { "items.image": null },
+                        { "items.image": null }
+                    ],
+                    "fields": [
+                        {
+                            "type": "items",
+                            "icon": "sicon-keyboard_arrow_down",
+                            "label": "المنتج",
+                            "id": "items.product",
+                            "format": "dropdown-list",
+                            "description": null,
+                            "selected": [],
+                            "options": [],
+                            "source": "products",
+                            "multichoice": false,
+                            "searchable": true,
+                            "required": true,
+                            "value": []
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-image",
+                            "label": "صورة لايف ستايل",
+                            "id": "items.image",
+                            "format": "image",
+                            "value": null,
+                            "required": false,
+                            "placeholder": null,
+                            "description": "* المقاس المناسب 1200×1500 بكسل (4:5). إذا تركتِها فارغة تظهر صورة المنتج"
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "support_url": "https://salla.com/",

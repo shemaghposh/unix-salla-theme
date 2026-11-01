@@ -49,6 +49,9 @@
         "tabs_label": "Browse products by collection",
         "browse_tab": "Browse :name",
         "browse_all": "Browse all"
+      },
+      "featured_products": {
+        "default_title": "Choose your favourite piece for lounging"
       }
     }
   },

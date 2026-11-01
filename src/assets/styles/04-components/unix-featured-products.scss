@@ -1,0 +1,163 @@
+/*
+ * UNIX featured products «اختاري قطعتك المفضلة لوقت الاسترخاء» (ROADMAP 2.6 · DS §8.13).
+ * Lifestyle image (4:5, cover) with a small horizontal product card over its bottom-start corner.
+ * Carousel arrows come from unix-product-card.scss (shared).
+ */
+
+.unix-fprods {
+  --per-view: 1;
+
+  padding-block: var(--section-sm);
+  overflow-x: clip;
+
+  @media (min-width: 768px) { --per-view: 2; }
+  @media (min-width: 1024px) { --per-view: 3; }
+}
+
+.unix-fprods__title {
+  margin: 0 0 var(--s-5);
+  text-align: center;
+
+  @media (min-width: 768px) { text-align: start; }
+}
+
+// Before salla-slider / Swiper initialise, lay the slides out at their final width (no CLS)
+.unix-fprods salla-slider:not(.hydrated) [slot="items"],
+.unix-fprods .swiper:not(.swiper-initialized) .swiper-wrapper {
+  display: flex;
+  gap: var(--gutter);
+  overflow: hidden;
+}
+
+.unix-fprods salla-slider:not(.hydrated) .swiper-slide,
+.unix-fprods .swiper:not(.swiper-initialized) .swiper-slide {
+  flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gutter)) / var(--per-view));
+}
+
+.unix-fprods__slide { block-size: auto; }
+
+.unix-fprods__item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--ratio-card);
+  border-radius: var(--r-md);
+  background: var(--c-surface-muted);
+}
+
+.unix-fprods__media {
+  position: absolute;
+  inset: 0;
+}
+
+.unix-fprods__img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  transition: transform var(--d-reveal) var(--ease-out);
+
+  &[hidden] { display: none; }
+}
+
+@media (hover: hover) {
+  .unix-fprods__item:hover .unix-fprods__img { transform: scale(var(--zoom-hover)); }
+}
+
+// ── Mini product card (product-card-horizontal on unix.sa) ──
+.unix-fprods__card {
+  position: absolute;
+  inset-block-end: var(--s-4);
+  inset-inline-start: var(--s-4);
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  inline-size: min(calc(100% - 2 * var(--s-4)), var(--overlay-card-max));
+  padding: var(--s-3);
+  border-radius: var(--r-md);
+  background: var(--c-bg);
+  color: var(--c-text);
+  text-decoration: none;
+  transition: background-color var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out);
+
+  @media (min-width: 768px) {
+    inset-block-end: var(--s-5);
+    inset-inline-start: var(--s-5);
+    inline-size: min(calc(100% - 2 * var(--s-5)), var(--overlay-card-max));
+  }
+
+  &:hover { background: var(--c-surface); }
+  &:active { transform: translateY(var(--press-y)); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  &[aria-busy="true"] { pointer-events: none; }
+}
+
+.unix-fprods__thumb {
+  flex: none;
+  inline-size: var(--s-8);
+  aspect-ratio: var(--ratio-card);
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: var(--c-surface-muted);
+
+  img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+
+    &[hidden] { display: none; }
+  }
+}
+
+.unix-fprods__info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-inline-size: 0;
+  font-size: var(--t-small);
+  line-height: 1.6; // DS §2.2 --t-small line-height; the skeleton below uses `lh`
+}
+
+.unix-fprods__name {
+  display: -webkit-box;
+  overflow: hidden;
+  min-block-size: 2lh;
+  font-size: var(--t-body);
+  font-weight: 500;
+  line-height: 1.7; // DS §2.2 --t-body
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.unix-fprods__price {
+  min-block-size: 1lh;
+  font-variant-numeric: tabular-nums;
+}
+
+.unix-fprods__price-sale { color: var(--c-price-sale); }
+.unix-fprods__price-old {
+  margin-inline-start: var(--s-1);
+  color: var(--c-price-old);
+}
+
+.unix-fprods__chevron {
+  flex: none;
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+}
+
+// Pending card (product still loading): text lines as quiet bars of the same height
+.unix-fprods__item[data-unix-fprod-pending] {
+  .unix-fprods__name:empty,
+  .unix-fprods__price:empty {
+    border-radius: var(--r-sm);
+    background: var(--c-surface-muted);
+    background-clip: content-box;
+    padding-block: var(--s-1);
+  }
+
+  .unix-fprods__price:empty { inline-size: min(100%, var(--s-10)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-fprods__card:active { transform: none; }
+}
