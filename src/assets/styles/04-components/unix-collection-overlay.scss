@@ -1,0 +1,221 @@
+/* ── «جديد من يونكس» collection overlay (ROADMAP 2.4 · DS §8.13 · SPEC §4.4) ──
+ * Background image + overlay + scrims; heading row on top (arrows at its end,
+ * unix.sa "info info buttons"); a salla-products-slider of the chosen category
+ * at the bottom. The box reserves a minimum ratio (4:5, then 16:9 from 576px like
+ * unix.sa) so nothing shifts while the image loads (CLS); it grows with content. */
+.unix-collection-overlay {
+  margin-block: 0; /* unix.sa: no-indent */
+
+  &__frame {
+    @screen md {
+      inline-size: 100%;
+      max-inline-size: calc(var(--content-max) + 2 * var(--page-margin));
+      margin-inline: auto;
+      padding-inline: var(--page-margin);
+    }
+  }
+
+  &__inner {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    aspect-ratio: 4 / 5;
+    /* clip, not hidden: a scroll container loses the aspect-ratio
+       content-based minimum and would cut the carousel off */
+    overflow: clip;
+    background-color: var(--c-surface-sand);
+    color: var(--c-text-inverse);
+
+    @media (min-width: 576px) { aspect-ratio: 16 / 9; }
+    @screen md { border-radius: var(--r-md); }
+  }
+
+  &__media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+
+    img {
+      display: block;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
+  }
+
+  /* Merchant overlay (opacity from the field) under both DS scrims (§13.2) */
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: var(--c-scrim-top), var(--c-scrim);
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: var(--c-overlay);
+      opacity: var(--overlay-opacity);
+    }
+  }
+
+  /* Focus inside the section is drawn in the text colour (cream), like the hero */
+  :focus-visible {
+    outline: var(--ring-w) solid currentColor;
+    outline-offset: var(--ring-w);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--s-7);
+    inline-size: 100%;
+    min-inline-size: 0;
+    padding-block: var(--s-5);
+
+    @screen lg { padding-block: var(--s-6); }
+  }
+
+  &__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-5);
+    padding-inline: var(--s-5);
+
+    @screen lg { padding-inline: var(--s-8); }
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-inline-size: 0;
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-size: var(--t-micro);
+    line-height: 1.5;
+    font-weight: 500;
+    color: inherit;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--t-h2);
+    line-height: 1.3;
+  }
+
+  /* `.theme-unix h2` sets --c-text; the heading sits on the scrim */
+  .theme-unix &__title { color: inherit; }
+
+  /* ── Arrows (heading row, from lg; JS un-hides them when the slider is ready) ── */
+  &__arrows {
+    display: none;
+    flex-shrink: 0;
+    gap: var(--s-2);
+    margin-inline-start: auto;
+
+    @screen lg { display: flex; }
+  }
+
+  &__arrow {
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--tap);
+    block-size: var(--tap);
+    border: var(--line-w) solid currentColor;
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color var(--d-fast) var(--ease-out);
+
+    &[hidden] { display: none; }
+
+    svg {
+      inline-size: var(--icon-sm);
+      block-size: var(--icon-sm);
+    }
+
+    &:hover { background-color: var(--c-hover-tint); }
+    &:active { background-color: var(--c-press-tint); }
+    &:disabled {
+      opacity: var(--o-disabled);
+      cursor: default;
+      background-color: transparent;
+    }
+  }
+
+  /* ── salla-products-slider inside the overlay ── */
+  &__products {
+    min-inline-size: 0;
+
+    .s-products-slider-wrapper { margin-block-end: 0; }
+
+    /* Our arrows replace salla-slider's title bar (empty title + its own nav) */
+    .s-slider-block__title { display: none; }
+
+    .s-slider-container {
+      padding-inline: var(--s-5);
+
+      @screen lg { padding-inline: var(--s-8); }
+    }
+
+    /* Card widths and gaps from unix.sa (DS §13.1): padding = half the gap (8 → 24) */
+    .s-products-slider-card {
+      inline-size: var(--card-w-sm);
+      max-inline-size: none;
+      padding-inline: var(--s-1);
+
+      @screen lg {
+        inline-size: var(--card-w-md);
+        padding-inline: var(--s-3);
+      }
+    }
+
+  }
+}
+
+/* ── Cards on the image (unix.sa: transparent card, white media, copy on the
+ * overlay). The shared card styles live under `.unix-products`
+ * (unix-product-card.scss, imported earlier); the extra section class keeps
+ * these overrides one class stronger. */
+.unix-collection-overlay .unix-products .s-product-card-entry {
+  background-color: transparent;
+  color: var(--c-text-inverse);
+
+  .s-product-card-image { background-color: var(--c-surface); }
+
+  /* The image link sits on the white/photo surface, not the scrim:
+     an ink ring keeps ≥ 3:1 there (cream would be ~1.1:1). */
+  .s-product-card-image > a:focus-visible { outline-color: var(--c-text); }
+
+  .s-product-card-content-title a,
+  .s-product-card-content-title a:hover,
+  .s-product-card-price,
+  .s-product-card-sale-price h4,
+  .s-product-card-starting-price h4,
+  .s-product-card-starting-price p {
+    color: var(--c-text-inverse);
+  }
+
+  .s-product-card-content-title a:hover { text-decoration: underline; }
+
+  /* Old price: same cream, muted */
+  .s-product-card-sale-price span {
+    color: var(--c-text-inverse);
+    opacity: var(--o-muted);
+  }
+}
+
+html[lang="en"] .unix-collection-overlay__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-collection-overlay__arrow { transition: none; }
+}

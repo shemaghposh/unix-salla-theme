@@ -1,0 +1,179 @@
+{#
+  UNIX product gallery (ROADMAP 3.1 · DS §8.20 · SPEC §5.1).
+  Mirrors unix.sa main-product `slider_previews` (desktop: main slider + thumbnail column on the
+  start side) and `slider` (mobile: full-bleed slider + segmented progress line), with a zoom
+  dialog on both. Styles: 04-components/unix-gallery.scss. Behaviour: js/partials/unix-gallery.js.
+
+  - The slider is Salla's `salla-slider` (Swiper, RTL from `dir`). `listen-to-thumbnails-option`
+    keeps colour/thumbnail options jumping to their image (needs data-img-id + data-slid-index).
+  - Every slide is a reserved 4:5 box (--ratio-pdp); image 1 is the LCP (eager + high priority).
+  - Video slides keep Raed's fslightbox wiring; 3D slides keep model-viewer. Neither zooms.
+  - The main slider is first in the DOM so `#product-{id} img` (add-to-cart fly animation in
+    app.js) still finds the first product image, not a thumbnail.
+#}
+{% set images = product.images %}
+{% set total = images|length %}
+{% set fit_cover = theme.settings.get('slider_background_size') == 'cover' %}
+{% set dialog_id = 'unix-gallery-dialog-' ~ product.id %}
+
+{% set icon_chevron %}<svg class="icon-dir" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6"/></svg>{% endset %}
+{% set icon_chevron_next %}<svg class="icon-dir" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6"/></svg>{% endset %}
+{% set icon_zoom %}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2M11 8.5v5M8.5 11h5"/></svg>{% endset %}
+
+<section class="unix-gallery{{ total > 1 ? ' unix-gallery--many' : '' }}{{ fit_cover ? ' unix-gallery--cover' : '' }}"
+         aria-label="{{ trans('blocks.unix.gallery.label') }}"
+         data-unix-gallery
+         data-counter="{{ trans('blocks.unix.gallery.counter', {'index': '{i}', 'total': '{n}'}) }}">
+
+  <div class="unix-gallery__main">
+    {% if product.promotion_title %}
+      <span class="unix-gallery__badge">{{ product.promotion_title }}</span>
+    {% endif %}
+
+    {% if product.calories %}
+      <span class="unix-gallery__calories">
+        <strong>{{ product.calories }}</strong>
+        <span>{{ trans('pages.products.calories') }}</span>
+      </span>
+    {% endif %}
+
+    <salla-button
+        class="unix-gallery__wishlist btn--wishlist animated sws"
+        data-id="{{ product.id }}"
+        onclick="salla.wishlist.toggle('{{ product.id }}')"
+        shape="icon"
+        fill="outline"
+        color="light"
+        aria-label="{{ trans('blocks.unix.gallery.wishlist') }}">
+      <i class="sicon-heart" aria-hidden="true"></i>
+    </salla-button>
+
+    <salla-slider
+        data-testid="store-product-image-slider"
+        id="details-slider-{{ product.id }}"
+        class="unix-gallery__slider"
+        data-images='{{ images|json_encode }}'
+        slider-config='{"slidesPerView":1,"spaceBetween":0}'
+        loop="false"
+        show-controls="false"
+        listen-to-thumbnails-option
+        {{ total > 1 ? 'pagination' : '' }}>
+      <div slot="items">
+        {% for image in images %}
+          {% set alt = image.alt|default(product.name) %}
+          {% if image.three_d_image_url %}
+            <div class="unix-gallery__slide unix-gallery__slide--model"
+                 data-img-id="{{ image.id }}"
+                 data-slid-index="{{ loop.index0 }}">
+              <model-viewer class="unix-gallery__model model-entry"
+                            loading="{{ loop.first ? 'eager' : 'lazy' }}" camera-controls
+                            touch-action="pan-y" auto-rotate
+                            poster="{{ image.url }}"
+                            src="{{ image.three_d_image_url }}"
+                            shadow-intensity="1" alt="{{ alt }}">
+              </model-viewer>
+            </div>
+          {% elseif image.video_url %}
+            <a class="unix-gallery__slide unix-gallery__slide--video video-entry"
+               data-fslightbox="product_{{ product.id }}"
+               data-img-id="{{ image.id }}"
+               data-slid-index="{{ loop.index0 }}"
+               data-video-src="{{ image.video_url is iterable ? image.video_url|first : image.video_url }}"
+               data-caption="{{ image.alt }}"
+               data-type="{{ image.video_type ?? 'video' }}"
+               href="{{ image.video_url is iterable ? image.video_url|first : image.video_url }}"
+               aria-label="{{ trans('blocks.unix.gallery.play_video') }}">
+              <img class="unix-gallery__img" src="{{ image.url }}" alt="{{ alt }}"
+                   width="800" height="1000" decoding="async"
+                   {% if loop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+            </a>
+          {% else %}
+            <div class="unix-gallery__slide"
+                 data-img-id="{{ image.id }}"
+                 data-slid-index="{{ loop.index0 }}">
+              <img class="unix-gallery__img" src="{{ image.url }}" alt="{{ alt }}"
+                   width="800" height="1000" decoding="async"
+                   {% if loop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+              <button type="button" class="unix-gallery__zoom"
+                      data-unix-gallery-zoom="{{ loop.index0 }}"
+                      aria-haspopup="dialog"
+                      aria-controls="{{ dialog_id }}"
+                      aria-label="{{ trans('blocks.unix.gallery.zoom_image', {'index': loop.index, 'total': total}) }}">
+                <span class="unix-gallery__zoom-icon">{{ icon_zoom|raw }}</span>
+              </button>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </salla-slider>
+
+    {% if total > 1 %}
+      <button type="button" class="unix-gallery__arrow unix-gallery__arrow--prev"
+              data-unix-gallery-prev disabled
+              aria-controls="details-slider-{{ product.id }}"
+              aria-label="{{ trans('blocks.unix.gallery.prev') }}">{{ icon_chevron|raw }}</button>
+      <button type="button" class="unix-gallery__arrow unix-gallery__arrow--next"
+              data-unix-gallery-next
+              aria-controls="details-slider-{{ product.id }}"
+              aria-label="{{ trans('blocks.unix.gallery.next') }}">{{ icon_chevron_next|raw }}</button>
+    {% endif %}
+  </div>
+
+  {% if total > 1 %}
+    <div class="unix-gallery__thumbs">
+      <ul class="unix-gallery__thumb-list" role="list" aria-label="{{ trans('blocks.unix.gallery.thumbs') }}">
+        {% for image in images %}
+          <li class="unix-gallery__thumb-item">
+            <button type="button"
+                    class="unix-gallery__thumb{{ image.video_url ? ' unix-gallery__thumb--video' : '' }}"
+                    data-unix-gallery-thumb="{{ loop.index0 }}"
+                    aria-controls="details-slider-{{ product.id }}"
+                    aria-label="{{ trans('blocks.unix.gallery.show_image', {'index': loop.index, 'total': total}) }}"
+                    {% if loop.first %}aria-current="true"{% endif %}>
+              <img src="{{ image.url }}" alt="" width="96" height="120" loading="lazy" decoding="async">
+            </button>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {# Zoom dialog: native <dialog> (focus stays inside, Esc closes, top layer). Images load only once it opens. #}
+  <dialog class="unix-gallery-dialog" id="{{ dialog_id }}"
+          aria-label="{{ trans('blocks.unix.gallery.dialog') }}"
+          data-unix-gallery-dialog>
+    <div class="unix-gallery-dialog__bar">
+      <p class="unix-gallery-dialog__counter" data-unix-gallery-counter aria-live="polite"></p>
+      <div class="unix-gallery-dialog__actions">
+        <button type="button" class="unix-gallery-dialog__btn"
+                data-unix-gallery-zoom-toggle aria-pressed="false"
+                aria-label="{{ trans('blocks.unix.gallery.zoom_in') }}">{{ icon_zoom|raw }}</button>
+        <button type="button" class="unix-gallery-dialog__btn"
+                data-unix-gallery-close
+                aria-label="{{ trans('blocks.unix.gallery.close') }}">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <ul class="unix-gallery-dialog__track" role="list" data-unix-gallery-track>
+      {% for image in images %}
+        {% if not image.video_url and not image.three_d_image_url %}
+          <li class="unix-gallery-dialog__item" data-unix-gallery-slide="{{ loop.index0 }}">
+            <div class="unix-gallery-dialog__pan" dir="ltr">
+              <img class="unix-gallery-dialog__img" src="{{ image.url }}" alt="{{ image.alt|default(product.name) }}"
+                   width="800" height="1000" loading="lazy" decoding="async">
+            </div>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    <button type="button" class="unix-gallery-dialog__arrow unix-gallery-dialog__arrow--prev"
+            data-unix-gallery-dialog-prev
+            aria-label="{{ trans('blocks.unix.gallery.prev') }}">{{ icon_chevron|raw }}</button>
+    <button type="button" class="unix-gallery-dialog__arrow unix-gallery-dialog__arrow--next"
+            data-unix-gallery-dialog-next
+            aria-label="{{ trans('blocks.unix.gallery.next') }}">{{ icon_chevron_next|raw }}</button>
+  </dialog>
+</section>

@@ -185,6 +185,44 @@
         "low_note": "Your answers point in different directions, so we chose the closest. Add a brand you know for more accuracy.",
         "note": "Your size is saved, so it is ready on every piece you open.",
         "mark": "Suggested"
+      },
+      "collection_overlay": {
+        "default_subtitle": "NEW COLLECTION",
+        "default_title": "New from UNIX",
+        "prev": "Previous products",
+        "next": "Next products"
+      },
+      "collections_grid": {
+        "default_title": "Move. Train. Unwind.",
+        "default_text": "A collection designed with care to be beautiful and practical at once, taking you from your morning workout to your evening unwind.",
+        "default_button": "Shop now",
+        "default_card_1": "Sets",
+        "default_card_2": "Comfy sets",
+        "default_card_3": "Accessories",
+        "list_label": "Collection categories, scroll sideways to see more",
+        "prev": "Previous categories",
+        "next": "Next categories"
+      },
+      "blog": {
+        "title": "From the world of UNIX",
+        "label": "From the blog",
+        "cta": "Browse the articles",
+        "prev": "Previous articles",
+        "next": "Next articles"
+      },
+      "gallery": {
+        "label": "Product images",
+        "thumbs": "Choose an image",
+        "show_image": "Show image :index of :total",
+        "zoom_image": "Zoom image :index of :total",
+        "prev": "Previous image",
+        "next": "Next image",
+        "dialog": "Zoomed product images",
+        "close": "Close zoom",
+        "zoom_in": "Zoom in further",
+        "counter": ":index of :total",
+        "play_video": "Play video",
+        "wishlist": "Add to wishlist"
       }
     }
   },
