@@ -1,9 +1,11 @@
-import MobileMenu from 'mmenu-light';
 import Swal from 'sweetalert2';
 import Anime from './partials/anime';
 import initTootTip from './partials/tooltip';
 import AppHelpers from "./app-helpers";
-import initAnnouncementBar from "./partials/announcement-bar";
+import initAnnouncement from "./partials/unix-announcement";
+import initHeader from "./partials/unix-header";
+import initMenuDrawer from "./partials/unix-drawer";
+import initFooter from "./partials/unix-footer";
 
 class App extends AppHelpers {
   constructor() {
@@ -12,25 +14,16 @@ class App extends AppHelpers {
   }
 
   loadTheApp() {
-    initAnnouncementBar();
     this.commonThings();
+    initAnnouncement();
     this.initiateNotifier();
-    this.initiateMobileMenu();
-    if (header_is_sticky) {
-      this.initiateStickyMenu();
-    }
+    initMenuDrawer();
+    initHeader({ sticky: !!window.header_is_sticky });
+    initFooter();
     this.initAddToCart();
     this.initiateDropdowns();
     this.initiateModals();
     this.initiateCollapse();
-    
-    // Ensure #more-menu-dropdown exists before running changeMenuDirection
-    const menuDirInterval = setInterval(() => {
-      if (document.querySelector('#more-menu-dropdown')) {
-        this.changeMenuDirection();
-        clearInterval(menuDirInterval);
-      }
-    }, 100);
 
     initTootTip();
     this.loadModalImgOnclick();
@@ -46,24 +39,6 @@ class App extends AppHelpers {
     salla.log(`ThemeApp(Raed)::${message}`);
     return this;
   }
-
-    changeMenuDirection() {
-      setTimeout(() => {
-        app.all('.root-level.has-children', item => {
-          if (item.classList.contains('change-menu-dir')) return;
-          app.on('mouseover', item, () => {
-            let allSubMenus = item.querySelectorAll('.sub-menu');
-            allSubMenus.forEach((submenu, idx) => {
-              if (idx === 0) return;
-              let rect = submenu.getBoundingClientRect();
-              if (rect.left < 10 || rect.right > window.innerWidth - 10) {
-                app.addClass(item, 'change-menu-dir');
-              }
-            });
-          });
-        });
-      }, 1000);
-    }
 
   loadModalImgOnclick(){
     document.querySelectorAll('.load-img-onclick').forEach(link => {
@@ -151,54 +126,6 @@ isElementLoaded(selector){
     });
   }
 
-
-  initiateMobileMenu() {
-
-  this.isElementLoaded('#mobile-menu').then((menu) => {
-
- 
-  const mobileMenu = new MobileMenu(menu, "(max-width: 1024px)", "( slidingSubmenus: false)");
-
-  salla.lang.onLoaded(() => {
-    mobileMenu.navigation({ title: salla.lang.get('blocks.header.main_menu') });
-  });
-  const drawer = mobileMenu.offcanvas({ position: salla.config.get('theme.is_rtl') ? "right" : 'left' });
-
-  this.onClick("a[href='#mobile-menu']", event => {
-    document.body.classList.add('menu-opened');
-    event.preventDefault() || drawer.close() || drawer.open()
-    
-  });
-  this.onClick(".close-mobile-menu", event => {
-    document.body.classList.remove('menu-opened');
-    event.preventDefault() || drawer.close()
-  });
-  });
-
-  }
-
-  initiateStickyMenu() {
-    let header = this.element('#mainnav'),
-      height = this.element('#mainnav .inner')?.clientHeight;
-    //when it's landing page, there is no header
-    if (!header) {
-      return;
-    }
-
-    window.addEventListener('load', () => setTimeout(() => this.setHeaderHeight(), 500))
-    window.addEventListener('resize', () => this.setHeaderHeight())
-
-    window.addEventListener('scroll', () => {
-      window.scrollY >= header.offsetTop + height ? header.classList.add('fixed-pinned', 'animated') : header.classList.remove('fixed-pinned');
-      window.scrollY >= 200 ? header.classList.add('fixed-header') : header.classList.remove('fixed-header', 'animated');
-    }, { passive: true });
-  }
-
-  setHeaderHeight() {
-    let height = this.element('#mainnav .inner').clientHeight,
-      header = this.element('#mainnav');
-    header.style.height = height + 'px';
-  }
 
   initiateDropdowns() {
     this.onClick('.dropdown__trigger', ({ target: btn }) => {

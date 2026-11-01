@@ -1,57 +1,72 @@
 {#
-| Announcement bar (ROADMAP 1.1 · DS §8.6 · SPEC §2)
-| Source: twilight.json → settings
-|   announcement_enabled            boolean  show/hide the bar (true until saved)
-|   announcement_message_{1..3}     string   multilanguage, one line
-|   announcement_link_{1..3}        link     optional, empty = plain text (Shopify default)
-| Defaults: Salla applies twilight.json `value`s only after the merchant saves,
-| so a message that is null (never saved, or empty for this language) falls back
-| to trans('blocks.header.announcement_default_N') for N = 1, 2. An empty string
-| ('') means the merchant cleared it on purpose and the message is skipped.
-| Caveat: if Salla stores a cleared field as null, the default comes back (DS §8.6).
-| Rotation (2+ messages) is driven by src/assets/js/partials/announcement-bar.js.
+  UNIX announcement bar (ROADMAP 1.1 · DS §8.6 · SPEC §2). Included once, at the top of header.twig.
+  Matches unix.sa (reference/shopify-theme/sections/announcement-bar.liquid + header-group.json):
+  fixed 40px, messages slide vertically (next enters from below, current exits upward),
+  4s dwell (--d-announce), 0.8s slide (--d-announce-slide), loop. Driven by
+  src/assets/js/partials/unix-announcement.js; pauses on hover, focus and hidden tab (DS §12).
+  Settings (twilight.json):
+    unix_announcement_enabled          boolean  show/hide the bar (true until saved)
+    unix_announcement_{1,2}_text       string   multilanguage, one line
+    unix_announcement_{1,2}_link       link     optional (product/category/page/custom), empty = plain text
+    unix_free_shipping_threshold       number   feeds the default second message (D1 = 500), shown
+                                                without decimals like unix.sa ("500 ر.س")
+  Defaults: Salla applies twilight.json `value`s only after the merchant saves, so a message
+  that is null (never saved, or missing for this language) falls back to the translated default:
+    1 → blocks.unix.announcement.default_1
+    2 → blocks.unix.announcement.default_2 (with the threshold as :amount)
+  An empty message 1 ('') was cleared on purpose and is skipped; an empty message 2 falls back to
+  the shipping template (as its field description says). With no message left, nothing renders.
 #}
-{% if theme.settings.get('announcement_enabled', true) %}
-  {% set messages = [] %}
-  {% for i in 1..3 %}
-    {% set text = theme.settings.get('announcement_message_' ~ i) %}
+{% set announcement_items = [] %}
+{% if theme.settings.get('unix_announcement_enabled', true) %}
+  {% set threshold = theme.settings.get('unix_free_shipping_threshold', 500)|default(500) %}
+  {% set announcement_defaults = [
+    trans('blocks.unix.announcement.default_1'),
+    trans('blocks.unix.announcement.default_2', {'amount': threshold|number_format(0, '.', ',')})
+  ] %}
+  {% for i in 1..2 %}
+    {% set text = theme.settings.get('unix_announcement_' ~ i ~ '_text') %}
     {# multilanguage values may arrive as {ar, en}; resolve to the current language #}
     {% if text is iterable %}
       {% set text = text[language.code] is defined ? text[language.code] : null %}
     {% endif %}
-    {% if text is null and i <= 2 %}
-      {% set text = trans('blocks.header.announcement_default_' ~ i) %}
+    {% if text is null or (i == 2 and not text|trim) %}
+      {% set text = announcement_defaults[i - 1] %}
     {% endif %}
-    {% set url = theme.settings.get('announcement_link_' ~ i) %}
+    {# link picker (variable-list) returns an object with .url; tolerate a plain string too #}
+    {% set url = theme.settings.get('unix_announcement_' ~ i ~ '_link') %}
     {% if url is iterable %}
       {% set url = url.url|default('') %}
     {% endif %}
     {% if text|trim %}
-      {% set messages = messages|merge([{ text: text|trim, url: url|trim }]) %}
+      {% set announcement_items = announcement_items|merge([{
+        'text': text|trim,
+        'url': url|default('')|trim
+      }]) %}
     {% endif %}
   {% endfor %}
+{% endif %}
 
-  {% if messages|length %}
-    {% set rotates = messages|length > 1 %}
-    <section class="unix-announce"
-             aria-label="{{ trans('blocks.header.announcements') }}"
-             {% if rotates %}data-unix-announce tabindex="0" aria-describedby="unix-announce-hint"{% endif %}>
-      {% if rotates %}
-        <span id="unix-announce-hint" class="sr-only">{{ trans('blocks.header.announcements_pause_hint') }}</span>
-      {% endif %}
-      <div class="unix-container">
-        <ul class="unix-announce__track" role="list">
-          {% for message in messages %}
-            <li class="unix-announce__item{{ loop.first ? ' is-active' : '' }}">
-              {% if message.url %}
-                <a class="unix-announce__link" href="{{ message.url }}">{{ message.text }}</a>
-              {% else %}
-                {{ message.text }}
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
-    </section>
-  {% endif %}
+{% if announcement_items|length %}
+  {% set rotates = announcement_items|length > 1 %}
+  <div class="unix-announcement" role="region"
+       aria-label="{{ trans('blocks.unix.announcement.label') }}"
+       {% if rotates %}data-unix-announcement tabindex="0" aria-describedby="unix-announcement-hint"{% endif %}>
+    {% if rotates %}
+      <span id="unix-announcement-hint" class="sr-only">{{ trans('blocks.unix.announcement.pause_hint') }}</span>
+    {% endif %}
+    <div class="unix-container">
+      <ul class="unix-announcement__track" role="list">
+        {% for item in announcement_items %}
+          <li class="unix-announcement__item{{ loop.first ? ' is-active' }}">
+            {% if item.url %}
+              <a class="unix-announcement__link" href="{{ item.url }}">{{ item.text }}</a>
+            {% else %}
+              <span>{{ item.text }}</span>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 {% endif %}

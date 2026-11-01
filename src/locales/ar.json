@@ -1,14 +1,49 @@
 {
   "blocks": {
     "header": {
-      "cart": "السلة",
-      "announcements": "إعلانات المتجر",
-      "announcements_pause_hint": "تتبدّل الإعلانات تلقائيًا. انتقلي إلى الشريط لإيقافها مؤقتًا.",
-      "announcement_default_1": "وصلت مجموعتنا الجديدة: Sailor وHalo Back وSoft Angle",
-      "announcement_default_2": "شحن مجاني داخل السعودية للطلبات فوق 500 ر.س"
+      "cart": "السلة"
     },
     "appBanner": {
       "download_now": "حمله الان"
+    },
+    "unix": {
+      "announcement": {
+        "label": "إعلانات المتجر",
+        "pause_hint": "تتبدّل الإعلانات تلقائيًا. انتقلي إلى الشريط لإيقافها مؤقتًا.",
+        "default_1": "وصلت مجموعتنا الجديدة: Sailor وHalo Back وSoft Angle",
+        "default_2": "شحن مجاني داخل السعودية للطلبات فوق :amount ر.س"
+      },
+      "header": {
+        "open_menu": "افتحي القائمة",
+        "search": "ابحثي في المتجر",
+        "language": "اختاري اللغة",
+        "lang_ar": "العربية",
+        "lang_en": "English",
+        "lang_ar_short": "AR",
+        "lang_en_short": "EN",
+        "currency": "العملة"
+      },
+      "menu": {
+        "display_all": "عرض الكل",
+        "more": "المزيد",
+        "title": "القائمة",
+        "close": "أغلقي القائمة",
+        "main": "القائمة الرئيسية",
+        "my_account": "حسابي",
+        "login": "سجّلي الدخول"
+      },
+      "footer": {
+        "shop": "التسوق",
+        "help": "المساعدة",
+        "contact": "تواصلي معنا",
+        "call": "اتصلي بنا",
+        "whatsapp": "تواصلي عبر واتساب",
+        "instagram": "تابعينا على إنستجرام",
+        "tiktok": "تابعينا على تيك توك",
+        "cr": "السجل التجاري",
+        "cr_badge": "المركز السعودي للأعمال",
+        "tm": "العلامة التجارية"
+      }
     }
   },
   "pages": {

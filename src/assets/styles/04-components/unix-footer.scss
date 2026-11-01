@@ -1,0 +1,327 @@
+/*
+ * UNIX footer + trust strip (ROADMAP 1.4 · DS §8.8 · SPEC §3)
+ * --c-bg background with a top border. 4 columns from lg: brand & newsletter · shop · help · contact.
+ * Trust strip: contact tiles, credentials, grayscale payment marks (grayscale 100%, opacity .7).
+ */
+.unix-footer {
+  margin-block-start: var(--section-sm);
+  background: var(--c-bg);
+  color: var(--c-text);
+  border-block-start: var(--line-w) solid var(--c-border);
+  font-size: var(--t-small);
+
+  a { transition: color var(--d-fast) var(--ease-out), opacity var(--d-fast) var(--ease-out); }
+  a:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); border-radius: var(--r-sm); }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding-block: var(--section-sm) var(--s-6);
+
+    @screen md {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-6) var(--s-7);
+    }
+
+    @screen lg {
+      grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+      gap: var(--s-7);
+    }
+  }
+
+  // ── Brand & newsletter ─────────────────────────
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding-block-end: var(--s-6);
+
+    @screen md { grid-column: 1 / -1; }
+    @screen lg { grid-column: auto; padding-block-end: 0; }
+  }
+
+  &__logo {
+    display: inline-flex;
+    align-self: flex-start;
+
+    img {
+      inline-size: var(--logo-w);
+      block-size: auto;
+      object-fit: contain;
+    }
+  }
+
+  &__about {
+    max-inline-size: 65ch;
+    color: var(--c-text-muted);
+    line-height: 1.6;
+  }
+
+  &__newsletter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+
+    &:not(:has(*)) { display: none; } // no title and nothing from the newsletter hook
+  }
+
+  &__newsletter-title {
+    margin: 0;
+    font-size: var(--t-h4);
+  }
+
+  // ── Link columns (accordion < lg) ──────────────
+  &__col {
+    border-block-start: var(--line-w) solid var(--c-border);
+
+    &:last-child { border-block-end: var(--line-w) solid var(--c-border); }
+
+    // Borders go away where the columns stop being accordions (unix-footer.js opens them from lg).
+    @screen lg {
+      border: 0;
+      &:last-child { border: 0; }
+    }
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    min-block-size: calc(var(--tap) + var(--s-3));
+    color: var(--c-text);
+    font-family: var(--f-heading);
+    font-size: var(--t-h4);
+    font-weight: 700;
+    line-height: 1.4;
+    list-style: none;
+    cursor: pointer;
+
+    &::-webkit-details-marker { display: none; }
+    &:hover { color: var(--c-accent-text); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); border-radius: var(--r-sm); }
+
+    @screen lg {
+      min-block-size: var(--tap);
+      cursor: default;
+      &:hover { color: var(--c-text); }
+    }
+  }
+
+  // "+" that turns into "×" (DS §8.10)
+  &__icon {
+    position: relative;
+    flex-shrink: 0;
+    inline-size: var(--s-4);
+    block-size: var(--s-4);
+    transition: transform var(--d-base) var(--ease-out);
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      inset-block-start: calc(50% - var(--line-w-strong) / 2);
+      block-size: var(--line-w-strong);
+      background: currentColor;
+    }
+
+    &::after { transform: rotate(90deg); }
+
+    @screen lg { display: none; }
+  }
+
+  &__col[open] &__icon { transform: rotate(45deg); }
+
+  &__content {
+    padding-block-end: var(--s-5);
+
+    @screen lg { padding-block-end: 0; }
+  }
+
+  // Salla menus / contacts inside the columns
+  salla-menu {
+    display: block;
+
+    ul { margin: 0; padding: 0; list-style: none; }
+    ul ul { display: none; } // header menu: root links only
+    li { margin: 0; }
+
+    a,
+    button {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: var(--tap);
+      color: var(--c-text-muted);
+      font-size: var(--t-small);
+      background: none;
+
+      &:hover { color: var(--c-text); }
+      &:active { opacity: var(--o-muted); }
+    }
+  }
+
+  salla-contacts {
+    display: block;
+
+    ul { margin: 0; padding: 0; list-style: none; }
+    h3, .s-contacts-title { display: none; } // the column already has a title
+
+    a,
+    .s-contacts-item {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      min-block-size: var(--tap);
+      color: var(--c-text-muted);
+      font-size: var(--t-small);
+    }
+
+    a:hover { color: var(--c-text); }
+    i, .s-contacts-icon { font-size: var(--icon-sm); color: var(--c-action); }
+  }
+
+}
+
+// ── Trust strip ──────────────────────────────────
+.unix-trust {
+  background: var(--c-bg);
+  color: var(--c-text);
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-5);
+    padding-block: var(--s-5) var(--s-7);
+    text-align: center;
+  }
+
+  &__icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--tap);
+    block-size: var(--tap);
+    border: var(--line-w) solid var(--c-border);
+    border-radius: var(--r-md);
+    background: var(--c-surface);
+    color: var(--c-action);
+    font-size: var(--icon-sm);
+    transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);
+
+    &:hover { background: var(--c-surface-muted); color: var(--c-text); }
+    &:active { opacity: var(--o-muted); }
+  }
+
+  &__creds {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-4) var(--s-6);
+  }
+
+  &__cred {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  &__cred-badge {
+    inline-size: var(--s-7);
+    block-size: auto;
+    object-fit: contain;
+  }
+
+  &__cred-badge-link {
+    display: inline-flex;
+    min-block-size: var(--tap);
+    align-items: center;
+    &:hover { opacity: var(--o-muted); }
+  }
+
+  &__cred-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: start;
+  }
+
+  &__cred-label {
+    color: var(--c-text-muted);
+    font-size: var(--t-micro);
+  }
+
+  &__cred-value {
+    color: var(--c-text);
+    font-size: var(--t-small);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Payment marks: grayscale, opacity .7 (DS §8.8)
+  &__payments {
+    inline-size: 100%;
+    padding-block-start: var(--s-5);
+    border-block-start: var(--line-w) solid var(--c-border);
+
+    ul { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+
+    img,
+    svg {
+      block-size: var(--s-6);
+      inline-size: auto;
+      filter: grayscale(100%);
+      opacity: var(--o-muted);
+      transition: filter var(--d-fast) var(--ease-out), opacity var(--d-fast) var(--ease-out);
+    }
+  }
+
+  &__bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-3);
+    color: var(--c-text-muted);
+    font-size: var(--t-micro);
+
+    @screen md {
+      flex-direction: row;
+      justify-content: space-between;
+      inline-size: 100%;
+    }
+
+    p { margin: 0; color: inherit; }
+  }
+}
+
+// Accordion motion (DS §8.10), same as the mobile menu.
+@supports selector(::details-content) {
+  .unix-footer__col::details-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition:
+      grid-template-rows var(--d-base) var(--ease-out),
+      content-visibility var(--d-base) allow-discrete;
+  }
+
+  .unix-footer__col[open]::details-content { grid-template-rows: 1fr; }
+  .unix-footer__content { min-block-size: 0; overflow: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-footer__icon { transition: none; }
+  .unix-footer__col::details-content { transition: none; }
+}

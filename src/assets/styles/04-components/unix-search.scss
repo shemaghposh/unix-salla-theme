@@ -1,0 +1,101 @@
+/*
+ * UNIX search modal (ROADMAP 1.5): Salla's <salla-search> (master.twig), opened from the header
+ * search icon (unix-header.js). Restyled through its .s-search-* / .s-modal-* classes only.
+ */
+salla-search {
+  .s-modal-overlay {
+    background: var(--c-backdrop);
+    backdrop-filter: blur(var(--blur-backdrop));
+  }
+
+  .s-modal-body,
+  .s-search-modal .s-modal-body {
+    background: var(--c-surface);
+    color: var(--c-text);
+    border-radius: var(--r-lg);
+    box-shadow: var(--e-2);
+  }
+
+  .s-search-container {
+    background: transparent;
+  }
+
+  .s-search-input {
+    min-block-size: var(--field-h);
+    padding-inline: var(--s-4) var(--s-7);
+    border: 0;
+    border-radius: var(--r-sm);
+    background: var(--c-field);
+    color: var(--c-text);
+    font-family: var(--f-body);
+    font-size: var(--t-body);
+    box-shadow: none;
+
+    &::placeholder { color: var(--c-placeholder); }
+    &:focus,
+    &:focus-visible {
+      outline: var(--ring-w) solid var(--c-accent);
+      outline-offset: var(--ring-w);
+      box-shadow: none;
+    }
+  }
+
+  .s-search-icon-wrap,
+  .s-search-icon {
+    color: var(--c-text-muted);
+    font-size: var(--icon-sm);
+  }
+
+  .s-search-results {
+    margin-block-start: var(--s-3);
+    background: var(--c-surface);
+    border-radius: var(--r-md);
+    box-shadow: var(--e-0);
+  }
+
+  .s-search-product {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-block-size: var(--tap);
+    padding: var(--s-2);
+    border-radius: var(--r-sm);
+    color: var(--c-text);
+    transition: background-color var(--d-fast) var(--ease-out);
+
+    &:hover { background: var(--c-surface-muted); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+
+    // Muted text fails AA on the hover background (DS §1.3), so it switches to --c-text.
+    &:hover .s-search-product-price,
+    &:focus-visible .s-search-product-price { color: var(--c-text); }
+  }
+
+  .s-search-product-image-container {
+    flex-shrink: 0;
+    inline-size: var(--s-8);
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--r-sm);
+    background: var(--c-surface-muted);
+
+    img { inline-size: 100%; block-size: 100%; object-fit: cover; }
+  }
+
+  .s-search-product-title {
+    color: var(--c-text);
+    font-size: var(--t-small);
+    font-weight: 500;
+  }
+
+  .s-search-product-price {
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .s-search-no-results {
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+  }
+}

@@ -1,0 +1,17 @@
+{#
+  UNIX AR/EN pill toggle (ROADMAP 1.2 · DS §8.7 · SPEC §2 "header-lang-toggle").
+  Switches language in place and keeps the visitor on the same page
+  (src/assets/js/partials/unix-header.js). Falls back to Salla's <salla-localization-modal>.
+  Included only when store.settings.is_multilingual.
+#}
+<div class="unix-lang" role="group" aria-label="{{ trans('blocks.unix.header.language') }}" data-unix-lang>
+  {% for code in ['ar', 'en'] %}
+    {% set is_current = language.code == code %}
+    {# Visible short label stays in the accessible name (WCAG 2.5.3); the full name is added for screen readers. #}
+    <button type="button" class="unix-lang__btn{{ is_current ? ' is-active' }}" data-lang="{{ code }}"
+            aria-pressed="{{ is_current ? 'true' : 'false' }}">
+      <span aria-hidden="true">{{ trans('blocks.unix.header.lang_' ~ code ~ '_short') }}</span>
+      <span class="sr-only" lang="{{ code }}">{{ trans('blocks.unix.header.lang_' ~ code ~ '_short') }} {{ trans('blocks.unix.header.lang_' ~ code) }}</span>
+    </button>
+  {% endfor %}
+</div>

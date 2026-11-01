@@ -1,0 +1,73 @@
+/**
+ * UNIX announcement bar (ROADMAP 1.1 · DS §8.6).
+ * Matches unix.sa (Swiper vertical, 4s delay, 0.8s speed, loop) in vanilla JS + CSS:
+ * the next message enters from below while the current one exits upward.
+ * Dwell = --d-announce, slide = --d-announce-slide (unix-tokens.scss; the slide is 0ms under
+ * prefers-reduced-motion, so messages swap instantly). Pauses while the bar is hovered, while
+ * focus is inside it and while the tab is hidden (DS §12).
+ */
+const toMs = value => {
+  const n = parseFloat(value);
+  if (Number.isNaN(n)) return 0;
+  return value.trim().endsWith('ms') ? n : n * 1000;
+};
+
+export default function initAnnouncement(root = document.querySelector('[data-unix-announcement]')) {
+  if (!root) return;
+
+  const items = [...root.querySelectorAll('.unix-announcement__item')];
+  const styles = getComputedStyle(root);
+  const dwell = toMs(styles.getPropertyValue('--d-announce'));
+  // 0 under prefers-reduced-motion (unix-tokens.scss), so the cycle is just the dwell there
+  const slide = toMs(styles.getPropertyValue('--d-announce-slide'));
+  if (items.length < 2 || !dwell) return;
+
+  let index = Math.max(0, items.findIndex(item => item.classList.contains('is-active')));
+  let timer = null;
+  let hovered = false;
+  let focused = false;
+
+  const show = next => {
+    if (next === index || next < 0) return;
+    items.forEach(item => item.classList.remove('is-leaving'));
+    void items[next].offsetHeight; // commit the reset so the message enters from below
+    items[index].classList.replace('is-active', 'is-leaving');
+    items[next].classList.add('is-active');
+    index = next;
+  };
+
+  const stop = () => {
+    clearTimeout(timer);
+    timer = null;
+  };
+
+  // Swiper semantics: a message stays fully still for `dwell` AFTER its slide-in ends, so the
+  // first rotation waits `dwell` and every later one `dwell + slide`. Resuming after a pause
+  // (hover, focus, hidden tab) waits a full `dwell` again, like Swiper's autoplay resume.
+  const schedule = (afterSlide = false) => {
+    stop();
+    if (hovered || focused || document.hidden) return;
+    timer = setTimeout(() => {
+      show((index + 1) % items.length);
+      schedule(true);
+    }, afterSlide ? dwell + slide : dwell);
+  };
+
+  root.addEventListener('mouseenter', () => { hovered = true; stop(); });
+  root.addEventListener('mouseleave', () => { hovered = false; schedule(); });
+  root.addEventListener('focusin', event => {
+    focused = true;
+    stop();
+    // a link inside a waiting message got keyboard focus: bring that message in
+    const item = event.target.closest('.unix-announcement__item');
+    if (item) show(items.indexOf(item));
+  });
+  root.addEventListener('focusout', event => {
+    if (root.contains(event.relatedTarget)) return;
+    focused = false;
+    schedule();
+  });
+  document.addEventListener('visibilitychange', () => schedule());
+
+  schedule();
+}

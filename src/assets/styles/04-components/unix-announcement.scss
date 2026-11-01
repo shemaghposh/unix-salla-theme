@@ -1,0 +1,73 @@
+/*
+ * UNIX announcement bar (ROADMAP 1.1 · DS §8.6)
+ * Fixed 40px (no CLS), announce background, --t-small text.
+ * Messages share one grid cell and slide vertically like unix.sa: waiting messages sit one
+ * bar-height below, the active one at 0, the leaving one one bar-height above. The track clips
+ * them; all stay in the a11y tree (the JS brings a focused link's message into view).
+ */
+.unix-announcement {
+  block-size: var(--announce-h);
+  background: var(--c-announce);
+  color: var(--c-announce-text);
+  font-size: var(--t-small);
+  line-height: var(--announce-h);
+  overflow: hidden;
+
+  &:focus-visible {
+    outline: var(--ring-w) solid currentColor;
+    outline-offset: calc(var(--ring-w) * -1);
+  }
+
+  &__track {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    block-size: var(--announce-h);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+  }
+
+  &__item {
+    grid-area: 1 / 1;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transform: translateY(100%);
+
+    &.is-active,
+    &.is-leaving {
+      transition: transform var(--d-announce-slide) var(--ease-announce);
+    }
+    &.is-active { transform: none; }
+    &.is-leaving { transform: translateY(-100%); }
+  }
+
+  &__link {
+    display: inline-block;
+    max-inline-size: 100%;
+    block-size: var(--announce-h);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: var(--line-w);
+    text-underline-offset: var(--s-1);
+    transition: opacity var(--d-fast) var(--ease-out);
+
+    &:hover { opacity: var(--o-muted); }
+    &:active { opacity: var(--o-disabled); }
+    &:focus-visible {
+      outline: var(--ring-w) solid currentColor;
+      outline-offset: calc(var(--ring-w) * -1);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-announcement__item.is-active,
+  .unix-announcement__item.is-leaving { transition: none; }
+}
