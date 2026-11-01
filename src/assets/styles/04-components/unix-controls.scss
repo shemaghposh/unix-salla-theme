@@ -36,7 +36,7 @@
   font-family: var(--f-body);
   font-size: var(--t-small);
   font-weight: 500;
-  line-height: 1.2;
+  line-height: 1.6; // DS §2.2 line-height for --t-small
   white-space: nowrap;
   cursor: pointer;
   transition: color var(--d-base) var(--ease-out), transform var(--d-fast) var(--ease-out);
@@ -57,7 +57,7 @@
   &:hover::before,
   &:focus-visible::before { transform: none; }
   &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
-  &:active { transform: translateY(var(--line-w)); }
+  &:active { transform: translateY(var(--press-y)); }
 
   &:disabled,
   &[disabled],
@@ -228,7 +228,7 @@ salla-button[loading] .s-button-btn { @include unix-button-loading; }
     box-shadow: none;
     transition: box-shadow var(--d-fast) var(--ease-out);
 
-    &::placeholder { color: var(--c-text-muted); opacity: 1; }
+    &::placeholder { color: var(--c-placeholder); opacity: 1; }
     &:hover { box-shadow: inset 0 0 0 var(--line-w) var(--c-border); }
     &:focus,
     &:focus-visible {
@@ -265,6 +265,17 @@ salla-button[loading] .s-button-btn { @include unix-button-loading; }
     margin-block-start: var(--s-1);
     color: var(--c-price-sale);
     font-size: var(--t-small);
+
+    // Alert icon (DS §8.5): 1.5px-stroke circle with "!", drawn as a mask so it takes currentColor.
+    &::before {
+      content: "";
+      flex-shrink: 0;
+      inline-size: var(--s-4);
+      block-size: var(--s-4);
+      background: currentColor;
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5.5M12 16.5v.01'/%3E%3C/svg%3E") center / contain no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5.5M12 16.5v.01'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
   }
 }
 

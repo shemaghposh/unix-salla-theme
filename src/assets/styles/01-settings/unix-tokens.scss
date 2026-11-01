@@ -20,6 +20,7 @@
   --unix-ink-700: #373542;
   --unix-ink-600: #4b4960;
   --unix-stone-600: #736a63;
+  --unix-stone-700: #6b625b;
   --unix-taupe-700: #6f5c44;
   --unix-taupe-500: #8b7355;
   --unix-sand-300: #d8c5b8;
@@ -48,6 +49,7 @@
   --c-field: var(--unix-input);
   --c-price-sale: var(--unix-danger);
   --c-price-old: var(--unix-stone-600);
+  --c-placeholder: var(--unix-stone-700);
   --c-success: var(--unix-success);
   --c-scrim: linear-gradient(to top, rgb(36 30 26 / .55), transparent 60%);
   --c-backdrop: rgb(36 30 26 / .32);
@@ -96,6 +98,7 @@
   --d-reveal: 800ms;
   --ease-out: cubic-bezier(.22, 1, .36, 1);
   --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --press-y: 1px;
 
   /* ── 4.1 Component tokens (DS §4.1) ─────────── */
   --announce-h: 40px;
