@@ -90,6 +90,7 @@
     <style>
         :root {
             --font-main: '{{theme.font.name}}';
+            {# UNIX: the --color-primary* values below are overridden by :root:root in unix-tokens.scss (DS §10). The dashboard color is ignored. #}
             --color-primary: {{ theme.color.primary }};
             --color-primary-dark: {{ theme.color.darker(0.15) }};
             --color-primary-light: {{ theme.color.lighter(0.15) }};

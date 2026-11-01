@@ -281,7 +281,7 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 
 | النظام | سلة |
 |---|---|
-| `--c-action` | `theme.color.primary`، اللي لازم يتظبط `#373542` في اللوحة |
+| `--c-action` | عائلة `--color-primary` بتاعة سلة **بتتسحب من التوكنز بتاعتنا في الكود**، مش من اللوحة: `--color-primary` ← `--c-action`، و `--color-primary-dark` ← `--c-action-hover`، و `--color-primary-light` ← `--c-surface-muted` (سلة بتستخدمه خلفية فاتحة عليها نص غامق، أو لون border)، و `--color-primary-reverse` ← `--c-text-inverse`. ده متقفل في `unix-tokens.scss` بـ `:root:root` عشان يغلب الـ `:root` اللي سلة بتحطه inline في `master.twig` من `theme.color.primary`. ميزة `color` اتشالت من `twilight.json → features`، فلون اللوحة مالوش أي تأثير (قرار المالك 2026-11-01: ثيم خاص بمتجر واحد، والأولوية إنه يطابق unix.sa بالظبط؛ مرونة التاجر تيجي بعدين) |
 | Fonts | ميزة `fonts` في `twilight.json`، والخطوط بتاعتنا بتغلب (`--font-main`) |
 | Components | `src/views/components/**` وتتسجل في `twilight.json → components` |
 | Web components | `salla-*` بتتستايل من خلال CSS variables و `.s-*` classes. ماتعملش fork ليها |
