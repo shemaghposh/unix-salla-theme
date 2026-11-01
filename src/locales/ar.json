@@ -48,7 +48,9 @@
         "default_title": "المفضلة دائما",
         "tabs_label": "تصفّحي المنتجات حسب المجموعة",
         "browse_tab": "تصفحي :name",
-        "browse_all": "تصفحي الجميع"
+        "browse_all": "تصفحي الجميع",
+        "prev": "المنتجات السابقة",
+        "next": "المنتجات التالية"
       },
       "featured_products": {
         "default_title": "اختاري قطعتك المفضلة لوقت الاسترخاء"

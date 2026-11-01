@@ -1744,7 +1744,7 @@
             "key": "7d1f3c52-8a4e-4b6f-9c21-5e0a7b1d2c43",
             "title": {
                 "en": "UNIX · Products with tabs",
-                "ar": "يونكس · منتجات بتبويبات (المفضلة دائمًا)"
+                "ar": "يونكس · منتجات بتبويبات (المفضلة دائما)"
             },
             "icon": "sicon-list-play",
             "path": "home.unix-products-tabs",
@@ -1754,7 +1754,7 @@
                     "type": "static",
                     "format": "description",
                     "id": "unix-ptabs-desc",
-                    "value": "<div>عنوان، وتبويبات تتنقلين بينها، وسلايدر منتجات لكل تبويب، وزر في الأسفل يتغير مع التبويب. مصدر كل تبويب: المنتجات المختارة إن وُجدت، وإلا التصنيف، وإلا أحدث المنتجات.</div>"
+                    "value": "<div>عنوان، وتبويبات تتنقلين بينها، وسلايدر منتجات لكل تبويب، وزر في الأسفل يتغير مع التبويب. مصدر كل تبويب: التصنيف إن اخترتِه، وإلا المنتجات المختارة، وإلا أحدث المنتجات.</div>"
                 },
                 {
                     "type": "string",
@@ -1762,7 +1762,7 @@
                     "label": "العنوان",
                     "multilanguage": true,
                     "id": "title",
-                    "value": "المفضلة دائمًا",
+                    "value": "المفضلة دائما",
                     "required": false,
                     "format": "text",
                     "description": "اتركيه فارغاً لإخفاء العنوان",
@@ -1788,7 +1788,7 @@
                             "tabs.button_label": "تسوّقي الجديد"
                         },
                         {
-                            "tabs.label": "الأكثر مبيعًا",
+                            "tabs.label": "الأكثر مبيعا",
                             "tabs.limit": 8
                         },
                         {
@@ -1796,7 +1796,7 @@
                             "tabs.limit": 4
                         },
                         {
-                            "tabs.label": "أطقم كومفي",
+                            "tabs.label": "اطقم كومفي",
                             "tabs.limit": 4
                         },
                         {
@@ -1825,7 +1825,7 @@
                             "label": "التصنيف",
                             "id": "tabs.category",
                             "format": "dropdown-list",
-                            "description": "يُستخدم إذا لم تختاري منتجات بعينها",
+                            "description": "إذا اخترتِ تصنيفاً يظهر هو (حتى لو اخترتِ منتجات)، مثل unix.sa",
                             "selected": [],
                             "options": [],
                             "source": "categories",
@@ -1840,7 +1840,7 @@
                             "label": "منتجات مختارة (اختياري)",
                             "id": "tabs.products",
                             "format": "dropdown-list",
-                            "description": "عند اختيار منتجات تظهر هي بدلاً من التصنيف",
+                            "description": "تُستخدم فقط إذا تركتِ التصنيف فارغاً",
                             "selected": [],
                             "options": [],
                             "source": "products",

@@ -48,7 +48,9 @@
         "default_title": "Always favourites",
         "tabs_label": "Browse products by collection",
         "browse_tab": "Browse :name",
-        "browse_all": "Browse all"
+        "browse_all": "Browse all",
+        "prev": "Previous products",
+        "next": "Next products"
       },
       "featured_products": {
         "default_title": "Choose your favourite piece for lounging"

@@ -14,16 +14,48 @@
   @media (min-width: 1024px) { --per-view: 4; }
 }
 
+// Layout like unix.sa (section-top + navigation + button in one row from 576px):
+// <576: title / tabs / panels / full-width button.  ≥576: title · arrows · button, then tabs, panels.
+.unix-ptabs__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "title" "tabs" "panels" "cta";
+  align-items: center;
+
+  @media (min-width: 576px) {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "title nav cta"
+      "tabs  tabs tabs"
+      "panels panels panels";
+    column-gap: var(--s-4);
+  }
+}
+
 .unix-ptabs__title {
-  margin: 0 0 var(--s-5);
+  grid-area: title;
+  margin: 0;
   text-align: center;
 
-  @media (min-width: 768px) { text-align: start; }
+  @media (min-width: 576px) { text-align: start; }
 }
+
+.unix-ptabs__nav {
+  grid-area: nav;
+  display: flex;
+  gap: var(--s-2);
+
+  @media (max-width: 575px) { display: none; }
+}
+
+// The theme drives the slider from the heading row; salla-slider's own arrow bar is not used
+.unix-ptabs .s-slider-block__title { display: none; }
 
 // ── Tabs (pills that scroll sideways) ───────────
 .unix-ptabs__tablist {
+  grid-area: tabs;
   display: flex;
+  margin-block-start: var(--s-5);
   align-items: center;
   gap: var(--s-2);
   margin-block-end: var(--s-5);
@@ -73,6 +105,14 @@
 }
 
 // ── Panels ──────────────────────────────────────
+.unix-ptabs__panels {
+  grid-area: panels;
+  min-inline-size: 0;
+  margin-block-start: var(--s-5);
+}
+
+.unix-ptabs__tablist + .unix-ptabs__panels { margin-block-start: 0; }
+
 .unix-ptabs__panel {
   position: relative;
   border-radius: var(--r-md);
@@ -130,13 +170,26 @@
   &--short { inline-size: min(100%, var(--s-10)); }
 }
 
-// Hide the skeleton once the slider has fetched and rendered (or come back empty)
-.unix-ptabs__panel:has(salla-products-slider.hydrated) .unix-products__skeleton,
+// Hide the skeleton once cards exist, or once JS saw the slider finish loading (data-loaded is set
+// from componentOnReady, which resolves after the products fetch, so an empty source clears it too).
+.unix-ptabs__panel[data-loaded] .unix-products__skeleton,
 .unix-ptabs__panel:has(.s-product-card-entry) .unix-products__skeleton { display: none; }
 
-// ── Bottom button ───────────────────────────────
+// ── Button: heading row from 576px, full width at the bottom below ──
 .unix-ptabs__cta {
+  grid-area: cta;
   display: flex;
-  justify-content: center;
   margin-block-start: var(--s-6);
+
+  .unix-btn { inline-size: 100%; }
+
+  @media (min-width: 576px) {
+    margin-block-start: 0;
+
+    .unix-btn { inline-size: auto; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-ptabs__tab:active { transform: none; }
 }

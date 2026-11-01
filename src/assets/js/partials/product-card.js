@@ -118,14 +118,18 @@ class ProductCard extends HTMLElement {
   }
 
   /**
-   * Second product image for the hover crossfade (DS §8.3). Only present when the listing asked
-   * the API for images (e.g. salla-products-slider includes='["images"]' in the UNIX home blocks),
-   * so other listings render exactly as before. Decorative: the first image carries the alt.
+   * Second product image for the hover crossfade (DS §8.3). Rendered only inside UNIX product
+   * rows (`.unix-products`, which request includes='["images"]'); every other listing renders
+   * exactly as before. Decorative: the first image carries the alt. CSS keeps it display:none
+   * outside `.unix-products` and on devices without hover (unix-product-card.scss).
    */
   getSecondaryImage() {
+    if (!this.closest('.unix-products') || this.fullImage || this.minimal || this.horizontal) {
+      return '';
+    }
     const main = this.product?.image?.url;
     const second = (this.product?.images || []).find(img => img?.url && img.url !== main);
-    if (!second || this.fullImage || this.minimal || this.horizontal) {
+    if (!second) {
       return '';
     }
     return `<img class="s-product-card-image-secondary s-product-card-image-cover" src="${this.escapeHTML(second.url)}" alt="" aria-hidden="true" loading="lazy" />`;
