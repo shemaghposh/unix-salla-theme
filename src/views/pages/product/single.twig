@@ -380,6 +380,48 @@
     </div>
 
     {#
+        «أكملي الإطلالة» (ROADMAP 3.9 · DS §8.22 · SPEC §5.3, §8.12), unix.sa sections/complete-the-look.liquid.
+        Source (D68): theme setting unix_complete_look_data, JSON {"productId": [id, id, ...]} in place of
+        the custom.complements metafield. Rendered only when this product's id is a key in it (string check
+        here, real parse in js/partials/unix-pdp-related.js, which mounts salla-products-list source "selected",
+        limit 2, and hides the section on bad JSON / no products). Cards: custom-salla-product-card with
+        an in-flow «أضيفي» button (data-unix-add-label, product-card.js).
+    #}
+    {% set ctl_data = theme.settings.get('unix_complete_look_data') %}
+    {% if ctl_data is iterable %}{% set ctl_data = '' %}{% endif %}
+    {% if theme.settings.get('unix_complete_look_enabled', true) and ('"' ~ product.id ~ '"') in ctl_data|default('') %}
+        {% set ctl_title = theme.settings.get('unix_complete_look_title') %}
+        {% if ctl_title is iterable %}
+            {% set ctl_title = ctl_title[language.code] is defined ? ctl_title[language.code] : null %}
+        {% endif %}
+        {% if not ctl_title|trim %}{% set ctl_title = trans('blocks.unix.complete_look.title') %}{% endif %}
+        <section class="unix-ctl unix-products"
+                 data-unix-ctl
+                 data-product-id="{{ product.id }}"
+                 data-limit="2"
+                 data-unix-add-label="{{ trans('blocks.unix.complete_look.add')|e('html_attr') }}"
+                 aria-labelledby="unix-ctl-title">
+            <script type="application/json" data-unix-ctl-config>{{ ctl_data|json_encode|raw }}</script>
+            <div class="unix-container">
+                <h2 id="unix-ctl-title" class="unix-pdp-heading">{{ ctl_title|trim }}</h2>
+                <div class="unix-pdp-body" data-unix-pdp-slot>
+                    <div class="unix-products__skeleton unix-pdp-skeleton" aria-hidden="true">
+                        {% for n in 1..2 %}
+                            <div class="unix-products__skel-card">
+                                <span class="unix-products__skel-media"></span>
+                                <span class="unix-products__skel-line"></span>
+                                <span class="unix-products__skel-line"></span>
+                                <span class="unix-products__skel-line unix-products__skel-line--short"></span>
+                                <span class="unix-pdp-skel-btn"></span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    {#
         Hook: product.single.before_customer_reviews
         Fires before the customer reviews/comments section.
         Use this hook to inject content between the product info and the reviews block.
@@ -408,11 +450,56 @@
     #}
     <div class="s-blocks-wrapper s-before-related">{% hook 'product.single.before_product_recommendations' %}</div>
 
-    {# Similar Products Area #}
-    <div class="container mb-5 sm:mb-8">
-        <salla-products-slider data-testid="store-product-related" source="related" source-value="{{product.id}}" block-title="{{trans('pages.products.similar_products')}}" display-all-url></salla-products-slider>
-    </div>
-    
+    {#
+        «قد يعجبك أيضًا» (ROADMAP 3.9 · DS §8.22 · SPEC §5.3), unix.sa sections/product-recommendations.liquid:
+        Cream scheme, 4 products, grid (2 columns → 4 from lg), no carousel, «عرض الكل» → all products.
+        Source (D69): Salla's related products (salla-products-list source "related"). The section hides
+        when Salla returns none or the store turned related products off (js/partials/unix-pdp-related.js).
+        Settings: unix_recommendations_enabled / _title / _button_label / _button_link (empty → link('products')).
+    #}
+    {% if theme.settings.get('unix_recommendations_enabled', true) %}
+        {% set recs_title = theme.settings.get('unix_recommendations_title') %}
+        {% if recs_title is iterable %}
+            {% set recs_title = recs_title[language.code] is defined ? recs_title[language.code] : null %}
+        {% endif %}
+        {% if not recs_title|trim %}{% set recs_title = trans('blocks.unix.recommendations.title') %}{% endif %}
+        {% set recs_label = theme.settings.get('unix_recommendations_button_label') %}
+        {% if recs_label is iterable %}
+            {% set recs_label = recs_label[language.code] is defined ? recs_label[language.code] : null %}
+        {% endif %}
+        {% if not recs_label|trim %}{% set recs_label = trans('blocks.unix.recommendations.view_all') %}{% endif %}
+        {% set recs_url = theme.settings.get('unix_recommendations_button_link') %}
+        {% if recs_url is iterable %}{% set recs_url = recs_url.url|default('') %}{% endif %}
+        {% set recs_url = recs_url|default('')|trim ?: link('products') %}
+        <section class="unix-recs unix-products"
+                 data-unix-recs
+                 data-testid="store-product-related"
+                 aria-labelledby="unix-recs-title">
+            <div class="unix-container unix-recs__inner">
+                <h2 id="unix-recs-title" class="unix-pdp-heading unix-recs__title">{{ recs_title|trim }}</h2>
+                <div class="unix-recs__cta">
+                    <a class="unix-btn" href="{{ recs_url }}">{{ recs_label|trim }}</a>
+                </div>
+                <div class="unix-pdp-body unix-recs__body">
+                    <div class="unix-products__skeleton unix-pdp-skeleton" aria-hidden="true">
+                        {% for n in 1..4 %}
+                            <div class="unix-products__skel-card">
+                                <span class="unix-products__skel-media"></span>
+                                <span class="unix-products__skel-line"></span>
+                                <span class="unix-products__skel-line"></span>
+                                <span class="unix-products__skel-line unix-products__skel-line--short"></span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <salla-products-list class="unix-pdp-list"
+                                         source="related"
+                                         source-value="{{ product.id }}"
+                                         limit="4"></salla-products-list>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
     {#
         Hook: product.single.after_product_recommendations
         Fires after the similar/related products slider, at the very end of the product page content.

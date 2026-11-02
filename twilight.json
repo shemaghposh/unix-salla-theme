@@ -583,6 +583,117 @@
             "placeholder": "تقييمات العميلات",
             "minLength": 0,
             "maxLength": 60
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "قسم «أكملي الإطلالة» في صفحة المنتج",
+            "description": "يظهر تحت المنتج بقطعتين مكمّلتين فيهم زرار «أضيفي»، بس للمنتجات اللي مكتوبة في «قطع أكملي الإطلالة» تحت.",
+            "id": "unix_complete_look_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "عنوان «أكملي الإطلالة»",
+            "description": "فاضي = «أكملي الإطلالة» بالعربي و «Complete the look» بالإنجليزي",
+            "id": "unix_complete_look_title",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "أكملي الإطلالة",
+            "minLength": 0,
+            "maxLength": 60
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "قطع «أكملي الإطلالة» (JSON)",
+            "description": "لكل منتج: رقمه وبعده أرقام القطع المكمّلة (أول قطعتين بيظهروا). رقم المنتج موجود في رابطه بعد حرف p. مثال: {\"123456789\": [987654321, 555555555]}. المنتج اللي مش مكتوب هنا القسم مابيظهرش عنده.",
+            "id": "unix_complete_look_data",
+            "format": "textarea",
+            "required": false,
+            "value": null,
+            "placeholder": "{\"123456789\": [987654321, 555555555]}",
+            "minLength": 0,
+            "maxLength": 20000
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "قسم «قد يعجبك أيضًا» في صفحة المنتج",
+            "description": "4 منتجات من المنتجات المشابهة بتاعة سلة، في آخر صفحة المنتج.",
+            "id": "unix_recommendations_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "عنوان «قد يعجبك أيضًا»",
+            "description": "فاضي = «قد يعجبك أيضًا» بالعربي و «You may also like» بالإنجليزي",
+            "id": "unix_recommendations_title",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "قد يعجبك أيضًا",
+            "minLength": 0,
+            "maxLength": 60
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "نص زرار «قد يعجبك أيضًا»",
+            "description": "فاضي = «عرض الكل» بالعربي و «View all» بالإنجليزي",
+            "id": "unix_recommendations_button_label",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "عرض الكل",
+            "minLength": 0,
+            "maxLength": 40
+        },
+        {
+            "type": "items",
+            "icon": "sicon-link",
+            "label": "رابط زرار «قد يعجبك أيضًا» (اختياري)",
+            "id": "unix_recommendations_button_link",
+            "value": null,
+            "description": "فاضي = صفحة كل المنتجات زي الأصل",
+            "required": false,
+            "format": "variable-list",
+            "searchable": true,
+            "source": "custom",
+            "sources": [
+                {
+                    "label": "تصنيف",
+                    "key": "categories",
+                    "value": "categories"
+                },
+                {
+                    "label": "منتجات مع وسم",
+                    "key": "products_tags",
+                    "value": "products_tags"
+                },
+                {
+                    "label": "التخفيضات",
+                    "key": "offers_link",
+                    "value": "offers_link"
+                },
+                {
+                    "label": "رابط خارجي",
+                    "key": "custom",
+                    "value": "custom"
+                }
+            ]
         }
     ],
     "components": [

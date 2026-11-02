@@ -5,6 +5,7 @@ import Fslightbox from 'fslightbox';
 window.fslightbox = Fslightbox;
 import initGallery from './partials/unix-gallery';
 import initSizeFinder from './partials/unix-size-finder'; // ROADMAP 3.3 (DS §8.11)
+import initPdpRelated from './partials/unix-pdp-related'; // ROADMAP 3.9 (DS §8.22)
 
 class Product extends BasePage {
     onReady() {
@@ -20,6 +21,8 @@ class Product extends BasePage {
         this.initProductOptionValidations();
         // ROADMAP 3.1: thumbnails, arrows, zoom dialog and the Salla app's native gallery
         initGallery();
+        // ROADMAP 3.9: «أكملي الإطلالة» + «قد يعجبك أيضًا» below the main section
+        initPdpRelated();
     }
 
     initProductOptionValidations() {
