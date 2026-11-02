@@ -5,7 +5,7 @@
  *   salla-comments → .s-comments-*      salla-reviews-summary → .s-reviews-summary-*
  *   salla-comment-form → .s-comment-form-*   salla-rating-stars → .s-rating-stars-*
  *   salla-progress-bar (histogram) → .s-progress-bar-*
- * Salla injects its component CSS at runtime, so every rule is prefixed with body.theme-unix to win
+ * Salla injects its component CSS at runtime, so every rule is prefixed with .theme-unix (the body class) to win
  * on specificity instead of on source order. Buttons (.s-button-btn) and fields (.s-form-control)
  * already take the UNIX look from unix-controls.scss.
  */
@@ -64,6 +64,7 @@
   color: var(--c-text);
   font-family: var(--f-heading);
   font-size: var(--t-h3);
+  font-weight: var(--fw-bold); // unix.sa 600, not loaded (DS §2.1)
   line-height: 1.35;
 }
 
@@ -103,6 +104,7 @@
   color: var(--c-text);
   font-family: var(--f-heading);
   font-size: var(--t-h2);
+  font-weight: var(--fw-bold); // unix.sa 600, not loaded (DS §2.1)
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
