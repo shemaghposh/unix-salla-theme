@@ -70,7 +70,8 @@
 
 
     <script data-cfasync="false">
-        window.header_is_sticky = "{{theme.settings.get('header_is_sticky', 'Default Value')}}"
+        {# ROADMAP 6.1: real boolean default (was the placeholder string 'Default Value'); app.js reads !!window.header_is_sticky #}
+        window.header_is_sticky = {{ theme.settings.get('header_is_sticky', true) ? 'true' : 'false' }}
         window.can_access_wallet = {{ user.can_access_wallet | json_encode }}
         window.enable_more_menu = "{{ theme.settings.get('enable_more_menu', true) }}"
         window.enable_add_product_toast = "{{ unix_add_toast }}"
@@ -86,10 +87,16 @@
     <link rel="stylesheet" href="{{ 'app.css' | asset }}">
     <link rel="stylesheet" href="{{ theme.font.path|cdn }}"/>
     <link rel="stylesheet" href="{{ 'fonts/sallaicons.css'|cdn }}"/>
-    {# UNIX: IBM Plex Sans Arabic (body) — Somar (headings) is loaded from unix-tokens.scss #}
+    {# UNIX: IBM Plex Sans Arabic (body) — Somar (headings) is loaded from unix-tokens.scss.
+       ROADMAP 6.2: only the current language's family is requested, since --font-main below uses just
+       that one (Arabic: IBM Plex Sans Arabic, which has Latin glyphs; English: Open Sans). Weights follow DS §2.1. #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap"/>
+    {% if language.code == 'en' %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"/>
+    {% else %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&display=swap"/>
+    {% endif %}
     
     <style>
         :root {

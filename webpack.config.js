@@ -26,6 +26,9 @@ module.exports = {
     output : {
         path: public(),
         clean: true,
+        // ROADMAP 6.2: on-demand chunks (sweetalert2 from app.js, fslightbox from product.js) land next to
+        // the entries in public/. publicPath stays 'auto', so they load from the same CDN folder as the
+        // script that asked for them (docs/PERFORMANCE.md §4).
         chunkFilename: "[name].[contenthash].js"
     },
     stats  : {modules: false, assetsSort: "size", assetsSpace: 50},

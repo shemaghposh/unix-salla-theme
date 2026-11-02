@@ -1,8 +1,5 @@
-import 'lite-youtube-embed';
 import BasePage from './base-page';
-// fslightbox stays for video slides only; images zoom in the UNIX gallery dialog (DS §8.20)
-import Fslightbox from 'fslightbox';
-window.fslightbox = Fslightbox;
+// ROADMAP 6.2: no <lite-youtube> on the product page (videos are gallery slides), so that import is gone.
 import initGallery from './partials/unix-gallery';
 import initSizeFinder from './partials/unix-size-finder'; // ROADMAP 3.3 (DS §8.11)
 import initStickyAtc from './partials/unix-sticky-atc'; // ROADMAP 3.2 (DS §8.21)
@@ -97,6 +94,21 @@ class Product extends BasePage {
 }
 
 Product.initiateWhenReady(['product.single']);
+
+/**
+ * fslightbox stays for video slides only; images zoom in the UNIX gallery dialog (DS §8.20).
+ * ROADMAP 6.2: it loads on demand, and only when the gallery has a video slide ([data-fslightbox]).
+ * On import it scans the page for a[data-fslightbox] itself, exactly as the static import did.
+ */
+const loadVideoLightbox = () => {
+  if (!document.querySelector('[data-fslightbox]')) return;
+  import(/* webpackChunkName: "fslightbox" */ 'fslightbox')
+    .then(({ default: Fslightbox }) => { window.fslightbox = Fslightbox; })
+    .catch((error) => salla.log('fslightbox failed to load', error));
+};
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadVideoLightbox);
+else loadVideoLightbox();
 
 // ROADMAP 3.3 Size Finder: boot at page start so a manual size pick is seen before any auto-select.
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initSizeFinder);

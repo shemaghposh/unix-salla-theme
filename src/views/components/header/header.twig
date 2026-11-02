@@ -43,9 +43,12 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
 
         {# Centre: logo #}
         <a data-testid="store-header-logo" class="navbar-brand unix-header__logo" href="{{ store.url }}">
-          {# DS §6: the logo is eager; fetchpriority="high" belongs to the first hero image on pages that have one. #}
+          {# DS §6: the logo is always eager, and takes fetchpriority="high" only on pages with no designated
+             LCP image of their own (hero, product gallery, collection image, article / first article card,
+             first cart image). ROADMAP 6.2. #}
+          {% set logo_high = not header_overlay and not (is_page('product.single') or is_page('blog.single') or is_page('blog.index') or is_page('cart') or is_page('product.index')) %}
           <img class="unix-header__logo-img" loading="eager" width="120" height="48"
-               src="{{ store.logo|cdn(240) }}" alt="{{ store.name }}"{{ header_overlay ? '' : ' fetchpriority="high"' }}>
+               src="{{ store.logo|cdn(240) }}" alt="{{ store.name }}"{{ logo_high ? ' fetchpriority="high"' : '' }}>
           {% if inverse_logo and header_overlay %}
             <img class="unix-header__logo-img unix-header__logo-img--inverse" loading="eager" width="120" height="48"
                  src="{{ inverse_logo }}" alt="" aria-hidden="true">

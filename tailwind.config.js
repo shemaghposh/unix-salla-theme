@@ -156,8 +156,9 @@ module.exports = {
     corePlugins: {
       outline: false,
     },
+    // line-clamp-* is core since Tailwind 3.3; the old @tailwindcss/line-clamp plugin is gone (ROADMAP 6.2).
+    // @tailwindcss/forms stays: .form-input / .form-select and Salla's form controls rely on its base reset.
     plugins: [
       require('@tailwindcss/forms'),
-      require('@tailwindcss/line-clamp'),
     ],
 }
