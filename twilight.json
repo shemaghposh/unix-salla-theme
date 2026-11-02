@@ -767,7 +767,7 @@
         {
             "type": "boolean",
             "icon": "sicon-toggle-off",
-            "label": "قسم «قد يعجبك أيضًا» في صفحة المنتج",
+            "label": "قسم «قد يعجبكِ أيضًا» في صفحة المنتج",
             "description": "يظهر في آخر صفحة المنتج بأربعة منتجات من المنتجات المشابهة في سلة.",
             "id": "unix_recommendations_enabled",
             "format": "switch",
@@ -778,21 +778,21 @@
         {
             "type": "string",
             "icon": "sicon-format-text-alt",
-            "label": "عنوان «قد يعجبك أيضًا»",
+            "label": "عنوان «قد يعجبكِ أيضًا»",
             "description": "إذا تركتِه فارغًا يظهر «قد يعجبكِ أيضًا» بالعربية و«You may also like» بالإنجليزية.",
             "id": "unix_recommendations_title",
             "format": "text",
             "multilanguage": true,
             "value": null,
             "required": false,
-            "placeholder": "قد يعجبك أيضًا",
+            "placeholder": "قد يعجبكِ أيضًا",
             "minLength": 0,
             "maxLength": 60
         },
         {
             "type": "string",
             "icon": "sicon-format-text-alt",
-            "label": "نص زر «قد يعجبك أيضًا»",
+            "label": "نص زر «قد يعجبكِ أيضًا»",
             "description": "إذا تركتِه فارغًا يظهر «عرض الكل» بالعربية و«View all» بالإنجليزية.",
             "id": "unix_recommendations_button_label",
             "format": "text",
@@ -806,7 +806,7 @@
         {
             "type": "items",
             "icon": "sicon-link",
-            "label": "رابط زر «قد يعجبك أيضًا» (اختياري)",
+            "label": "رابط زر «قد يعجبكِ أيضًا» (اختياري)",
             "id": "unix_recommendations_button_link",
             "value": null,
             "description": "إذا تركتِه فارغًا يفتح الزر صفحة كل المنتجات، كما في unix.sa.",
