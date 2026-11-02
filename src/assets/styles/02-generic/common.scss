@@ -69,37 +69,10 @@ input[type="number"] {
   }
 }
 
-.remove-item-btn:after {
-  content: "\ea47";
-  font-family: "sallaicons" !important;
-  // speak: never;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 .cart-thumb {
   position: fixed;
   z-index: 30;
   transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
-}
-
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.no-scrollbar {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
 }
 
 // hide chat tags
@@ -231,12 +204,6 @@ salla-modal {
   }
 }
 
-// grid trigger
-.grid-trigger{
-  @apply cursor-pointer mx-1 text-xl w-10 h-10 rounded-md flex items-center justify-center text-gray-400;
-}
-
-
 // center classes
 .flex-center{
   @apply flex justify-center items-center;
@@ -248,37 +215,6 @@ salla-modal {
 
 .grow-0{
   flex-grow: 0 !important;
-}
-
-.basis-0{
-  flex-basis: 0;
-}
-
-// Gradient Background
-.gradient-bg{
-  @apply from-primary to-primary-d;
-
-  [dir="ltr"] & {
-    @apply bg-gradient-to-r;
-  }
-
-  [dir="rtl"] & {
-    @apply bg-gradient-to-l;
-  }
-
-  @media (max-width: 1024px){
-    &.profile-header{
-      background-image: none;
-
-      .breadcrumbs {
-        a,
-        span,
-        .arrow {
-          @apply text-gray-600;
-        }
-      }
-    }
-  }
 }
 
 // Small badge
@@ -339,15 +275,6 @@ salla-modal {
   }
 }
 
-// cart submit actions buttons
-.cart-submit-wrap{
-  @apply flex ltr:flex-wrap justify-between items-center -mx-[5px] gap-2.5;
-
-  > *{
-    @apply grow mx-[5px]; 
-  }
-}
-
 .s-button-btn, .s-price-range-number-input{
   @apply rounded;
 }
@@ -389,25 +316,6 @@ salla-modal {
   }
 }
 
-.blog-category {
-  ul,
-  ol{
-    @apply rtl:pr-4 ltr:pl-4;
-  }
-
-  ul li {
-    list-style: disc;
-  }
-
-  ol li{
-    list-style: auto;
-  }
-
-  a {
-    @apply text-primary hover:text-primary-d;
-  }
-}
-
 // Collapse component using CSS Grid
 .collapse-content {
   display: grid;
@@ -424,22 +332,6 @@ salla-modal {
     grid-template-rows: 1fr;
     opacity: 1;
   }
-}
-
-// Slide in animation (from right)
-@keyframes slideInStart {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.slide-in-start {
-  animation: slideInStart 500ms ease-out forwards;
 }
 
 // Scale pulse animation
