@@ -637,6 +637,30 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 |---|---|---|
 | `--account-nav-w` | 288px | عمود قايمة الحساب من lg (عرض رائد `w-72`) |
 
+### 8.38 Orders List (قايمة الطلبات) — *المرحلة 5.2*
+مستوحى من `.order-table--main` في `reference/shopify-theme/assets/customer.css` (`sections/main-account.liquid`). الكود: `pages/customer/orders/index.twig` و `04-components/unix-account.scss`. الجدول `salla-orders` بتاع سلة زي ما هو (الفلاتر، والتحميل، و«تحميل المزيد»، وزرار التقييم، ونسخ رقم الطلب) جوه `.unix-account-panel`، ومتستايل من `.s-orders-*`. *(قرار مؤقت D95)*
+- **الفلاتر:** أزرار سلة `salla-button` small (§8.2، 44px على اللمس) بمسافة `--s-2`، و `--s-4` تحتها.
+- **رأس الجدول (من md):** صف `--c-surface-muted` بحواف `--r-sm` من الناحيتين، والخلايا `--t-small` `--fw-medium` `--c-text` من غير uppercase، و padding `--s-3` `--s-4`. آخر عمود ناحية النهاية.
+- **الصفوف:** من غير كروت ولا ظل ولا `border-spacing`: فاصل `--line-w` `--c-border` تحت كل صف (ما عدا الأخير)، والنص `--t-small` `--c-text` tabular، ورقم الطلب `--fw-medium`. مع الـ hover الصف كله بيبقى `--c-text-muted` في `--d-fast` (زي `.tbody:hover` في الأصل). الصف كله لينك (اللينكات الفاضية بتاعة سلة فوق الخلايا)، والفوكس عليها حلقة `--ring-w` `--c-accent` جوه الخلية.
+- **الموبايل (أقل من md):** كل صف بلوك، وكل خلية سطر: العنوان (`.s-orders-mobile-title`) `--c-text-muted` بعرض `--s-10` والقيمة جنبه، و padding `--s-3` فوق وتحت الصف.
+- **الحالة:** أيقونة سلة + الاسم بلون `--c-text` (لون الحالة اللي التاجر مختاره بيتشال بـ `!important` لأنه inline، والمعنى في النص). التقييم: النجمة `--c-accent`.
+- **التنبيه الأخضر (الكاش باك):** خلفية `--c-note-bg` (§8.25) و `--r-sm` والنص `--t-small` `--c-text`، والأيقونة `--c-success`.
+- **«تحميل المزيد»:** زرار سلة primary (§8.2) في النص و `--s-5` فوقه. التحميل: الجدول `--o-disabled`.
+- **فاضية (مافيش طلبات خالص):** panel فيه `h2` بحجم `--t-h4` («لم تطلبي أي شيء بعد»)، والنص `--t-body` `--c-text-muted`، وزرار `.unix-btn` primary «تسوقي الآن» لكل المنتجات (`--s-5` فوقه، بعرض كامل تحت 576). النصين إعدادات (`unix_account_orders_empty_*`)، والفاضي = نص unix.sa (`main-account` → `heading_orders` / `text_orders`) بخطاب المؤنث. الفاضي جوه فلتر (من سلة): الأيقونة في دايرة `--s-9` `--c-surface-muted` والنص `--c-text-muted`.
+
+### 8.39 Order Page (صفحة الطلب) — *المرحلة 5.2*
+مستوحى من `reference/shopify-theme/sections/main-order.liquid` و `.order-table--details` / `.order-table--total` في `assets/customer.css`. الكود: `pages/customer/orders/single.twig` (منطق رائد والـ hooks و `js/order.js` زي ما هم) و `04-components/unix-account.scss`. كومبوننتس سلة زي ما هي: `salla-edit-order-button`، و `salla-order-branch`، و `salla-order-details`، و `salla-review-order-item`، و `salla-order-totals-card`، و `salla-modal` (إعادة الطلب والإلغاء)، و `salla-rating-modal`، و `salla-rating-stars`. *(قرار مؤقت D96)*
+- **الرأس:** `h1` واحد = `page.title` (§8.37)، ولو الطلب هدية: badge §8.4 «هدية» جنبه. زرار تعديل الطلب بتاع سلة ناحية النهاية.
+- **ملخص الطلب:** panel فيه `dl` (عمود واحد، ومن 576 عمودين): «تاريخ الطلب» و«الحالة» (الـ `dt` `--t-small` `--c-text-muted`، والـ `dd` `--t-body` `--fw-medium` `--c-text` tabular). الحالة أيقونة + اسم بلون `--c-text` (لون التاجر مش مستخدم، زي §8.38)، والدفع المنتهي `--c-price-sale`. تحتها صف أزرار (`--s-3`، flex-wrap): لينكات الطلب (الشحنة، والملفات الرقمية) و«طباعة» `.unix-btn--outline .unix-btn--sm` (اللي بتفتح في تاب جديد عليها سهم `icon-dir`). لو الفاتورة مش متاحة: ملاحظة `--t-small` `--c-text-muted` بدل tooltip رائد، وفيها زرار لينك (§8.2) لطباعة التفاصيل.
+- **الملاحظات** (الاسترداد، ومدة تعديل التقييم، والطلب تحت المراجعة): سطر بأيقونة على `--c-note-bg` و `--r-sm` و padding `--s-3` `--s-4`، والنص `--t-small` `--c-text`.
+- **تقييم الطلب (`can_rate`):** panel (بدل شريط رائد الملوّن) فيه `h2` بحجم `--t-h4` والنص `--t-small` `--c-text-muted`، وزرار primary «قيّمي» ناحية النهاية (تحت بعرض كامل أقل من 576).
+- **الشحنات:** panel لكل شحنة. الرأس (لو فيه شركة شحن): اللوجو (ارتفاعه `--s-6`، `object-fit: contain`) والاسم، وتحتهم الفرع ورقم الشحنة والحالة أو «تتبع الشحنة» (لينك `.unix-btn--link`)، `--t-small`، وفاصل `--c-border` تحت و `--s-4` مسافة.
+- **المنتج:** Grid: الصورة (`--cart-thumb-w`، نسبة `--ratio-cart-thumb`، `--r-sm`، `--c-surface-muted` لحد ما تحمّل؛ لينك الصورة `aria-hidden` و `tabindex="-1"` زي §8.33) + التفاصيل. الاسم `h2` بحجم `--t-body` `--fw-medium` (لينك، hover `--o-muted`) زي صفحة السلة (§8.35). تحته `dl` صفوف «الكمية» و«السعر» و«الإجمالي» (`--t-small`، الـ label `--c-text-muted` والقيمة `--c-text` tabular، والإجمالي `--fw-medium`). بين المنتجات فاصل `--c-border` و `--s-5`. التاريخ المتوقع، والحجوزات، و `salla-order-details`، والملاحظة (`--t-small` `--c-text-muted`)، والمرفقات (`dl` ببوردر `--c-border` و `--r-sm`)، و `salla-review-order-item` تحت التفاصيل بمسافة `--s-3`.
+- **خيارات الطلب:** panel فيه `h2` `--t-h4` وجدول `--t-small`: الرأس `--c-surface-muted`، والصفوف بفاصل `--c-border`، والسعر ناحية النهاية tabular.
+- **الإجماليات (`salla-order-totals-card`):** panel (`.s-order-totals-card-panel`)، وعنوان سلة `h2` بيفضل مخفي (`sr-only` من سلة). الصفوف `--t-small` (الـ label `--c-text-muted` والقيمة `--c-text` tabular) بمسافة `--s-2`، والخصم `--c-price-sale`، والإجمالي النهائي `--t-body-lg` `--fw-medium` بفاصل `--c-border` فوقه، والاسترداد `--c-accent-text`.
+- **إعادة الطلب / الإلغاء / إكمال الدفع:** panel، كل صف: `h2` `--t-h4` + وصف `--t-small` `--c-text-muted` ناحية البداية، والزرار ناحية النهاية (تحت بعرض كامل أقل من 576)، وفاصل `--c-border` بين الصفين. إكمال الدفع زرار primary عريض. الإلغاء زرار لينك (من غير أحمر في الصفحة؛ التأكيد الأحمر في مودال سلة).
+- **تقييم المتجر والشحن:** panel لكل واحد: `h2` `--t-h4`، والتعليق، و `salla-rating-stars`، وأزرار التعديل والحذف أيقونات `--tap` (بدل 32px بتاعة رائد) بحواف pill.
+
 ---
 
 ## 9. نبرة الكلام (Copy)

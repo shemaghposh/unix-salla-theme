@@ -272,7 +272,661 @@
   }
 }
 
+// ── Empty state (orders, wishlist) ───────────────
+.unix-account-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-2);
+}
+
+.theme-unix .unix-account-empty__title {
+  margin: 0;
+  font-size: var(--t-h4);
+  line-height: 1.4;
+}
+
+.unix-account-empty__text {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--t-body);
+}
+
+.unix-account-empty__cta {
+  margin-block-start: var(--s-3); // + the flex gap = --s-5 above the button
+  inline-size: 100%;
+
+  @media (min-width: 576px) { inline-size: auto; }
+}
+
+/*
+ * ── 5.2 Orders list (DS §8.38 · D95) ─────────────
+ * salla-orders: filters, table (rows are cards in Salla; here hairline rows like unix.sa's
+ * .order-table--main), empty-filter state, load more.
+ */
+.unix-orders {
+  .s-orders-filters {
+    gap: var(--s-2);
+    margin-block: 0 var(--s-4);
+  }
+
+  .s-orders-banner {
+    gap: var(--s-2);
+    margin-block: 0 var(--s-4);
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-sm);
+    background: var(--c-note-bg);
+  }
+
+  .s-orders-banner-icon {
+    color: var(--c-success);
+    svg path { fill: currentColor; }
+  }
+
+  .s-orders-banner-text {
+    color: var(--c-text);
+    font-size: var(--t-small);
+  }
+
+  .s-orders-list-loading { background: var(--c-hover-tint); }
+  .s-orders-table-fetching { opacity: var(--o-disabled); }
+
+  .s-orders-table {
+    inline-size: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  .s-orders-table-head {
+    margin: 0;
+    background: var(--c-surface-muted);
+  }
+
+  .s-orders-table-head-tr-th {
+    padding: var(--s-3) var(--s-4);
+    color: var(--c-text);
+    font-size: var(--t-small);
+    font-weight: var(--fw-medium);
+    text-align: start;
+    text-transform: none;
+    letter-spacing: 0;
+
+    &:first-child {
+      border-start-start-radius: var(--r-sm);
+      border-end-start-radius: var(--r-sm);
+    }
+
+    &:last-child {
+      border-start-end-radius: var(--r-sm);
+      border-end-end-radius: var(--r-sm);
+      text-align: end;
+    }
+  }
+
+  .s-orders-table-tbody-tr {
+    padding: var(--s-3) 0;
+    border: 0;
+    border-block-end: var(--line-w) solid var(--c-border);
+    border-radius: 0;
+    background: transparent;
+    color: var(--c-text);
+    transition: color var(--d-fast) var(--ease-out);
+
+    &:last-child { border-block-end: 0; }
+    &:hover { color: var(--c-text-muted); }
+
+    @media (min-width: 768px) { padding: 0; }
+
+    // Salla's whole-row link (empty anchors over each cell)
+    a:focus-visible {
+      outline: var(--ring-w) solid var(--c-accent);
+      outline-offset: calc(var(--ring-w) * -1);
+    }
+  }
+
+  .s-orders-table-tbody-tr-shadow:hover { box-shadow: var(--e-0); }
+
+  .s-orders-table-tbody-tr-td {
+    color: inherit;
+    font-size: var(--t-small);
+
+    &:first-child { font-weight: var(--fw-medium); }
+
+    @media (min-width: 768px) { block-size: auto; }
+  }
+
+  .s-orders-table-tbody-tr-td-content {
+    padding: var(--s-1) 0;
+
+    @media (min-width: 768px) { padding: var(--s-4); }
+  }
+
+  .s-orders-mobile-title {
+    inline-size: var(--s-10);
+    color: var(--c-text-muted);
+    font-weight: var(--fw-regular);
+  }
+
+  // Status: Salla paints the dashboard colour inline; the name carries the meaning (D95)
+  .s-orders-status-container {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    color: inherit !important;
+
+    i { margin: 0; }
+  }
+
+  .s-orders-rated-text { color: var(--c-accent); }
+  .s-orders-unrated-text { color: var(--c-border); }
+
+  .s-orders-leave-review-btn {
+    color: var(--c-text);
+    font-weight: var(--fw-medium);
+  }
+
+  // No orders for the chosen filter
+  .s-orders-no-content {
+    padding-block: var(--s-7);
+    color: var(--c-text-muted);
+
+    .icon {
+      inline-size: var(--s-9);
+      block-size: var(--s-9);
+      margin-block-end: var(--s-4);
+      background: var(--c-surface-muted);
+      color: var(--c-text-muted);
+      font-size: var(--icon-md);
+    }
+
+    p {
+      margin: 0;
+      color: var(--c-text-muted);
+      font-size: var(--t-body);
+    }
+  }
+
+  .s-infinite-scroll-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-block-start: var(--s-5);
+  }
+}
+
+/*
+ * ── 5.2 Order page (DS §8.39 · D96) ──────────────
+ */
+.unix-order {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+}
+
+.unix-order__head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+// Gift badge next to the title (DS §8.4)
+.unix-order__gift {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  min-block-size: var(--s-5);
+  margin-inline-start: var(--s-2);
+  padding-inline: var(--s-3);
+  border-radius: var(--r-pill);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-family: var(--f-body);
+  font-size: var(--t-micro);
+  font-weight: var(--fw-medium);
+  line-height: 1.5;
+  vertical-align: middle;
+}
+
+// Headings inside panels (sit under the page h1)
+.theme-unix .unix-order__h2 {
+  margin: 0;
+  font-size: var(--t-h4);
+  line-height: 1.4;
+}
+
+// ── Summary ──
+.unix-order__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.unix-order__facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+  margin: 0;
+
+  @media (min-width: 576px) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.unix-order__fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+
+  dt {
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--c-text);
+    font-size: var(--t-body);
+    font-weight: var(--fw-medium);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.unix-order__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  color: var(--c-text);
+}
+
+.unix-order__expired { color: var(--c-price-sale); }
+
+.unix-order__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+
+  &:empty { display: none; }
+}
+
+.unix-order__hint {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+}
+
+.unix-order__hint-link {
+  min-block-size: var(--tap);
+  font-size: inherit;
+}
+
+// Notes (refund, rating window, under review, availability date)
+.unix-order__note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  margin: 0;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-sm);
+  background: var(--c-note-bg);
+  color: var(--c-text);
+  font-size: var(--t-small);
+
+  > i { flex-shrink: 0; line-height: 1.6; }
+}
+
+// ── Row panels: text at the start, button at the end (rate, reorder, cancel) ──
+.unix-order__row-panel,
+.unix-order__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+
+.unix-order__row-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+.unix-order__row-desc {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+}
+
+.unix-order__row-btn {
+  inline-size: 100%;
+
+  @media (min-width: 576px) { inline-size: auto; }
+
+  .s-button-btn { inline-size: 100%; }
+}
+
+.unix-order__row--center { justify-content: center; }
+
+.unix-order__manage {
+  display: flex;
+  flex-direction: column;
+
+  > .unix-order__row + .unix-order__row {
+    margin-block-start: var(--s-5);
+    padding-block-start: var(--s-5);
+    border-block-start: var(--line-w) solid var(--c-border);
+  }
+}
+
+.unix-order__modal-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-3);
+}
+
+// ── Shipment + items ──
+.unix-order__package {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.unix-order__package-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-5);
+  padding-block-end: var(--s-4);
+  border-block-end: var(--line-w) solid var(--c-border);
+  font-size: var(--t-small);
+}
+
+.unix-order__carrier {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-weight: var(--fw-medium);
+}
+
+.unix-order__carrier-logo {
+  inline-size: auto;
+  max-inline-size: var(--s-10);
+  block-size: var(--s-6);
+  object-fit: contain;
+}
+
+.unix-order__package-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-5);
+  color: var(--c-text-muted);
+
+  b { color: var(--c-text); font-weight: var(--fw-medium); }
+}
+
+.unix-order__items {
+  display: flex;
+  flex-direction: column;
+}
+
+.unix-order-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+
+  & + & {
+    margin-block-start: var(--s-5);
+    padding-block-start: var(--s-5);
+    border-block-start: var(--line-w) solid var(--c-border);
+  }
+}
+
+.unix-order-item__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-4);
+}
+
+.unix-order-item__media {
+  flex-shrink: 0;
+  inline-size: var(--cart-thumb-w);
+  aspect-ratio: var(--ratio-cart-thumb);
+  border-radius: var(--r-sm);
+  background: var(--c-surface-muted);
+  overflow: hidden;
+}
+
+.unix-order-item__img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+
+  &.is-placeholder { object-fit: contain; }
+}
+
+.unix-order-item__info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--s-2);
+  min-inline-size: 0;
+}
+
+// Same scale as the cart page line name (DS §8.35)
+.theme-unix .unix-order-item__name {
+  margin: 0;
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  font-weight: var(--fw-medium);
+  line-height: 1.7;
+
+  a {
+    color: var(--c-text);
+    transition: opacity var(--d-fast) var(--ease-out);
+    &:hover { opacity: var(--o-muted); }
+  }
+}
+
+.unix-order-item__facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  margin: 0;
+  font-size: var(--t-small);
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+  }
+
+  dt { color: var(--c-text-muted); }
+
+  dd {
+    margin: 0;
+    color: var(--c-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .is-total dd { font-weight: var(--fw-medium); }
+}
+
+.theme-unix .unix-order-item__sub {
+  margin: 0;
+  font-family: var(--f-body);
+  font-size: var(--t-small);
+  font-weight: var(--fw-medium);
+  line-height: 1.6;
+}
+
+.unix-order-item__box {
+  margin: 0;
+  padding: var(--s-3) var(--s-4);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-sm);
+  font-size: var(--t-small);
+}
+
+.unix-order-item__attachments > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+
+  & + div {
+    margin-block-start: var(--s-2);
+    padding-block-start: var(--s-2);
+    border-block-start: var(--line-w) solid var(--c-border);
+  }
+
+  dd { margin: 0; }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tap);
+    color: var(--c-text);
+    text-decoration: underline;
+    text-underline-offset: var(--s-1);
+  }
+}
+
+.unix-order-item__attachment-img {
+  inline-size: var(--s-6);
+  block-size: var(--s-6);
+  border-radius: var(--r-sm);
+  object-fit: cover;
+}
+
+.unix-order-item__note {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+}
+
+// ── Order options table ──
+.unix-order__table {
+  inline-size: 100%;
+  margin-block-start: var(--s-4);
+  border-collapse: collapse;
+  font-size: var(--t-small);
+
+  th {
+    padding: var(--s-3) var(--s-4);
+    background: var(--c-surface-muted);
+    color: var(--c-text);
+    font-weight: var(--fw-medium);
+    text-align: start;
+
+    &:first-child { border-start-start-radius: var(--r-sm); border-end-start-radius: var(--r-sm); }
+    &:last-child { border-start-end-radius: var(--r-sm); border-end-end-radius: var(--r-sm); }
+  }
+
+  td {
+    padding: var(--s-3) var(--s-4);
+    border-block-end: var(--line-w) solid var(--c-border);
+    color: var(--c-text);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-block-end: 0; }
+
+  :is(th, td):last-child {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// ── Totals (salla-order-totals-card) ──
+.unix-order .s-order-totals-card-panel {
+  padding: var(--s-2) var(--s-5);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+
+  @media (min-width: 768px) { padding-inline: var(--s-6); }
+}
+
+.unix-order .s-order-totals-card-list {
+  color: var(--c-text);
+  font-size: var(--t-small);
+}
+
+.unix-order .s-order-totals-card-list > .s-order-totals-card-row { border-block-end: 0; }
+
+.unix-order .s-order-totals-card-row-inner {
+  padding-block: var(--s-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.unix-order .s-order-totals-card-label { color: var(--c-text-muted); }
+.unix-order .s-order-totals-card-value { color: var(--c-text); font-weight: var(--fw-regular); }
+.unix-order .s-order-totals-card-discount { color: var(--c-price-sale); }
+
+.unix-order .s-order-totals-card-total {
+  margin: var(--s-2) 0 0;
+  padding: var(--s-2) 0 0;
+  border-block-start: var(--line-w) solid var(--c-border);
+  border-radius: 0;
+  background: transparent;
+
+  :is(.s-order-totals-card-total-label, .s-order-totals-card-total-value) {
+    color: var(--c-text);
+    font-size: var(--t-body-lg);
+    font-weight: var(--fw-medium);
+  }
+}
+
+.unix-order .s-order-totals-card-refund {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+
+  :is(.s-order-totals-card-refund-label, .s-order-totals-card-refund-icon, .s-order-totals-card-refund-value) {
+    color: var(--c-accent-text);
+  }
+}
+
+// ── Store / shipping ratings ──
+.unix-order__rating {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+
+.unix-order__rating-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  min-inline-size: 0;
+}
+
+.unix-order__rating-text {
+  color: var(--c-text);
+  font-size: var(--t-body);
+}
+
+.unix-order__rating-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--s-2);
+
+  // Raed's .rating-actions squeezes the icon buttons to 32px (!important); DS P6 needs --tap
+  .rating-actions salla-button button {
+    inline-size: var(--tap) !important;
+    block-size: var(--tap) !important;
+    border-radius: var(--r-pill) !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .unix-account .unix-account__crumbs a,
-  .unix-account__nav .s-user-menu-dropdown-item a { transition: none; }
+  .unix-account__nav .s-user-menu-dropdown-item a,
+  .unix-orders .s-orders-table-tbody-tr,
+  .unix-order-item__name a { transition: none; }
 }

@@ -5,17 +5,35 @@
 | page.title        | string               |             |
 | page.slug         | string               |             |
 | orders[]          | Orders[] *Collection |             |
+
+UNIX (ROADMAP 5.2 · DS §8.38 · D95): Salla's `salla-orders` table (filters, paging, review button) inside
+an account panel, restyled through .s-orders-*. With no orders at all: unix.sa's empty state
+(main-account → heading_orders / text_orders), from the settings unix_account_orders_empty_heading /
+unix_account_orders_empty_text (multilanguage; null/empty → translation), and «تسوقي الآن» to all products.
 #}
 {% extends "layouts.customer" %}
 {% block inner_content %}
     {% if orders|length %}
         {% hook 'customer:orders.index.items.start' %}
-          <salla-orders data-testid="store-orders-list"></salla-orders>
+        <div class="unix-account-panel unix-orders">
+            <salla-orders data-testid="store-orders-list"></salla-orders>
+        </div>
         {% hook 'customer:orders.index.items.end' %}
     {% else %}
-        <div data-testid="store-orders-empty" class="no-content-placeholder">
-            <i class="sicon-packed-box icon"></i>
-            <p>{{ trans('pages.orders.non_orders') }}</p>
+        {% set unix_lang = language.code|default('ar') %}
+
+        {% set unix_empty_heading = theme.settings.get('unix_account_orders_empty_heading') %}
+        {% if unix_empty_heading is iterable %}{% set unix_empty_heading = unix_empty_heading[unix_lang] is defined ? unix_empty_heading[unix_lang] : null %}{% endif %}
+        {% if unix_empty_heading is null or not unix_empty_heading|trim %}{% set unix_empty_heading = trans('blocks.unix.account.orders_empty_heading') %}{% endif %}
+
+        {% set unix_empty_text = theme.settings.get('unix_account_orders_empty_text') %}
+        {% if unix_empty_text is iterable %}{% set unix_empty_text = unix_empty_text[unix_lang] is defined ? unix_empty_text[unix_lang] : null %}{% endif %}
+        {% if unix_empty_text is null or not unix_empty_text|trim %}{% set unix_empty_text = trans('blocks.unix.account.orders_empty_text') %}{% endif %}
+
+        <div data-testid="store-orders-empty" class="unix-account-panel unix-account-empty">
+            <h2 class="unix-account-empty__title">{{ unix_empty_heading }}</h2>
+            <p class="unix-account-empty__text">{{ unix_empty_text }}</p>
+            <a class="unix-btn unix-account-empty__cta" href="{{ link('products') }}">{{ trans('blocks.unix.account.shop_now') }}</a>
         </div>
     {% endif %}
 {% endblock %}

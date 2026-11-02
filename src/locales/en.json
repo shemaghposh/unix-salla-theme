@@ -314,7 +314,12 @@
       },
       "account": {
         "nav": "My account",
-        "greeting": "Hello, :name"
+        "greeting": "Hello, :name",
+        "orders_empty_heading": "You haven't placed any orders yet",
+        "orders_empty_text": "You haven't placed any orders yet. Great finds await. Start shopping and make your first order today.",
+        "shop_now": "Shop now",
+        "edit_rating": "Edit rating",
+        "delete_rating": "Delete rating"
       },
       "collection": {
         "filters": "Filters",
