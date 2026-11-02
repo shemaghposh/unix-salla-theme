@@ -31,6 +31,7 @@ class SizeCharts {
     this.dialog = root.querySelector('[data-sg-dialog]');
     this.title = this.dialog.querySelector('[data-sg-title]');
     this.content = this.dialog.querySelector('[data-sg-content]');
+    this.statusEl = this.dialog.querySelector('[data-sg-status]');
     this.guides = null;     // [{ label, name, html }] once loaded
     this.request = null;
     this.trigger = null;
@@ -135,10 +136,10 @@ class SizeCharts {
 
   close() { if (this.dialog.open) this.dialog.close(); }
 
+  /** The one persistent role="status" node (in the twig) only changes its text, so it is announced. */
   status(text) {
-    const p = el('p', 'unix-sg__status', text);
-    p.setAttribute('role', 'status');
-    this.content.replaceChildren(p);
+    if (text) this.content.replaceChildren();
+    if (this.statusEl) this.statusEl.textContent = text || '';
   }
 
   /** One guide by index, or every guide (each under its own heading) when none was chosen. */
@@ -148,11 +149,16 @@ class SizeCharts {
     const blocks = (one ? [one] : guides).map((g) => {
       const section = el('section', 'unix-sg__chart');
       if (!one && g.name) section.appendChild(el('h3', 'unix-sg__name', g.name));
+      // a wide table scrolls inside this box: focusable + named so keyboard users can scroll it
       const body = el('div', 'unix-sg__rte');
+      body.tabIndex = 0;
+      body.setAttribute('role', 'region');
+      body.setAttribute('aria-label', g.label || g.name || this.title.textContent);
       body.innerHTML = g.html; // merchant HTML from Salla's size guide (same as <salla-product-size-guide>)
       section.appendChild(body);
       return section;
     });
+    this.status('');
     this.content.replaceChildren(...blocks);
     this.content.scrollTop = 0;
     this.dialog.scrollTop = 0;

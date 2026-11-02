@@ -109,7 +109,11 @@ html:has(.unix-sg__dialog[open]) { overflow: hidden; }
   padding-block: var(--s-6);
   text-align: center;
   color: var(--c-text-muted);
+
+  &:empty { padding: 0; } /* stays in the a11y tree as the live region, takes no space */
 }
+
+.unix-sg__rte:focus-visible { outline-offset: calc(-1 * var(--ring-w)); } /* scroll region ring stays inside the card */
 
 .unix-sg__chart + .unix-sg__chart { margin-block-start: var(--s-6); }
 
