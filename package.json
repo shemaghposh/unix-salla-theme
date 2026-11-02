@@ -50,15 +50,15 @@
     "webpack-cli": "^7.2.1"
   },
   "browserslist": [
-    "chrome >= 100",
-    "and_chr >= 100",
-    "edge >= 100",
-    "firefox >= 100",
-    "and_ff >= 100",
-    "safari >= 15.4",
-    "ios_saf >= 15.4",
-    "samsung >= 19",
-    "opera >= 86"
+    "chrome >= 111",
+    "and_chr >= 111",
+    "edge >= 111",
+    "firefox >= 121",
+    "and_ff >= 121",
+    "safari >= 16.2",
+    "ios_saf >= 16.2",
+    "samsung >= 22",
+    "opera >= 97"
   ],
   "engines": {
     "node": "^22.18.0 || >=24.11.0"

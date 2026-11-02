@@ -3,9 +3,9 @@
 Targets (ROADMAP 6.2 and the Phase 2 DoD): Lighthouse Mobile Performance at least 85, theme JS under
 150KB gzip per page, LCP under 2.5s, CLS under 0.05.
 
-This file records what each page loads, what 6.2 changed and why, and the numbers still to be measured.
-The audit was done by reading the source and the last committed build in `public/`. Nothing was built on
-the `feat/6.2-performance` branch, so the "after" sizes below are estimates until `pnpm prod` runs.
+This file records what each page loads, what 6.2 changed and why, and the build and Lighthouse numbers.
+"Before" sizes are from the main session's pre-6.2 production build. "After" sizes are from its
+`pnpm prod` of `feat/6.2-performance` (§6).
 
 ---
 
@@ -13,15 +13,15 @@ the `feat/6.2-performance` branch, so the "after" sizes below are estimates unti
 
 | Asset | Loaded on | How | Before 6.2 (minified) |
 |---|---|---|---|
-| `app.css` | every page | `<link>` in `<head>`, render-blocking | 330,901 B in `public/` (444KB per the main session's latest build) |
+| `app.css` | every page | `<link>` in `<head>`, render-blocking | 444KB |
 | `fonts/sallaicons.css` (Salla CDN) | every page | `<link>`, render-blocking | Salla's file |
 | `theme.font.path` (Salla dashboard font CSS) | every page | `<link>`, render-blocking | Salla's file (see §5, kept) |
 | Google Fonts CSS | every page | `<link>`, render-blocking, preconnected, `display=swap` | both families on every page |
 | `Somar-Bold.woff2` | pages with Arabic headings | `@font-face` in `unix-tokens.scss`, `swap`, Arabic `unicode-range` | 35,752 B |
 | `product-card.js`, `main-menu.js`, `add-product-toast.js` | every page | `defer` in `<head>` | 10.9KB, 7.7KB, 7.4KB |
-| `app.js` (+ `wishlist.js`, `blog.js`) | every page | `defer` at the end of `<body>` | 113,768 B |
-| `home.js` | home | page `scripts` block | 46,548 B |
-| `product.js` (+ `products.js`) | product page and product listings | page `scripts` block | 68,280 B |
+| `app.js` (+ `wishlist.js`, `blog.js`) | every page | `defer` at the end of `<body>` | 122KB |
+| `home.js` | home | page `scripts` block | 46KB |
+| `product.js` (+ `products.js`) | product page and product listings | page `scripts` block | 76KB |
 | `checkout.js`, `account.js`, `order.js`, `pages.js`, `testimonials.js` | their pages | page `scripts` block | 6.2KB, 1.6KB, 1KB, 2KB, 0.9KB |
 
 ### Biggest sources found
@@ -65,10 +65,25 @@ the `feat/6.2-performance` branch, so the "after" sizes below are estimates unti
 
 ## 2. Build targets (commit `perf(6.2): modern browserslist…`)
 
-- `package.json → browserslist`: Chrome, Edge and Firefox 100+, Android Chrome and Firefox 100+,
-  Safari and iOS 15.4+, Samsung Internet 19+, Opera 86+. The theme already relies on `:has()`, `svh`
-  and `dvh`, and `color-mix()`, and Salla's web components are ES modules, so older browsers were
-  never fully supported.
+- `package.json → browserslist` is set to the theme's real feature floor, so preset-env has nothing left
+  to polyfill:
+
+  | Browser | Floor |
+  |---|---|
+  | Chrome, Edge, Android Chrome | 111 |
+  | Firefox, Android Firefox | 121 |
+  | Safari, iOS | 16.2 |
+  | Samsung Internet | 22 |
+  | Opera | 97 |
+
+  - The first pass (100 / 15.4) was below what the CSS already needs.
+  - The binding features are `color-mix()` (Chrome and Edge 111, Safari 16.2, Firefox 113), `:has()`
+    (Firefox 121, Safari 15.4, Chrome 105), and `svh` / `dvh` (Chrome 108, Safari 15.4).
+  - Samsung 22 and Opera 97 are the Chromium 111 equivalents.
+  - Below these floors, `color-mix()` colours and `:has()`-driven states (such as the transparent header)
+    were never going to work, with or without fallbacks.
+  - The reviewer suggested Chrome and Edge 108 and Samsung 21. I raised them to 111 and 22 because
+    `color-mix()` needs Chromium 111; at 108, preset-env keeps emitting `color-mix()` fallbacks.
 - `postcss.config.js`: `'logical-properties-and-values': false` is set explicitly. Logical properties
   reach the browser as written whatever the targets are, so RTL can't regress through the build again.
 - Effects:
@@ -157,23 +172,41 @@ asked for them.
 | Render-blocking third-party in `master.twig` | Google Fonts CSS (kept blocking: an async swap would add font-swap CLS risk against the 0.05 budget; A/B it in Lighthouse). Salla's `sallaicons.css` is needed. Salla's `theme.font.path` CSS is **kept but unused**: `--font-main` overrides the dashboard font, so its font files never download, but the CSS request still blocks. Remove it after confirming that Salla's theme review doesn't require it. |
 | Scripts | All theme scripts are `defer`. There is one small inline config `<script>`. |
 
-## 6. Expected vs measured
+## 6. Estimated vs measured
 
-The "expected" values below are estimates from reading the code. Fill in "measured" after `pnpm prod`
-and Lighthouse runs on `salla theme preview`.
+All sizes are minified. "Measured" is the main session's `pnpm prod` of this branch with the first
+browserslist (100 / 15.4), before the blocker fixes. The anime and notifier fixes and the raised floors
+(§2) come after it, so the rows marked ⏳ need the next build.
 
-| Metric | Before | Expected after 6.2 | Measured |
+| Metric | Before | Estimated | Measured |
 |---|---|---|---|
-| `app.css` (min) | 330.9KB (444KB reported) | about 230–270KB (fallbacks, prefixes and dead Raed CSS gone) | ⏳ |
-| `app.js` (min) | 113.8KB | about 25–35KB (no Swal, no anime, modern Babel) | ⏳ |
-| `sweetalert2.[hash].js` chunk | — | about 75–80KB, first notification only | ⏳ |
-| `home.js` (min) | 46.5KB | about 10–15KB (no fslightbox, modern Babel) | ⏳ |
-| `product.js` (min) | 68.3KB | about 30–35KB (fslightbox on demand, no lite-youtube) | ⏳ |
-| `fslightbox.[hash].js` chunk | — | about 31KB, product pages with a video slide only | ⏳ |
-| Theme JS per page (gz): home, PDP, PLP, cart | ⏳ | well under 150KB | ⏳ |
+| `app.css` | 444KB | about 230–270KB | **347KB** (−22%). Next build expected lower: see below. |
+| `app.js` | 122KB | about 25–35KB | **29KB** (−76%). The fallback and warm-cache code adds well under 1KB. |
+| `sweetalert2.[hash].js` chunk | — | about 75–80KB | **77KB**, fetched after `load` when idle, or on the first notification |
+| `home.js` | 46KB | about 10–15KB | **15KB** (−67%) |
+| `product.js` | 76KB | about 30–35KB | **45KB** (−41%). Above the estimate: see below. |
+| `fslightbox.[hash].js` chunk | — | about 31KB | **30KB**, product pages with a video slide only |
+| `animejs.[hash].js` chunk | — | about 17KB | ⏳ (new with the loyalty fix; loyalty page only) |
+| Theme JS per page (gz): home, PDP, PLP, cart | — | well under 150KB | ⏳. Minified totals before `load`, counting `app` plus the page entry plus the three `<head>` scripts (about 26KB together): about 70KB on home and about 100KB on the PDP. The idle-warmed 77KB SweetAlert2 chunk comes after `load` on top of that. |
 | Lighthouse Mobile Performance: home, PDP, PLP | ⏳ | at least 85 | ⏳ |
 | LCP (mobile): home hero, PDP gallery | ⏳ | under 2.5s | ⏳ |
 | CLS: home, PDP, PLP | ⏳ | under 0.05 | ⏳ |
+
+**Why two results came in above the estimate:**
+- **`app.css` (347KB, not 230–270KB).**
+  - The 100 / 15.4 floor still let preset-env emit fallbacks for `color-mix()`, which needs Chromium 111
+    or Safari 16.2.
+  - The estimate also overrated how much of the file was custom-property fallbacks. A large share is real
+    rules: about 50 `unix-*` partials, the Raed home blocks kept in §3, Tailwind preflight and utilities,
+    and `@tailwindcss/forms`.
+  - Raising the floor (§2) should remove the `color-mix()` fallbacks. Re-measure it.
+- **`product.js` (45KB, not 30–35KB).**
+  - The Size Finder (`unix-size-finder.js` is about 24KB of source, plus about 12KB for
+    `unix-size-finder-model.js`) is bundled into `product.js`.
+  - That entry also serves product listings, which never use the Size Finder.
+  - Candidate follow-up: load the Size Finder with `import()` only when its markup is on the page. Not
+    done here, because the Size Finder boots before any automatic size pick (`product.js`), so this needs
+    its own test.
 
 ## 7. Check in `salla theme preview`
 
@@ -196,5 +229,12 @@ and Lighthouse runs on `salla theme preview`.
 4. **Home YouTube block** still plays (lite-youtube).
 5. **English pages** use Open Sans and Arabic pages use IBM Plex Sans Arabic. There should be no
    fallback-font flash beyond the usual swap.
-6. **Lighthouse mobile** on home, a PDP, a PLP and the cart: record the results in §6 and the ROADMAP
+6. **Loyalty page:** the star and points animation still runs (`animejs.[hash].js` loads there only).
+   With reduced motion, the final points show at once.
+7. **Blog like:** the count goes up or down by one, and never below 0.
+8. **Lighthouse mobile** on home, a PDP, a PLP and the cart: record the results in §6 and the ROADMAP
    6.2 row.
+9. **Every build commit must `git add` the new `public/*.[hash].js` chunks.** Today these are
+   `sweetalert2`, `fslightbox` and `animejs`. Salla serves only what is committed in `public/`, and the
+   hashed names change whenever the content changes (`output.clean` deletes the old ones), so also stage
+   the deletions (`git add -A public`).
