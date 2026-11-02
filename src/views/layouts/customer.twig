@@ -44,7 +44,7 @@
                             {% if unix_is_profile and user.first_name %}
                                 <p class="unix-account__greeting">{{ trans('blocks.unix.account.greeting', {'name': user.first_name}) }}</p>
                             {% endif %}
-                            <h1 class="unix-account__title">{{ page.title }}</h1>
+                            <h1 class="unix-account__title unix-size-h2">{{ page.title }}</h1>
                         </div>
                     {% endblock %}
                 </header>

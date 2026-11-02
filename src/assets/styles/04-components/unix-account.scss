@@ -203,13 +203,10 @@
   font-size: var(--t-small);
 }
 
-// .theme-unix prefix beats `.theme-unix h1` (page-title size): account titles read at h2 size like unix.sa
-.theme-unix .unix-account__title {
+// Size comes from .unix-size-h2 on the h1 (DS §2.2): account titles read at h2 size like unix.sa
+.unix-account__title {
   margin: 0;
   font-family: var(--f-heading);
-  font-size: var(--t-h2);
-  font-weight: var(--fw-bold);
-  line-height: 1.3;
   color: var(--c-text);
 }
 
