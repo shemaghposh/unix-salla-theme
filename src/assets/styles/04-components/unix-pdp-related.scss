@@ -1,0 +1,171 @@
+/*
+ * UNIX product page, below the main section (ROADMAP 3.9 · DS §8.27 · SPEC §5.3, §8.12):
+ * «أكملي الإطلالة» (.unix-ctl) and «قد يعجبك أيضًا» (.unix-recs).
+ * Both are product grids of the shared UNIX card (unix-product-card.scss, scoped by .unix-products)
+ * inside salla-products-list. The skeleton reuses .unix-products__skel-* (unix-products-tabs.scss).
+ * Imported after unix-product-card.scss: the .unix-ctl card overrides need to come later.
+ */
+
+.unix-ctl,
+.unix-recs {
+  --cols: 2;
+
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+.unix-ctl[hidden],
+.unix-recs[hidden] { display: none; }
+
+// .theme-unix prefix: beats the base `.theme-unix h2` size (unix-tokens.scss)
+.theme-unix .unix-pdp-heading {
+  margin: 0 0 var(--s-5);
+  font-size: var(--t-h3);
+  line-height: 1.35;
+  text-align: start;
+}
+
+.unix-pdp-body {
+  position: relative;
+  min-inline-size: 0;
+}
+
+// Grid: the list's own wrapper and the skeleton share the same columns and gaps
+.unix-pdp-body .s-products-list-wrapper,
+.unix-pdp-skeleton {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: var(--s-5) var(--gutter);
+}
+
+.unix-pdp-skeleton .unix-products__skel-card { display: flex; }
+
+// Swap the skeleton for the cards once the first one exists (or JS saw the list settle)
+.unix-pdp-body:has(.s-product-card-entry) .unix-pdp-skeleton,
+[data-loaded] .unix-pdp-skeleton { display: none; }
+
+// The list's own status rows (end-of-list / error text) have no place in a fixed grid
+.unix-pdp-body .s-infinite-scroll-status { display: none; }
+
+// ── «أكملي الإطلالة» ─────────────────────────────
+.unix-ctl {
+  padding-block: var(--s-5) var(--s-6);
+
+  @media (min-width: 768px) {
+    --cols: 4;
+
+    padding-block: var(--s-6) var(--section-sm);
+  }
+}
+
+// Skeleton button row, same height and gap as the real «أضيفي» button
+.unix-pdp-skel-btn {
+  display: block;
+  block-size: var(--btn-h-sm);
+  margin-block-start: var(--s-3);
+  border-radius: var(--r-pill);
+  background: var(--c-surface-muted);
+
+  // Touch: same --tap height as the real button (P6)
+  @media not all and (hover: hover) and (min-width: 1024px) { block-size: var(--tap); }
+}
+
+// The quick add sits in the flow under the price, always visible, full width, outline, text only
+.unix-ctl.unix-products .s-product-card-entry .s-product-card-content-footer {
+  position: static;
+  display: block;
+  margin-block-start: var(--s-3);
+  opacity: 1;
+  transform: none;
+}
+
+.unix-ctl.unix-products .s-product-card-out-of-stock .s-product-card-content-footer { display: none; }
+
+body.theme-unix .unix-ctl.unix-products .s-product-card-content-footer .s-button-btn {
+  --_bg: transparent;
+  --_fg: var(--c-action);
+  --_fill: var(--c-action);
+  --_fill-fg: var(--c-text-inverse);
+  --_ring: inset 0 0 0 var(--line-w-strong) var(--c-action);
+
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: var(--btn-h-sm);
+  padding-inline: var(--s-5);
+
+  // Touch: 44px target, like the shared card's quick add (unix-product-card.scss, DS §8.2 / P6)
+  @media not all and (hover: hover) and (min-width: 1024px) { min-block-size: var(--tap); }
+}
+
+.unix-ctl.unix-products .s-product-card-content-footer salla-add-product-button {
+  i { display: none; }
+
+  span:not([class]) {
+    position: static;
+    inline-size: auto;
+    block-size: auto;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: normal;
+  }
+}
+
+// ── «قد يعجبك أيضًا» ─────────────────────────────
+.unix-recs {
+  padding-block: var(--section-sm);
+
+  // unix.sa padding «l» bottom switches at 750 (DS §3.2 note, same component-level exception as §8.17)
+  @media (min-width: 750px) { padding-block-end: var(--section-md); }
+  @media (min-width: 1024px) { --cols: 4; }
+}
+
+// Below lg only two skeleton cards show, like the two-column grid
+.unix-recs .unix-products__skel-card:nth-child(n + 3) {
+  display: none;
+
+  @media (min-width: 1024px) { display: flex; }
+}
+
+// Layout like unix.sa section-grid: <576 title / cards / full-width button; ≥576 title · button, cards
+.unix-recs__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "title" "body" "cta";
+  align-items: center;
+
+  @media (min-width: 576px) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title cta"
+      "body body";
+    column-gap: var(--s-4);
+  }
+}
+
+.theme-unix .unix-recs__title {
+  grid-area: title;
+  margin: 0;
+  text-align: center;
+
+  @media (min-width: 576px) { text-align: start; }
+}
+
+.unix-recs__body {
+  grid-area: body;
+  margin-block-start: var(--s-5);
+}
+
+.unix-recs__cta {
+  grid-area: cta;
+  display: flex;
+  margin-block-start: var(--s-6);
+
+  .unix-btn { inline-size: 100%; }
+
+  @media (min-width: 576px) {
+    margin-block-start: 0;
+
+    .unix-btn { inline-size: auto; }
+  }
+}

@@ -228,6 +228,15 @@
   --z-sticky-atc: 30;                  /* mobile sticky add-to-cart: under the header (40) and drawers (60) */
 }
 
+/* ── Phase 3 · 3.8 additions (DS §13.1, §8.26 reviews) ── */
+:root {
+  --reviews-max: 1200px;               /* reviews section width (unix.sa Judge.me max_width 1200) */
+  --fw-regular: 400;                   /* font weights (DS §2.1) */
+  --fw-medium: 500;
+  --fw-semibold: 600;                  /* Open Sans has 600; Arabic has no 600 face and falls back to 700. Size finder (3.3) */
+  --fw-bold: 700;                      /* stands in for unix.sa's 600 on IBM Plex Sans Arabic / Somar */
+}
+
 /* ── Base ─────────────────────────────────────── */
 .theme-unix {
   background-color: var(--c-bg);

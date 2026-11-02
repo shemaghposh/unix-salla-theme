@@ -8,6 +8,7 @@ import initSizeFinder from './partials/unix-size-finder'; // ROADMAP 3.3 (DS §8
 import initStickyAtc from './partials/unix-sticky-atc'; // ROADMAP 3.2 (DS §8.21)
 import initSizeCharts from './partials/unix-size-charts'; // ROADMAP 3.4 (DS §8.23)
 import initDeliveryEstimate from './partials/unix-delivery-estimate'; // ROADMAP 3.6 (DS §8.24)
+import initPdpRelated from './partials/unix-pdp-related'; // ROADMAP 3.9 (DS §8.27)
 
 class Product extends BasePage {
     onReady() {
@@ -29,6 +30,8 @@ class Product extends BasePage {
         initSizeCharts();
         // ROADMAP 3.6: «متى يصلك طلبك؟» country / city selects
         initDeliveryEstimate();
+        // ROADMAP 3.9: «أكملي الإطلالة» + «قد يعجبك أيضًا» below the main section
+        initPdpRelated();
     }
 
     initProductOptionValidations() {

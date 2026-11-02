@@ -263,6 +263,17 @@
         "fine": "كاش باك :percent٪ · :validity",
         "default_validity": "صالح ٦ أشهر",
         "login": "سجّلي دخولك لاستخدام رصيدك"
+      },
+      "reviews": {
+        "title": "تقييمات العميلات"
+      },
+      "complete_look": {
+        "title": "أكملي الإطلالة",
+        "add": "أضيفي"
+      },
+      "recommendations": {
+        "title": "قد يعجبك أيضًا",
+        "view_all": "عرض الكل"
       }
     }
   },

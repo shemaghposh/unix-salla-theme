@@ -263,6 +263,17 @@
         "fine": ":percent% cashback · :validity",
         "default_validity": "valid 6 months",
         "login": "Sign in to use your credit"
+      },
+      "reviews": {
+        "title": "Customer reviews"
+      },
+      "complete_look": {
+        "title": "Complete the look",
+        "add": "Add"
+      },
+      "recommendations": {
+        "title": "You may also like",
+        "view_all": "View all"
       }
     }
   },

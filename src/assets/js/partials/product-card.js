@@ -118,6 +118,23 @@ class ProductCard extends HTMLElement {
   }
 
   /**
+   * Quick-add label. A UNIX section can ask for its own short label for products on plain sale
+   * through `data-unix-add-label` on an ancestor («أضيفي» in «أكملي الإطلالة», ROADMAP 3.9 · DS §8.22).
+   * Pre-order, booking, donation and out-of-stock keep Salla's own wording.
+   */
+  getCardAddLabel() {
+    const unixLabel = this.closest('[data-unix-add-label]')?.dataset.unixAddLabel;
+    const plainSale = this.product.status === 'sale'
+      && !this.product.is_out_of_stock
+      && !this.product.has_preorder_campaign
+      && !['booking', 'donating'].includes(this.product.type);
+    if (unixLabel && plainSale) {
+      return this.escapeHTML(unixLabel);
+    }
+    return this.product.add_to_cart_label ? this.product.add_to_cart_label : this.getAddButtonLabel();
+  }
+
+  /**
    * Second product image for the hover crossfade (DS §8.3). Rendered only inside UNIX product
    * rows (`.unix-products`, which request includes='["images"]'); every other listing renders
    * exactly as before. Decorative: the first image carries the alt. CSS keeps it display:none
@@ -296,7 +313,7 @@ class ProductCard extends HTMLElement {
                 ${this.product.status == 'sale' ?
                     `<i class="text-base sicon-${ this.product.type == 'booking' ? 'calendar-time' : 'shopping-bag'}"></i>` : ``
                   }
-                <span>${this.product.add_to_cart_label ? this.product.add_to_cart_label : this.getAddButtonLabel() }</span>
+                <span>${this.getCardAddLabel()}</span>
               </salla-add-product-button>
 
               ${this.horizontal || this.fullImage ?

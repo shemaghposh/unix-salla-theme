@@ -1,0 +1,336 @@
+/*
+ * UNIX reviews (ROADMAP 3.8 · DS §8.26 · SPEC §5.3, §9).
+ * unix.sa's branded Judge.me widget (reference/shopify-theme/assets/unix-reviews.css + unix-stars.css)
+ * rebuilt on Salla's own components, styled ONLY through their public classes:
+ *   salla-comments → .s-comments-*      salla-reviews-summary → .s-reviews-summary-*
+ *   salla-comment-form → .s-comment-form-*   salla-rating-stars → .s-rating-stars-*
+ *   salla-progress-bar (histogram) → .s-progress-bar-*
+ * Salla injects its component CSS at runtime, so every rule is prefixed with .theme-unix (the body class) to win
+ * on specificity instead of on source order. Buttons (.s-button-btn) and fields (.s-form-control)
+ * already take the UNIX look from unix-controls.scss.
+ */
+
+// ── Stars: everywhere (summary, review cards, next to the product title) ──
+.theme-unix salla-rating-stars {
+  .s-rating-stars-btn-star {
+    fill: var(--c-border);
+  }
+
+  .s-rating-stars-selected,
+  .s-rating-stars-hovered {
+    fill: var(--c-accent);
+  }
+
+  .s-rating-stars-reviews {
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .s-rating-stars-label {
+    margin-inline: var(--s-2);
+    padding-block: var(--s-1);
+    padding-inline: var(--s-2);
+    border-radius: var(--r-pill);
+    background: var(--c-surface-muted);
+    color: var(--c-text);
+    font-size: var(--t-micro);
+  }
+
+  // Editable stars (rating forms): keyboard ring on the star button
+  button.s-rating-stars-btn-star:focus-visible {
+    outline: var(--ring-w) solid var(--c-accent);
+    outline-offset: var(--ring-w);
+    border-radius: var(--r-sm);
+  }
+}
+
+// ── Section shell ──
+.theme-unix .s-comments-product {
+  padding-block: var(--section-sm);
+  background: var(--c-bg);
+  color: var(--c-text);
+
+  .s-comments-container {
+    inline-size: 100%;
+    max-inline-size: calc(var(--reviews-max) + 2 * var(--page-margin));
+    margin-inline: auto;
+    padding-inline: var(--page-margin);
+  }
+}
+
+.theme-unix .s-comments-title {
+  margin: 0 0 var(--s-5);
+  color: var(--c-text);
+  font-family: var(--f-heading);
+  font-size: var(--t-h3);
+  font-weight: var(--fw-bold); // unix.sa 600, not loaded (DS §2.1)
+  line-height: 1.35;
+}
+
+// ── Header row: count + sort ──
+.theme-unix .s-comments-header {
+  gap: var(--s-3);
+  margin-block: var(--s-6) var(--s-5);
+}
+
+.theme-unix .s-comments-count-label {
+  color: var(--c-text);
+  font-size: var(--t-body);
+  font-weight: var(--fw-medium);
+}
+
+.theme-unix .s-comments-filter-label {
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+}
+
+.theme-unix .s-comments-sort-input {
+  inline-size: auto;
+  min-inline-size: calc(var(--s-10) + var(--s-6));
+}
+
+// ── Summary (average + histogram) ──
+.theme-unix salla-reviews-summary {
+  margin-block-start: var(--s-6);
+  padding-inline: 0;
+  color: var(--c-text);
+}
+
+.theme-unix .s-reviews-summary-overall-section { padding-inline: 0; }
+
+.theme-unix .s-reviews-summary-average {
+  margin: 0;
+  color: var(--c-text);
+  font-family: var(--f-heading);
+  font-size: var(--t-h2);
+  font-weight: var(--fw-bold); // unix.sa 600, not loaded (DS §2.1)
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.theme-unix .s-reviews-summary-count {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+}
+
+.theme-unix .s-reviews-summary-row-rate {
+  color: var(--c-text-muted);
+  font-size: var(--t-micro);
+  font-variant-numeric: tabular-nums;
+
+  span svg { fill: var(--c-accent); }
+}
+
+.theme-unix .s-reviews-summary-percentage {
+  color: var(--c-text-muted);
+  font-size: var(--t-micro);
+  font-variant-numeric: tabular-nums;
+}
+
+.theme-unix .s-reviews-summary-recommendation-percentage {
+  color: var(--c-text);
+  font-family: var(--f-heading);
+}
+
+// Histogram bar: Salla writes height and fill colour inline on the progress bar, so these two
+// declarations are the only !important ones (DS §8.26).
+.theme-unix .s-reviews-summary-progress {
+  .s-progress-bar-wrapper {
+    block-size: var(--s-2) !important;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--c-surface-muted);
+  }
+
+  .s-progress-bar-progress {
+    border-radius: var(--r-pill);
+    background-color: var(--c-accent) !important;
+  }
+}
+
+// ── Write-a-review form ──
+.theme-unix .s-comment-form-input {
+  display: block;
+  inline-size: 100%;
+  min-block-size: calc(var(--field-h) * 2);
+  padding-block: var(--s-3);
+  padding-inline: var(--s-4);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--c-field);
+  color: var(--c-text);
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  box-shadow: none;
+  transition: box-shadow var(--d-fast) var(--ease-out);
+
+  &::placeholder { color: var(--c-placeholder); opacity: 1; }
+  &:hover { box-shadow: inset 0 0 0 var(--line-w) var(--c-border); }
+  &:focus,
+  &:focus-visible {
+    outline: var(--ring-w) solid var(--c-accent);
+    outline-offset: var(--ring-w);
+    box-shadow: none;
+  }
+  &:disabled { opacity: var(--o-disabled); cursor: not-allowed; }
+}
+
+.theme-unix .s-comment-form-avatar {
+  margin: 0;
+  margin-inline-end: var(--s-5);
+  inline-size: var(--s-8);
+  block-size: var(--s-8);
+  background: var(--c-surface-muted);
+}
+
+.theme-unix .s-comment-form-action {
+  margin-block: var(--s-3) 0;
+}
+
+// ── Review card (one per salla-comment-item) ──
+.theme-unix salla-comment-item.s-comments-item,
+.theme-unix salla-comment-item.s-comments-item:last-child {
+  display: block;
+  margin-block-end: var(--s-3);
+  padding: var(--s-4);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+
+  @media (min-width: 768px) { padding: var(--s-5); }
+}
+
+.theme-unix .s-comments-item-wrapper {
+  font-size: var(--t-body);
+  line-height: 1.7;
+}
+
+.theme-unix .s-comments-item-avatar-img {
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  background: var(--c-surface-muted);
+}
+
+.theme-unix :is(.s-comments-item-user-info-name, .s-comments-item-user-info-name-with-margin) {
+  transform: none;
+  color: var(--c-text);
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  font-weight: var(--fw-medium);
+  line-height: 1.7;
+}
+
+.theme-unix .s-comments-item-timestamp,
+.theme-unix .s-comments-item-time {
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+  font-weight: var(--fw-regular);
+}
+
+// «اشترت المنتج» badge (Judge.me buyer badge)
+.theme-unix .s-comments-item-has-order-check-icon {
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+  background: var(--c-surface-muted);
+  color: var(--c-accent-text);
+
+  svg { fill: currentColor; }
+}
+
+.theme-unix .s-comments-item-has-order-check-text {
+  transform: none;
+  color: var(--c-accent-text);
+  font-size: var(--t-small);
+}
+
+.theme-unix .s-comments-item-content {
+  color: var(--c-text);
+
+  p { margin: 0; }
+}
+
+.theme-unix .s-comments-item-pending-text {
+  margin-block-start: var(--s-2);
+  padding-block: var(--s-1);
+  padding-inline: var(--s-3);
+  border-radius: var(--r-pill);
+  background: var(--c-surface-muted);
+  color: var(--c-text);
+  font-size: var(--t-micro);
+}
+
+.theme-unix :is(.s-comments-item-pinned-icon, .s-comments-item-pinned-icon-with-margin) {
+  background: var(--c-surface-muted);
+  color: var(--c-text-muted);
+}
+
+.theme-unix .s-comments-item-images img { border-radius: var(--r-sm); }
+
+// Store reply (nested comment item)
+.theme-unix salla-comment-item.s-comments-item-admin {
+  display: block;
+  margin-block-start: var(--s-4);
+  padding: var(--s-4);
+  border-radius: var(--r-sm);
+  background: var(--c-bg);
+}
+
+.theme-unix .s-comments-item-admin-wrapper {
+  margin-block-start: 0;
+  padding-inline-start: 0;
+}
+
+.theme-unix .s-comments-item-reply-icon svg { fill: var(--c-text-muted); }
+
+// «تفاصيل التقييم» toggle + factor rows
+.theme-unix .s-comments-item-review-factors-toggle {
+  min-block-size: var(--tap);
+  color: var(--c-accent-text);
+  font-size: var(--t-small);
+  text-underline-offset: var(--s-1);
+
+  &:hover { text-decoration: underline; }
+  &:focus-visible {
+    outline: var(--ring-w) solid var(--c-accent);
+    outline-offset: var(--ring-w);
+    border-radius: var(--r-sm);
+  }
+}
+
+.theme-unix .s-comments-item-review-factors {
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-sm);
+  background: transparent;
+}
+
+.theme-unix :is(.s-comments-item-review-factor-label, .s-comments-item-review-factor-name) {
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+}
+
+// ── Empty state ──
+.theme-unix .s-comments-placeholder {
+  color: var(--c-text-muted);
+
+  p { color: var(--c-text-muted); }
+
+  span {
+    background: var(--c-surface-muted);
+    color: var(--c-text-muted);
+  }
+
+  span svg { fill: currentColor; }
+}
+
+// ── Load more ──
+.theme-unix .s-comments .s-infinite-scroll-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-block-start: var(--s-5);
+}
+
+@media (max-width: 767px) {
+  .theme-unix .s-comments .s-infinite-scroll-btn { inline-size: 100%; }
+}
