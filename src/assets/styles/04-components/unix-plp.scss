@@ -1,0 +1,451 @@
+/*
+ * UNIX collection grid, sort bar and filters drawer (ROADMAP 4.2 · DS §8.30, §8.31 · SPEC §6).
+ * unix.sa main-collection-product-grid.liquid + facets.liquid (`horizontal_united`) +
+ * component-facets.css + template-collection.css.
+ * Markup: src/views/pages/product/index.twig. Behaviour: js/products.js, js/partials/unix-plp.js.
+ * The few !important rules beat inline styles that Salla's components write (heights, max-height,
+ * padding); there is no other way to reach them without a fork.
+ * Salla components are styled only through their public classes (.s-products-list-*, .s-filters-*,
+ * .s-applied-filters-*, .s-infinite-scroll-*, .s-price-range-*). The drawer shell is the 1.3 drawer
+ * (.unix-drawer in unix-menu.scss). Cards: unix-product-card.scss (.unix-products).
+ * Imported after unix-product-card.scss and unix-products-tabs.scss (skeleton overrides).
+ */
+
+// ── Section ─────────────────────────────────────
+.unix-plp {
+  --cols: 2;
+
+  padding-block-end: var(--section-sm);
+
+  @media (min-width: 768px) { --cols: 3; }
+  @media (min-width: 1024px) { --cols: 4; }
+}
+
+// ── Toolbar: filters button at the start, sort at the end ──
+.unix-plp__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-block: var(--s-4);
+  border-block-end: var(--line-w) solid var(--c-border);
+}
+
+.unix-plp__filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-block-size: var(--tap);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-text);
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  font-weight: var(--fw-medium);
+  line-height: 1.7;
+  cursor: pointer;
+  transition: opacity var(--d-fast) var(--ease-out);
+
+  &[hidden] { display: none; }
+  &:active { transform: translateY(var(--press-y)); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); border-radius: var(--r-sm); }
+  &:disabled { opacity: var(--o-disabled); cursor: default; }
+}
+
+@media (hover: hover) {
+  .unix-plp__filter-btn:hover { opacity: var(--o-muted); }
+}
+
+.unix-plp__filter-icon {
+  flex: none;
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+}
+
+.unix-plp__filter-count {
+  font-variant-numeric: tabular-nums;
+
+  &[hidden] { display: none; }
+}
+
+// Sort select, the compact select of DS §8.24
+.unix-plp__sort {
+  position: relative;
+  min-inline-size: 0;
+  margin-inline-start: auto; // stays at the end when the filters button is hidden
+}
+
+.unix-plp__select {
+  display: block;
+  max-inline-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-block-size: var(--tap);
+  padding-block: var(--s-2);
+  padding-inline: var(--s-3) calc(var(--s-3) + var(--icon-sm) + var(--s-1));
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-sm);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-family: var(--f-body);
+  font-size: var(--t-small);
+  line-height: 1.6;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color var(--d-fast) var(--ease-out);
+
+  &:active { border-color: var(--c-text); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  &:disabled { opacity: var(--o-disabled); cursor: not-allowed; }
+}
+
+@media (hover: hover) {
+  .unix-plp__select:hover { border-color: var(--c-text-muted); }
+}
+
+.unix-plp__chev {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--s-3);
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+  color: var(--c-text-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+// ── Applied filters (salla-applied-filters) ─────
+.unix-plp__applied:not(:empty) { margin-block-start: var(--s-3); }
+
+.theme-unix .unix-plp .s-applied-filters-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.theme-unix .unix-plp .s-applied-filters-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-4);
+}
+
+.theme-unix .unix-plp .s-applied-filters-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  min-block-size: var(--tap);
+  padding-inline: var(--s-4) 0;
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-pill);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-size: var(--t-small);
+  line-height: 1.6;
+}
+
+.theme-unix .unix-plp .s-applied-filters-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  margin-block: calc(var(--line-w) * -1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: none;
+  color: var(--c-text);
+  cursor: pointer;
+  transition: background-color var(--d-fast) var(--ease-out);
+
+  i { font-size: var(--icon-sm); }
+  &:hover { background: var(--c-hover-tint); }
+  &:active { background: var(--c-press-tint); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+}
+
+.theme-unix .unix-plp .s-applied-filters-clear-tag {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-text);
+  font-size: var(--t-small);
+  font-weight: var(--fw-medium);
+  text-decoration: underline;
+  text-decoration-thickness: var(--line-w);
+  text-underline-offset: var(--s-1);
+  cursor: pointer;
+  transition: opacity var(--d-fast) var(--ease-out);
+
+  &:hover,
+  &:active { opacity: var(--o-muted); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); border-radius: var(--r-sm); }
+}
+
+// ── Grid ────────────────────────────────────────
+.unix-plp__body {
+  position: relative;
+  min-inline-size: 0;
+  margin-block-start: var(--s-5);
+}
+
+.unix-plp__list { display: block; }
+
+// The list's own wrapper (any of Salla's layout classes) and the skeleton share columns and gaps
+.theme-unix .unix-plp__body .s-products-list-wrapper,
+.unix-plp__skeleton {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: var(--s-5) var(--gutter);
+  margin-block-end: 0;
+
+  @media (min-width: 576px) { row-gap: var(--s-7); }
+}
+
+// Two rows of skeleton cards: 2 × --cols of the 8 rendered (4 / 6 / 8)
+.unix-plp__skeleton .unix-products__skel-card {
+  display: flex;
+
+  &:nth-child(n + 5) { display: none; }
+
+  @media (min-width: 768px) {
+    &:nth-child(n + 5) { display: flex; }
+    &:nth-child(n + 7) { display: none; }
+  }
+
+  @media (min-width: 1024px) {
+    &:nth-child(n + 7) { display: flex; }
+  }
+}
+
+// Skeleton until the first card exists (or JS saw the list settle)
+.unix-plp__body:has(.s-product-card-entry) .unix-plp__skeleton,
+.unix-plp__body[data-loaded] .unix-plp__skeleton { display: none; }
+
+// Salla's own first-load spinner sits beside the list: the skeleton already holds the space
+.theme-unix .unix-plp__body:not([data-loaded]) .s-products-list-loading-wrapper { display: none; }
+
+// Load more (Salla's infinite-scroll button) and end-of-list text
+.theme-unix .unix-plp .s-infinite-scroll-wrapper {
+  margin-block-start: var(--s-7);
+  text-align: center;
+}
+
+.theme-unix .unix-plp .s-infinite-scroll-status {
+  text-align: center;
+
+  p {
+    max-inline-size: none;
+    margin: var(--s-6) 0 0;
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+  }
+}
+
+// No results: Salla's placeholder
+.theme-unix .unix-plp .s-products-list-placeholder {
+  padding-block: var(--s-8);
+  color: var(--c-text-muted);
+  font-size: var(--t-body);
+  text-align: center;
+
+  svg { inline-size: var(--s-8); block-size: var(--s-8); fill: currentColor; }
+}
+
+// ── Filters drawer (DS §8.31) ───────────────────
+.unix-filters__body { padding-block: var(--s-2); }
+
+.unix-filters__footer {
+  flex-wrap: nowrap;
+
+  .unix-btn {
+    flex: 1 1 0;
+    min-inline-size: 0;
+    padding-inline: var(--s-4);
+  }
+}
+
+// One filter group
+.theme-unix .unix-filters .s-filters-widget-container {
+  margin: 0;
+  padding: var(--s-4) 0;
+  border-block-end: var(--line-w) solid var(--c-border);
+  border-radius: 0;
+  background: transparent;
+
+  &:last-child { border-block-end: 0; }
+}
+
+.theme-unix .unix-filters .s-filters-widget-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  min-block-size: var(--tap);
+  margin: 0;
+  color: var(--c-text);
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  font-weight: var(--fw-medium);
+  line-height: 1.7;
+  letter-spacing: 0;
+  cursor: pointer;
+  user-select: none;
+
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); border-radius: var(--r-sm); }
+}
+
+// +/− mark in the system colours
+.theme-unix .unix-filters .s-filters-widget-plusminus {
+  flex: none;
+  inline-size: var(--s-3);
+  block-size: var(--s-3);
+
+  &::before,
+  &::after { background-color: var(--c-text-muted); }
+}
+
+.theme-unix .unix-filters .s-filters-widget-plusminus-active::after { background-color: var(--c-text); }
+
+// Salla measures the open height while the drawer is still hidden (0px): open = natural height
+.theme-unix .unix-filters .s-filters-widget-content:not(.s-filters-widget-closed) {
+  height: auto !important;
+  transition: none;
+}
+
+.theme-unix .unix-filters .s-filters-widget-values { padding-block-start: var(--s-2); }
+
+// One option row: 44px target, label in the text colour (Salla's grey fails AA)
+.theme-unix .unix-filters .s-filters-label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-block-size: var(--tap);
+  margin: 0;
+  color: var(--c-text);
+  font-size: var(--t-small);
+  font-weight: var(--fw-regular);
+  line-height: 1.6;
+  cursor: pointer;
+}
+
+.theme-unix .unix-filters .s-filters-option-name {
+  margin: 0;
+  color: var(--c-text);
+}
+
+.unix-filters :is(.s-filters-checkbox, .s-filters-radio) {
+  flex: none;
+  margin: 0;
+  border-color: var(--c-border);
+  accent-color: var(--c-action);
+  color: var(--c-action);
+  cursor: pointer;
+
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+}
+
+// «عرض المزيد» link (made a keyboard button by unix-plp.js)
+.theme-unix .unix-filters .s-filters-widget-more {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap);
+  margin: 0;
+  color: var(--c-accent-text);
+  font-size: var(--t-small);
+  text-decoration: underline;
+  text-decoration-thickness: var(--line-w);
+  text-underline-offset: var(--s-1);
+  cursor: pointer;
+
+  &:hover,
+  &:active { opacity: var(--o-muted); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); border-radius: var(--r-sm); }
+}
+
+// Search inside a long filter and the price inputs: DS §8.5 fields, compact
+.theme-unix .unix-filters .s-filters-widget-search-wrapper { padding: 0 !important; margin-block-end: var(--s-2) !important; }
+
+.unix-filters :is(.s-filters-widget-search-input, .s-price-range-number-input) {
+  inline-size: 100%;
+  min-block-size: var(--tap);
+  padding-inline: var(--s-3);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--c-field);
+  color: var(--c-text);
+  font-family: var(--f-body);
+  font-size: var(--t-small);
+  box-shadow: none;
+
+  &::placeholder { color: var(--c-placeholder); opacity: 1; }
+  &:focus,
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); box-shadow: none; }
+}
+
+// ── Highlighted filter (size): box grid like unix.sa facets__list--hor ──
+.theme-unix .unix-filters [data-unix-boxes] .s-filters-widget-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--s-8), 1fr));
+  gap: var(--s-2);
+  max-block-size: none !important; // no «show more» clipping for a compact grid
+}
+
+.theme-unix .unix-filters [data-unix-boxes] .s-filters-widget-more { display: none; }
+
+.theme-unix .unix-filters [data-unix-boxes] .s-filters-label {
+  position: relative;
+  justify-content: center;
+  min-block-size: var(--tap);
+  padding-inline: var(--s-2);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-sm);
+  background: var(--c-surface);
+  font-weight: var(--fw-medium);
+  text-align: center;
+  transition: border-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out);
+
+  &:active { transform: translateY(var(--press-y)); }
+
+  // Selected: text-colour border + inner ring (like the size buttons, DS §8.21)
+  &:has(input:checked) {
+    border-color: var(--c-text);
+    box-shadow: inset 0 0 0 var(--line-w) var(--c-text);
+  }
+
+  // Keyboard focus lives on the hidden input; the ring goes around the box
+  &:has(input:focus-visible) { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+}
+
+@media (hover: hover) {
+  .theme-unix .unix-filters [data-unix-boxes] .s-filters-label:not(:has(input:checked)):hover { border-color: var(--c-text-muted); }
+}
+
+// Input stays focusable and clickable through the label, hidden visually
+.theme-unix .unix-filters [data-unix-boxes] :is(.s-filters-checkbox, .s-filters-radio) {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+}
+
+.theme-unix .unix-filters [data-unix-boxes] .s-filters-option-name { overflow-wrap: anywhere; }
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-plp__filter-btn,
+  .unix-plp__select,
+  .theme-unix .unix-plp .s-applied-filters-tag-remove,
+  .theme-unix .unix-filters [data-unix-boxes] .s-filters-label { transition: none; }
+
+  .unix-plp__filter-btn:active,
+  .theme-unix .unix-filters [data-unix-boxes] .s-filters-label:active { transform: none; }
+}

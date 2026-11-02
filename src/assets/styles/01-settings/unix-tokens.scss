@@ -129,7 +129,6 @@
   --z-header: 40;
   --z-dropdown: 45;
   --z-drawer: 60;
-  --z-legacy-offcanvas: 10000; /* product filters on mmenu-light, until Phase 4 */
   --mega-col-min: 192px;
   --mega-media-max: 640px;
   --dropdown-min: 256px;
@@ -235,6 +234,15 @@
   --fw-medium: 500;
   --fw-semibold: 600;                  /* Open Sans has 600; Arabic has no 600 face and falls back to 700. Size finder (3.3) */
   --fw-bold: 700;                      /* stands in for unix.sa's 600 on IBM Plex Sans Arabic / Somar */
+}
+
+/* ── Phase 4 · 4.1 additions (DS §13.1, §8.29 collection banner) ── */
+:root {
+  --c-surface-ink: var(--unix-announce);      /* unix.sa scheme «Ink» background (collection banner) */
+  --c-text-on-ink: var(--unix-announce-text); /* text on --c-surface-ink, 10.6:1 */
+  --banner-ratio: 4 / 5;                      /* optional category image, below 576px (DS §6) */
+  --banner-ratio-wide: 16 / 9;                /* same from 576px */
+  --plp-banner-text-max: 460px;               /* banner text column (unix.sa max-width 46rem) */
 }
 
 /* ── Base ─────────────────────────────────────── */

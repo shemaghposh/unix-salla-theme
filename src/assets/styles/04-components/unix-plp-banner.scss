@@ -1,0 +1,81 @@
+/*
+ * UNIX collection banner (ROADMAP 4.1 · DS §8.29 · SPEC §6).
+ * unix.sa sections/main-collection-banner.liquid + component-collection-hero.css + the
+ * collection.json custom CSS (padding-top 20px, description padding-bottom 2.5rem).
+ * Markup: top of src/views/pages/product/index.twig.
+ */
+
+.unix-plp-banner {
+  background: var(--c-surface-ink);
+  color: var(--c-text-on-ink);
+
+  // The taupe ring is too faint on ink: follow the text colour instead (like the announcement bar)
+  :focus-visible { outline-color: currentColor; }
+}
+
+.unix-plp-banner__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-4);
+  padding-block: var(--s-5);
+  text-align: center;
+
+  @media (min-width: 768px) { gap: var(--s-6); }
+}
+
+.unix-plp-banner__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+  max-inline-size: var(--plp-banner-text-max);
+}
+
+// .theme-unix prefix: beats the base `.theme-unix h1` colour and margins (unix-tokens.scss)
+.theme-unix .unix-plp-banner__title {
+  margin: 0;
+  color: inherit;
+  text-align: center;
+}
+
+.unix-plp-banner__desc {
+  color: inherit;
+  font-size: var(--t-body-lg);
+  line-height: 1.75;
+
+  > :first-child { margin-block-start: 0; }
+  > :last-child { margin-block-end: 0; }
+
+  p {
+    max-inline-size: none;
+    color: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: var(--line-w);
+    text-underline-offset: var(--s-1);
+  }
+
+  img { max-inline-size: 100%; block-size: auto; }
+}
+
+// ── Optional category image (off by default, like unix.sa) ──
+.unix-plp-banner__media {
+  inline-size: 100%;
+  overflow: hidden;
+  aspect-ratio: var(--banner-ratio);
+  border-radius: var(--r-md);
+  background: var(--c-surface-muted);
+
+  @media (min-width: 576px) { aspect-ratio: var(--banner-ratio-wide); }
+}
+
+.unix-plp-banner__img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
