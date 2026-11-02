@@ -215,6 +215,12 @@
 
 @media (min-width: 1280px) { :root { --gallery-thumb-w: 96px; } }
 
+/* ── Phase 3 · 3.2 additions (DS §13.1, §8.21 product info) ── */
+:root {
+  --qty-w: 112px;                      /* quantity stepper (unix.sa .quantity 11.2rem) */
+  --z-sticky-atc: 30;                  /* mobile sticky add-to-cart: under the header (40) and drawers (60) */
+}
+
 /* ── Base ─────────────────────────────────────── */
 .theme-unix {
   background-color: var(--c-bg);

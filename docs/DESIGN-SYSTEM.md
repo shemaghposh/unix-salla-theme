@@ -459,6 +459,16 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **فوق الصورة:** `promotion_title` بتاع المنتج كـ Badge (§8.4) ناحية البداية فوق، والسعرات (لو موجودة) دايرة `--s-8` خلفيتها `--c-surface` تحت ناحية النهاية، وزرار المفضلة (`salla-button`) تحت ناحية البداية لحد 640px بس (بعدها زرار عمود المعلومات بتاع رائد هو اللي بيظهر). الحاجات اللي تحت بتتزق فوق شريط التقدّم على الموبايل.
 - **الكيبورد:** زرار الزووم بتاع الشريحة الظاهرة بس هو اللي في الـ tab order (الباقي `tabindex=-1`)، بعده الأسهم، بعده الـ thumbnails.
 
+### 8.21 Product Info (عمود معلومات المنتج) — *المرحلة 3.2*
+مطابق لترتيب البلوكات في `reference/shopify-theme/templates/product.json` و `sections/main-product.liquid` و `assets/section-main-product.css` (SPEC §5.2). الكود: `src/views/pages/product/single.twig` (عمود المعلومات) و `04-components/unix-pdp-info.scss` و `js/partials/unix-sticky-atc.js`.
+- **الترتيب:** العنوان ← السعر ← (مكان كود الخصم، فاضي) ← التقسيط (`salla-installment`، 3.5) ← الخيارات ← «اعرفي مقاسك» (§8.11) ← جداول المقاسات (3.4) ← الكمية والإضافة للسلة ← موعد التوصيل (3.6) ← الأكورديون ← التقييم. العناصر بينها `--s-4` (الأصل 1.6rem).
+- **العنوان:** `h1` بحجم `--t-h3` (§2.2: اسم المنتج في صفحته؛ نفس مدى «h2» في الأصل، حوالي 22 → 33px)، Somar Bold في العربي، **في النص** زي الأصل (`.product__title {text-align:center}`).
+- **السعر:** في النص، tabular. السعر الحالي `--t-body-lg` 500 بلون `--c-text`، ولو فيه خصم بلون `--c-price-sale` وجنبه القديم `--t-body` `--c-price-old` مشطوب، و Badge (§8.4) «تخفيض» بنص `--c-price-sale` وبوردر `--line-w` `--c-border` (Badge الـ Cream في الأصل). «شامل الضريبة» تحته `--t-small` `--c-text-muted`. السعر بيتحدّث مع الخيارات (`product.js`) من غير ما مكانه يتغير.
+- **الخيارات (variant picker):** `salla-product-options` بوضع الأزرار (`config` = `single-option`/`multiple-option` → `button`) زي `picker_type: button` في الأصل. الزرار: ارتفاع وعرض على الأقل `--tap`، padding-inline `--s-4`، خلفية `--c-surface`، بوردر `--line-w` `--c-border`، `--r-sm`، نص `--t-small` 500. hover: بوردر `--c-text-muted`؛ المختار: بوردر `--c-text` + حلقة داخلية `--line-w` (زي الأصل: بوردر بلون النص)؛ focus-visible: حلقة `--c-accent`؛ active: `--press-y`؛ خلصان: `--o-disabled` ومشطوب. الـ label فوق (`--t-small` 500، زي `.form-label`). الألوان: دايرة `--s-6` بحواف `--r-sm`، والمختار حلقة `--ring-w` `--c-text`. الـ thumbnails حواف `--r-sm`.
+- **الكمية + الإضافة:** صف واحد زي الأصل (`product-form__buttons-row`): `salla-quantity-input` عرضه `--qty-w` وارتفاعه `--btn-h`، خلفية `--c-field` ومن غير بوردر، pill (حواف أزرار الأصل)، أزرار +/− `--tap` بلون `--c-text-muted` (hover `--c-text`). بعده `salla-add-product-button` primary pill بياخد باقي العرض، وبعده زرار المفضلة (`--tap`) من 640px. الـ quick buy (Apple Pay) بتاع سلة تحت الصف زي «Buy it now» في الأصل.
+- **الأكورديون:** §8.10 (`<details name>`، واحد مفتوح في كل مرة زي الأصل)، كلهم مقفولين افتراضيًا. العنوان `--t-h4` بخط الـ body 500 (الأصل `h4 body-font`)، والمحتوى (`product.description`) `--t-body` بلون `--c-text-muted`، وبوردر فوق وتحت كل عنصر زي `.about__accordion-item`.
+- **زرار الإضافة الثابت (موبايل):** تحت 576px بس (الأصل `max-width: 575px`). شريط ثابت تحت بعرض الشاشة، خلفية `--c-bg` وبوردر فوق `--line-w` `--c-border`، padding `--s-4` و `--page-margin`، وتحت `+ env(safe-area-inset-bottom)`. جواه زرار primary عرض كامل بنفس نص زرار الإضافة. بيظهر لما زرار الإضافة الأصلي يبقى برا الشاشة (`IntersectionObserver`، زي الأصل حتى قبل ما توصليله)، وبيختفي لما يرجع يبان أو لما الفوتر يظهر. الضغط عليه بيضغط زرار سلة الحقيقي (مافيش منطق سلة تاني)، وحالة التحميل بتتنقل منه. الظهور: `opacity` و `translateY(100%) → 0` في `--d-base` بـ `--ease-out` (مع reduced-motion فوري). وهو مخفي `inert`، ولو الفوكس جواه وهو بيختفي بيرجع لزرار الإضافة الأصلي. الطبقة `--z-sticky-atc` (تحت الهيدر والدرج). `position: fixed` فمافيش CLS. التاجر يقدر يقفله من إعداد `sticky_add_to_cart`.
+
 ---
 
 ## 9. نبرة الكلام (Copy)
@@ -544,6 +554,9 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 | `--sf-fig` | 44px | رسم شكل الجسم (الأصل 4.4rem) (3.3) |
 | `--sf-think-w` | 120px | خط «نحسب مقاسك» (الأصل 12rem) (3.3) |
 | `--d-sf-scan` | 1.1s | دورة خط «نحسب مقاسك» (الأصل 1.1s). بيتقفل مع reduced-motion (3.3) |
+| **Phase 3 · 3.2** | | **Product Info (§8.21)** |
+| `--qty-w` | 112px | عرض خانة الكمية (الأصل `.quantity {width: 11.2rem}`) (3.2) |
+| `--z-sticky-atc` | 30 | طبقة زرار الإضافة الثابت على الموبايل: تحت الهيدر (40) والدرج (60) (3.2) |
 
 ### 13.2 فروقات مقصودة عن الأصل (تتنقل لـ §12)
 | شوبيفاي | هنا | السبب |
@@ -594,3 +607,7 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 | Size Finder: علامة «مقترح» absolute تحت زرار المقاس بلون `#2F5D46` ثابت | absolute برضه، `--c-success`، و `--c-text-inverse` لما المقاس متختار | التباين على الزرار المختار الغامق |
 | Size Finder: الفئة من `product.type`، والكومفي من metafield جدول المقاسات، و `fit_delta` metafield | الفئة والكومفي من اسم المنتج (كلمات زي الأصل + العربي)، ويتغيّروا لكل منتج من `unix_size_finder_data.PRODUCTS` | سلة مافيهاش product type ولا metafields في الثيم *(قرار مؤقت – محتاج مراجعة)* |
 | Size Finder: التوصية بتتكتب في الطلب كـ line-item property مخفية (`_rec_size`) للمعايرة | مش بتتكتب | سلة مابتقبلش properties مخفية على عنصر السلة من الثيم *(قرار مؤقت – محتاج مراجعة)* |
+| **Phase 3 · 3.2** أكورديون «مميزات المنتج» و«تعليمات العناية» من metafields | «الوصف» بس (`product.description`)، وبعده الحقول المخصصة لو موجودة (`salla-metadata`) | سلة مافيهاش metafields في الثيم *(قرار مؤقت – محتاج مراجعة، D56)* |
+| الأكورديون بـ JS (height في 300ms) | `<details name>` أصلية (§8.10) | من غير JS، وبيتقفل مع reduced-motion |
+| زرار الإضافة الثابت: نفس الزرار بيتنقل `position: fixed` (والصف بياخد min-height) | شريط منفصل بيضغط زرار سلة الحقيقي، `inert` وهو مخفي، و safe-area | مافيش CLS، والكيبورد وقارئ الشاشة مابيوصلوش لحاجة مخفية |
+| الكمية: أزرار − ثم + | ترتيب `salla-quantity-input` (+ ثم −) | ماينفعش نغيّر DOM بتاع كومبوننت سلة، وتغيير الترتيب بصريًا بس بيلخبط الكيبورد |

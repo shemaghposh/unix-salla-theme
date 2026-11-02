@@ -5,6 +5,7 @@ import Fslightbox from 'fslightbox';
 window.fslightbox = Fslightbox;
 import initGallery from './partials/unix-gallery';
 import initSizeFinder from './partials/unix-size-finder'; // ROADMAP 3.3 (DS §8.11)
+import initStickyAtc from './partials/unix-sticky-atc'; // ROADMAP 3.2 (DS §8.21)
 
 class Product extends BasePage {
     onReady() {
@@ -20,6 +21,8 @@ class Product extends BasePage {
         this.initProductOptionValidations();
         // ROADMAP 3.1: thumbnails, arrows, zoom dialog and the Salla app's native gallery
         initGallery();
+        // ROADMAP 3.2: mobile sticky add-to-cart that drives the real Salla button
+        initStickyAtc();
     }
 
     initProductOptionValidations() {
@@ -80,11 +83,7 @@ class Product extends BasePage {
           el.classList.add('scale-pulse');
         });
       });
-
-      app.onClick('#btn-show-more', e => app.all('#more-content', div => {
-        e.target.classList.add('is-expanded');
-        div.style = `max-height:${div.scrollHeight}px`;
-      }) || e.target.remove());
+      // 3.2: the description lives in a native <details> accordion now, so Raed's read-more is gone
     }
 }
 

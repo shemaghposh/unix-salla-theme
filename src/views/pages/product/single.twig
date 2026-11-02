@@ -110,270 +110,232 @@
                 {% include 'components.product.unix-gallery' %}
             </div>
 
-            <div class="main-content md:sticky md:overflow-hidden top-24 w-full md:w-2/4">
+            {#
+                ROADMAP 3.2 · DS §8.21 · SPEC §5.2: info column in unix.sa block order
+                (templates/product.json): title → price → [promo] → installments → options →
+                size finder → size charts (3.4) → buy buttons → delivery estimate (3.6) →
+                accordions → rating. Removed Raed extras unix.sa doesn't have: brand logo,
+                tags, social share, read-more, the second price box (D54).
+            #}
+            {# plain products get the original's feminine CTA; Salla's own label for preorder/booking/donation/notify (D55) #}
+            {% set unix_atc_plain = product.status == 'sale' and product.type not in ['booking', 'donating'] and not product.has_preorder_campaign %}
+            {% set unix_atc_label = unix_atc_plain ? trans('blocks.unix.pdp_info.add_to_cart') : product.add_to_cart_label %}
+
+            <div class="main-content unix-pdp-info md:sticky md:overflow-hidden top-24 w-full md:w-2/4">
                 {% hook 'product:single.description.start' %}
 
-                {% if product.brand.name %}
-                    <div class="product-brand mb-5 w-12">
-                        <a class="brand-logo" href="{{ product.brand.url }}" title="{{ product.brand.name }}">
-                            <img width="100%" height="100%" class="max-h-full object-contain"
-                                 src="{{ product.brand.logo }}"
-                                 title="{{ product.brand.name }}"
-                                 alt="{{ product.brand.name }}">
-                        </a>
+                {# 1 · Title: h1 tag at product-title size (--t-h3), centred like unix.sa #}
+                <div class="unix-pdp-info__head">
+                    <h1 data-testid="store-product-title" class="unix-pdp-info__title">{{ product.name }}</h1>
+
+                    {% if product.subtitle %}
+                        <p class="unix-pdp-info__subtitle">{{ product.subtitle }}</p>
+                    {% endif %}
+
+                    {#
+                        2 · Price. One block only: product.js updates .total-price / .before-price
+                        and toggles .price_is_on_sale / .starting-or-normal-price with the `hidden`
+                        utility, so those wrappers get their display only via :not(.hidden) in SCSS.
+                    #}
+                    <div data-testid="store-product-price" class="price-wrapper unix-pdp-price">
+                        <div class="price_is_on_sale unix-pdp-price__row {{ product.is_on_sale ? '' : 'hidden' }}">
+                            <span class="sr-only">{{ trans('blocks.unix.pdp_info.sale_price') }}</span>
+                            <span class="total-price unix-pdp-price__now is-sale">{{ product.sale_price|money }}</span>
+                            <span class="sr-only">{{ trans('blocks.unix.pdp_info.regular_price') }}</span>
+                            <s class="before-price unix-pdp-price__old">{{ product.regular_price|money }}</s>
+                            <span class="unix-pdp-price__badge" aria-hidden="true">{{ trans('blocks.unix.pdp_info.on_sale') }}</span>
+                        </div>
+                        <div class="starting-or-normal-price unix-pdp-price__row {{ product.is_on_sale ? 'hidden' : '' }}">
+                            {% if product.starting_price %}
+                                <span class="starting-price-title unix-pdp-price__from">{{ trans('pages.products.starting_price') }}</span>
+                            {% endif %}
+                            <span class="total-price unix-pdp-price__now">{{ product.starting_price ? product.starting_price|money : product.price|money }}</span>
+                        </div>
                     </div>
-                {% endif %}
+                    <p data-testid="store-product-out-of-stock" class="out-of-stock unix-pdp-price__out hidden" role="status">{{ trans('pages.products.out_of_stock') }}</p>
 
-                <h1 data-testid="store-product-title" class="text-xl md:text-2xl leading-10 font-bold mb-6 text-gray-800">{{ product.name }}</h1>
+                    {% if product.is_taxable %}
+                        <p class="unix-pdp-info__note">{{ trans('pages.products.tax_included') }}</p>
+                    {% endif %}
 
-                {% if product.subtitle %}
-                    <h2 class="product-entry__sub-title text-sm text-gray-500 leading-6 mb-2.5">
-                        {{ product.subtitle }}
-                    </h2>
-                {% endif %}
-
-                {% if product.rating %}
-                    <salla-rating-stars data-testid="store-product-rating" value="{{ product.rating.stars }}"
-                                        reviews="{{ product.rating.count }}"></salla-rating-stars>
-                {% endif %}
-
-                {% if product.is_taxable %}
-                    <small class="color-grey">{{ trans('pages.products.tax_included') }}</small>
-                {% endif %}
-                {# Price #}
-                <div data-testid="store-product-price" class="flex whitespace-nowrap gap-4 items-center">
-                  <div class="{{ product.is_on_sale ? '' : 'hidden' }} space-x-2 rtl:space-x-reverse whitespace-nowrap">
-                      <p class="text-red-800 font-bold text-xl inline-block">{{product.sale_price|money}}</p>
-                      <span class="text-gray-500 line-through">{{product.regular_price|money}}</span>
-                  </div>
-                  <div class="gap-4 {{ product.is_on_sale ? 'hidden' : 'flex' }}">
-                      {% if product.starting_price %} 
-                          <span class="">{{ trans('pages.products.starting_price') }}</span>
-                      {% endif %} 
-                          <p class=" font-bold text-xl inline-block"> {{product.starting_price ? product.starting_price|money : product.price|money }}</p>
-                  </div>
-                </div>
-
-                <div data-testid="store-product-description" class="product__description p-2 px-5 sm:p-1 leading-7 mb-3">
-                    {% set product_desc = product.description|replace({"&nbsp;":"\n"}) %}
-                    {% if product.has_read_more %}
-                        <article class="article article--main relative leading-8 overflow-hidden transition-all max-h-0 duration-300 py-4"
-                            id="more-content" style="max-height:5.25rem">
-                            {{ product_desc|raw }}
-                        </article>
-
-                        {# Read More Button #}
-                        <a id="btn-show-more" class="link--primary inline-block mt-2 cursor-pointer">
-                            {{ trans('pages.products.read_more') }}
-                        </a>
-                    {% else %}
-                        <article class="article--main pb-1">
-                            {{ product_desc|raw }}
-                        </article>
+                    {# Salla merchant toggles (sold / remaining counters): render only when switched on (D54) #}
+                    {% if product.sold_quantity or product.can_show_remained_quantity %}
+                        <p class="unix-pdp-info__note">
+                            {% if product.sold_quantity %}
+                                <span>{{ trans('pages.products.sold') }} {{ pluralize('pages.products.sold_times', product.sold_quantity)|raw }}</span>
+                            {% endif %}
+                            {% if product.can_show_remained_quantity %}
+                                <span>{{ trans('pages.products.remained') }} {{ product.quantity }}</span>
+                            {% endif %}
+                        </p>
                     {% endif %}
                 </div>
 
-                {% if product.tags|length and theme.settings.get('show_tags', true) %}
-                    <div class="mb-3">
-                        {% for tag in product.tags %}
-                            <a href="{{ tag.url }}"
-                               class="rtl:ml-2 ltr:mr-2 inline-flex  text-gray-500 hover:text-primary underline text-sm mb-1">{{ tag.name }}
-                                ,</a>
-                        {% endfor %}
-                    </div>
-                {% endif %}
+                {# 3 · Promo-code chip slot (unix.sa unix_promo_code: renders nothing today, SPEC §5.2.4) #}
 
-                <div class="flex rtl:space-x-reverse space-x-3">
-                    <salla-social-share data-testid="store-product-social-share" class="inline-flex mb-5" aria-label="social share"></salla-social-share>
-
-                    <salla-button
-                            data-testid="store-product-wishlist-btn"
-                            class="btn--wishlist animated hidden sm:inline-flex"
-                            data-id="{{ product.id }}"
-                            onclick="salla.wishlist.toggle('{{ product.id }}')"
-                            shape="icon"
-                            fill="outline"
-                            color="light"
-							aria-label="add to wishlist">
-                        <i class="sicon-heart"></i>
-                    </salla-button>
-                </div>
-
-                {% if product.sold_quantity or product.can_show_remained_quantity %}
-                    <div class="bg-white py-2.5 mb-5 rounded-md inline-flex text-sm">
-                        {% if product.sold_quantity %}
-                            <div class="px-4 !text-red-800">
-                                <i class="sicon-fire rtl:ml-1.5 ltr:mr-1.5"></i> {{ trans('pages.products.sold') }}
-                                <span>{{ pluralize('pages.products.sold_times', product.sold_quantity)|raw }}</span>
-                            </div>
-                        {% endif %}
-                        {% if product.can_show_remained_quantity %}
-                            <div class="px-4 rtl:even:border-r ltr:even:border-l even:border-gray-200">
-                                <i class="!text-red-800 sicon-box-bankers rtl:ml-1.5 ltr:mr-1.5"></i>
-                                {{ trans('pages.products.remained') }}
-                                <span>{{ product.quantity }}</span>
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endif %}
-                {#
-                    An identifier row is rendered only when a value could ever fill it - the parent
-                    product has one, or a variant does. It starts hidden when only a variant carries
-                    the value, and product.js reveals it once that variant is selected.
-
-                    The toggled wrapper deliberately carries no display utility of its own: `hidden`
-                    and `sm:grid` are both display rules of equal specificity, and `sm:grid` sits in
-                    a media query far later in the stylesheet, so it would win above 640px and paint
-                    an empty row. Keeping the card's layout classes on the inner element leaves
-                    `hidden` unopposed.
-                #}
-                {% if product.shows_sku %}
-                    <div class="product-sku-wrapper mb-4 {% if not product.sku %}hidden{% endif %}">
-                        <div class="flex justify-between sm:grid sm:grid-cols-3 bg-white rounded-md px-4 py-2">
-                            <div class="flex items-center">
-                                <i class="sicon-barcode mx-1"></i>
-                                {{ trans('pages.products.sku') }}
-                            </div>
-                            <div class="text-unicode break-all product-sku">{{ product.sku }}</div>
-                        </div>
-                    </div>
-                {% endif %}
-                {% if product.shows_barcode %}
-                    <div class="product-barcode-wrapper mb-4 {% if not product.barcode %}hidden{% endif %}">
-                        <div class="flex justify-between sm:grid sm:grid-cols-3 bg-white rounded-md px-4 py-2">
-                            <div class="flex items-center">
-                                <i class="sicon-barcode mx-1"></i>
-                                {{ trans('pages.products.barcode') }}
-                            </div>
-                            <div class="text-unicode break-all product-barcode">{{ product.barcode }}</div>
-                        </div>
-                    </div>
-                {% endif %}
                 {% hook 'product:single.description' %}
 
-                {# Installment Methods #}
-                <salla-installment data-testid="store-product-installment" price="{{ product.price }}"></salla-installment>
-                {% if product.has_metadata %}
-                <salla-metadata data-testid="store-product-metadata"></salla-metadata>
+                {# 4 · Installments: Salla's native Tamara / Tabby widgets (ROADMAP 3.5) #}
+                <salla-installment data-testid="store-product-installment" class="unix-pdp-installment" price="{{ product.price }}"></salla-installment>
+
+                {# Digital Files Settings #}
+                {% if product.digital_files_settings %}
+                    <digital-files-settings settings='{{ product.digital_files_settings|json_encode }}'></digital-files-settings>
                 {% endif %}
 
-                {% if product.show_availability %}
-                    <section class="bg-white p-5 rounded-md mb-5 last:mb-0">
-                        <div class="center-between">
-                            <label class="flex items-center text-base">
-                                <span class="sicon-location rtl:ml-1 ltr:mr-1"></span>
-                                <span class="inline-block">{{ trans('pages.products.availability') }}</span>
-                            </label>
-                            <div class="mt-1 sm:mt-0 sm:col-span-2 text-end">
-                                <div class="flex rtl:space-x-reverse space-x-3">
-                                    <a href="#!"
-                                       onclick="salla.event.dispatch('scopes::open', {mode: 'availability', product_id: '{{ product.id }}' })"
-                                       class="group text-primary flex items-center justify-center">
-                                        <span>{{ trans('pages.products.select_branch') }}</span>
-                                        <span class="sicon-keyboard_arrow_left mr-2 transition-all group-hover:-translate-x-1"></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                {% endif %}
-
-
-              {# Digital Files Settings #}
-              {% if product.digital_files_settings %}
-                <digital-files-settings settings='{{ product.digital_files_settings|json_encode }}'></digital-files-settings>
-              {% endif %}
-              {# End Digital Files Settings #}
-
-                <form data-testid="store-product-form" class="form product-form" enctype="multipart/form-data" method="post"
-                      onsubmit="return salla.form.onSubmit('cart.addItem', event)" >
+                <form data-testid="store-product-form" class="form product-form unix-pdp-info__form" enctype="multipart/form-data" method="post"
+                      onsubmit="return salla.form.onSubmit('cart.addItem', event)">
                     <input type="hidden" name="id" value="{{ product.id }}">
-
 
                     {% hook 'product:single.form.start' %}
 
-                    {% include 'pages.partials.product.options' %}
+                    {# 5 · Variant picker: button mode like unix.sa picker_type: button (DS §8.21) #}
+                    {% include 'pages.partials.product.options' with { unix_option_buttons: true } %}
+                    {# 6 · Size finder (ROADMAP 3.3) #}
                     {% include 'components.product.unix-size-finder' %}
+                    {# 3.4 size charts #}
 
                     {% hook 'product:single.form.end' %}
 
-                    <section class="flex bg-white p-5 sm:pb-0 rounded-md rounded-b-none">
-                        <div class="center-between w-full">
-                            <label class="form-label">
-                                <b class="block">
-                                    {{ trans('pages.products.price') }}
-                                </b>
-                            </label>
-
-                            <div class="flex whitespace-nowrap price-wrapper gap-4 items-center">
-                              <div class="{{ product.is_on_sale ? '' : 'hidden' }} price_is_on_sale space-x-2 rtl:space-x-reverse whitespace-nowrap">
-                                <h2 class="total-price text-red-800 font-bold text-xl inline-block">{{product.sale_price|money}}</h2>
-                                <span class="before-price text-gray-500 line-through">{{product.regular_price|money}}</span>
-                              </div>
-                              <div class="starting-or-normal-price gap-4 {{ product.is_on_sale ? 'hidden' : 'flex' }}">
-                                {% if product.starting_price %} 
-                                  <span class="starting-price-title">{{ trans('pages.products.starting_price') }}</span>
-                                {% endif %} 
-                                <h2 class="total-price font-bold text-xl inline-block"> {{product.starting_price ? product.starting_price|money : product.price|money }}</h2>
-                              </div>
-                            </div>
-
-                            <div data-testid="store-product-out-of-stock" class="out-of-stock min-h-7 leading-7 hidden text-base text-red-600 !opacity-50 font-bold">{{ trans('pages.products.out_of_stock')}}</div>
-                        </div>
-                    </section>
                     {# Pre-order Campaign #}
                     {% if product.has_preorder_campaign %}
-                        <section class="mt-5 p-5">
-                            <salla-count-down data-testid="store-product-preorder-countdown" pre-order='{{ product.preorder|json_encode}}' boxed labeled></salla-count-down>
-                        </section>
+                        <salla-count-down data-testid="store-product-preorder-countdown" pre-order='{{ product.preorder|json_encode }}' boxed labeled></salla-count-down>
                     {% endif %}
 
-                    <section class="sticky-product-bar bg-white p-5 rounded-md rounded-b-none">
-                        {# Quantity #}
+                    {# 7 · Buy buttons: quantity + add to cart (+ wishlist from 640px) in one row, like unix.sa #}
+                    <div class="unix-pdp-buy" data-unix-atc-row>
                         {% if product.is_hidden_quantity or product.type == 'booking' %}
-                            <input type="hidden" value="1" name="quantity" aria-label="Quantity"/>
+                            <input type="hidden" value="1" name="quantity">
                         {% else %}
-                            <div class="sticky-product-bar__quantity center-between mb-5">
-                                <label class="form-label font-bold">
-                                    {{ trans('pages.products.quantity') }}
-                                </label>
-                                <salla-quantity-input data-testid="store-product-quantity" max="{{ product.max_quantity }}" value="1" name="quantity" aria-label="Quantity"
-                                  class="border-gray-200 flex justify-end"></salla-quantity-input>
-                            </div>
+                            <salla-quantity-input data-testid="store-product-quantity" class="unix-pdp-buy__qty"
+                                                  max="{{ product.max_quantity }}" value="1" name="quantity"
+                                                  aria-label="{{ trans('pages.products.quantity') }}"></salla-quantity-input>
                         {% endif %}
-                        {# Add to cart #}
+
                         <salla-add-product-button
                                 data-testid="store-product-add-to-cart"
-                                {{product.can_quick_buy ? 'quick-buy' : ''}}
-                                {{theme.settings.get('sticky_add_to_cart') ? ' support-sticky-bar' : ''}}
-                                {{product.is_require_shipping ? 'required-shipping' : ''}}
-                                {{product.has_preorder_campaign ? 'has-pre-order' : ''}}
+                                data-unix-atc
+                                {{ product.can_quick_buy ? 'quick-buy' : '' }}
+                                {{ product.is_require_shipping ? 'required-shipping' : '' }}
+                                {{ product.has_preorder_campaign ? 'has-pre-order' : '' }}
                                 amount="{{ product.base_currency_price }}"
-                                class="mt-5 w-full sticky-product-bar__btn"
+                                class="unix-pdp-buy__btn"
                                 product-status="{{ product.status }}"
                                 product-type="{{ product.type }}"
                                 product-id="{{ product.id }}"
                                 loader-position="end"
                                 type="submit"
                                 width="wide"
-                                {# Notify availability props#}
+                                {# Notify availability props #}
                                 {% if product.notify_availability %}
                                     {{ product.notify_availability.subscribed ? 'is-subscribed' : '' }}
                                     channels="{{ product.notify_availability.channels|join(',') }}"
                                     subscribed-options="{{ product.notify_availability.subscribed_options|json_encode }}"
                                     {{ product.notify_availability.options ? 'notify-options-availability' : '' }}
-                                {% endif %}>
+                                {% endif %}>{{ unix_atc_label }}</salla-add-product-button>
 
-                            {{ product.add_to_cart_label }}
-                        </salla-add-product-button>
-                    </section>
+                        {# below 640px the wishlist button sits on the gallery (DS §8.20) #}
+                        <salla-button
+                                data-testid="store-product-wishlist-btn"
+                                class="btn--wishlist unix-pdp-buy__wish hidden sm:inline-flex"
+                                data-id="{{ product.id }}"
+                                onclick="salla.wishlist.toggle('{{ product.id }}')"
+                                shape="icon"
+                                fill="outline"
+                                color="light"
+                                aria-label="{{ trans('blocks.unix.gallery.wishlist') }}">
+                            <i class="sicon-heart" aria-hidden="true"></i>
+                        </salla-button>
+                    </div>
+
                     {% if product.is_giftable %}
-                        <salla-gifting data-testid="store-product-gifting" class="mt-5" widget-subtitle="{{ gifting_intro }}" product-id="{{ product.id }}" {{ product.is_require_shipping ? 'physical-products' : ''  }}></salla-gifting>
+                        <salla-gifting data-testid="store-product-gifting" widget-subtitle="{{ gifting_intro }}" product-id="{{ product.id }}" {{ product.is_require_shipping ? 'physical-products' : '' }}></salla-gifting>
                     {% endif %}
                 </form>
 
+                {# 3.6 delivery estimate #}
+
+                {#
+                    Mobile sticky add-to-cart (DS §8.21): below 576px, visible while the real button
+                    is off-screen and the footer isn't; it only clicks the real Salla button
+                    (js/partials/unix-sticky-atc.js). Hidden + inert until the JS shows it.
+                #}
+                {% if theme.settings.get('sticky_add_to_cart', true) and product.status == 'sale' %}
+                    <div class="unix-sticky-atc" data-unix-sticky-atc role="region"
+                         aria-label="{{ trans('blocks.unix.pdp_info.sticky_label') }}" inert>
+                        <button type="button" class="unix-btn unix-btn--block unix-sticky-atc__btn" data-unix-sticky-atc-btn>
+                            {{ unix_atc_label }}
+                        </button>
+                    </div>
+                {% endif %}
+
                 {% hook 'product:single.description.end' %}
-                <salla-quick-order data-testid="store-product-quick-order" class="mt-5 md:-mb-2 block"></salla-quick-order>
+
+                {# Salla merchant features kept (render only when enabled, D54) #}
+                <salla-quick-order data-testid="store-product-quick-order" class="unix-pdp-info__quick-order"></salla-quick-order>
+
+                {% if product.show_availability %}
+                    <button type="button" class="unix-pdp-info__branches"
+                            onclick="salla.event.dispatch('scopes::open', {mode: 'availability', product_id: '{{ product.id }}' })">
+                        <span>{{ trans('pages.products.availability') }}</span>
+                        <span class="unix-pdp-info__branches-cta">
+                            {{ trans('pages.products.select_branch') }}
+                            <svg class="icon-dir" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6"/></svg>
+                        </span>
+                    </button>
+                {% endif %}
+
+                {#
+                    8 · Accordions (unix.sa dropdown_information ×3, all closed, one open at a time).
+                    Salla has no metafields for «مميزات المنتج» / «تعليمات العناية», so only «الوصف»
+                    renders; the merchant's custom fields (salla-metadata) follow it (D56).
+                #}
+                {% set product_desc = product.description|replace({"&nbsp;": "\n"}) %}
+                {% if product_desc|trim %}
+                    <div class="unix-pdp-acc">
+                        <details class="unix-pdp-acc__item" name="unix-pdp-info">
+                            <summary class="unix-pdp-acc__summary">
+                                <span class="unix-pdp-acc__title">{{ trans('blocks.unix.pdp_info.description') }}</span>
+                                <svg class="unix-pdp-acc__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+                                     fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                                    <path d="M5 12h14"/>
+                                    <path class="unix-pdp-acc__icon-v" d="M12 5v14"/>
+                                </svg>
+                            </summary>
+                            <div class="unix-pdp-acc__panel">
+                                <div data-testid="store-product-description" class="unix-pdp-acc__body article--main">
+                                    {{ product_desc|raw }}
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                {% endif %}
+
+                {% if product.has_metadata %}
+                    <salla-metadata data-testid="store-product-metadata" class="unix-pdp-info__metadata"></salla-metadata>
+                {% endif %}
+
+                {#
+                    Identifier rows render only when a value could ever fill them; product.js toggles
+                    `hidden` on the wrapper per variant, so the wrapper has no display rule of its own.
+                #}
+                {% if product.shows_sku %}
+                    <div class="product-sku-wrapper {% if not product.sku %}hidden{% endif %}">
+                        <p class="unix-pdp-info__note">{{ trans('pages.products.sku') }}: <span class="text-unicode break-all product-sku">{{ product.sku }}</span></p>
+                    </div>
+                {% endif %}
+                {% if product.shows_barcode %}
+                    <div class="product-barcode-wrapper {% if not product.barcode %}hidden{% endif %}">
+                        <p class="unix-pdp-info__note">{{ trans('pages.products.barcode') }}: <span class="text-unicode break-all product-barcode">{{ product.barcode }}</span></p>
+                    </div>
+                {% endif %}
+
+                {# 9 · Rating (unix.sa Judge.me preview badge at the bottom of the column) #}
+                {% if product.rating %}
+                    <salla-rating-stars data-testid="store-product-rating" class="unix-pdp-info__rating"
+                                        value="{{ product.rating.stars }}"
+                                        reviews="{{ product.rating.count }}"></salla-rating-stars>
+                {% endif %}
             </div>
         </div>
         <salla-offer data-testid="store-product-offer"></salla-offer>
@@ -402,7 +364,7 @@
     <div class="container mb-5 sm:mb-8">
         <salla-products-slider data-testid="store-product-related" source="related" source-value="{{product.id}}" block-title="{{trans('pages.products.similar_products')}}" display-all-url></salla-products-slider>
     </div>
-    
+
     {#
         Hook: product.single.after_product_recommendations
         Fires after the similar/related products slider, at the very end of the product page content.

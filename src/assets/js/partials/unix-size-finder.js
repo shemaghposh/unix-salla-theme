@@ -169,7 +169,8 @@ class SizeFinder {
     document.querySelectorAll(`.unix-sf-mark[data-sf-opt="${opt.id}"]`).forEach(n => n.remove());
     const e = this.sizeMap(opt)[label];
     if (!e || !e.radio || !e.radio.id) return;
-    const lab = document.querySelector(`label[for="${CSS.escape(e.radio.id)}"]`);
+    // classic radios use label[for]; Salla's button mode (3.2) wraps the input in its label
+    const lab = document.querySelector(`label[for="${CSS.escape(e.radio.id)}"]`) || e.radio.closest('label');
     if (!lab) return;
     const m = h('span', 'unix-sf-mark', t('mark'));
     m.dataset.sfOpt = opt.id;
