@@ -1,0 +1,47 @@
+{#
+  Article card (ROADMAP 5.4 · DS §8.41). Used by pages/blog/index.twig (archive + featured) and
+  pages/blog/single.twig («قد يعجبكِ أيضًا»). The whole card is one link (stretched title link); no tags on
+  the card (a link inside a link). Image optional (alt="" — the title link names the card).
+
+| Param        | Type    | Description                                                           |
+|--------------|---------|-----------------------------------------------------------------------|
+| article      | Article | @see pages/blog/single.twig                                           |
+| heading      | ?string | 'h2' (default, blog index) or 'h3' (under a section heading)          |
+| featured     | ?bool   | large card: --ratio-article image, --t-h3 title                       |
+| eager        | ?bool   | first card of the page: eager + fetchpriority=high (the LCP image)    |
+| hide_excerpt | ?bool   | no excerpt (related cards, like unix.sa's aside show_excerpt: false)  |
+#}
+{% set card_tag = heading|default('h2') == 'h3' ? 'h3' : 'h2' %}
+{% set card_title = article.title|default(article.name|default('')) %}
+{% set card_image = article.image.url is defined ? article.image.url : '' %}
+{% set card_has_image = card_image and (article.has_image is not defined or article.has_image) and not (card_image|is_placeholder) %}
+{# first 150 characters, like the home blog card (DS §8.17); CSS also clamps to 3 lines #}
+{% set card_excerpt = article.summary|default('')|striptags|replace({'&nbsp;': ' '})|trim %}
+{% if card_excerpt|length > 150 %}
+  {% set card_excerpt = card_excerpt|slice(0, 150)|trim ~ '…' %}
+{% endif %}
+
+{% if card_title and article.url|default('') %}
+<article class="unix-article-card{{ featured|default(false) ? ' unix-article-card--featured' : '' }}{{ card_has_image ? ' has-media' : '' }}">
+  {% if card_has_image %}
+    <div class="unix-article-card__media">
+      {% if featured|default(false) %}
+        <img src="{{ card_image }}" alt="" width="1280" height="720"
+             {% if eager|default(false) %}loading="eager" fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}>
+      {% else %}
+        <img src="{{ card_image }}" alt="" width="600" height="400"
+             {% if eager|default(false) %}loading="eager" fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}>
+      {% endif %}
+    </div>
+  {% endif %}
+  {% if article.created_at is defined and article.created_at %}
+    <time class="unix-article-card__date" datetime="{{ article.created_at|date('Y-m-d') }}">{{ article.created_at|date }}</time>
+  {% endif %}
+  <{{ card_tag }} class="unix-article-card__title">
+    <a class="unix-article-card__link" href="{{ article.url }}">{{ card_title }}</a>
+  </{{ card_tag }}>
+  {% if card_excerpt and not hide_excerpt|default(false) %}
+    <p class="unix-article-card__excerpt">{{ card_excerpt }}</p>
+  {% endif %}
+</article>
+{% endif %}

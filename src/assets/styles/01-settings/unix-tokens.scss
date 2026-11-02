@@ -308,3 +308,10 @@ html[lang="en"] .theme-unix :is(h1, h2, h3, h4) { letter-spacing: -.01em; }
   --account-nav-w: 288px;              /* account side menu column from lg (Raed w-72) */
   --btn-w-wish: 160px;                 /* wishlist row add-to-cart button from md (Raed md:w-40) (5.3) */
 }
+
+/* ── Phase 5 · 5.4–5.5 Blog, article and static pages (DS §8.41–§8.43) ── */
+:root {
+  --ratio-article: 16 / 9;             /* article hero + featured blog cards */
+  --ratio-article-card: 3 / 2;         /* archive + related article cards (unix.sa image_ratio: landscape) */
+  --prose-max: 720px;                  /* reading column: article body and static pages */
+}

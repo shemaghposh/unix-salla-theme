@@ -30,6 +30,10 @@
 | loyalty.prizes[].items[].cost_points | int           |                                              |
 | user.loyalty_points                  | ?int          |                                              |
 | user.is_profile_completed            | bool          |                                              |
+
+UNIX (ROADMAP 5.7 · DS §8.45 · D104): unix.sa has no loyalty page (its cashback is a wallet credit, 3.7).
+Salla's loyalty program page stays as Raed built it, with a light token restyle only (.unix-loyalty in
+unix-legacy-pages.scss); the decorative stars are hidden from screen readers.
 #}
 {% extends "layouts.master" %}
 
@@ -38,14 +42,14 @@
          style="background-image:url({{ loyalty.image }})">
         <div class="overlay h-full w-full bg-black opacity-50 absolute top-0 left-0"></div>
     </div>
-    <div class="container space-y-8 lg:space-y-16">
+    <div class="container space-y-8 lg:space-y-16 unix-loyalty">
         {# Breadcrumbs #}
         <nav class="breadcrumbs w-full py-5"><salla-breadcrumb></salla-breadcrumb></nav>
 
         {# loyalty banner #}
         <div data-testid="store-loyalty-banner" class="loyalty__banner">
             <div class="loyalty__banner-inner">
-                <i class="sicon-star2 star-anime text-amber-400 text-7xl"></i>
+                <i class="sicon-star2 star-anime unix-loyalty__star text-7xl" aria-hidden="true"></i>
                 <div class="loyalty__banner-content">
                     <div class="info">
                         <h1>{{ loyalty.name }}</h1>
@@ -67,8 +71,8 @@
                 </div>
             </div>
             <!-- background big stars -->
-            <div class="loyalty-star loyalty-star--first"><i class="sicon-star2"></i></div>
-            <div class="loyalty-star loyalty-star--second"><i class="sicon-star2"></i></div>
+            <div class="loyalty-star loyalty-star--first" aria-hidden="true"><i class="sicon-star2"></i></div>
+            <div class="loyalty-star loyalty-star--second" aria-hidden="true"><i class="sicon-star2"></i></div>
         </div>
 
         {# ways to get points #}

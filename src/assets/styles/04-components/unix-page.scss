@@ -1,0 +1,31 @@
+/*
+ * UNIX static page (ROADMAP 5.5 · DS §8.43 · D102)
+ * pages/page-single.twig: about, contact, policies, size-chart pages. The content typography is
+ * .unix-rte (unix-rte.scss, DS §8.43); this only sets the page shell and title.
+ */
+
+.unix-page {
+  padding-block-end: var(--section-md);
+
+  &__header {
+    max-inline-size: var(--prose-max);
+    margin-inline: auto;
+    margin-block: var(--s-4) var(--s-7);
+  }
+
+  // .theme-unix prefix beats the base `.theme-unix h1` size: unix.sa sets page titles at h2 size
+  .theme-unix & &__title {
+    margin: 0;
+    font-size: var(--t-h2);
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  &__comments {
+    max-inline-size: var(--prose-max);
+    margin-inline: auto;
+    margin-block-start: var(--s-8);
+    padding-block-start: var(--s-6);
+    border-block-start: var(--line-w) solid var(--c-border);
+  }
+}

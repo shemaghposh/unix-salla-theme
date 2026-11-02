@@ -3,6 +3,13 @@ import BasePage from './base-page';
 class Loyalty extends BasePage {
     onReady() {
         let count = app.element(".count-anime")?.dataset?.count || 0;
+
+        // UNIX 5.7 (DS §8.45): no star spin or count-up under reduced motion; show the final state
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.querySelectorAll('.count-anime').forEach(el => { el.innerText = el.dataset.count || count; });
+            return;
+        }
+
         (new anime.timeline()).add({
             targets: '.loyality-item',
             opacity: [0, 1],

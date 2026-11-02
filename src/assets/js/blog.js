@@ -19,6 +19,8 @@ class Blog extends BasePage {
         if (this.isLiked) {
             likeBtn.classList.add('liked');
         }
+        // UNIX 5.4 (DS §8.42): the like state is announced, not only coloured
+        likeBtn.setAttribute('aria-pressed', String(this.isLiked));
 
         likeBtn.addEventListener('click', async (event) => {
             event.preventDefault();
@@ -64,6 +66,7 @@ class Blog extends BasePage {
         let currentCount = parseInt(countSpan?.innerText) || 0;
 
         likeButton.classList.toggle("liked", isLiked);
+        likeButton.setAttribute('aria-pressed', String(isLiked));
 
         anime({
             targets: countSpan,
@@ -75,6 +78,10 @@ class Blog extends BasePage {
                 countSpan.removeAttribute('style');
             }
         });
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
 
         anime({
             targets: countSpan,

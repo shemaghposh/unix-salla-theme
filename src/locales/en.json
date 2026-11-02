@@ -208,7 +208,18 @@
         "label": "From the blog",
         "cta": "Browse the articles",
         "prev": "Previous articles",
-        "next": "Next articles"
+        "next": "Next articles",
+        "categories": "Blog categories",
+        "all": "All articles",
+        "empty": "No articles yet.",
+        "shop": "Shop what's new",
+        "tags": "Article tags",
+        "by": "By",
+        "like": "Like this article",
+        "comments": "Comments",
+        "related": "You may also like",
+        "view_all": "View all",
+        "table": "Table, scroll to view"
       },
       "pdp_info": {
         "add_to_cart": "Add to cart",
