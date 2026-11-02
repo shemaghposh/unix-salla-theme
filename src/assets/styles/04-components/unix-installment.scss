@@ -37,7 +37,7 @@ salla-installment.unix-pdp-installment {
     background: var(--c-surface);
     box-shadow: var(--e-0);
     font-family: var(--f-body);
-    font-weight: 400;
+    font-weight: var(--fw-regular);
 
     &:hover { box-shadow: var(--e-0); }
   }
@@ -52,7 +52,7 @@ salla-installment.unix-pdp-installment {
     color: var(--c-text);
     font-family: var(--f-body) !important; // Salla sets `inherit !important`
     font-size: var(--t-small);
-    font-weight: 400;
+    font-weight: var(--fw-regular);
 
     &:hover { box-shadow: var(--e-0); }
   }
@@ -79,7 +79,7 @@ salla-installment.unix-pdp-installment {
     margin: 0;
     color: var(--c-text);
     font-size: var(--t-small);
-    font-weight: 400;
+    font-weight: var(--fw-regular);
     text-align: start;
   }
 }

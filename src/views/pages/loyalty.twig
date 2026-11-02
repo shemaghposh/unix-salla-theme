@@ -89,7 +89,8 @@ unix-legacy-pages.scss); the decorative stars are hidden from screen readers.
                               <span style="background-color: {{ point.color }}"></span>
                             </span>
                             <div class="way-item__content">
-                                <h3 style="color: {{ point.color }}">
+                                {# ROADMAP 6.1 · DS §8.45: the merchant colour stays on the icon only; text is --c-text (contrast unknown) #}
+                                <h3>
                                     {{ point.points }}
                                     {{ trans("pages.loyalty_program.point") }}
                                 </h3>

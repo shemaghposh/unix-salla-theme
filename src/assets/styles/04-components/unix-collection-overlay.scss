@@ -19,14 +19,14 @@
     position: relative;
     isolation: isolate;
     display: flex;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: var(--banner-ratio); /* 4:5 minimum, then 16:9 from 576px (DS §6) */
     /* clip, not hidden: a scroll container loses the aspect-ratio
        content-based minimum and would cut the carousel off */
     overflow: clip;
     background-color: var(--c-surface-sand);
     color: var(--c-text-inverse);
 
-    @media (min-width: 576px) { aspect-ratio: 16 / 9; }
+    @media (min-width: 576px) { aspect-ratio: var(--banner-ratio-wide); }
     @screen md { border-radius: var(--r-md); }
   }
 
@@ -98,7 +98,7 @@
     margin: 0;
     font-size: var(--t-micro);
     line-height: 1.5;
-    font-weight: 500;
+    font-weight: var(--fw-medium);
     color: inherit;
   }
 

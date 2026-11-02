@@ -44,14 +44,7 @@
     margin-block-start: var(--s-7);
   }
 
-  &__empty {
-    display: grid;
-    justify-items: center;
-    gap: var(--s-5);
-    padding-block: var(--section-sm);
-    text-align: center;
-    color: var(--c-text-muted);
-  }
+  // Empty: the shared .unix-empty (DS §8.47, unix-controls.scss)
 }
 
 // ── Category chips (a row of real links; scrolls sideways on small screens) ──

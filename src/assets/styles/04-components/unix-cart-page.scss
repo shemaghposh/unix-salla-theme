@@ -266,30 +266,7 @@
   &:disabled { opacity: var(--o-disabled); cursor: not-allowed; }
 }
 
-// ── Empty ────────────────────────────────────────
-.unix-cart__empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--s-3);
-  padding-block: var(--section-sm);
-  text-align: center;
-
-  .unix-btn { margin-block-start: var(--s-3); }
-}
-
-.theme-unix .unix-cart__empty-heading {
-  margin: 0;
-  font-size: var(--t-h3);
-  line-height: 1.35;
-}
-
-.unix-cart__empty-text {
-  margin: 0;
-  color: var(--c-text-muted);
-  font-size: var(--t-small);
-  line-height: 1.6;
-}
+// ── Empty: the shared .unix-empty (DS §8.47, unix-controls.scss) ──
 
 // ── salla-cart-summary-card (light DOM) ──────────
 .theme-unix .s-cart-summary-card {

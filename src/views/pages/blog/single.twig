@@ -122,7 +122,8 @@ The like button keeps Raed's #blog-like contract (blog.js: an <i> icon + a <span
       <div class="unix-container">
         <div class="unix-article-related__head">
           <h2 class="unix-article-related__title" id="unix-article-related-title">{{ trans('blocks.unix.blog.related') }}</h2>
-          <a class="unix-btn unix-btn--outline unix-btn--sm" href="{{ link('blog') }}">{{ trans('blocks.unix.blog.view_all') }}</a>
+          {# ROADMAP 6.1 · DS §8.2 (D106): section-header «عرض الكل» = primary site-wide #}
+          <a class="unix-btn unix-btn--sm" href="{{ link('blog') }}">{{ trans('blocks.unix.blog.view_all') }}</a>
         </div>
 
         {% hook 'blog:single.items.start' %}

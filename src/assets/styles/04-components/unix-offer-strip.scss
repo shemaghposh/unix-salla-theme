@@ -25,7 +25,7 @@
 .unix-offer__eyebrow {
   font-size: var(--t-micro);
   line-height: 1.5;
-  font-weight: 500;
+  font-weight: var(--fw-medium);
 
   html[lang="en"] & {
     text-transform: uppercase;

@@ -53,14 +53,11 @@ is the page's single h1; its description is body text (Raed had it in an h2).
                         <salla-products-list data-testid="store-brand-products" source="{{page.slug}}" source-value="{{page.id}}"></salla-products-list>
                     {% hook 'brands:single.items.end' %}
                 {% else %}
-                    <div class="no-content-placeholder">
-                            <span class="rounded-icon !w-36 !h-36 bg-gray-100 mb-6" aria-hidden="true">
-                                <i class="sicon-award-ribbon text-6xl block text-gray-400"></i>
-                            </span>
-                        <p class="text-sm mb-5 text-center">
-                            <span>{{ trans('pages.brands.non_products') }}</span>
-                            {{ brand.name }}
-                        </p>
+                    {# DS §8.47 shared empty state (Tailwind gray icon circle dropped) #}
+                    <div class="unix-empty">
+                        <span class="unix-empty__icon" aria-hidden="true"><i class="sicon-award-ribbon"></i></span>
+                        <h2 class="unix-empty__title">{{ trans('pages.brands.non_products') }} {{ brand.name }}</h2>
+                        <a class="unix-btn" href="{{ link('products') }}">{{ trans('blocks.unix.blog.shop') }}</a>
                     </div>
                 {% endif %}
             </div>

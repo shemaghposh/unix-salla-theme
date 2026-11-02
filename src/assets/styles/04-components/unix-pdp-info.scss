@@ -17,6 +17,17 @@
   > :is(salla-installment, salla-quick-order, salla-metadata, digital-files-settings):empty { display: none; }
 }
 
+// Option extras panel (weight / Raed size-guide row / note + file attachments; partials/product/options.twig,
+// product page and cart). ROADMAP 6.1: replaces Raed's `bg-white p-5 rounded-md mb-5` card.
+.unix-option-panel {
+  margin-block-end: var(--s-4);
+  padding: var(--s-5);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+  color: var(--c-text);
+}
+
 // ── 1 · Title + price head (centred like unix.sa) ──
 .unix-pdp-info__head {
   display: flex;
@@ -30,7 +41,7 @@
   margin: 0;
   font-family: var(--f-heading);
   font-size: var(--t-h3);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   line-height: 1.35;
   color: var(--c-text);
   overflow-wrap: break-word;
@@ -67,7 +78,7 @@
 .unix-pdp-price__now {
   color: var(--c-text);
   font-size: var(--t-body-lg);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   line-height: 1.75; // DS §2.2 --t-body-lg; unix.sa's price inherits the body line-height (~1.8)
 
   &.is-sale { color: var(--c-price-sale); }
@@ -95,7 +106,7 @@
   background: var(--c-surface);
   color: var(--c-price-sale);
   font-size: var(--t-micro);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   line-height: 1.5;
 }
 
@@ -103,7 +114,7 @@
   margin: 0;
   color: var(--c-price-sale);
   font-size: var(--t-body);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
 }
 
 // ── 5 · Variant picker (salla-product-options in button mode) ──
@@ -127,7 +138,7 @@
     margin: 0 0 var(--s-2);
     color: var(--c-text);
     font-size: var(--t-small);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
     line-height: 1.6;
 
     b span { color: var(--c-price-sale); }
@@ -163,7 +174,7 @@
     background: var(--c-surface);
     color: var(--c-text);
     font-size: var(--t-small);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
     line-height: 1.3;
     transition: border-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out),
                 transform var(--d-fast) var(--ease-out);
@@ -303,7 +314,7 @@
     border: 0;
     background: transparent;
     color: var(--c-text);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
     text-align: center;
 
     &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
@@ -384,7 +395,7 @@
   color: var(--c-text);
   font-family: var(--f-body);
   font-size: var(--t-h4);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   line-height: 1.4;
   text-align: start;
   transition: opacity var(--d-fast) var(--ease-out);
@@ -429,7 +440,7 @@
   ul { list-style: disc; }  // Tailwind preflight strips list markers
   ol { list-style: decimal; }
   li + li { margin-block-start: var(--s-2); }
-  strong, b { color: var(--c-text); font-weight: 500; }
+  strong, b { color: var(--c-text); font-weight: var(--fw-medium); }
   a {
     color: var(--c-accent-text);
     text-decoration: underline;

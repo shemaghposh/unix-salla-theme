@@ -34,8 +34,8 @@
     <dialog class="unix-sg__dialog" id="{{ sg_id }}" data-sg-dialog aria-labelledby="{{ sg_id }}-title">
       <div class="unix-sg__head">
         <h2 class="sr-only" id="{{ sg_id }}-title" data-sg-title>{{ trans('blocks.unix.size_charts.single') }}</h2>
-        <button type="button" class="unix-sg__close" data-sg-close aria-label="{{ trans('blocks.unix.size_charts.close') }}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        <button type="button" class="unix-icon-btn unix-sg__close" data-sg-close aria-label="{{ trans('blocks.unix.size_charts.close') }}">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
         </button>
       </div>
       {# persistent live region: JS only swaps its text («لحظة…» / error), never re-creates it #}

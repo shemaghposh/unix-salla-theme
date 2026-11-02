@@ -54,7 +54,7 @@ custom-main-menu {
   padding-inline: var(--s-3);
   color: inherit;
   font-size: var(--t-small);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   white-space: nowrap;
   transition: opacity var(--d-fast) var(--ease-out);
 
@@ -143,7 +143,7 @@ custom-main-menu {
     min-block-size: var(--tap);
     color: var(--c-accent-text);
     font-size: var(--t-small);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
     text-decoration: underline;
     text-decoration-thickness: var(--line-w);
     text-underline-offset: var(--s-1);
@@ -178,7 +178,7 @@ custom-main-menu {
   &__heading {
     color: var(--c-text);
     font-size: var(--t-body);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
     &:hover { color: var(--c-accent-text); }
   }
 
@@ -209,7 +209,7 @@ custom-main-menu {
     display: block;
     overflow: hidden;
     border-radius: var(--r-md);
-    aspect-ratio: 4 / 5;
+    aspect-ratio: var(--ratio-card);
     background: var(--c-surface-muted);
   }
 
@@ -224,7 +224,7 @@ custom-main-menu {
 
   &__caption {
     font-size: var(--t-small);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
   }
 
   &__products {
@@ -346,7 +346,7 @@ body.unix-drawer-open { overflow: hidden; }
     min-block-size: var(--tap);
     color: var(--c-text);
     font-size: var(--t-small);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
     transition: color var(--d-fast) var(--ease-out);
 
     i { font-size: var(--icon-sm); }
@@ -380,7 +380,7 @@ body.unix-drawer-open { overflow: hidden; }
     min-block-size: calc(var(--tap) + var(--s-3));
     color: var(--c-text);
     font-size: var(--t-h4);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
     line-height: 1.4;
     cursor: pointer;
     transition: color var(--d-fast) var(--ease-out);
@@ -431,11 +431,11 @@ body.unix-drawer-open { overflow: hidden; }
       min-block-size: var(--tap);
       color: var(--c-text-muted);
       font-size: var(--t-body);
-      font-weight: 400;
+      font-weight: var(--fw-regular);
       &:hover { color: var(--c-text); }
     }
 
-    .unix-mmenu__link--all { color: var(--c-accent-text); font-weight: 500; }
+    .unix-mmenu__link--all { color: var(--c-accent-text); font-weight: var(--fw-medium); }
   }
 
 }

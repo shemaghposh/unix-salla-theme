@@ -54,7 +54,7 @@
   min-inline-size: 0;
 }
 
-.unix-sf__t1 { font-size: var(--t-small); font-weight: 600; color: var(--c-text); }
+.unix-sf__t1 { font-size: var(--t-small); font-weight: var(--fw-semibold); color: var(--c-text); }
 .unix-sf__t2 { font-size: var(--t-micro); color: var(--c-text-muted); }
 
 .unix-sf__chev {
@@ -123,26 +123,8 @@ html:has(.unix-sf__dialog[open]) { overflow: hidden; }
 
 html[lang="en"] .unix-sf__step { letter-spacing: .04em; }
 
-.unix-sf__close {
-  display: grid;
-  place-items: center;
-  inline-size: var(--tap);
-  block-size: var(--tap);
-  margin-inline-end: calc(-1 * var(--s-3));
-  padding: 0;
-  background: none;
-  border: 0;
-  border-radius: var(--r-pill);
-  color: var(--c-text);
-  cursor: pointer;
-
-  svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
-  &:active { background-color: var(--c-press-tint); }
-}
-
-@media (hover: hover) {
-  .unix-sf__close:hover { background-color: var(--c-hover-tint); }
-}
+/* Close: the shared .unix-icon-btn (unix-controls.scss); only its placement lives here */
+.unix-sf__close { margin-inline-end: calc(-1 * var(--s-3)); }
 
 .unix-sf__bar {
   display: flex;
@@ -173,7 +155,7 @@ html[lang="en"] .unix-sf__step { letter-spacing: .04em; }
   margin: 0 0 var(--s-1);
   font-family: var(--f-heading);
   font-size: var(--t-h4);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   line-height: 1.4;
   color: var(--c-text);
 
@@ -229,9 +211,12 @@ html[lang="en"] .unix-sf__step { letter-spacing: .04em; }
     color: var(--c-text-inverse);
   }
 
-  &.is-size { font-weight: 600; letter-spacing: .04em; }
+  &.is-size { font-weight: var(--fw-semibold); }
   &.is-row { padding: var(--s-3) var(--s-4); text-align: start; }
 }
+
+/* DS §2.2: Arabic letter-spacing stays 0; the +.04em tracking is English only */
+html[lang="en"] .unix-sf__chip.is-size { letter-spacing: .04em; }
 
 @media (hover: hover) {
   .unix-sf__chip:not([aria-checked="true"]):hover { border-color: var(--c-text-muted); }
@@ -346,11 +331,12 @@ html[lang="en"] .unix-sf__step { letter-spacing: .04em; }
 
 .unix-sf__size {
   font-size: var(--t-h1);
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: .06em;
+  font-weight: var(--fw-semibold);
+  line-height: 1.25; /* --t-h1 line-height (DS §2.2) */
   color: var(--c-text);
 }
+
+html[lang="en"] .unix-sf__size { letter-spacing: .04em; } /* DS §2.2 micro tracking, English only */
 
 .unix-sf__conf {
   font-size: var(--t-micro);

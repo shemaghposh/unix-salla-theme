@@ -307,32 +307,12 @@
 }
 
 // ── Empty, loading, error ────────────────────────
+// Empty: the shared .unix-empty (DS §8.47, unix-controls.scss); the drawer only sets its padding
 .unix-cd__empty {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--s-2);
   padding: var(--s-6) var(--s-5);
 
   &[hidden] { display: none; }
 }
-
-.unix-cd__empty-heading {
-  margin: 0;
-  color: var(--c-text);
-  font-size: var(--t-body-lg);
-  font-weight: var(--fw-medium);
-  line-height: 1.75;
-}
-
-.unix-cd__empty-text {
-  margin: 0;
-  color: var(--c-text-muted);
-  font-size: var(--t-body);
-  line-height: 1.7;
-}
-
-.unix-cd__empty-btn { margin-block-start: var(--s-2); }
 
 .unix-cd__loading {
   display: flex;

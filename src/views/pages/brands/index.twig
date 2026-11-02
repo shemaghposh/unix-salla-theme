@@ -68,12 +68,11 @@ token restyle only (.unix-brands in unix-legacy-pages.scss).
 
             </div>
         {% else %}
-            <div class="no-content-placeholder">
-                <span class="rounded-icon !w-36 !h-36 bg-gray-100 mb-6" aria-hidden="true">
-                    <i class="sicon-award-ribbon text-6xl block text-gray-400"></i>
-                </span>
-                <h2 class="unix-brands__empty-title">{{ trans('pages.brands.non_brands') }}</h2>
-                <small>{{ trans('pages.brands.try_again') }}</small>
+            {# DS §8.47 shared empty state (Tailwind gray icon circle dropped) #}
+            <div class="unix-empty">
+                <span class="unix-empty__icon" aria-hidden="true"><i class="sicon-award-ribbon"></i></span>
+                <h2 class="unix-empty__title">{{ trans('pages.brands.non_brands') }}</h2>
+                <p class="unix-empty__text">{{ trans('pages.brands.try_again') }}</p>
             </div>
         {% endif %}
     </div>

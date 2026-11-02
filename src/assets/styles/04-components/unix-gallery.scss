@@ -154,7 +154,7 @@
   background: var(--c-surface);
   color: var(--c-text);
   font-size: var(--t-micro);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   line-height: var(--s-5);
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -178,7 +178,7 @@
   text-align: center;
   pointer-events: none;
 
-  strong { font-size: var(--t-body); font-weight: 700; }
+  strong { font-size: var(--t-body); font-weight: var(--fw-bold); }
 }
 
 .unix-gallery__wishlist {

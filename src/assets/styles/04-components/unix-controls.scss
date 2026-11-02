@@ -35,7 +35,7 @@
   box-shadow: var(--_ring);
   font-family: var(--f-body);
   font-size: var(--t-small);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   line-height: 1.6; // DS §2.2 line-height for --t-small
   white-space: nowrap;
   cursor: pointer;
@@ -208,6 +208,50 @@ salla-button[loading] .s-button-btn { @include unix-button-loading; }
   &:disabled { opacity: var(--o-disabled); }
 }
 
+// ── Empty state (ROADMAP 6.1 · DS §8.47) ─────────
+// Cart drawer, cart page, orders, blog index, brands. Centred: optional icon circle → h2 title
+// (--t-h4, --fw-medium) → text (--t-body, muted, 65ch) → primary verb+object button; gap --s-4.
+.unix-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-4);
+  padding-block: var(--section-sm);
+  text-align: center;
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    inline-size: var(--s-9);
+    block-size: var(--s-9);
+    border-radius: var(--r-pill);
+    background: var(--c-surface-muted);
+    color: var(--c-text-muted);
+    font-size: var(--icon-md);
+    line-height: 1;
+
+    svg { inline-size: var(--icon-md); block-size: var(--icon-md); }
+  }
+
+  // `.theme-unix` beats the `.theme-unix h2/h3` size rule
+  .theme-unix &__title {
+    margin: 0;
+    color: var(--c-text);
+    font-family: var(--f-body);
+    font-size: var(--t-h4);
+    font-weight: var(--fw-medium);
+    line-height: 1.4;
+  }
+
+  &__text {
+    margin: 0;
+    max-inline-size: 65ch;
+    color: var(--c-text-muted);
+    font-size: var(--t-body);
+    line-height: 1.7;
+  }
+}
+
 // ── Raed .btn variants ──────────────────────────
 .theme-unix {
   .btn--primary { @include unix-button-base; }
@@ -223,7 +267,7 @@ salla-button[loading] .s-button-btn { @include unix-button-loading; }
     margin-block-end: var(--s-2);
     color: var(--c-text);
     font-size: var(--t-small);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
   }
 
   .form-input,

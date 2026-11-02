@@ -31,10 +31,11 @@ unix_account_orders_empty_text (multilanguage; null/empty → translation), and 
         {% if unix_empty_text is iterable %}{% set unix_empty_text = unix_empty_text[unix_lang] is defined ? unix_empty_text[unix_lang] : null %}{% endif %}
         {% if unix_empty_text is null or not unix_empty_text|trim %}{% set unix_empty_text = trans('blocks.unix.account.orders_empty_text') %}{% endif %}
 
-        <div data-testid="store-orders-empty" class="unix-account-panel unix-account-empty">
-            <h2 class="unix-account-empty__title">{{ unix_empty_heading }}</h2>
-            <p class="unix-account-empty__text">{{ unix_empty_text }}</p>
-            <a class="unix-btn unix-account-empty__cta" href="{{ link('products') }}">{{ trans('blocks.unix.account.shop_now') }}</a>
+        {# DS §8.47 shared empty state inside an account panel #}
+        <div data-testid="store-orders-empty" class="unix-account-panel unix-empty">
+            <h2 class="unix-empty__title">{{ unix_empty_heading }}</h2>
+            <p class="unix-empty__text">{{ unix_empty_text }}</p>
+            <a class="unix-btn" href="{{ link('products') }}">{{ trans('blocks.unix.account.shop_now') }}</a>
         </div>
     {% endif %}
 {% endblock %}
