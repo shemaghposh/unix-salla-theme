@@ -302,3 +302,8 @@ html[lang="en"] .theme-unix :is(h1, h2, h3, h4) { letter-spacing: -.01em; }
   --ratio-cart-thumb: 3 / 4;           /* cart line image ratio (unix.sa cart_image_ratio 3/4) */
   --cart-aside-w: 384px;               /* cart page summary column from lg (Raed w-96) */
 }
+
+/* ── Phase 5 · 5.1 Account shell (DS §8.37) ── */
+:root {
+  --account-nav-w: 288px;              /* account side menu column from lg (Raed w-72) */
+}

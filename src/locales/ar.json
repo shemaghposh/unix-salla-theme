@@ -312,6 +312,10 @@
         "title": "شكرًا لكِ",
         "continue": "تابعي التسوق"
       },
+      "account": {
+        "nav": "حسابي",
+        "greeting": "أهلًا :name"
+      },
       "collection": {
         "filters": "الفلاتر",
         "sort_by": "ترتيب حسب",

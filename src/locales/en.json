@@ -312,6 +312,10 @@
         "title": "Thank you",
         "continue": "Continue shopping"
       },
+      "account": {
+        "nav": "My account",
+        "greeting": "Hello, :name"
+      },
       "collection": {
         "filters": "Filters",
         "sort_by": "Sort by",

@@ -20,6 +20,7 @@ module.exports = {
         pages   : [asset('js/loyalty.js'), asset('js/brands.js'),],
         product : [asset('js/product.js'), asset('js/products.js')],
         order   : asset('js/order.js'),
+        account : asset('js/account.js'), // ROADMAP 5.1: account shell (layouts/customer.twig)
         testimonials   : asset('js/testimonials.js')
     },
     output : {
