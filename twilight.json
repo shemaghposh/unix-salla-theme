@@ -856,6 +856,40 @@
         },
         {
             "type": "static",
+            "id": "unix-static-line-collection",
+            "format": "line"
+        },
+        {
+            "type": "static",
+            "format": "title",
+            "id": "unix-static-collection",
+            "value": "<div class='rounded-lg' style='background-color: #21636d; display: flex; justify-content: center; align-items: center;padding: 15px;margin-bottom: 20px !important; flex-direction: column;gap: 15px;'><h6 style='color: #ffffff;font-size: 15px; font-weight: bold;'> خيارات صفحة التصنيف</h6></div>",
+            "variant": "h6"
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "وصف التصنيف في البانر",
+            "description": "يظهر وصف التصنيف تحت اسمه في أعلى الصفحة إذا كان له وصف في سلة.",
+            "id": "unix_collection_show_description",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "صورة التصنيف في البانر",
+            "description": "تظهر صورة التصنيف من سلة تحت الاسم والوصف، بنسبة 16:9 على الشاشات الكبيرة و4:5 على الجوال. التصميم الأصلي بدون صورة.",
+            "id": "unix_collection_show_image",
+            "format": "switch",
+            "required": false,
+            "value": false,
+            "selected": false
+        },
+        {
+            "type": "static",
             "id": "unix-static-line-seo",
             "format": "line"
         },

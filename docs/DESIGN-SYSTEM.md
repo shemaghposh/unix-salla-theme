@@ -540,6 +540,15 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **من غير hex:** chip نصي بنفس شكل أزرار المقاس (§8.21): `--tap`، padding-inline `--s-4`، `--c-surface`، بوردر `--c-border`، `--r-sm`، `--t-small` 500؛ الحالي بوردر `--c-text` + حلقة داخلية `--line-w`.
 - **الحالات:** focus-visible حلقة `--ring-w` `--c-accent` بـ offset `--ring-w`؛ active `--press-y` (مش على الحالي)؛ مافيش disabled لأن الثيم مايعرفش مخزون المنتجات التانية (اللينك بيفتح صفحتها وهي اللي بتقول نفد). الـ transitions `--d-fast` `--ease-out` وبتتقفل مع reduced-motion. RTL: logical properties بس، ومافيش أيقونات اتجاه.
 
+### 8.29 Collection Banner (بانر التصنيف) — *المرحلة 4.1*
+مطابق لـ `reference/shopify-theme/sections/main-collection-banner.liquid` و `assets/component-collection-hero.css` و `templates/collection.json → banner` (SPEC §6). الكود: أول `src/views/pages/product/index.twig` و `04-components/unix-plp-banner.scss`. نفس القالب بيخدم التصنيف والعروض والبحث والوسوم وأحدث المنتجات.
+- **الألوان (scheme «Ink» في الأصل `#363441` / `#f3eeea`):** خلفية `--c-surface-ink` ونص `--c-text-on-ink` (نفس primitives شريط الإعلانات، تباين 10.6 AAA، §1.3). الوصف بنفس لون النص (مافيش لون ثانوي في الـ scheme ده). حلقة الفوكس جوه البانر `currentColor` لأن الـ taupe على الـ ink تباينه ضعيف.
+- **العنوان:** `h1` الصفحة الوحيد (§14): اسم التصنيف، وإلا عنوان الصفحة (العروض، والبحث…). حجمه `--t-h2` (`.unix-size-h2`) زي `title--page h2` في الأصل، في النص. مافيش prefix مخفي «المجموعة:» زي الأصل، عشان الـ `h1` يبقى اسم التصنيف بس *(قرار مؤقت D77)*.
+- **الوصف:** تحت العنوان بـ `--s-2` (الأصل .8rem)، `--t-body-lg` (الأصل `body-large`)، وعرض النص كله أقصاه `--plp-banner-text-max` (الأصل 46rem). بيظهر لو سلة بتدّي وصف للتصنيف وإعداد `unix_collection_show_description` مفعّل (افتراضيًا زي الأصل).
+- **المسافات:** `--s-5` فوق وتحت (الأصل 20px فوق و 2.5rem تحت الوصف، بـ custom CSS في `collection.json`)، و `padding-inline` بتاع `.unix-container`. البانر عرض الشاشة كله (الخلفية) والمحتوى جوه الكونتينر.
+- **الصورة (اختيارية، مقفولة افتراضيًا زي `show_collection_image: false` في الأصل):** لو إعداد `unix_collection_show_image` مفعّل والتصنيف ليه صورة في سلة (`category.image`)، بتظهر تحت النص بـ `--s-4` (`--s-6` من 768، زي الأصل 1.6 / 3.2rem). النسبة `--banner-ratio` (4:5) تحت 576 و `--banner-ratio-wide` (16:9) من 576 (§6، نفس نقطة §8.13)، محجوزة بـ `aspect-ratio` فمافيش CLS، و `object-fit: cover`، وحواف `--r-md`. هي صورة الـ LCP: `loading="eager"` و `fetchpriority="high"` و `srcset` من `cdn(width)` و `width`/`height`. الـ `alt` اسم التصنيف.
+- **مافيش حركة ولا عناصر تفاعلية** غير اللينكات اللي ممكن تكون في وصف التاجر (underline بلون النص).
+
 ---
 
 ## 9. نبرة الكلام (Copy)
@@ -637,6 +646,11 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 | **Phase 3 · 3.8** | | **التقييمات (§8.26)** |
 | `--reviews-max` | 1200px | أقصى عرض لسكشن التقييمات (`max_width: 1200` بتاع Judge.me في الأصل) (3.8) |
 | `--fw-regular` / `--fw-medium` / `--fw-semibold` / `--fw-bold` | 400 / 500 / 600 / 700 | أوزان الخط (§2.1). عنوان التقييمات والمتوسط `--fw-bold` (3.8). `--fw-semibold` بيرجع لـ 700 في العربي لأن مافيش وش 600، ومستخدم في الـ Size Finder (3.3) |
+| **Phase 4 · 4.1** | | **Collection Banner (§8.29)** |
+| `--c-surface-ink` | announce `#363441` | خلفية scheme «Ink» في الأصل (شريط الإعلانات وبانر التصنيف). نفس primitive `--c-announce` (4.1) |
+| `--c-text-on-ink` | announce-text `#f3eeea` | النص فوق `--c-surface-ink`، تباين 10.6 AAA (4.1) |
+| `--banner-ratio` / `--banner-ratio-wide` | `4 / 5` / `16 / 9` | صورة بانر التصنيف الاختيارية: تحت 576 / من 576 (§6) (4.1) |
+| `--plp-banner-text-max` | 460px | أقصى عرض لنص البانر (الأصل `max-width: 46rem`) (4.1) |
 
 ### 13.2 فروقات مقصودة عن الأصل (تتنقل لـ §12)
 | شوبيفاي | هنا | السبب |
@@ -718,6 +732,8 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 | **Phase 3 · 3.10** ألوان الموديل من تطبيق G: Combined Listings | إعداد نصي `unix_colour_links` ومربعات hex (أو زرار نصي) بلينكات من السيرفر (§8.28) | Twig مايقدرش يجيب منتجات تانية، والتطبيق مش موجود في سلة *(قرار مؤقت – محتاج مراجعة، D72، D73)* |
 | **Phase 3 · 3.11** الهوم: `h1` مخفي باسم المتجر في الهيدر + `h1` الهيرو | `h1` واحد: عنوان أول هيرو، وإلا اسم المتجر (مخفي) (§14) | صفحة واحدة = `h1` واحد *(قرار مؤقت – محتاج مراجعة، D75)* |
 | `WebSite` في الهوم فيه `SearchAction` (sitelinks search box) | `WebSite` من غير `SearchAction` (§14) | جوجل لغت مربع البحث في نتايج البحث (2024)، وشكل رابط البحث في سلة مش متأكدين منه |
+| **Phase 4 · 4.1** عنوان التصنيف فيه prefix مخفي «المجموعة: » | `h1` = اسم التصنيف بس (§8.29) | `h1` نضيف للـ SEO *(قرار مؤقت – محتاج مراجعة، D77)* |
+| وصف المجموعة rich text من شوبيفاي | وصف التصنيف من سلة لو متاح للثيم (`category.description`) | سلة مش موثّق إنها بتدّي الوصف في Twig؛ لو مش موجود البانر بيظهر العنوان بس *(D77)* |
 
 ---
 

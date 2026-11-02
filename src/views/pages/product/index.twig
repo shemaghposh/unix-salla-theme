@@ -32,6 +32,48 @@
 	{% endif %}
 
 	{#
+		Collection banner (ROADMAP 4.1 · DS §8.29 · SPEC §6), unix.sa sections/main-collection-banner.liquid:
+		scheme «Ink», the page's only h1 (category name, else the page title) at h2 size, the category
+		description, no image by default. Optional category image (16:9 / 4:5) behind a theme setting.
+		Settings: unix_collection_show_description (on) · unix_collection_show_image (off).
+	#}
+	{% set has_category = category is defined and category and category.name|default('') %}
+	{% set banner_desc = '' %}
+	{% if has_category and theme.settings.get('unix_collection_show_description', true) %}
+		{% set banner_desc = category.description|default('')|trim %}
+	{% endif %}
+	{% set banner_img = '' %}
+	{% if has_category and theme.settings.get('unix_collection_show_image', false) %}
+		{% set banner_img = category.image|default('') %}
+	{% endif %}
+	<section class="unix-plp-banner{{ banner_img ? ' unix-plp-banner--media' : '' }}" aria-labelledby="page-main-title">
+		<div class="unix-container unix-plp-banner__inner">
+			<div class="unix-plp-banner__text">
+				{% if has_category %}
+					<h1 class="unix-plp-banner__title unix-size-h2" id="page-main-title">{{ category.name }}</h1>
+				{% else %}
+					<h1 class="unix-plp-banner__title unix-size-h2" id="page-main-title">{{ page.title|raw }}</h1>
+				{% endif %}
+				{% if banner_desc %}
+					<div class="unix-plp-banner__desc">{{ banner_desc|raw }}</div>
+				{% endif %}
+			</div>
+			{% if banner_img %}
+				<div class="unix-plp-banner__media">
+					{# The LCP image of the page when shown: eager, high priority, sizes reserved by aspect-ratio #}
+					<img class="unix-plp-banner__img"
+						 src="{{ banner_img|cdn(1600) }}"
+						 srcset="{{ banner_img|cdn(480) }} 480w, {{ banner_img|cdn(768) }} 768w, {{ banner_img|cdn(1080) }} 1080w, {{ banner_img|cdn(1600) }} 1600w, {{ banner_img|cdn(1920) }} 1920w"
+						 sizes="(min-width: 1568px) 1440px, 100vw"
+						 width="1600" height="900"
+						 alt="{{ category.name }}"
+						 loading="eager" fetchpriority="high">
+				</div>
+			{% endif %}
+		</div>
+	</section>
+
+	{#
     Hook: product.index.before_products_group_with_filter
     Fires before the products grid and filter sidebar wrapper.
     Use this hook to inject content above the products listing area.
@@ -45,8 +87,7 @@
 		{% endif %}
 
 		<div class="main-content flex-1 w-full {{ filters ? 'ltr:lg:ml-8 rtl:lg:mr-8' : '' }}">
-			<div class="mb-4 sm:mb-6 flex justify-between items-center">
-				<h1 class="font-bold text-xl rtl:pl-3 ltr:pr-3" id="page-main-title">{{ page.title|raw }}</h1>
+			<div class="mb-4 sm:mb-6 flex justify-end items-center">
 				<div class="flex items-center space-x-2 rtl:space-x-reverse">
 					{% if filters %}
 						<a data-testid="store-products-filters-mobile-trigger" href="#filters-menu" class="filters-trigger bg-border-color text-primary lg:hidden mt-2">

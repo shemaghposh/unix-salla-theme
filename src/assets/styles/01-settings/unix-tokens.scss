@@ -237,6 +237,15 @@
   --fw-bold: 700;                      /* stands in for unix.sa's 600 on IBM Plex Sans Arabic / Somar */
 }
 
+/* ── Phase 4 · 4.1 additions (DS §13.1, §8.29 collection banner) ── */
+:root {
+  --c-surface-ink: var(--unix-announce);      /* unix.sa scheme «Ink» background (collection banner) */
+  --c-text-on-ink: var(--unix-announce-text); /* text on --c-surface-ink, 10.6:1 */
+  --banner-ratio: 4 / 5;                      /* optional category image, below 576px (DS §6) */
+  --banner-ratio-wide: 16 / 9;                /* same from 576px */
+  --plp-banner-text-max: 460px;               /* banner text column (unix.sa max-width 46rem) */
+}
+
 /* ── Base ─────────────────────────────────────── */
 .theme-unix {
   background-color: var(--c-bg);

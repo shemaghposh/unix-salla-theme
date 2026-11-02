@@ -20,10 +20,8 @@ class Products extends BasePage {
             productsList.setAttribute('filters', `{"sort": "${event.currentTarget.value}"}`)
         });
 
-        salla.event.on('salla-products-list::products.fetched', res=>{
-            res.title && (app.element('#page-main-title').innerHTML = res.title);
-        });
-
+        // ROADMAP 4.1: the h1 (#page-main-title) is the category name from the server (DS §8.29, §14).
+        // Raed replaced it with Salla's "name - N products" title after every fetch; not any more.
 
         this.initiateMobileMenu()
     }
