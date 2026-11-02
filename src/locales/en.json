@@ -319,7 +319,10 @@
         "orders_empty_text": "You haven't placed any orders yet. Great finds await. Start shopping and make your first order today.",
         "shop_now": "Shop now",
         "edit_rating": "Edit rating",
-        "delete_rating": "Delete rating"
+        "delete_rating": "Delete rating",
+        "wishlist_remove": "Remove :name from your wishlist",
+        "sale_price": "Sale price",
+        "regular_price": "Regular price"
       },
       "collection": {
         "filters": "Filters",

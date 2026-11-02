@@ -319,7 +319,10 @@
         "orders_empty_text": "لا توجد طلبات حتى الآن. قطع رائعة بانتظارك، ابدئي التسوق واطلبي طلبك الأول اليوم.",
         "shop_now": "تسوقي الآن",
         "edit_rating": "عدّلي التقييم",
-        "delete_rating": "احذفي التقييم"
+        "delete_rating": "احذفي التقييم",
+        "wishlist_remove": "احذفي :name من المفضلة",
+        "sale_price": "سعر التخفيض",
+        "regular_price": "السعر الأصلي"
       },
       "collection": {
         "filters": "الفلاتر",

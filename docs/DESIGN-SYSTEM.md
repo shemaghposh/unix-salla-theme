@@ -661,6 +661,22 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **إعادة الطلب / الإلغاء / إكمال الدفع:** panel، كل صف: `h2` `--t-h4` + وصف `--t-small` `--c-text-muted` ناحية البداية، والزرار ناحية النهاية (تحت بعرض كامل أقل من 576)، وفاصل `--c-border` بين الصفين. إكمال الدفع زرار primary عريض. الإلغاء زرار لينك (من غير أحمر في الصفحة؛ التأكيد الأحمر في مودال سلة).
 - **تقييم المتجر والشحن:** panel لكل واحد: `h2` `--t-h4`، والتعليق، و `salla-rating-stars`، وأزرار التعديل والحذف أيقونات `--tap` (بدل 32px بتاعة رائد) بحواف pill.
 
+### 8.40 Wishlist (المفضلة) — *المرحلة 5.3*
+بديل Swym Wishlist Plus في unix.sa (SPEC §9) هو مفضلة سلة المدمجة (D3): القلب على الكارت وفي صفحة المنتج (§8.20، §8.21) بينادي `salla.wishlist.toggle`، والصفحة `pages/customer/wishlist.twig` فيها `salla-products-list source="wishlist"` بتاعة سلة (و `salla-wishlist-actions` للمشاركة، سلة بتحطه من الـ hook) وكل سطر هو `custom-wishlist-card` بتاع الثيم (`js/partials/wishlist-card.js`). الستايل في `04-components/unix-account.scss`. *(قرار مؤقت D98)*
+- **القايمة:** عمود واحد، المسافة `--s-4` (زي سطور صفحة السلة §8.35).
+- **السطر:** كارت `--c-surface` ببوردر `--line-w` `--c-border` و `--r-md`، و padding `--s-4` (`--s-5` من md)، ومن غير ظل. Grid: الصورة (`--cart-thumb-w`، نسبة `--ratio-cart-thumb`، `--r-sm`، خلفية `--c-surface-muted`؛ لينك الصورة `aria-hidden` و `tabindex="-1"`) + التفاصيل، وتحتهم الأزرار؛ من md الأزرار عمود تالت ناحية النهاية في نص السطر.
+  - **الاسم:** `h2` بحجم `--t-body` `--fw-medium` بخط النص (سطرين بالكتير)، لينك `--c-text` و hover `--o-muted`.
+  - **السعر:** `--t-small` tabular؛ وقت التخفيض الجديد `--c-price-sale` والقديم `--c-price-old` line-through (وقارئ الشاشة بيقول «سعر التخفيض» / «السعر الأصلي»).
+  - **الإضافة للسلة:** `salla-add-product-button` بتاع سلة `fill="outline"` (§8.2) بعرض كامل على الموبايل، و `--btn-w-wish` من md. بعد الإضافة درج السلة (§8.33) بيتفتح زي أي إضافة.
+  - **الحذف:** زرار أيقونة سلة stroke 1.5 `--icon-sm` جوه `--tap` بلون `--c-text-muted` (hover `--c-text`، و `--c-hover-tint`) زي §8.33، بـ `aria-label` «احذفي {الاسم} من المفضلة»، وبينادي `salla.wishlist.remove`. وهو شغّال: `aria-busy` و `--o-disabled`. بعد الحذف الفوكس بيروح لزرار حذف السطر اللي بعده (أو اللي قبله، وإلا عنوان الصفحة) والسطر بيختفي بحركة رائد (`fade-out-collapse`).
+- **فاضية:** حالة سلة (`.s-products-list-placeholder`) بألوان النظام: الأيقونة في دايرة `--s-9` `--c-surface-muted` و `--c-text-muted`، والنص `--t-body` `--c-text-muted`.
+- **مشاركة المفضلة (`salla-wishlist-actions`):** شريط سلة فوق القايمة، أزراره §8.2، و `--s-4` تحته.
+
+**Tokens (5.3):**
+| Token | القيمة | الاستخدام |
+|---|---|---|
+| `--btn-w-wish` | 160px | عرض زرار «أضيفي للسلة» في سطر المفضلة من md (رائد `md:w-40`) |
+
 ---
 
 ## 9. نبرة الكلام (Copy)

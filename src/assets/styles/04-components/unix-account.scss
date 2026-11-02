@@ -924,9 +924,178 @@
   }
 }
 
+/*
+ * ── 5.3 Wishlist (DS §8.40 · D3, D98) ────────────
+ * salla-products-list source="wishlist" + the theme's custom-wishlist-card rows.
+ */
+.unix-wishlist {
+  salla-wishlist-actions { display: block; margin-block-end: var(--s-4); }
+
+  .s-products-list-wrapper { margin-block-end: 0; }
+  .s-products-list-row-cards { gap: var(--s-4); }
+
+  // Empty wishlist (Salla's placeholder, on system colours)
+  .s-products-list-placeholder {
+    padding-block: var(--s-7);
+    color: var(--c-text-muted);
+
+    span {
+      inline-size: var(--s-9);
+      block-size: var(--s-9);
+      background: var(--c-surface-muted);
+      color: var(--c-text-muted);
+      font-size: var(--icon-md);
+    }
+
+    span svg {
+      inline-size: var(--icon-md);
+      block-size: var(--icon-md);
+      fill: currentColor;
+    }
+
+    p {
+      color: var(--c-text-muted);
+      font-size: var(--t-body);
+    }
+  }
+}
+
+.unix-wish {
+  display: grid;
+  grid-template-columns: var(--cart-thumb-w) minmax(0, 1fr);
+  grid-template-areas:
+    "media info"
+    "actions actions";
+  gap: var(--s-4);
+  align-items: start;
+  padding: var(--s-4);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+  color: var(--c-text);
+
+  @media (min-width: 768px) {
+    grid-template-columns: var(--cart-thumb-w) minmax(0, 1fr) auto;
+    grid-template-areas: "media info actions";
+    align-items: center;
+    padding: var(--s-5);
+  }
+}
+
+.unix-wish__media {
+  grid-area: media;
+  display: block;
+  aspect-ratio: var(--ratio-cart-thumb);
+  border-radius: var(--r-sm);
+  background: var(--c-surface-muted);
+  overflow: hidden;
+
+  img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+}
+
+.unix-wish__info {
+  grid-area: info;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  min-inline-size: 0;
+}
+
+.theme-unix .unix-wish__name {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  font-weight: var(--fw-medium);
+  line-height: 1.7;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  a {
+    color: var(--c-text);
+    transition: opacity var(--d-fast) var(--ease-out);
+    &:hover { opacity: var(--o-muted); }
+  }
+}
+
+.unix-wish__prices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-2);
+  margin: 0;
+  font-size: var(--t-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.unix-wish__price {
+  color: var(--c-text);
+  font-weight: var(--fw-medium);
+
+  &.is-sale { color: var(--c-price-sale); }
+}
+
+.unix-wish__old { color: var(--c-price-old); }
+
+.unix-wish__actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.unix-wish__add {
+  flex: 1;
+
+  @media (min-width: 768px) {
+    flex: 0 0 var(--btn-w-wish);
+  }
+
+  .s-button-btn { inline-size: 100%; }
+}
+
+// Remove: same icon button as the cart lines (DS §8.33)
+.unix-wish__remove {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--c-text-muted);
+  cursor: pointer;
+  transition: color var(--d-fast) var(--ease-out), background-color var(--d-fast) var(--ease-out);
+
+  svg {
+    inline-size: var(--icon-sm);
+    block-size: var(--icon-sm);
+  }
+
+  &:hover { color: var(--c-text); background: var(--c-hover-tint); }
+  &:active { background: var(--c-press-tint); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+
+  &:disabled,
+  &[aria-busy="true"] {
+    opacity: var(--o-disabled);
+    cursor: default;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .unix-account .unix-account__crumbs a,
   .unix-account__nav .s-user-menu-dropdown-item a,
   .unix-orders .s-orders-table-tbody-tr,
-  .unix-order-item__name a { transition: none; }
+  .unix-order-item__name a,
+  .unix-wish__name a,
+  .unix-wish__remove { transition: none; }
 }

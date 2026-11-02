@@ -4,6 +4,12 @@
 | page       | object               |             |
 | page.title | string               |             |
 | page.slug  | string               |             |
+
+UNIX (ROADMAP 5.3 · DS §8.40 · D3, D98): Salla's native wishlist replaces Swym. The list is Salla's
+`salla-products-list source="wishlist"` (and `salla-wishlist-actions`, which Salla injects through the
+`customer:wishlist.items.start` hook); each row is the theme's `custom-wishlist-card`
+(js/partials/wishlist-card.js), restyled like the cart lines. The wrapper keeps Raed's #wishlist id
+(js/wishlist.js) and passes the card's UI strings as data-*.
 #}
 {% extends "layouts.customer" %}
 {% block head_scripts %}
@@ -11,11 +17,12 @@
 {% endblock %}
 
 {% block inner_content %}
-	<div class="space-y-5" id="wishlist">
+	<div class="unix-wishlist" id="wishlist" data-unix-wishlist
+		 data-i18n-remove="{{ trans('blocks.unix.account.wishlist_remove', {'name': '__NAME__'})|e('html_attr') }}"
+		 data-i18n-sale="{{ trans('blocks.unix.account.sale_price')|e('html_attr') }}"
+		 data-i18n-regular="{{ trans('blocks.unix.account.regular_price')|e('html_attr') }}">
 		{% hook 'customer:wishlist.items.start' %}
 		<salla-products-list data-testid="store-wishlist-products" source="wishlist" row-cards product-card-component="custom-wishlist-card"></salla-products-list>
 		{% hook 'customer:wishlist.items.end' %}
 	</div>
 {% endblock %}
-
- 
