@@ -311,6 +311,15 @@
       "thank_you": {
         "title": "شكرًا لكِ",
         "continue": "تابعي التسوق"
+      },
+      "collection": {
+        "filters": "الفلاتر",
+        "sort_by": "ترتيب حسب",
+        "close": "أغلقي الفلاتر",
+        "clear_all": "مسح الكل",
+        "show_results": "عرض النتائج",
+        "results_updated": "تم تحديث النتائج:",
+        "highlight_default": "مقاس"
       }
     }
   },

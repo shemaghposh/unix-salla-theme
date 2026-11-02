@@ -1,27 +1,5 @@
 /*
- * Raed menus. The main menu, mega menu and mobile drawer are now styled in
- * 04-components/unix-menu.scss (ROADMAP 1.3). What remains here is the mmenu-light
- * off-canvas used by the product filters (products.js) until Phase 4 replaces it.
+ * Raed menus. The main menu, mega menu and mobile drawer are styled in
+ * 04-components/unix-menu.scss (ROADMAP 1.3). The mmenu-light off-canvas that this file kept for the
+ * product filters is gone: the filters live in the UNIX drawer (ROADMAP 4.2, unix-plp.scss).
  */
-@media only screen and (max-width: 1024px) {
-  .filters-opened {
-    .close-filters {
-      display: block !important;
-    }
-  }
-
-  .mm-ocd__content {
-    overflow-y: auto;
-  }
-
-  .mm-ocd-opened {
-    @media (max-width: 480px) {
-      .btn--close-sm {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-        z-index: var(--z-legacy-offcanvas); // above mmenu-light's overlay (~9994)
-      }
-    }
-  }
-}
