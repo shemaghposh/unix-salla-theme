@@ -239,18 +239,28 @@
 
 // ── Wishlist heart on every product card (ROADMAP 6.3 · DS §8.3) ──
 // A --tap circle on --c-surface at the top end corner; icon --c-text; saved = filled heart.
-// The saved state is aria-pressed on the salla-button host (product-card.js + wishlist.js).
-// `!important` only where Raed's utilities write `!bg-white` / margins (03-elements/product-card.scss).
-body.theme-unix .s-product-card-vertical .s-product-card-wishlist-btn {
+// The saved state is aria-pressed on the host AND on the inner <button> (product-card.js + wishlist.js).
+// salla-button shape="icon" renders <button class="… s-button-element s-button-icon"> and copies the
+// host's attributes onto it, including class="s-product-card-wishlist-btn …". So Raed's rule
+// `.s-product-card-vertical .s-product-card-wishlist-btn {absolute; top-2; start-2}` (03-elements/
+// product-card.scss) hits the inner button too and shifts it: the host is positioned here, the inner
+// button is reset to static. `!important` only against Raed's `!bg-white` / `m-0` utilities.
+body.theme-unix .s-product-card-vertical salla-button.s-product-card-wishlist-btn {
+  position: absolute;
   inset-block-start: var(--s-3);
+  inset-block-end: auto;
   inset-inline-end: var(--s-3);
   inset-inline-start: auto;
   z-index: 1;
   opacity: 1;
 }
 
-body.theme-unix .s-product-card-wishlist-btn {
-  .s-button-btn {
+body.theme-unix salla-button.s-product-card-wishlist-btn {
+  > .s-button-element,
+  > .s-button-icon {
+    position: static;
+    inset: auto;
+    opacity: 1;
     display: inline-grid;
     place-items: center;
     inline-size: var(--tap);
@@ -283,7 +293,7 @@ body.theme-unix .s-product-card-wishlist-btn {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body.theme-unix .s-product-card-wishlist-btn .s-button-btn:active { transform: none; }
+  body.theme-unix salla-button.s-product-card-wishlist-btn > .s-button-element:active { transform: none; }
 }
 
 // ── Carousel arrows for UNIX product rows ──

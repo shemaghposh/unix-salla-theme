@@ -22,6 +22,8 @@
 	{% hook 'customer:notifications.items.start' %}
 
 	<div class="unix-account-panel unix-notifications">
+		{# ROADMAP 6.3: Salla's item titles are h4; an h2 keeps the outline from jumping h1 → h4 #}
+		<h2 class="sr-only">{{ trans('blocks.unix.account.notifications') }}</h2>
 		<salla-notifications data-testid="store-notifications"></salla-notifications>
 	</div>
 

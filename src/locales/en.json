@@ -12,7 +12,7 @@
         "link": "How to turn on JavaScript"
       },
       "card": {
-        "wishlist": "Add :name to wishlist"
+        "wishlist": "Save :name"
       },
       "announcement": {
         "label": "Store announcements",
@@ -333,6 +333,7 @@
       },
       "account": {
         "nav": "My account",
+        "notifications": "Notifications",
         "greeting": "Hello, :name",
         "orders_empty_heading": "You haven't placed any orders yet",
         "orders_empty_text": "You haven't placed any orders yet. Great finds await. Start shopping and make your first order today.",

@@ -258,7 +258,6 @@ class ProductCard extends HTMLElement {
               aria-label="${this.getWishlistLabel()}"
               aria-pressed="${this.isInWishlist}"
               class="s-product-card-wishlist-btn animated ${this.isInWishlist ? 's-product-card-wishlist-added pulse-anime' : 'not-added un-favorited'}"
-              onclick="salla.wishlist.toggle(${this.product.id})"
               data-id="${this.product.id}">
               ${this.getHeartIcon()}
             </salla-button>` : ``
@@ -343,7 +342,6 @@ class ProductCard extends HTMLElement {
                   aria-label="${this.getWishlistLabel()}"
                   aria-pressed="${this.isInWishlist}"
                   class="s-product-card-wishlist-btn animated ${this.isInWishlist ? 's-product-card-wishlist-added pulse-anime' : 'not-added un-favorited'}"
-                  onclick="salla.wishlist.toggle(${this.product.id})"
                   data-id="${this.product.id}">
                   ${this.getHeartIcon()}
                 </salla-button>`
@@ -366,13 +364,29 @@ class ProductCard extends HTMLElement {
         this.initCircleBar();
       }
 
-      // Optimistic & Per-card wishlist toggle
-      this.querySelectorAll('.s-product-card-wishlist-btn').forEach((btn) => {
+      // Optimistic & per-card wishlist toggle (ROADMAP 6.3 · DS §8.3).
+      // Only the salla-button host listens (salla-button copies the host's class onto its inner
+      // <button>), and the toggle is called once from here instead of an inline onclick, which
+      // salla-button also copied onto the inner button. The state (classes + aria-pressed on the host
+      // and the inner <button>) is set at once and reverted if Salla rejects (e.g. guest → login).
+      this.querySelectorAll('salla-button.s-product-card-wishlist-btn').forEach((btn) => {
+        const setState = (added) => {
+          app.toggleElementClassIf(btn, 's-product-card-wishlist-added', 'not-added', () => added);
+          app.toggleElementClassIf(btn, 'pulse-anime', 'un-favorited', () => added);
+          btn.setAttribute('aria-pressed', String(added));
+          btn.querySelector('button')?.setAttribute('aria-pressed', String(added));
+        };
         btn.addEventListener('click', () => {
+          if (btn.dataset.unixBusy) {
+            return;
+          }
           const willBeAdded = !btn.classList.contains('s-product-card-wishlist-added');
-          app.toggleElementClassIf(btn, 's-product-card-wishlist-added', 'not-added', () => willBeAdded);
-          app.toggleElementClassIf(btn, 'pulse-anime', 'un-favorited', () => willBeAdded);
-          btn.setAttribute('aria-pressed', String(willBeAdded)); // ROADMAP 6.3 · DS §8.3
+          btn.dataset.unixBusy = '1';
+          setState(willBeAdded);
+          Promise.resolve()
+            .then(() => salla.wishlist.toggle(this.product.id))
+            .catch(() => setState(!willBeAdded))
+            .finally(() => { delete btn.dataset.unixBusy; });
         });
       });
     }
