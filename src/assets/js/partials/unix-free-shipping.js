@@ -52,17 +52,10 @@ export function updateFreeShipping(summary) {
   });
 }
 
-/** Wire once per page: first paint from server data (cart page) + live cart updates. */
+/** Wire once per page: live cart updates (the cart page's first paint comes from Twig). */
 export default function initFreeShipping() {
   if (bound) return;
   bound = true;
-
-  // Cart page: Twig printed the cart into data attributes, so the bar is right before any update
-  document.querySelectorAll('[data-unix-fs][data-subtotal]').forEach((root) => {
-    let bar = null;
-    try { bar = root.dataset.sallaBar ? JSON.parse(root.dataset.sallaBar) : null; } catch (e) { bar = null; }
-    updateFreeShipping({ count: Number(root.dataset.count) || 0, sub_total: root.dataset.subtotal, free_shipping_bar: bar });
-  });
 
   window.salla?.cart?.event?.onUpdated?.((summary) => updateFreeShipping(summary));
 }

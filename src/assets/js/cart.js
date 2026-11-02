@@ -8,6 +8,14 @@ class Cart extends BasePage {
         // keep update the dom base in the events
         salla.event.cart.onUpdated(data => this.updateCartPageInfo(data));
 
+        // ROADMAP 4.4: an add from «اختيارات تناسبك» (or an offer) creates a line this page never
+        // rendered; Salla's page is server-rendered, so reload to show it.
+        salla.cart.event.onItemAdded(response => {
+            const items = response?.data?.cart?.items;
+            const missing = !Array.isArray(items) || items.some(item => !document.querySelector('#item-' + item.id));
+            if (missing) window.location.reload();
+        });
+
         app.watchElements({
             cartGifting: '#cart-gifting',
             sallaGifting:'#salla-gifting'
@@ -33,7 +41,16 @@ class Cart extends BasePage {
             const id = button.dataset.unixCartRemove;
             button.disabled = true;
             salla.cart.deleteItem(id)
-                .then(() => document.querySelector('#item-' + id)?.remove())
+                .then(() => {
+                    const form = document.querySelector('#item-' + id);
+                    // focus: the next line's remove button, else the previous one, else the page content
+                    const lines = Array.from(document.querySelectorAll('[data-unix-cart-remove]'));
+                    const index = lines.indexOf(button);
+                    const target = lines[index + 1] || lines[index - 1] || document.getElementById('main-content');
+                    form?.remove();
+                    if (target && target.id === 'main-content' && !target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+                    target?.focus({ preventScroll: true });
+                })
                 .catch(() => { button.disabled = false; });
         });
     }

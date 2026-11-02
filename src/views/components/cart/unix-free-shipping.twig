@@ -5,9 +5,10 @@
 
   Usage:
     {% include 'components.cart.unix-free-shipping' %}                                   {# filled by JS #}
-    {% include 'components.cart.unix-free-shipping' with { fs_cart: cart } %}            {# cart page: first paint from Twig data #}
+    {% include 'components.cart.unix-free-shipping' with { fs_cart: cart } %}            {# cart page: first paint from Twig #}
 
-  JS: src/assets/js/partials/unix-free-shipping.js. Source of truth (D88):
+  Same rules in Twig (first paint) and in src/assets/js/partials/unix-free-shipping.js (updates).
+  Source of truth (D88):
     1. Salla's own `free_shipping_bar` (the store has a free-shipping rule in Salla), else
     2. the theme threshold `unix_free_shipping_threshold` (500, D1) against `sub_total`.
   Settings: unix_cart_free_shipping (on), unix_free_shipping_threshold (500).
@@ -16,16 +17,43 @@
   {% set fs_threshold = theme.settings.get('unix_free_shipping_threshold', 500) %}
   {% if fs_threshold is null or fs_threshold == '' %}{% set fs_threshold = 500 %}{% endif %}
   {% set fs_msg = trans('blocks.unix.cart_drawer.free_shipping_remaining', {'amount': '__AMOUNT__'}) %}
-  <div class="unix-fs" data-unix-fs data-threshold="{{ fs_threshold }}"
+  {% set fs_done_msg = trans('blocks.unix.cart_drawer.free_shipping_done') %}
+
+  {# First paint (cart page): the same computation as unix-free-shipping.js #}
+  {% set fs_show = false %}
+  {% set fs_done = false %}
+  {% set fs_percent = 0 %}
+  {% set fs_remaining = 0 %}
+  {% if fs_cart is defined and fs_cart and fs_cart.items|default([])|length %}
+    {% set fs_bar = fs_cart.free_shipping_bar %}
+    {% if fs_bar and fs_bar.minimum_amount|default(0) > 0 %}
+      {% set fs_show = true %}
+      {% set fs_percent = min(100, max(0, fs_bar.percent|default(0))) %}
+      {% set fs_remaining = max(0, fs_bar.remaining|default(0)) %}
+      {% set fs_done = fs_bar.has_free_shipping or fs_percent >= 100 %}
+    {% elseif fs_threshold > 0 %}
+      {% set fs_sub = max(0, fs_cart.sub_total|default(0)) %}
+      {% set fs_show = true %}
+      {% set fs_remaining = max(0, fs_threshold - fs_sub) %}
+      {% set fs_percent = min(100, fs_sub / fs_threshold * 100) %}
+      {% set fs_done = fs_remaining <= 0 %}
+    {% endif %}
+  {% endif %}
+  {% set fs_parts = fs_msg|split('__AMOUNT__') %}
+
+  <div class="unix-fs{{ fs_done ? ' is-done' : '' }}" data-unix-fs data-threshold="{{ fs_threshold }}"
        data-msg-remaining="{{ fs_msg|e('html_attr') }}"
-       data-msg-done="{{ trans('blocks.unix.cart_drawer.free_shipping_done')|e('html_attr') }}"
-       {% if fs_cart is defined and fs_cart %}
-         data-subtotal="{{ fs_cart.sub_total|default(0) }}"
-         data-count="{{ fs_cart.items|default([])|length }}"
-         {% if fs_cart.free_shipping_bar %}data-salla-bar="{{ fs_cart.free_shipping_bar|json_encode|e('html_attr') }}"{% endif %}
-       {% endif %}
-       hidden>
-    <p class="unix-fs__msg" role="status" data-fs-msg></p>
-    <span class="unix-fs__track" aria-hidden="true"><span class="unix-fs__fill" data-fs-fill></span></span>
+       data-msg-done="{{ fs_done_msg|e('html_attr') }}"
+       {% if not fs_show %}hidden{% endif %}>
+    <p class="unix-fs__msg" role="status" data-fs-msg>
+      {%- if fs_show -%}
+        {%- if fs_done -%}
+          {{ fs_done_msg }}
+        {%- else -%}
+          {{ fs_parts[0] }}<strong>{{ fs_remaining|money }}</strong>{{ fs_parts[1]|default('') }}
+        {%- endif -%}
+      {%- endif -%}
+    </p>
+    <span class="unix-fs__track" aria-hidden="true"><span class="unix-fs__fill" data-fs-fill style="--fs-progress: {{ fs_percent / 100 }}"></span></span>
   </div>
 {% endif %}

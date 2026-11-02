@@ -73,16 +73,18 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
                         <section data-testid="store-cart-item-{{ item.id }}" class="cart-item unix-cart-item">
                             <input type="hidden" name="id" value="{{ item.id }}">
                             <div class="unix-cart-item__row">
-                                {# The name link below is the accessible link; the image repeats it for pointer users only #}
-                                <a href="{{ item.url }}" class="unix-cart-item__media" tabindex="-1" aria-hidden="true">
-                                    <img src="{{ item.product_image }}" alt="" width="120" height="160"
-                                         loading="{{ loop.first ? 'eager' : 'lazy' }}" decoding="async"
-                                         class="unix-cart-item__img">
-                                    <!-- free product badge -->
+                                <div class="unix-cart-item__media">
+                                    {# The name link below is the accessible link; the image repeats it for pointer users only #}
+                                    <a href="{{ item.url }}" class="unix-cart-item__media-link" tabindex="-1" aria-hidden="true">
+                                        <img src="{{ item.product_image }}" alt="" width="120" height="160"
+                                             {% if loop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}
+                                             class="unix-cart-item__img">
+                                    </a>
+                                    <!-- free product badge: outside the aria-hidden link so it is announced -->
                                     <span class="free-ribbon unix-cart-item__badge {{ (item.price.getMoney().amount == 0 and item.has_discount) ? '' : 'hidden' }}">
                                         {{ trans('pages.loyalty_program.free_product') }}
                                     </span>
-                                </a>
+                                </div>
 
                                 <div class="unix-cart-item__details">
                                     {# ROADMAP 3.11: one h1 per page (the sr-only «السلة» above); 4.4: items are h2 at the card-name size (DS §8.35) #}

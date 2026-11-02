@@ -50,6 +50,9 @@
   &.hidden { display: none; }
 }
 
+// No bordered box around a hidden free-shipping bar (empty cart, threshold 0, or no rule)
+.unix-cart__fs:has(> .unix-fs[hidden]) { display: none; }
+
 .unix-cart__coupons,
 .unix-cart__gifting { padding-block: var(--s-2); }
 
@@ -90,6 +93,12 @@
   overflow: hidden;
 }
 
+.unix-cart-item__media-link {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
 .unix-cart-item__img {
   display: block;
   inline-size: 100%;
@@ -99,7 +108,7 @@
 }
 
 @media (hover: hover) {
-  .unix-cart-item__media:hover .unix-cart-item__img { transform: scale(var(--zoom-hover)); }
+  .unix-cart-item__media-link:hover .unix-cart-item__img { transform: scale(var(--zoom-hover)); }
 }
 
 // Free-product badge (DS §8.4 pill), replaces Raed's rotated red ribbon
