@@ -5,12 +5,14 @@
   {% hook head %} does, so ours sits behind unix_seo_jsonld_product (default on): check the rendered
   source and turn it off if Salla already prints one.
 
-  Product: name, url, description (plain text), images, sku, gtin (barcode of 8–14 digits), brand
-  (product brand, else unix_seo_brand_name, else store name), category, color (3.10), offers (price
-  as shown, currency, availability, condition, seller, strikethrough price when on sale) and
-  aggregateRating only when there are reviews.
-  Colours as separate pages (3.10, D72): isVariantOf → ProductGroup with productGroupID = the
-  unix_colour_links group key, variesBy color, and hasVariant = @id references to every colour page.
+  Product: name, url, description (plain text), images, sku, gtin (barcode of 8, 12, 13 or 14 digits),
+  brand (product brand, else unix_seo_brand_name, else store name), category, color (3.10), offers
+  (price as shown, currency, availability, condition, seller → the site Organization @id when that
+  JSON-LD is on, strikethrough price and priceValidUntil when on sale) and aggregateRating only when
+  there are reviews.
+  Colours as separate pages (3.10, D72), only with 2+ colours: inProductGroupWithID + isVariantOf →
+  ProductGroup with productGroupID = the unix_colour_links group key, variesBy color, and
+  hasVariant = { @type Product, @id, url } for every colour page (absolute URLs).
   Sets are ordinary products here (one price for the set).
   Expects `product` and `unix_colours` (single.twig). |json_encode escapes "/" so nothing can close the <script>.
 #}
@@ -31,7 +33,8 @@
   {% endif %}
 
   {% set seo_desc = product.description|default('')|striptags|replace({
-    '&nbsp;': ' ', '&amp;': '&', '&quot;': '"', '&#39;': "'", '&lt;': '<', '&gt;': '>'
+    '&nbsp;': ' ', '&amp;': '&', '&quot;': '"', '&#39;': "'", '&#039;': "'", '&#x27;': "'",
+    '&lt;': '<', '&gt;': '>', '&hellip;': '…', '&rlm;': '', '&lrm;': '', '&ndash;': '–', '&mdash;': '—'
   })|trim|slice(0, 5000) %}
   {% if not seo_desc %}{% set seo_desc = product.subtitle|default(product.name) %}{% endif %}
 
@@ -45,7 +48,7 @@
   } %}
   {% if seo_images|length %}{% set seo_product = seo_product|merge({ 'image': seo_images }) %}{% endif %}
   {% if product.sku %}{% set seo_product = seo_product|merge({ 'sku': product.sku ~ '' }) %}{% endif %}
-  {% if product.barcode and (product.barcode ~ '') matches '/^[0-9]{8,14}$/' %}
+  {% if product.barcode and (product.barcode ~ '') matches '/^([0-9]{8}|[0-9]{12,14})$/' %}
     {% set seo_product = seo_product|merge({ 'gtin': product.barcode ~ '' }) %}
   {% endif %}
   {% if product.category and product.category.name|default('') %}
@@ -55,8 +58,17 @@
     {% set seo_product = seo_product|merge({ 'color': unix_colours.name }) %}
   {% endif %}
 
-  {# Offer: only when the price is a real number (Salla can send "-" when the merchant hides zero prices) #}
-  {% set seo_price = product.starting_price ?: product.price %}
+  {#
+    Offer: the price shown on the page (single.twig price block: sale price when on sale, else
+    «starting from» or the price), only when it's a real number (Salla can send "-" for hidden zero prices).
+  #}
+  {% set seo_price = product.is_on_sale ? product.sale_price : (product.starting_price ?: product.price) %}
+  {% set seo_home = store.url|default('')|trim('/', 'right') %}
+  {% if theme.settings.get('unix_seo_jsonld_site', true) %}
+    {% set seo_seller = { '@id': seo_home ~ '/#organization' } %}
+  {% else %}
+    {% set seo_seller = { '@type': 'Organization', 'name': store.name } %}
+  {% endif %}
   {% if (seo_price ~ '') matches '/^[0-9]+([.][0-9]+)?$/' %}
     {% set seo_currency = product.currency|default('SAR') %}
     {% if product.is_out_of_stock or not product.is_available %}
@@ -73,8 +85,11 @@
       'priceCurrency': seo_currency,
       'availability': seo_avail,
       'itemCondition': 'https://schema.org/NewCondition',
-      'seller': { '@type': 'Organization', 'name': store.name }
+      'seller': seo_seller
     } %}
+    {% if product.is_on_sale and product.discount_ends %}
+      {% set seo_offer = seo_offer|merge({ 'priceValidUntil': product.discount_ends|date('Y-m-d') }) %}
+    {% endif %}
     {% if product.is_on_sale and (product.regular_price ~ '') matches '/^[0-9]+([.][0-9]+)?$/' %}
       {% set seo_offer = seo_offer|merge({ 'priceSpecification': {
         '@type': 'UnitPriceSpecification',
@@ -97,20 +112,23 @@
   {% endif %}
 
   {# Colour pages of one model (3.10): «اسم الموديل | اللون» → the model name is the part before «|» #}
-  {% if unix_colours is defined and unix_colours.group %}
+  {# Only with 2+ colours (unix_colours.items is [] otherwise); item URLs are absolute (single.twig) #}
+  {% if unix_colours is defined and unix_colours.group and unix_colours.items|length > 1 %}
     {% set seo_variants = [] %}
     {% for seo_item in unix_colours.items %}
-      {% set seo_variants = seo_variants|merge([{ '@id': seo_item.current ? product.url : seo_item.url }]) %}
+      {% set seo_variant_url = seo_item.current ? product.url : seo_item.url %}
+      {% set seo_variants = seo_variants|merge([{ '@type': 'Product', '@id': seo_variant_url, 'url': seo_variant_url }]) %}
     {% endfor %}
+    {% set seo_product = seo_product|merge({ 'inProductGroupWithID': unix_colours.group }) %}
     {% set seo_group = {
       '@type': 'ProductGroup',
-      '@id': store.url|default('')|trim('/', 'right') ~ '/#product-group-' ~ unix_colours.group,
+      '@id': seo_home ~ '/#product-group-' ~ unix_colours.group,
       'productGroupID': unix_colours.group,
       'name': product.name|split('|')|first|trim,
       'brand': seo_brand_obj,
       'variesBy': ['https://schema.org/color']
     } %}
-    {% if seo_variants|length %}{% set seo_group = seo_group|merge({ 'hasVariant': seo_variants }) %}{% endif %}
+    {% set seo_group = seo_group|merge({ 'hasVariant': seo_variants }) %}
     {% set seo_product = seo_product|merge({ 'isVariantOf': seo_group }) %}
   {% endif %}
 
