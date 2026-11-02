@@ -68,27 +68,8 @@ class Blog extends BasePage {
         likeButton.classList.toggle("liked", isLiked);
         likeButton.setAttribute('aria-pressed', String(isLiked));
 
-        anime({
-            targets: countSpan,
-            innerHTML: isLiked ? currentCount + 1 : currentCount - 1,
-            duration: 400,
-            round: 1,
-            easing: 'easeOutExpo',
-            complete: function () {
-                countSpan.removeAttribute('style');
-            }
-        });
-
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            return;
-        }
-
-        anime({
-            targets: countSpan,
-            scale: [1, 1.2],
-            duration: 300,
-            easing: 'easeInOutQuad',
-        });
+        // ROADMAP 6.2: plain text update (animejs is no longer bundled on every page)
+        if (countSpan) countSpan.textContent = String(Math.max(0, isLiked ? currentCount + 1 : currentCount - 1));
     }
 }
 

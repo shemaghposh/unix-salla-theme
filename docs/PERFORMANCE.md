@@ -50,8 +50,11 @@ the `feat/6.2-performance` branch, so the "after" sizes below are estimates unti
 **JS**
 1. **`sweetalert2`** resolves to `sweetalert2.esm.all.js`, about 79KB minified with its CSS-in-JS. That
    was roughly two-thirds of `app.js`, on every page, and it is only used to show Salla notifications.
-2. **`animejs`** (about 17KB minified) was pulled into `app.js` by Raed's `app.anime()` helper. Nothing
-   calls that helper.
+2. **`animejs`** (about 17KB minified) was in `app.js` on every page. Raed's `app.anime()` helper also
+   exposed it as a global (`window.anime`). Nothing calls `app.anime()`, but two page scripts use the
+   global directly:
+   - `blog.js` uses it for the like-count tween;
+   - `loyalty.js` uses it for the star spin and points count-up (DS §8.45).
 3. **`fslightbox`** (31KB minified) was in `home.js`. No home block renders `[data-fslightbox]`. It was
    also loaded eagerly in `product.js`, where only video slides use it.
 4. **`lite-youtube-embed`** was in `product.js`, but no product view renders `<lite-youtube>`.
@@ -120,7 +123,9 @@ the three, and no `@apply` depends on them.
 | Change | Where | Safe because |
 |---|---|---|
 | SweetAlert2 loads through `import()` on the first notification, and the promise is cached | `app.js` | The notifier already returned a promise. Same `Swal.fire` and `mixin` options. A failed load is retried on the next notification. |
-| `app.anime()`, `partials/anime.js` and `animejs` removed | `app.js`, `package.json` | No caller in views, JS or twilight-components. The only mention is a commented-out line in `cart.js`. |
+| `app.anime()`, `partials/anime.js` and the `window.anime` global removed from `app.js` | `app.js` | Nothing calls `app.anime()`; the only mention is a commented-out line in `cart.js`. The global had two users. The first fix missed both, and the reviewer caught it. |
+| Blog like count is now a plain text update | `blog.js` | Same number, without the tween and scale. The reduced-motion branch only guarded the scale, so it is gone. |
+| `animejs` loads through `import()` on the loyalty page only | `loyalty.js` (`pages` entry), `package.json` keeps `animejs` | Same timeline. Under reduced motion, or if the chunk fails to load, the final points show without animation. |
 | `initiateDropdowns()` removed | `app.js` | No markup renders `.dropdown__trigger`. Its styles went in §3. |
 | fslightbox import removed | `home.js` | `[data-fslightbox]` only exists in `product/unix-gallery.twig`, and no Salla component reads `window.fslightbox`. |
 | fslightbox loads through `import()` only when `[data-fslightbox]` exists | `product.js` | On import, fslightbox scans the page itself, the same as the static import did. |

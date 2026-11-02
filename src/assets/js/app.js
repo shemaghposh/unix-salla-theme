@@ -188,7 +188,8 @@ isElementLoaded(selector){
   }
 
 
-  // ROADMAP 6.2: Raed's app.anime() helper and the animejs dependency are gone; nothing called them.
+  // ROADMAP 6.2: Raed's app.anime() helper is gone (no caller). animejs is no longer in app.js: the blog
+  // like count updates as plain text, and loyalty.js import()s animejs on the loyalty page only.
 
   /**
    * These actions are responsible for pressing "add to cart" button,
