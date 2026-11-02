@@ -22,7 +22,8 @@ export default function initStickyAtc() {
   let rowVisible = true;
   let footerVisible = false;
 
-  const realButton = () => real.querySelector('button');
+  // the native <button> rendered by the inner salla-button (not quick-buy / mini-checkout buttons)
+  const realButton = () => real.querySelector('salla-button button');
 
   const update = () => {
     const show = mq.matches && !rowVisible && !footerVisible;
@@ -33,6 +34,8 @@ export default function initStickyAtc() {
     }
     bar.classList.toggle('is-visible', show);
     bar.inert = !show;
+    // chat bubbles lift above the bar only while it is shown (05-utilities/chat-bots.scss)
+    document.body.classList.toggle('unix-sticky-atc-on', show);
   };
 
   new IntersectionObserver(([entry]) => {

@@ -123,25 +123,6 @@
 .s-tabs-header * {
   pointer-events: auto !important;
 }
-.product__description {
-  ul,
-  li{
-    list-style: inherit !important;
-  }
-
-  ul,
-  ol {
-    @apply px-6;
-  }
-
-  ol{
-    list-style: auto !important;
-  }
-
-  a{
-    @apply text-blue-700;
-  }
-}
 
 
 

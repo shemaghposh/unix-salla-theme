@@ -13,7 +13,8 @@
   // the column is overflow-hidden from md (sticky); keep focus rings (ring + offset) inside it
   @media (min-width: 768px) { padding-inline: calc(var(--ring-w) * 2); }
 
-  > :empty:not(salla-quantity-input, salla-rating-stars) { display: none; }
+  // Salla components that render nothing when their feature is off would still take a flex gap
+  > :is(salla-installment, salla-quick-order, salla-metadata, digital-files-settings):empty { display: none; }
 }
 
 // ── 1 · Title + price head (centred like unix.sa) ──
@@ -67,7 +68,7 @@
   color: var(--c-text);
   font-size: var(--t-body-lg);
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.75; // DS §2.2 --t-body-lg; unix.sa's price inherits the body line-height (~1.8)
 
   &.is-sale { color: var(--c-price-sale); }
 }
@@ -371,7 +372,10 @@
   &::-webkit-details-marker { display: none; }
   &::marker { content: ""; }
 
-  &:hover .unix-pdp-acc__title,
+  // DS §8.10: hover dims on hover-capable devices only (no sticky hover on touch)
+  @media (hover: hover) {
+    &:hover .unix-pdp-acc__title { opacity: var(--o-muted); }
+  }
   &:active .unix-pdp-acc__title { opacity: var(--o-muted); }
   &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
 }
@@ -422,6 +426,8 @@
   p + p { margin-block-start: var(--s-2); }
   :is(h1, h2, h3, h4, h5, h6) { margin-block: var(--s-4) var(--s-2); font-size: var(--t-body); color: var(--c-text); }
   :is(ul, ol) { margin-block: var(--s-2); padding-inline-start: var(--s-5); }
+  ul { list-style: disc; }  // Tailwind preflight strips list markers
+  ol { list-style: decimal; }
   li + li { margin-block-start: var(--s-2); }
   strong, b { color: var(--c-text); font-weight: 500; }
   a {
