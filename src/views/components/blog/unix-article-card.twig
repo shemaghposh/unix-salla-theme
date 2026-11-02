@@ -9,6 +9,7 @@
 | heading      | ?string | 'h2' (default, blog index) or 'h3' (under a section heading)          |
 | featured     | ?bool   | large card: --ratio-article image, --t-h3 title                       |
 | eager        | ?bool   | first card of the page: eager + fetchpriority=high (the LCP image)    |
+| hide_excerpt | ?bool   | no excerpt (related cards, like unix.sa's aside show_excerpt: false)  |
 #}
 {% set card_tag = heading|default('h2') == 'h3' ? 'h3' : 'h2' %}
 {% set card_title = article.title|default(article.name|default('')) %}
@@ -39,7 +40,7 @@
   <{{ card_tag }} class="unix-article-card__title">
     <a class="unix-article-card__link" href="{{ article.url }}">{{ card_title }}</a>
   </{{ card_tag }}>
-  {% if card_excerpt %}
+  {% if card_excerpt and not hide_excerpt|default(false) %}
     <p class="unix-article-card__excerpt">{{ card_excerpt }}</p>
   {% endif %}
 </article>

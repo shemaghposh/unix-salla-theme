@@ -18,7 +18,7 @@
   > :last-child { margin-block-end: 0; }
 
   // the column sets the measure, so paragraphs fill it (base rule caps them at 65ch)
-  p { max-width: none; }
+  p { max-inline-size: none; }
 
   // ── Headings (an h1 in the body is already an h2, server-side) ──
   :is(h2, h3, h4, h5, h6) {

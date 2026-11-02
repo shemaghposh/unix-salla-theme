@@ -255,7 +255,8 @@
   }
 
   &__hero {
-    margin: 0 0 var(--s-7);
+    margin-inline: 0;
+    margin-block: 0 var(--s-7);
     aspect-ratio: var(--ratio-article);
     border-radius: var(--r-md);
     overflow: hidden;

@@ -28,20 +28,25 @@ The like button keeps Raed's #blog-like contract (blog.js: an <i> icon + a <span
   {% set unix_related = related is defined and related ? related : article.related|default([]) %}
   {% set unix_image = article.image.url is defined ? article.image.url : '' %}
   {% set unix_has_image = article.has_image and unix_image and not (unix_image|is_placeholder) %}
+  {# Assumes Salla-editor HTML (lowercase tags, no loading attribute); pasted HTML may get a duplicate attribute (DS §8.43, D101) #}
+  {% set unix_table_open = '<div class="unix-rte__table" role="region" tabindex="0" aria-label="' ~ trans('blocks.unix.blog.table')|e('html_attr') ~ '">' %}
   {% set unix_body = article.body|default('')|replace({
     '&nbsp;': ' ',
     '<h1': '<h2', '<H1': '<h2', '</h1>': '</h2>', '</H1>': '</h2>',
-    '<img ': '<img loading="lazy" decoding="async" ',
-    '<table': '<div class="unix-rte__table" tabindex="0"><table', '</table>': '</table></div>'
+    '<img ': '<img loading="lazy" decoding="async" ', '<IMG ': '<img loading="lazy" decoding="async" ',
+    '<table': unix_table_open ~ '<table', '<TABLE': unix_table_open ~ '<table',
+    '</table>': '</table></div>', '</TABLE>': '</table></div>'
   }) %}
+
+  {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
+  <div class="unix-container">
+    <nav class="breadcrumbs w-full py-5">
+      <salla-breadcrumb></salla-breadcrumb>
+    </nav>
+  </div>
 
   <article class="unix-article" aria-labelledby="unix-article-title">
     <div class="unix-container">
-      {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
-      <nav class="breadcrumbs w-full py-5">
-        <salla-breadcrumb></salla-breadcrumb>
-      </nav>
-
       <header class="unix-article__header">
         {% if article.tags|default([])|length %}
           <ul class="unix-article__tags" role="list" aria-label="{{ trans('blocks.unix.blog.tags') }}">
@@ -78,9 +83,11 @@ The like button keeps Raed's #blog-like contract (blog.js: an <i> icon + a <span
       {% if store.settings.blog.allow_likes_and_comments %}
         <div class="unix-article__actions">
           <button type="button" id="blog-like" class="unix-article__like" data-blog-id="{{ article.key }}"
-                  aria-pressed="false" aria-label="{{ trans('blocks.unix.blog.like') }}">
+                  aria-pressed="false">
             <i class="sicon-thumbs-up" aria-hidden="true"></i>
+            {# the count stays the first span: blog.js reads it #}
             <span>{{ article.likes_count|default(0) }}</span>
+            <span class="sr-only">{{ trans('blocks.unix.blog.like') }}</span>
           </button>
           {% if article.comments_count %}
             <span class="unix-article__count">
@@ -121,7 +128,7 @@ The like button keeps Raed's #blog-like contract (blog.js: an <i> icon + a <span
         {% hook 'blog:single.items.start' %}
         <div class="unix-article-related__grid">
           {% for item in unix_related|slice(0, 4) %}
-            {% include 'components.blog.unix-article-card' with { article: item, heading: 'h3' } only %}
+            {% include 'components.blog.unix-article-card' with { article: item, heading: 'h3', hide_excerpt: true } only %}
           {% endfor %}
         </div>
         {% hook 'blog:single.items.end' %}

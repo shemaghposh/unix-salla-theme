@@ -21,7 +21,9 @@ doesn't change while reading). Cards: components/blog/unix-article-card.twig.
 
 {% block content %}
   {% set unix_featured = slides|default([])|slice(0, 2) %}
-  {% set unix_has_current = false %}
+  {# «كل المقالات» is current only on the main blog index: not on a category, and (via is_page) not on tag or
+     author archives. If Salla reports those as blog.index too, the chip is still marked there (D100). #}
+  {% set unix_has_current = not is_page('blog.index') %}
   {% for category in categories|default([]) %}
     {% if category.is_current %}{% set unix_has_current = true %}{% endif %}
   {% endfor %}

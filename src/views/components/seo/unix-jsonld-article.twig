@@ -34,7 +34,8 @@
 
   {% set seo_desc = article.summary|default('')|striptags|replace(seo_entities)|trim %}
   {% if not seo_desc %}
-    {% set seo_desc = article.body|default('')|striptags|replace(seo_entities)|trim %}
+    {# a space before every tag so «</p><p>» doesn't glue words together, then collapse the whitespace #}
+    {% set seo_desc = article.body|default('')|replace({'<': ' <'})|striptags|replace(seo_entities)|replace({"\n": ' ', "\r": ' ', "\t": ' '})|split(' ')|filter(w => w|trim != '')|join(' ')|trim %}
   {% endif %}
   {% if seo_desc|length > 300 %}
     {% set seo_desc = seo_desc|slice(0, 299)|trim ~ '…' %}
