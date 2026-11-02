@@ -105,6 +105,7 @@
   display: block;
   margin-block-start: var(--s-1);
   font-size: var(--t-micro);
+  line-height: 1.5; /* --t-micro role (DS §2.2) */
   color: var(--c-text-muted);
 }
 
