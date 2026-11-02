@@ -24,11 +24,14 @@ have none). Pages built with Salla's page builder (`customised`) keep Salla's ho
       #}
       <div class="s-blocks-wrapper s-information-page !mt-0">{% hook 'information_page.information_page' %}</div>
     {% else %}
+      {# Assumes Salla-editor HTML (lowercase tags, no loading attribute); pasted HTML may get a duplicate attribute (DS §8.43, D102) #}
+      {% set unix_table_open = '<div class="unix-rte__table" role="region" tabindex="0" aria-label="' ~ trans('blocks.unix.blog.table')|e('html_attr') ~ '">' %}
       {% set unix_content = page.content|default('')|replace({
         '&nbsp;': ' ',
         '<h1': '<h2', '<H1': '<h2', '</h1>': '</h2>', '</H1>': '</h2>',
-        '<img ': '<img loading="lazy" decoding="async" ',
-        '<table': '<div class="unix-rte__table" tabindex="0"><table', '</table>': '</table></div>'
+        '<img ': '<img loading="lazy" decoding="async" ', '<IMG ': '<img loading="lazy" decoding="async" ',
+        '<table': unix_table_open ~ '<table', '<TABLE': unix_table_open ~ '<table',
+        '</table>': '</table></div>', '</TABLE>': '</table></div>'
       }) %}
       <div class="unix-container unix-page">
           {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
