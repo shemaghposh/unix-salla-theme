@@ -232,6 +232,23 @@
         "close": "Close",
         "loading": "One moment…",
         "error": "The size guide couldn't load. Please try again."
+      },
+      "delivery": {
+        "title": "When will it reach you?",
+        "country": "Select country",
+        "city": "Select city",
+        "country_sa": "Saudi Arabia",
+        "prefix": "Arrives in",
+        "note_local": "Business days run Sunday to Thursday and start once the order ships",
+        "note_intl": "Estimated, and varies with customs clearance in each country",
+        "default_tier1_days": "1 to 2 business days",
+        "default_tier2_days": "2 to 3 business days",
+        "default_tier3_days": "3 to 6 business days",
+        "default_intl_days": "5 to 10 business days",
+        "default_countries": "United Arab Emirates,Kuwait,Bahrain,Oman,Qatar,Jordan,Egypt,Lebanon",
+        "default_tier1_cities": "Riyadh",
+        "default_tier2_cities": "Jeddah,Makkah,Madinah,Dammam,Khobar,Dhahran,Jubail,Al Ahsa,Taif,Qatif",
+        "default_tier3_cities": "Abha,Khamis Mushait,Tabuk,Buraidah,Unaizah,Hail,Najran,Jazan,Al Baha,Arar,Sakaka,Yanbu,Al Kharj,Hafar Al Batin,Wadi ad-Dawasir,Qurayyat,Bisha,Sabya,Muhayil,Zulfi,Majmaah,Shaqra,Dawadmi,Al Qunfudhah,Rabigh,Umluj,Duba,Turaif,Nairyah,Ras Tanura,Ar Rass,Al Bukayriyah,Al Aflaj,Afif,Diriyah,Another city"
       }
     }
   },

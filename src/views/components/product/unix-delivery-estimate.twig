@@ -1,0 +1,85 @@
+{#
+  UNIX Delivery estimate «متى يصلك طلبك؟» (ROADMAP 3.6 · DS §8.22 · SPEC §8.3)
+  Port of unix.sa snippets/unix-shipping-estimate.liquid + assets/unix-shipping.css.
+  Country first; Saudi Arabia reveals the city list (3 delivery tiers), every other country
+  resolves straight to the international window.
+
+  Usage: include ONCE in the product info column, directly after the add-to-cart / buy buttons
+  (pages/product/single.twig):
+    {% include 'components.product.unix-delivery-estimate' %}
+  JS: src/assets/js/partials/unix-delivery-estimate.js (imported by product.js).
+
+  Settings (twilight.json, all multilanguage; null = never saved → translated unix.sa default,
+  same fallback pattern as the 1.1 announcement bar; an emptied field also falls back):
+    unix_delivery_enabled                         boolean  show/hide the box (on until saved)
+    unix_delivery_{tier1,tier2,tier3,intl}_days   text     the window shown after «يصلك خلال»
+    unix_delivery_{tier1,tier2,tier3}_cities      textarea comma-separated KSA cities per tier
+    unix_delivery_countries                       textarea comma-separated non-KSA countries
+  Commas: «,» or the Arabic «،».
+#}
+{% if theme.settings.get('unix_delivery_enabled', true) %}
+  {% set dl = {} %}
+  {% for key in ['tier1_days', 'tier2_days', 'tier3_days', 'intl_days', 'tier1_cities', 'tier2_cities', 'tier3_cities', 'countries'] %}
+    {% set value = theme.settings.get('unix_delivery_' ~ key) %}
+    {# multilanguage values may arrive as {ar, en}; resolve to the current language #}
+    {% if value is iterable %}
+      {% set value = value[language.code] is defined ? value[language.code] : null %}
+    {% endif %}
+    {% if value is null or not value|trim %}
+      {% set value = trans('blocks.unix.delivery.default_' ~ key) %}
+    {% endif %}
+    {% set dl = dl|merge({ (key): value|trim }) %}
+  {% endfor %}
+
+  {% set dl_lists = {} %}
+  {% for key in ['tier1_cities', 'tier2_cities', 'tier3_cities', 'countries'] %}
+    {% set items = [] %}
+    {% for item in dl[key]|replace({'،': ',', "\n": ','})|split(',') %}
+      {% if item|trim %}{% set items = items|merge([item|trim]) %}{% endif %}
+    {% endfor %}
+    {% set dl_lists = dl_lists|merge({ (key): items }) %}
+  {% endfor %}
+
+  {% set dl_text = {
+    'prefix': trans('blocks.unix.delivery.prefix'),
+    'days': { '1': dl.tier1_days, '2': dl.tier2_days, '3': dl.tier3_days, 'intl': dl.intl_days },
+    'notes': { 'local': trans('blocks.unix.delivery.note_local'), 'intl': trans('blocks.unix.delivery.note_intl') }
+  } %}
+
+  <div class="unix-ship" data-unix-ship data-ship-text="{{ dl_text|json_encode }}">
+    <p class="unix-ship__title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 7h11v10H3z"/><path d="M14 10h4l3 3v4h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/>
+      </svg>
+      <span>{{ trans('blocks.unix.delivery.title') }}</span>
+    </p>
+
+    <div class="unix-ship__fields">
+      <span class="unix-ship__field">
+        <select class="unix-ship__select" data-ship-country aria-label="{{ trans('blocks.unix.delivery.country') }}">
+          <option value="">{{ trans('blocks.unix.delivery.country') }}</option>
+          <option value="sa">{{ trans('blocks.unix.delivery.country_sa') }}</option>
+          {% for country in dl_lists.countries %}
+            <option value="intl">{{ country }}</option>
+          {% endfor %}
+        </select>
+        <svg class="unix-ship__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </span>
+
+      <span class="unix-ship__field" data-ship-city-wrap hidden>
+        <select class="unix-ship__select" data-ship-city aria-label="{{ trans('blocks.unix.delivery.city') }}">
+          <option value="">{{ trans('blocks.unix.delivery.city') }}</option>
+          {% for tier in 1..3 %}
+            {% for city in dl_lists['tier' ~ tier ~ '_cities'] %}
+              <option value="{{ tier }}">{{ city }}</option>
+            {% endfor %}
+          {% endfor %}
+        </select>
+        <svg class="unix-ship__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </span>
+    </div>
+
+    {# always in the DOM (and in the a11y tree) so the polite announcement fires; empty = collapsed #}
+    <div class="unix-ship__result" data-ship-result aria-live="polite"></div>
+  </div>
+{% endif %}

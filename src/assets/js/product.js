@@ -6,6 +6,7 @@ window.fslightbox = Fslightbox;
 import initGallery from './partials/unix-gallery';
 import initSizeFinder from './partials/unix-size-finder'; // ROADMAP 3.3 (DS §8.11)
 import initSizeCharts from './partials/unix-size-charts'; // ROADMAP 3.4 (DS §8.21)
+import initDeliveryEstimate from './partials/unix-delivery-estimate'; // ROADMAP 3.6 (DS §8.22)
 
 class Product extends BasePage {
     onReady() {
@@ -23,6 +24,8 @@ class Product extends BasePage {
         initGallery();
         // ROADMAP 3.4: size chart buttons + dialog (Salla size guides)
         initSizeCharts();
+        // ROADMAP 3.6: «متى يصلك طلبك؟» country / city selects
+        initDeliveryEstimate();
     }
 
     initProductOptionValidations() {
