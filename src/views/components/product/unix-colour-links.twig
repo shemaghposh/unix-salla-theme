@@ -1,0 +1,36 @@
+{#
+  Colour links (ROADMAP 3.10 · DS §8.28 · SPEC §5.2 item 7, §9 «G: Combined Listings»).
+  On unix.sa every colour is a separate product, and the Combined Listings app shows the sibling
+  colours as swatches; each swatch opens the sibling's own page. Same here, server-rendered so the
+  links are crawlable internal links (SEO, 3.11).
+
+  Expects `unix_colours` from pages/product/single.twig (parsed from the unix_colour_links setting, D72):
+    unix_colours.name    colour name of this product (shown after «اللون:»)
+    unix_colours.items[] { url, name, hex, current } in the merchant's order; only when the group has 2+ products
+  hex → colour square (--s-6) in a 44px target; no hex → text chip like the size buttons (D73).
+  The current product is a link to itself with aria-current="page" (not clickable-looking).
+#}
+{% if unix_colours is defined and unix_colours.items|length > 1 %}
+  {% set cl_label = trans('blocks.unix.colours.label') %}
+  <div class="unix-colours" data-testid="unix-colour-links">
+    <p class="unix-colours__label">
+      {{ cl_label }}: <span class="unix-colours__value">{{ unix_colours.name }}</span>
+    </p>
+    <ul class="unix-colours__list" role="list" aria-label="{{ cl_label|e('html_attr') }}">
+      {% for item in unix_colours.items %}
+        <li class="unix-colours__item">
+          <a class="unix-colours__link {{ item.hex ? 'unix-colours__link--swatch' : 'unix-colours__link--text' }}"
+             href="{{ item.current ? product.url : item.url }}"
+             {% if item.current %}aria-current="page"{% endif %}
+             {% if item.hex %}aria-label="{{ item.name|e('html_attr') }}" title="{{ item.name|e('html_attr') }}"{% endif %}>
+            {%- if item.hex -%}
+              <span class="unix-colours__swatch" style="background-color: {{ item.hex }}" aria-hidden="true"></span>
+            {%- else -%}
+              {{ item.name }}
+            {%- endif -%}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

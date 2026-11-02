@@ -1,0 +1,99 @@
+// ─────────────────────────────────────────────────────────────
+// Colour links (ROADMAP 3.10 · DS §8.28)
+// unix.sa: G: Combined Listings swatches, one product per colour, each swatch → the sibling's page.
+// Markup: components/product/unix-colour-links.twig. Matches the colour options in DS §8.21
+// (--s-6 square, --r-sm, double ring when selected) and the size buttons for text chips.
+// ─────────────────────────────────────────────────────────────
+
+.unix-colours {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.theme-unix .unix-colours__label {
+  margin: 0;
+  color: var(--c-text);
+  font-size: var(--t-small);
+  font-weight: var(--fw-medium);
+  line-height: 1.6;
+}
+
+.unix-colours__value { font-weight: var(--fw-regular); }
+
+.unix-colours__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.unix-colours__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-block-size: var(--tap);
+  min-inline-size: var(--tap);
+  color: var(--c-text);
+  text-decoration: none;
+  transition: border-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out),
+              transform var(--d-fast) var(--ease-out);
+
+  &:focus-visible {
+    outline: var(--ring-w) solid var(--c-accent);
+    outline-offset: var(--ring-w);
+  }
+
+  &:active { transform: translateY(var(--press-y)); }
+
+  &[aria-current="page"] { cursor: default; }
+  &[aria-current="page"]:active { transform: none; }
+}
+
+// text chip (no hex): same as the size buttons (DS §8.21)
+.unix-colours__link--text {
+  padding-inline: var(--s-4);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-sm);
+  background: var(--c-surface);
+  font-size: var(--t-small);
+  font-weight: var(--fw-medium);
+  line-height: 1.3;
+
+  &:hover { border-color: var(--c-text-muted); }
+
+  &[aria-current="page"] {
+    border-color: var(--c-text);
+    box-shadow: inset 0 0 0 var(--line-w) var(--c-text);
+  }
+}
+
+// colour square centred in the 44px target
+.unix-colours__link--swatch {
+  border-radius: var(--r-sm);
+
+  &:hover .unix-colours__swatch { border-color: var(--c-text-muted); }
+
+  &[aria-current="page"] .unix-colours__swatch {
+    border-color: var(--c-border);
+    box-shadow: 0 0 0 var(--ring-w) var(--c-bg), 0 0 0 calc(var(--ring-w) * 2) var(--c-text);
+  }
+}
+
+.unix-colours__swatch {
+  display: block;
+  inline-size: var(--s-6);
+  block-size: var(--s-6);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-sm);
+  transition: border-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-colours__link,
+  .unix-colours__swatch { transition: none; }
+  .unix-colours__link:active { transform: none; }
+}

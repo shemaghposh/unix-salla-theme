@@ -549,6 +549,31 @@
         {
             "type": "boolean",
             "icon": "sicon-toggle-off",
+            "label": "ألوان الموديل في صفحة المنتج",
+            "description": "عندما يكون كل لون منتجًا مستقلًا، يظهر صف «اللون» قبل المقاسات بمربع لكل لون، والضغط عليه يفتح صفحة ذلك اللون. تُكتب الألوان في «روابط ألوان الموديلات» أدناه.",
+            "id": "unix_colour_links_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "روابط ألوان الموديلات",
+            "description": "سطر لكل منتج (لون)، وبين الخانات علامة |: اسم الموديل | رابط المنتج | اسم اللون | كود اللون (اختياري). اسم الموديل نفسه في كل ألوان الموديل الواحد، بالإنجليزية ودون مسافات، مثل sculpting-leggings. الصقي رابط المنتج الكامل من المتجر كما هو، بدءًا من https:// (ينتهي بحرف p ثم رقم المنتج). كود اللون مثل #E9DFCF، وإذا تركتِه فارغًا يظهر اسم اللون كزر. في خانة الإنجليزية اكتبي الأسطر نفسها بأسماء الألوان والروابط الإنجليزية، وإذا تركتِها فارغة تُستخدم العربية.",
+            "id": "unix_colour_links",
+            "format": "textarea",
+            "multilanguage": true,
+            "required": false,
+            "value": null,
+            "placeholder": "sculpting-leggings | https://unix.sa/sculpting-leggings-vanilla/p123456789 | فانيليا | #E9DFCF",
+            "minLength": 0,
+            "maxLength": 20000
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
             "label": "أداة «اعرفي مقاسك» في صفحة المنتج",
             "description": "تظهر تحت اختيار المقاس في المنتجات اللي فيها خيار اسمه «مقاس» أو Size.",
             "id": "unix_size_finder_enabled",
@@ -828,6 +853,64 @@
                     "value": "custom"
                 }
             ]
+        },
+        {
+            "type": "static",
+            "id": "unix-static-line-seo",
+            "format": "line"
+        },
+        {
+            "type": "static",
+            "format": "title",
+            "id": "unix-static-seo",
+            "value": "<div class='rounded-lg' style='background-color: #21636d; display: flex; justify-content: center; align-items: center;padding: 15px;margin-bottom: 20px !important; flex-direction: column;gap: 15px;'><h6 style='color: #ffffff;font-size: 15px; font-weight: bold;'> محركات البحث (البيانات المنظمة)</h6></div>",
+            "variant": "h6"
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "بيانات المنتج لمحركات البحث (Product)",
+            "description": "يضيف الثيم في صفحة المنتج بيانات منظمة بالاسم والصور والسعر والتوفر والتقييم، ويربط ألوان الموديل الواحد. أوقفيه فقط إذا ظهر في مصدر الصفحة وصف Product آخر من سلة.",
+            "id": "unix_seo_jsonld_product",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "اسم العلامة التجارية في بيانات المنتج",
+            "description": "يُستخدم للمنتجات التي لا ترتبط بماركة في سلة. إذا تركتِه فارغًا يُستخدم اسم المتجر.",
+            "id": "unix_seo_brand_name",
+            "format": "text",
+            "required": false,
+            "value": "UNIX",
+            "placeholder": "UNIX",
+            "minLength": 0,
+            "maxLength": 60
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "بيانات المتجر لمحركات البحث (Organization و WebSite)",
+            "description": "اسم المتجر وشعاره ورابطه وحسابات التواصل الاجتماعي في كل الصفحات، واسم الموقع في الصفحة الرئيسية.",
+            "id": "unix_seo_jsonld_site",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "مسار التنقل لمحركات البحث عند إخفائه (BreadcrumbList)",
+            "description": "مسار التنقل الظاهر في سلة يضيف هذه البيانات بنفسه. عند إخفائه في صفحة المنتج أو التصنيف يضيفها الثيم بدلًا منه.",
+            "id": "unix_seo_jsonld_breadcrumb",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
         },
         {
             "type": "static",

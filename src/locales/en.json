@@ -274,6 +274,9 @@
       "recommendations": {
         "title": "You may also like",
         "view_all": "View all"
+      },
+      "colours": {
+        "label": "Colour"
       }
     }
   },

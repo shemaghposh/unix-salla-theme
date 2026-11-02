@@ -88,9 +88,10 @@
                                             
                                         </a>
                                         <div class="space-y-1">
-                                            <h1 class="text-gray-900 leading-6 text-lg">
+                                            {# ROADMAP 3.11: one h1 per page (the sr-only «السلة» above); items are h2, unix-size-h1 keeps the old look until 4.4 #}
+                                            <h2 class="unix-size-h1 text-gray-900 leading-6 text-lg">
                                                 <a href="{{ item.url }}" class="text-base">{{ item.product_name }}</a>
-                                            </h1>
+                                            </h2>
 
                                             <span class="text-sm text-gray-500 line-through item-regular-price {{ item.offer ? '' : 'hidden' }}" >{{ item.product_price|money }}</span>
                                             <span class="inline-flex gap-1 leading-4 text-sm text-gray-500 line-through item-original-price {{ item.is_on_sale ? '' : 'hidden' }}" id="original_price">{{ item.original_price|money }}</span>

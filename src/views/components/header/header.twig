@@ -48,11 +48,11 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
             <img class="unix-header__logo-img unix-header__logo-img--inverse" loading="eager" width="120" height="48"
                  src="{{ inverse_logo }}" alt="" aria-hidden="true">
           {% endif %}
-          {% if is_page('index') %}
-            <h1 class="sr-only">{{ store.name }}</h1>
-          {% else %}
-            <h2 class="sr-only">{{ store.name }}</h2>
-          {% endif %}
+          {#
+            ROADMAP 3.11 · DS §14: no heading here. One <h1> per page: the home's h1 is the first hero
+            title, or the sr-only store name at the end of pages/index.twig when no hero has a title.
+            The logo's alt already names the store.
+          #}
         </a>
 
         {# End side: search, account, AR/EN, cart #}

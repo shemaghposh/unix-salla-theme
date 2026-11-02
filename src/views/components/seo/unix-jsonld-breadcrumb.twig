@@ -1,0 +1,19 @@
+{#
+  BreadcrumbList fallback (ROADMAP 3.11 · DS §14 · D76).
+  Salla's <salla-breadcrumb> already prints a BreadcrumbList JSON-LD (client-side) whenever it renders, so
+  this is only included where the merchant switched the visible breadcrumbs off
+  (product_show_breadcrumbs / product_index_show_breadcrumbs), so the page still has one, server-rendered.
+  Pass `crumbs`: [{ name, url }, …] from the home to the current page; the last item gets no `item`
+  (Google's guidance, same as salla-breadcrumb). Setting: unix_seo_jsonld_breadcrumb (default on).
+#}
+{% if theme.settings.get('unix_seo_jsonld_breadcrumb', true) and crumbs is defined and crumbs|length > 1 %}
+  {% set seo_list = [] %}
+  {% for crumb in crumbs %}
+    {% set seo_entry = { '@type': 'ListItem', 'position': loop.index, 'name': crumb.name|striptags|trim } %}
+    {% if not loop.last and crumb.url %}
+      {% set seo_entry = seo_entry|merge({ 'item': crumb.url }) %}
+    {% endif %}
+    {% set seo_list = seo_list|merge([seo_entry]) %}
+  {% endfor %}
+  <script type="application/ld+json">{{ { '@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': seo_list }|json_encode|raw }}</script>
+{% endif %}
