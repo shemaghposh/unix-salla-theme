@@ -223,6 +223,15 @@
         "counter": ":index of :total",
         "play_video": "Play video",
         "wishlist": "Add to wishlist"
+      },
+      "size_charts": {
+        "single": "Size guide",
+        "top": "Top size guide",
+        "bottom": "Bottom size guide",
+        "named": "Size guide: :name",
+        "close": "Close",
+        "loading": "One moment…",
+        "error": "The size guide couldn't load. Please try again."
       }
     }
   },

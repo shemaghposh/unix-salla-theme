@@ -569,6 +569,17 @@
             "placeholder": "{\"PRODUCTS\": {\"123456\": {\"cat\": \"leggings\"}}}",
             "minLength": 0,
             "maxLength": 20000
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "أزرار «دليل المقاسات» في صفحة المنتج",
+            "description": "تظهر للمنتجات المربوطة بجدول مقاسات من لوحة سلة (المنتجات ← جداول المقاسات). لو المنتج له أكثر من جدول، اكتبي «الأعلى» أو «الأسفل» في اسم الجدول ليظهر زر «دليل مقاسات الأعلى» و«دليل مقاسات الأسفل».",
+            "id": "unix_size_charts_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
         }
     ],
     "components": [
