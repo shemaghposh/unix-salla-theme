@@ -490,7 +490,7 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **الحالات:** «لحظة…» لحد ما المحتوى يوصل، ورسالة لو الطلب فشل (والزرار بيفضل شغّال للمحاولة تاني)، في عنصر `role="status"` واحد ثابت في الدايلوج (الـ JS بيغيّر النص بس، وفاضي = مالوش مساحة).
 - **السكرول الأفقي:** صندوق كل جدول (`.unix-sg__rte`) `tabindex="0"` و `role="region"` و `aria-label` = اسم الزرار، عشان الكيبورد يقدر يسكرول الجدول العريض؛ حلقة الفوكس جوه الصندوق.
 - **الحركة:** الدايلوج بيظهر بـ opacity و `translateY(var(--s-1))` في `--d-base`، وبيتقفل مع reduced-motion.
-- **رائد:** صف «دليل المقاسات» بتاع رائد في `pages/partials/product/options.twig` (و `salla-product-size-guide`) مابيظهرش لما الإعداد ده مفعّل، عشان مايبقاش فيه زرارين.
+- **رائد:** صف «دليل المقاسات» بتاع رائد في `pages/partials/product/options.twig` (و `salla-product-size-guide`) مابيظهرش في صفحة المنتج لما الإعداد ده مفعّل، عشان مايبقاش فيه زرارين. في السلة (`is_page('cart')`) بيفضل ظاهر، لأن أزرار يونكس مش هناك (D60).
 
 ### 8.24 Delivery Estimate («متى يصلك طلبك؟») — *المرحلة 3.6*
 مطابق لـ `reference/shopify-theme/snippets/unix-shipping-estimate.liquid` و `assets/unix-shipping.css` (SPEC §5.2 بند 11، §8.3). الكود: `src/views/components/product/unix-delivery-estimate.twig` و `04-components/unix-delivery-estimate.scss` و `js/partials/unix-delivery-estimate.js`. مكانه تحت أزرار الإضافة للسلة.
