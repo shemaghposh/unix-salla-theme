@@ -124,7 +124,7 @@
 | # | المهمة |
 |---|---|
 | 6.1 | مراجعة كاملة ضد DESIGN-SYSTEM (agent المراجعة)، ومعاها تنضيف نصوص لوحة التاجر في `twilight.json` للفصحى البسيطة بخطاب المؤنث (DS §9). لسه فيه كلام عامي من المراحل 1–3 زي «فاضي =» و«اللي» و«بس» |
-| 6.2 | الأداء: Lighthouse Mobile Performance ≥ 85، وحجم الـ JS للصفحة أقل من 150KB gz |
+| 6.2 | 🟨 الأداء: Lighthouse Mobile Performance ≥ 85، وحجم الـ JS للصفحة أقل من 150KB gz، و LCP أقل من 2.5 ثانية، و CLS أقل من 0.05. التفاصيل والأرقام في `docs/PERFORMANCE.md`. **(أ) الـ build:** `browserslist` حديث في `package.json`، و `logical-properties-and-values` مقفول في `postcss.config.js`: `postcss-preset-env` كان بيحوّل كل `inline-start/end` لـ left/right ثابتين (اتجاه LTR) فالـ RTL كان مقلوب في الـ CSS المبني، وكان بيكرر كل `var()` بقيمة احتياطية. و `@tailwindcss/line-clamp` اتشال (جوه Tailwind من 3.3) |
 | 6.3 | Accessibility: AA في كل الصفحات |
 | 6.4 | اختبار على Safari iOS، و Chrome Android، و Chrome و Safari على الديسكتوب |
 | 6.5 | Screenshots 1366×768 (3 بالقليل) وبيانات النشر |
