@@ -277,6 +277,29 @@
       },
       "colours": {
         "label": "Colour"
+      },
+      "cart_drawer": {
+        "title": "Cart (:count)",
+        "close": "Close cart",
+        "items_label": "Cart items",
+        "loading": "Loading your cart",
+        "error": "We couldn't load your cart right now.",
+        "empty_heading": "Don't miss out on the best deals!",
+        "empty_text": "Your cart may be empty now, but let us help you fill it up with amazing products.",
+        "shop_now": "Shop now",
+        "subtotal": "Subtotal",
+        "checkout": "Check out",
+        "view_cart": "View cart",
+        "tax_included": "Tax included and shipping calculated at checkout",
+        "tax_at_checkout": "Shipping, taxes, & promos calculated at checkout.",
+        "remove": "Remove :name",
+        "quantity": "Quantity for :name",
+        "out_of_stock": "Sold out",
+        "sale_price": "Sale price",
+        "regular_price": "Regular price",
+        "live": "Cart: :count · subtotal :total",
+        "free_shipping_remaining": "Spend :amount more for free shipping",
+        "free_shipping_done": "Congratulations! You qualify for free shipping!"
       }
     }
   },

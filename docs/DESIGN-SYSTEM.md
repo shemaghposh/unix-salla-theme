@@ -540,6 +540,34 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **من غير hex:** chip نصي بنفس شكل أزرار المقاس (§8.21): `--tap`، padding-inline `--s-4`، `--c-surface`، بوردر `--c-border`، `--r-sm`، `--t-small` 500؛ الحالي بوردر `--c-text` + حلقة داخلية `--line-w`.
 - **الحالات:** focus-visible حلقة `--ring-w` `--c-accent` بـ offset `--ring-w`؛ active `--press-y` (مش على الحالي)؛ مافيش disabled لأن الثيم مايعرفش مخزون المنتجات التانية (اللينك بيفتح صفحتها وهي اللي بتقول نفد). الـ transitions `--d-fast` `--ease-out` وبتتقفل مع reduced-motion. RTL: logical properties بس، ومافيش أيقونات اتجاه.
 
+### 8.33 Cart Drawer (درج السلة) — *المرحلة 4.3*
+مطابق لـ `reference/shopify-theme/snippets/cart-drawer.liquid` و `assets/cart-drawer.js` و `assets/components-sections.css` (`.drawer*`) (SPEC §7.1). الكود: `src/views/components/cart/unix-cart-drawer.twig` و `04-components/unix-cart-drawer.scss` و `js/partials/unix-cart-drawer.js`. السلوك الأساسي (focus trap، Esc، الخلفية، رجوع الفوكس) من `Drawer` في `unix-drawer.js` (1.3)، ومافيش منطق سلة من عندنا: البيانات من `salla.cart.api.details(null, ['options'])`، والتعديل `salla.cart.updateItem` / `salla.cart.deleteItem`، والإتمام `salla.cart.submit()`، والتحديث من `salla.cart.event.onUpdated`.
+- **بيتفتح من:** أيقونة السلة في الهيدر (`salla-cart-summary`، اللينك بتاعها بيفضل لو الـ JS مااشتغلش)، وبعد كل إضافة للسلة (`salla.cart.event.onItemAdded`) زي unix.sa. وهو شغّال: toast الإضافة بتاع رائد وتنبيه سلة «تمت الإضافة» وحركة الصورة الطايرة للسلة بيتقفلوا (الدرج هو التأكيد). مش موجود في صفحة السلة نفسها (الأيقونة لينك للصفحة). إعداد `unix_cart_drawer_enabled` (مفعّل) زي `cart_type: drawer` في الأصل. *(قرار مؤقت D85)*
+- **الجنب:** بيدخل من **ناحية النهاية** (`.unix-drawer--end`: شمال في العربي، يمين في الإنجليزي) زي unix.sa (`justify-content: flex-end` و `[dir=rtl] translate(-100%)`)، يعني من ناحية أيقونة السلة. ده عكس درج المنيو (§5 «Drawer» = ناحية البداية). العرض `--drawer-w`، وخلفية `--c-surface`، و `--e-2`، والركنين الداخليين `--r-lg`، والخلفية `--c-backdrop` + `--blur-backdrop`، والحركة `--d-slow` `--ease-in-out` (§8.9). *(قرار مؤقت D86)*
+- **الهيدر:** `h2` «السلة (n)» (`--t-h4`، و n من عدد سلة) وهو اسم الدايلوج (`aria-labelledby`)، وزرار إغلاق `--tap`. تحته شريط الشحن المجاني (§8.34). *(قرار مؤقت D87)*
+- **المنتجات:** `ul` بمسافة `--s-5` بين العناصر، و padding `--s-5`. كل عنصر: صورة `--cart-thumb-w` (84px) بنسبة `--ratio-cart-thumb` (3:4، الأصل `cart_image_ratio: 3/4` و cover) وحواف `--r-sm`، والاسم لينك `--t-small` `--c-text` (hover `--o-muted`)، والخيارات `--t-micro` `--c-text-muted` («المقاس: M»)، وسطر تحت فيه الكمية (`salla-quantity-input` بشكل §8.21: pill `--c-field`، عرض `--qty-w`، ارتفاع `--tap`)، والسعر (`--t-small` 500 tabular؛ وقت الخصم السعر بعد الخصم ومعاه القديم `--c-price-old` line-through)، وزرار حذف أيقونة سلة stroke 1.5 `--icon-sm` جوه `--tap` بلون `--c-text-muted` (hover `--c-text`). صورة اللينك `tabindex="-1"` و `aria-hidden` (نفس لينك الاسم). العنصر وهو بيتحدّث: `aria-busy` و `--o-disabled`. المنتج النافد: «نفدت الكمية» بدل السعر.
+- **أول فتح:** الصفوف بتتجاب بعد الفتح (عناصر السلة مش موجودة في Twig برا صفحة السلة)، فيه skeleton صفين (`--c-surface-muted`) لحد ما توصل.
+- **الكاش باك:** §8.25 بين المنتجات والفوتر، بـ padding-inline `--s-5` (الأصل `.cbk-drawer-wrap {padding: 0 16px}`).
+- **الفوتر:** ثابت تحت (§8.9)، بوردر فوق `--line-w` `--c-border`، و padding `--s-5`، والمسافة `--s-4`. «المجموع الفرعي» والمبلغ في صف واحد (`--t-body-lg`، المبلغ 500 tabular). بعده «إتمام الطلب» و «عرض السلة» بعرض كامل، الاتنين `.unix-btn` primary (زي `button--secondary` في scheme Cream على unix.sa، D70). وتحتهم ملاحظة الضريبة `--t-small` `--c-text-muted`. *(قرار مؤقت D89)*
+- **فاضية:** «لا تفوّتي جديدنا!» (`--t-body-lg` 500) وتحتها النص (`--t-body` `--c-text-muted`) وزرار primary «تسوقي الآن» لكل المنتجات، بمسافة `--s-4`؛ النصين إعدادات (`unix_cart_empty_*`) والفاضي = نص unix.sa.
+- **قارئ الشاشة:** `role="status"` مخفي (`sr-only`) بيقول العدد والمجموع بعد كل تغيير (مش في أول فتح). المجموع نفسه مش live عشان مايتقالش مرتين.
+- **reduced-motion:** الدخول والخلفية من غير حركة (`--d-slow` بيبقى 0)، والـ skeleton من غير نبض.
+
+**Tokens (4.3–4.4):**
+| Token | القيمة | الاستخدام |
+|---|---|---|
+| `--cart-thumb-w` | 84px | صورة المنتج في الدرج وفي صفحة السلة على الموبايل (الأصل `.drawer .cart-item__media {width: 8.4rem}`) |
+| `--cart-thumb-w-lg` | 120px | صورة المنتج في صفحة السلة من md |
+| `--ratio-cart-thumb` | `3 / 4` | نسبة صورة السلة (الأصل `cart_image_ratio: 3/4`) |
+| `--cart-aside-w` | 384px | عمود الملخص في صفحة السلة من lg (عرض رائد الأصلي `w-96`) |
+
+### 8.34 Free Shipping Bar (شريط الشحن المجاني) — *المرحلة 4.3*
+مكانه في هيدر درج السلة (زي `cart-shipping-slider` في الأصل) وأول حاجة في عمود الملخص في صفحة السلة (بدل كارت الشحن بتاع رائد). الكود: `components/cart/unix-free-shipping.twig` و `04-components/unix-free-shipping.scss` و `js/partials/unix-free-shipping.js`.
+- **البيانات:** لو المتجر عنده قاعدة شحن مجاني في سلة (`free_shipping_bar` في بيانات السلة) هي اللي بتحكم (الحد والباقي والنسبة)؛ وإلا حد الثيم `unix_free_shipping_threshold` (500، D1) مقارنة بـ `sub_total`. إعداد `unix_cart_free_shipping` (مفعّل؛ في unix.sa مقفول). *(قرار مؤقت D88)*
+- **النص:** «أنفقي **المبلغ** إضافية للحصول على شحن مجاني داخل السعودية»، ولما توصل «مبروك! أصبحتِ مؤهلة للشحن المجاني!» (نص unix.sa بالحرف، بعلامات التعجب بتاعته). `--t-small` `--c-text-muted`، والمبلغ `--c-text` 500. النص `role="status"` (`aria-live="polite"`).
+- **الشريط:** مسار ارتفاعه `--s-1` و pill بلون `--c-surface-muted`، والمليان `--c-accent` من ناحية البداية، بعرض النسبة (`--fs-progress`) و transition `--d-base` `--ease-out`. بيستخبى لما الشحن يبقى مجاني. `aria-hidden` (النص هو المعلومة). المسافة بين النص والشريط `--s-2`.
+- **بيستخبى** لو السلة فاضية أو الحد صفر أو الإعداد مقفول.
+
 ---
 
 ## 9. نبرة الكلام (Copy)

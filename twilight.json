@@ -961,6 +961,56 @@
             "placeholder": "صالح ٦ أشهر",
             "minLength": 0,
             "maxLength": 60
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "السلة الجانبية",
+            "description": "تُفتح السلة كنافذة جانبية عند الضغط على أيقونة السلة وبعد كل إضافة للسلة. عند إيقافها تفتح الأيقونة صفحة السلة.",
+            "id": "unix_cart_drawer_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "شريط الشحن المجاني في السلة",
+            "description": "يوضح المبلغ المتبقي للشحن المجاني. يعتمد على قاعدة الشحن المجاني في سلة إن وُجدت، وإلا على «حد الشحن المجاني» في الأعلى.",
+            "id": "unix_cart_free_shipping",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "عنوان السلة الفارغة",
+            "description": "إذا تركتِه فارغًا يظهر «لا تفوّتي جديدنا!».",
+            "id": "unix_cart_empty_heading",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "لا تفوّتي جديدنا!",
+            "minLength": 0,
+            "maxLength": 80
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "نص السلة الفارغة",
+            "description": "يظهر تحت العنوان. إذا تركتِه فارغًا يظهر نص المتجر الأصلي.",
+            "id": "unix_cart_empty_text",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "سلتك فارغة الآن، اكتشفي تشكيلتنا واملئيها بما يعجبك",
+            "minLength": 0,
+            "maxLength": 200
         }
     ],
     "components": [

@@ -1,0 +1,52 @@
+/*
+ * UNIX free-shipping bar (ROADMAP 4.3 · DS §8.34)
+ * unix.sa cart-shipping-slider: a muted message; here with a thin accent progress line under it.
+ * Used in the cart drawer header and the cart page summary column.
+ */
+
+.unix-fs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+
+  &[hidden] { display: none; }
+}
+
+.unix-fs__msg {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+  line-height: 1.6;
+
+  strong {
+    color: var(--c-text);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+  }
+}
+
+.unix-fs.is-done .unix-fs__msg { color: var(--c-text); }
+
+.unix-fs__track {
+  display: block;
+  block-size: var(--s-1);
+  border-radius: var(--r-pill);
+  background: var(--c-surface-muted);
+  overflow: hidden;
+}
+
+// Fills from the inline-start edge in both directions (no transform-origin needed)
+.unix-fs__fill {
+  display: block;
+  block-size: 100%;
+  inline-size: calc(var(--fs-progress, 0) * 100%);
+  border-radius: inherit;
+  background: var(--c-accent);
+  transition: inline-size var(--d-base) var(--ease-out);
+}
+
+.unix-fs.is-done .unix-fs__track { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-fs__fill { transition: none; }
+}

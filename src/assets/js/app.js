@@ -6,6 +6,7 @@ import initAnnouncement from "./partials/unix-announcement";
 import initHeader from "./partials/unix-header";
 import initMenuDrawer from "./partials/unix-drawer";
 import initFooter from "./partials/unix-footer";
+import initCartDrawer from "./partials/unix-cart-drawer"; // ROADMAP 4.3 (DS §8.33)
 
 class App extends AppHelpers {
   constructor() {
@@ -20,6 +21,7 @@ class App extends AppHelpers {
     initMenuDrawer();
     initHeader({ sticky: !!window.header_is_sticky });
     initFooter();
+    this.cartDrawer = initCartDrawer();
     this.initAddToCart();
     this.initiateDropdowns();
     this.initiateModals();
@@ -101,7 +103,9 @@ isElementLoaded(selector){
 
   initiateNotifier() {
     salla.notify.setNotifier(function (message, type, data) {
-      if (window.enable_add_product_toast && data?.data?.googleTags?.event === "addToCart") {
+      // The add-product toast or (ROADMAP 4.3, D85) the cart drawer already confirms the add
+      const addConfirmed = window.enable_add_product_toast || document.getElementById('cart-drawer');
+      if (addConfirmed && data?.data?.googleTags?.event === "addToCart") {
         return;
       }
       if (typeof message == 'object') {
@@ -208,6 +212,8 @@ isElementLoaded(selector){
     });
 
     salla.cart.event.onItemAdded((response, prodId) => {
+      // ROADMAP 4.3 (D85): the cart drawer opens instead of the image flying to the header cart
+      if (this.cartDrawer) return;
       app.element('salla-cart-summary').animateToCart(app.element(`#product-${prodId} img`));
     });
   }

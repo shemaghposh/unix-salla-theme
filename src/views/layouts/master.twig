@@ -57,10 +57,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{ theme.settings.set('placeholder', 'images/placeholder.png') }}
+    {# ROADMAP 4.3 (D85): while the cart drawer is on it is the add-to-cart confirmation, so Raed's toast stays off #}
+    {% set unix_add_toast = theme.settings.get('enable_add_product_toast', true) and not (theme.settings.get('unix_cart_drawer_enabled', true) and not is_page('cart')) %}
 
     <script defer data-cfasync="false" crossorigin="anonymous" src="{{ 'product-card.js'|asset }}"></script>
     <script defer src="{{ 'main-menu.js'|asset }}"></script>
-    {% if theme.settings.get('enable_add_product_toast', true) %}
+    {% if unix_add_toast %}
         <script defer src="{{ 'add-product-toast.js'|asset }}"></script>
     {% endif %}
 
@@ -71,7 +73,7 @@
         window.header_is_sticky = "{{theme.settings.get('header_is_sticky', 'Default Value')}}"
         window.can_access_wallet = {{ user.can_access_wallet | json_encode }}
         window.enable_more_menu = "{{ theme.settings.get('enable_more_menu', true) }}"
-        window.enable_add_product_toast = "{{ theme.settings.get('enable_add_product_toast', true) }}"
+        window.enable_add_product_toast = "{{ unix_add_toast }}"
         window.notify_when_available_in_card = "{{ theme.settings.get('notify_when_available_in_card', true) }}"
     </script>
     
@@ -121,7 +123,7 @@
     {% component 'footer.footer' %}
 </div>
 {% hook 'body:end' %}
-{% if theme.settings.get('enable_add_product_toast', true) %}
+{% if unix_add_toast %}
     <salla-add-product-toast data-testid="store-add-product-toast"></salla-add-product-toast>
 {% endif %}
 <script defer crossorigin="anonymous" src="{{ 'app.js' | asset }}"></script>
