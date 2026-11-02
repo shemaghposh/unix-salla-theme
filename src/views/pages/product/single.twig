@@ -382,14 +382,14 @@
     {#
         «أكملي الإطلالة» (ROADMAP 3.9 · DS §8.22 · SPEC §5.3, §8.12), unix.sa sections/complete-the-look.liquid.
         Source (D68): theme setting unix_complete_look_data, JSON {"productId": [id, id, ...]} in place of
-        the custom.complements metafield. Rendered only when this product's id is a key in it (string check
+        the custom.complements metafield. Rendered only when this product's id is a key in it ("id": string check
         here, real parse in js/partials/unix-pdp-related.js, which mounts salla-products-list source "selected",
         limit 2, and hides the section on bad JSON / no products). Cards: custom-salla-product-card with
         an in-flow «أضيفي» button (data-unix-add-label, product-card.js).
     #}
     {% set ctl_data = theme.settings.get('unix_complete_look_data') %}
     {% if ctl_data is iterable %}{% set ctl_data = '' %}{% endif %}
-    {% if theme.settings.get('unix_complete_look_enabled', true) and ('"' ~ product.id ~ '"') in ctl_data|default('') %}
+    {% if theme.settings.get('unix_complete_look_enabled', true) and ('"' ~ product.id ~ '":') in ctl_data|default('') %}
         {% set ctl_title = theme.settings.get('unix_complete_look_title') %}
         {% if ctl_title is iterable %}
             {% set ctl_title = ctl_title[language.code] is defined ? ctl_title[language.code] : null %}
@@ -494,7 +494,8 @@
                     <salla-products-list class="unix-pdp-list"
                                          source="related"
                                          source-value="{{ product.id }}"
-                                         limit="4"></salla-products-list>
+                                         limit="4"
+                                         includes='["images"]'></salla-products-list>
                 </div>
             </div>
         </section>

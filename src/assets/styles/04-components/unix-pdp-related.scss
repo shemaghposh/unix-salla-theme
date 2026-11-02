@@ -65,6 +65,9 @@
   margin-block-start: var(--s-3);
   border-radius: var(--r-pill);
   background: var(--c-surface-muted);
+
+  // Touch: same --tap height as the real button (P6)
+  @media not all and (hover: hover) and (min-width: 1024px) { block-size: var(--tap); }
 }
 
 // The quick add sits in the flow under the price, always visible, full width, outline, text only
@@ -89,6 +92,9 @@ body.theme-unix .unix-ctl.unix-products .s-product-card-content-footer .s-button
   min-inline-size: 0;
   min-block-size: var(--btn-h-sm);
   padding-inline: var(--s-5);
+
+  // Touch: 44px target, like the shared card's quick add (unix-product-card.scss, DS §8.2 / P6)
+  @media not all and (hover: hover) and (min-width: 1024px) { min-block-size: var(--tap); }
 }
 
 .unix-ctl.unix-products .s-product-card-content-footer salla-add-product-button {
@@ -101,6 +107,7 @@ body.theme-unix .unix-ctl.unix-products .s-product-card-content-footer .s-button
     overflow: visible;
     clip: auto;
     clip-path: none;
+    white-space: normal;
   }
 }
 

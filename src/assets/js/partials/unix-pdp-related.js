@@ -79,6 +79,9 @@ function initCompleteLook(section) {
   list.setAttribute('source', 'selected');
   list.setAttribute('source-value', JSON.stringify(ids));
   list.setAttribute('limit', String(Math.min(ids.length, Number(section.dataset.limit) || 2)));
+  // Second image for the card hover crossfade. With `limit` set the list never starts infinite
+  // scroll, so the autoload + includes manual-load path in salla-products-list does not apply.
+  list.setAttribute('includes', '["images"]');
   slot.append(list);
   watchList(section, list);
 }
