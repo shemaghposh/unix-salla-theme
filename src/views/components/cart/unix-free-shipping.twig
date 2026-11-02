@@ -45,7 +45,8 @@
        data-msg-remaining="{{ fs_msg|e('html_attr') }}"
        data-msg-done="{{ fs_done_msg|e('html_attr') }}"
        {% if not fs_show %}hidden{% endif %}>
-    <p class="unix-fs__msg" role="status" data-fs-msg>
+    {# ROADMAP 6.3: inside the cart drawer (fs_live: false) the drawer's own status line speaks, so this one is silent #}
+    <p class="unix-fs__msg" role="status"{{ (fs_live is defined and fs_live == false) ? ' aria-live="off"' : '' }} data-fs-msg>
       {%- if fs_show -%}
         {%- if fs_done -%}
           {{ fs_done_msg }}

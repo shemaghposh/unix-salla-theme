@@ -255,7 +255,9 @@
   font-variant-numeric: tabular-nums;
 }
 
-.theme-unix :is(h1, h2, h3, h4) { font-family: var(--f-heading); font-weight: 700; color: var(--c-text); }
+.theme-unix :is(h1, h2, h3, h4) { font-family: var(--f-heading); font-weight: var(--fw-bold); color: var(--c-text); }
+/* DS §2.1: English headings are Open Sans 600 (Arabic Somar / Plex stay 700) */
+html[lang="en"] .theme-unix :is(h1, h2, h3, h4) { font-weight: var(--fw-semibold); }
 .theme-unix h1 { font-size: var(--t-h1); line-height: 1.25; }
 .theme-unix h2 { font-size: var(--t-h2); line-height: 1.3; }
 .theme-unix h3 { font-size: var(--t-h3); line-height: 1.35; }
@@ -273,7 +275,7 @@ html[lang="en"] .theme-unix :is(h1, h2, h3, h4) { letter-spacing: -.01em; }
 }
 
 .theme-unix p { max-width: 65ch; }
-.theme-unix :focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+.theme-unix :focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
 
 [dir="rtl"] .icon-dir { transform: scaleX(-1); }
 

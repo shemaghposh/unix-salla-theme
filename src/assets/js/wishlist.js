@@ -46,6 +46,12 @@ class Wishlist extends BasePage {
                 app.toggleElementClassIf(btn, 'is-added', 'not-added', () => isAdded);
                 // app.toggleElementClassIf(btn, 'pulse', 'un-favorited', () => isAdded);
             });
+        // ROADMAP 6.3 · DS §8.3: product-card hearts follow the real wishlist state
+        document.querySelectorAll('.s-product-card-wishlist-btn[data-id="' + id + '"]')
+            .forEach(btn => {
+                app.toggleElementClassIf(btn, 's-product-card-wishlist-added', 'not-added', () => isAdded);
+                btn.setAttribute('aria-pressed', String(isAdded));
+            });
     }
 }
 

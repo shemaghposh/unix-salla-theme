@@ -13,6 +13,45 @@
 // `:has()` applies it in the first paint; `.is-overlay` (added by JS) is the fallback without :has().
 $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .unix-header[data-overlay-capable]):not(.is-stuck):not(:hover):not(:focus-within)';
 
+// Skip link (ROADMAP 6.3 · DS §8.46 · WCAG 2.4.1): first child of .app-inner (master.twig).
+// Visually hidden until focused, then a --c-surface pill at the top start corner, above the drawers.
+.unix-skip-link {
+  position: fixed;
+  inset-block-start: var(--s-2);
+  inset-inline-start: var(--s-2);
+  z-index: var(--z-drawer);
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap);
+  padding-inline: var(--s-5);
+  border-radius: var(--r-pill);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-size: var(--t-small);
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  box-shadow: var(--e-2);
+  // sr-only until focus
+  clip-path: inset(50%);
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &:focus,
+  &:focus-visible {
+    clip-path: none;
+    inline-size: auto;
+    block-size: auto;
+    overflow: visible;
+    outline: var(--ring-w) solid var(--c-accent);
+    outline-offset: var(--ring-w);
+  }
+}
+
+// <main tabindex="-1"> receives focus from the skip link only; no ring on the whole page region.
+#main-content:focus { outline: none; }
+
 .unix-header {
   position: relative;
   z-index: var(--z-header);
@@ -182,7 +221,8 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
   }
 }
 
-// ── Icon button (search, menu, scope) ─────────────
+// ── Icon button (search, menu, scope, and every drawer / dialog close: ROADMAP 6.1 · DS §8.2) ──
+// Dialog closes (size finder, size charts, gallery zoom, drawers) use it with one × icon, stroke 1.5.
 .unix-icon-btn {
   display: inline-flex;
   align-items: center;
@@ -190,12 +230,17 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
   flex-shrink: 0;
   inline-size: var(--tap);
   block-size: var(--tap);
+  padding: 0;
+  border: 0;
   border-radius: var(--r-pill);
   color: inherit;
   background: transparent;
   font-size: var(--icon-sm);
   line-height: 1;
+  cursor: pointer;
   transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);
+
+  svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
 
   &:hover { background: var(--c-hover-tint); }
   &:active { background: var(--c-press-tint); }
@@ -212,7 +257,7 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
   border-radius: var(--r-pill);
   color: inherit;
   font-size: var(--t-small);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   transition: background-color var(--d-fast) var(--ease-out);
 
   &:hover { background: var(--c-hover-tint); }
@@ -241,7 +286,7 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     border-radius: var(--r-pill);
     color: inherit;
     font-size: var(--t-micro);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
     line-height: 1;
 
     html[lang="en"] & { letter-spacing: .04em; } // DS §2.2: +0.04em for English micro only
@@ -263,7 +308,7 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     &:disabled { opacity: var(--o-disabled); pointer-events: none; }
 
     &.is-active {
-      font-weight: 700;
+      font-weight: var(--fw-bold);
       cursor: default;
 
       &::before {

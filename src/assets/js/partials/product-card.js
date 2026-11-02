@@ -152,6 +152,23 @@ class ProductCard extends HTMLElement {
     return `<img class="s-product-card-image-secondary s-product-card-image-cover" src="${this.escapeHTML(second.url)}" alt="" aria-hidden="true" loading="lazy" />`;
   }
 
+  /**
+   * Wishlist heart name (ROADMAP 6.3 · DS §8.3): one fixed, localized label per card that names
+   * the product; the saved state lives in aria-pressed only (never in the label).
+   */
+  getWishlistLabel() {
+    const label = salla.lang.get('blocks.unix.card.wishlist', { name: this.product?.name || '' });
+    return this.escapeHTML(label);
+  }
+
+  /**
+   * Heart icon (DS §6, §8.3): inline SVG, stroke 1.5, currentColor. The saved state fills it from
+   * CSS (`[aria-pressed="true"]`, unix-product-card.scss), so no re-render is needed on toggle.
+   */
+  getHeartIcon() {
+    return `<svg class="unix-heart" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 20.25s-7.5-4.6-7.5-10.1A4.15 4.15 0 0 1 8.65 6c1.4 0 2.6.7 3.35 1.8A4.05 4.05 0 0 1 15.35 6a4.15 4.15 0 0 1 4.15 4.15c0 5.5-7.5 10.1-7.5 10.1Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+  }
+
   getProps(){
 
     /**
@@ -231,18 +248,19 @@ class ProductCard extends HTMLElement {
             ${this.getSecondaryImage()}
             ${!this.fullImage && !this.minimal ? this.getProductBadge() : ''}
           </a>
-          ${this.fullImage ? `<a href="${this.product?.url}" aria-label=${this.product.name} class="s-product-card-overlay"></a>`:''}
+          ${this.fullImage ? `<a href="${this.product?.url}" aria-label="${this.escapeHTML(this.product.name)}" class="s-product-card-overlay"></a>`:''}
           ${!this.horizontal && !this.fullImage ?
             `<salla-button
               shape="icon"
               fill="outline"
               color="light"
               name="product-name-${this.product.id}"
-              aria-label="Add or remove to wishlist"
+              aria-label="${this.getWishlistLabel()}"
+              aria-pressed="${this.isInWishlist}"
               class="s-product-card-wishlist-btn animated ${this.isInWishlist ? 's-product-card-wishlist-added pulse-anime' : 'not-added un-favorited'}"
               onclick="salla.wishlist.toggle(${this.product.id})"
               data-id="${this.product.id}">
-              <i class="sicon-heart"></i>
+              ${this.getHeartIcon()}
             </salla-button>` : ``
           }
         </div>
@@ -322,11 +340,12 @@ class ProductCard extends HTMLElement {
                   fill="outline" 
                   color="light" 
                   id="card-wishlist-btn-${this.product.id}-horizontal"
-                  aria-label="Add or remove to wishlist"
+                  aria-label="${this.getWishlistLabel()}"
+                  aria-pressed="${this.isInWishlist}"
                   class="s-product-card-wishlist-btn animated ${this.isInWishlist ? 's-product-card-wishlist-added pulse-anime' : 'not-added un-favorited'}"
                   onclick="salla.wishlist.toggle(${this.product.id})"
                   data-id="${this.product.id}">
-                  <i class="sicon-heart"></i> 
+                  ${this.getHeartIcon()}
                 </salla-button>`
                 : ``}
             </div>`
@@ -353,6 +372,7 @@ class ProductCard extends HTMLElement {
           const willBeAdded = !btn.classList.contains('s-product-card-wishlist-added');
           app.toggleElementClassIf(btn, 's-product-card-wishlist-added', 'not-added', () => willBeAdded);
           app.toggleElementClassIf(btn, 'pulse-anime', 'un-favorited', () => willBeAdded);
+          btn.setAttribute('aria-pressed', String(willBeAdded)); // ROADMAP 6.3 · DS §8.3
         });
       });
     }
