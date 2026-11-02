@@ -610,3 +610,12 @@ Custom section, §5.3.
 - Inconsistency: the announcement bar says free shipping over **500 ر.س**, but the FAQ and `min_spend` say **600**. Confirm with the client.
 - Placeholder English content (Strive demo text) remains in `page.about`, `page.contact` (a New York address) and the FAQ on `list-collections`. Do not port it.
 - `locales/ar.json` (saved) holds all the Arabic UI strings: cart, product, filters and so on.
+
+---
+
+## 12. SEO in the Shopify theme (reference for ROADMAP 3.11)
+- **Structured data:** `sections/main-product.liquid` prints `{{ product | structured_data }}` (Shopify's Product JSON-LD); `sections/header.liquid` prints `Organization` (name, logo, sameAs, url) on every page and `WebSite` with a `SearchAction` on the home page; the FAQ section prints `FAQPage`.
+- **Head:** `layout/theme.liquid` prints the title, meta description and `<link rel="canonical">`; OG/Twitter come from the `meta-tags` snippet; hreflang comes from Shopify's `content_for_header`.
+- **Colours:** each colour is a separate product with its own URL, title and SEO description («اسم الموديل | اللون»); the G: Combined Listings app links them as swatches (verified on the live store, 2026-11-02). Owner decision: keep colours as separate indexable products in Salla.
+- **Headings:** the product title block uses an `h1` tag at h2 size.
+- In the Salla theme the split between platform-owned and theme-owned SEO is in DESIGN-SYSTEM §14.

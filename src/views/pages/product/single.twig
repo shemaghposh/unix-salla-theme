@@ -144,6 +144,13 @@
               <salla-breadcrumb></salla-breadcrumb>
           </nav>
       </div>
+    {% else %}
+      {# ROADMAP 3.11 · D76: no salla-breadcrumb → no BreadcrumbList from Salla; print ours server-side #}
+      {% set seo_crumbs = [{ name: store.name, url: store.url }] %}
+      {% if product.category and product.category.name|default('') %}
+          {% set seo_crumbs = seo_crumbs|merge([{ name: product.category.name, url: product.category.url }]) %}
+      {% endif %}
+      {% include 'components.seo.unix-jsonld-breadcrumb' with { crumbs: seo_crumbs|merge([{ name: product.name, url: product.url }]) } %}
     {% endif %}
 
     {#
@@ -527,6 +534,9 @@
         Use this hook to append content below the recommendations section.
     #}
     <div class="s-blocks-wrapper s-after-related">{% hook 'product.single.after_product_recommendations' %}</div>
+
+    {# ROADMAP 3.11 · DS §14: Product JSON-LD (+ ProductGroup for colour pages, 3.10), server-rendered (D74) #}
+    {% include 'components.seo.unix-jsonld-product' %}
 {% endblock %}
 
 {% block scripts %}

@@ -2,7 +2,7 @@
   UNIX hero (ROADMAP 2.1 · DS §8.1, §13 · SPEC §4.1).
   Matches unix.sa (reference/shopify-theme/sections/media-banner.liquid, templates/index.json
   → media_banner_NJrzt4): full-bleed media, gradient scrim, content at the bottom inline-start,
-  eyebrow → h1 → text → underline CTA, optional scroll indicator, header overlay.
+  eyebrow → title (h1 for the first titled hero, else h2) → text → underline CTA, optional scroll indicator, header overlay.
   Height follows the media ratio like the original (2:3 mobile, 16:9 from 576px), clamped to
   --hero-min-h / --hero-max-h, or 100svh when `full_height` is on. The ratio is reserved in CSS,
   so there is no layout shift while media loads.
@@ -59,6 +59,16 @@
   and theme.settings.get('unix_header_transparent_home', true)
   and has_image %}
 {% set show_scroll = component.show_scroll_indicator is null or component.show_scroll_indicator %}
+{#
+  One <h1> per page (ROADMAP 3.11 · DS §14): the first hero with a title on the page takes the h1 and
+  flags it in the request-scoped theme.settings store; any later hero uses h2. pages/index.twig reads
+  the same flag and only adds the sr-only store-name h1 when no hero took it (D75).
+#}
+{% set hero_tag = 'h2' %}
+{% if hero.title and not theme.settings.get('unix_runtime_home_h1') %}
+  {% set hero_tag = 'h1' %}
+  {{ theme.settings.set('unix_runtime_home_h1', true) }}
+{% endif %}
 
 <section component-id="{{ componentId }}"
          class="unix-hero{{ component.full_height ? ' unix-hero--full' }}{{ has_image ? '' : ' unix-hero--no-media' }}"
@@ -103,7 +113,7 @@
           <p class="unix-hero__eyebrow">{{ hero.eyebrow }}</p>
         {% endif %}
         {% if hero.title %}
-          <h1 class="unix-hero__title" id="unix-hero-title-{{ componentId }}">{{ hero.title }}</h1>
+          <{{ hero_tag }} class="unix-hero__title" id="unix-hero-title-{{ componentId }}">{{ hero.title }}</{{ hero_tag }}>
         {% endif %}
         {% if hero.text %}
           <p class="unix-hero__text">{{ hero.text }}</p>

@@ -26,6 +26,9 @@
 				<salla-breadcrumb></salla-breadcrumb>
 			</nav>
 		</div>
+	{% elseif category is defined and category and category.name|default('') %}
+		{# ROADMAP 3.11 · D76: no salla-breadcrumb → no BreadcrumbList from Salla; print ours server-side #}
+		{% include 'components.seo.unix-jsonld-breadcrumb' with { crumbs: [{ name: store.name, url: store.url }, { name: category.name, url: category.url }] } %}
 	{% endif %}
 
 	{#

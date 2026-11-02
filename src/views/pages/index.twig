@@ -8,6 +8,14 @@
 {% extends "layouts.master" %}
 {% block content %}
     {% component home %}
+    {#
+        One <h1> per page (ROADMAP 3.11 · DS §14, D75): the first hero with a title renders the h1 and sets
+        the request flag unix_runtime_home_h1 (components/home/unix-hero.twig). Components render above, so
+        the flag is known here; without a titled hero the store name is the (visually hidden) h1.
+    #}
+    {% if not theme.settings.get('unix_runtime_home_h1') %}
+        <h1 class="sr-only">{{ store.name }}</h1>
+    {% endif %}
 {% endblock %}
 {% block scripts %}
     <script defer src="{{ 'home.js' | asset }}"></script>

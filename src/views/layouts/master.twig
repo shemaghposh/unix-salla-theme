@@ -76,7 +76,10 @@
     </script>
     
     {% hook 'head:start' %}
+    {# Salla's SEO head (title, meta description, canonical, hreflang, OG): platform-owned, never duplicated (DS §14) #}
     {% hook head %}
+    {# ROADMAP 3.11 · DS §14: Organization (+ WebSite on home) JSON-LD, theme-owned (D74) #}
+    {% include 'components.seo.unix-jsonld-site' %}
     {% block styles %}{% endblock %}
     <link rel="stylesheet" href="{{ 'app.css' | asset }}">
     <link rel="stylesheet" href="{{ theme.font.path|cdn }}"/>

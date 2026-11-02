@@ -1,0 +1,118 @@
+{#
+  Product structured data (ROADMAP 3.11 · DS §14 · D74, D76), included from pages/product/single.twig.
+  unix.sa: sections/main-product.liquid → {{ product | structured_data }}.
+  Salla's web components don't emit a Product schema for the product page, and we can't see whether
+  {% hook head %} does, so ours sits behind unix_seo_jsonld_product (default on): check the rendered
+  source and turn it off if Salla already prints one.
+
+  Product: name, url, description (plain text), images, sku, gtin (barcode of 8–14 digits), brand
+  (product brand, else unix_seo_brand_name, else store name), category, color (3.10), offers (price
+  as shown, currency, availability, condition, seller, strikethrough price when on sale) and
+  aggregateRating only when there are reviews.
+  Colours as separate pages (3.10, D72): isVariantOf → ProductGroup with productGroupID = the
+  unix_colour_links group key, variesBy color, and hasVariant = @id references to every colour page.
+  Sets are ordinary products here (one price for the set).
+  Expects `product` and `unix_colours` (single.twig). |json_encode escapes "/" so nothing can close the <script>.
+#}
+{% if theme.settings.get('unix_seo_jsonld_product', true) %}
+  {% set seo_brand = product.brand.name|default('')|trim %}
+  {% if not seo_brand %}{% set seo_brand = theme.settings.get('unix_seo_brand_name')|default('')|trim %}{% endif %}
+  {% if not seo_brand %}{% set seo_brand = store.name %}{% endif %}
+  {% set seo_brand_obj = { '@type': 'Brand', 'name': seo_brand } %}
+
+  {% set seo_images = [] %}
+  {% for seo_img in product.images|default([]) %}
+    {% if (seo_img.type is not defined or seo_img.type == 'image') and seo_img.url|default('') %}
+      {% set seo_images = seo_images|merge([seo_img.url]) %}
+    {% endif %}
+  {% endfor %}
+  {% if not seo_images|length and product.image.url|default('') %}
+    {% set seo_images = [product.image.url] %}
+  {% endif %}
+
+  {% set seo_desc = product.description|default('')|striptags|replace({
+    '&nbsp;': ' ', '&amp;': '&', '&quot;': '"', '&#39;': "'", '&lt;': '<', '&gt;': '>'
+  })|trim|slice(0, 5000) %}
+  {% if not seo_desc %}{% set seo_desc = product.subtitle|default(product.name) %}{% endif %}
+
+  {% set seo_product = {
+    '@type': 'Product',
+    '@id': product.url,
+    'url': product.url,
+    'name': product.name,
+    'description': seo_desc,
+    'brand': seo_brand_obj
+  } %}
+  {% if seo_images|length %}{% set seo_product = seo_product|merge({ 'image': seo_images }) %}{% endif %}
+  {% if product.sku %}{% set seo_product = seo_product|merge({ 'sku': product.sku ~ '' }) %}{% endif %}
+  {% if product.barcode and (product.barcode ~ '') matches '/^[0-9]{8,14}$/' %}
+    {% set seo_product = seo_product|merge({ 'gtin': product.barcode ~ '' }) %}
+  {% endif %}
+  {% if product.category and product.category.name|default('') %}
+    {% set seo_product = seo_product|merge({ 'category': product.category.name }) %}
+  {% endif %}
+  {% if unix_colours is defined and unix_colours.name %}
+    {% set seo_product = seo_product|merge({ 'color': unix_colours.name }) %}
+  {% endif %}
+
+  {# Offer: only when the price is a real number (Salla can send "-" when the merchant hides zero prices) #}
+  {% set seo_price = product.starting_price ?: product.price %}
+  {% if (seo_price ~ '') matches '/^[0-9]+([.][0-9]+)?$/' %}
+    {% set seo_currency = product.currency|default('SAR') %}
+    {% if product.is_out_of_stock or not product.is_available %}
+      {% set seo_avail = 'https://schema.org/OutOfStock' %}
+    {% elseif product.has_preorder_campaign %}
+      {% set seo_avail = 'https://schema.org/PreOrder' %}
+    {% else %}
+      {% set seo_avail = 'https://schema.org/InStock' %}
+    {% endif %}
+    {% set seo_offer = {
+      '@type': 'Offer',
+      'url': product.url,
+      'price': seo_price,
+      'priceCurrency': seo_currency,
+      'availability': seo_avail,
+      'itemCondition': 'https://schema.org/NewCondition',
+      'seller': { '@type': 'Organization', 'name': store.name }
+    } %}
+    {% if product.is_on_sale and (product.regular_price ~ '') matches '/^[0-9]+([.][0-9]+)?$/' %}
+      {% set seo_offer = seo_offer|merge({ 'priceSpecification': {
+        '@type': 'UnitPriceSpecification',
+        'priceType': 'https://schema.org/StrikethroughPrice',
+        'price': product.regular_price,
+        'priceCurrency': seo_currency
+      } }) %}
+    {% endif %}
+    {% set seo_product = seo_product|merge({ 'offers': seo_offer }) %}
+  {% endif %}
+
+  {% if product.rating and product.rating.count|default(0) > 0 and product.rating.stars|default(0) > 0 %}
+    {% set seo_product = seo_product|merge({ 'aggregateRating': {
+      '@type': 'AggregateRating',
+      'ratingValue': product.rating.stars,
+      'reviewCount': product.rating.count,
+      'bestRating': 5,
+      'worstRating': 1
+    } }) %}
+  {% endif %}
+
+  {# Colour pages of one model (3.10): «اسم الموديل | اللون» → the model name is the part before «|» #}
+  {% if unix_colours is defined and unix_colours.group %}
+    {% set seo_variants = [] %}
+    {% for seo_item in unix_colours.items %}
+      {% set seo_variants = seo_variants|merge([{ '@id': seo_item.current ? product.url : seo_item.url }]) %}
+    {% endfor %}
+    {% set seo_group = {
+      '@type': 'ProductGroup',
+      '@id': store.url|default('')|trim('/', 'right') ~ '/#product-group-' ~ unix_colours.group,
+      'productGroupID': unix_colours.group,
+      'name': product.name|split('|')|first|trim,
+      'brand': seo_brand_obj,
+      'variesBy': ['https://schema.org/color']
+    } %}
+    {% if seo_variants|length %}{% set seo_group = seo_group|merge({ 'hasVariant': seo_variants }) %}{% endif %}
+    {% set seo_product = seo_product|merge({ 'isVariantOf': seo_group }) %}
+  {% endif %}
+
+  <script type="application/ld+json">{{ { '@context': 'https://schema.org' }|merge(seo_product)|json_encode|raw }}</script>
+{% endif %}
