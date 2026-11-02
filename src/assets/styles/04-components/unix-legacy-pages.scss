@@ -1,0 +1,130 @@
+/*
+ * UNIX light restyle of Raed's brands / loyalty / testimonials pages (ROADMAP 5.7 · DS §8.45 · D104)
+ * unix.sa has none of these pages, so their Raed layout stays; this only swaps white cards and shadows
+ * for the system surface, hairline and radius, and sets headings and states from tokens.
+ * Loads after brands.scss / loyalty.scss (app.scss), scoped by the page wrapper class.
+ */
+
+// ── Shared card look: surface, hairline, no shadow ──
+.unix-brands :is(.brand-item, .brand-char, .brands-nav__item),
+.unix-loyalty :is(.loyalty__banner, .way-item, .product-entry) {
+  border: var(--line-w) solid var(--c-border);
+  background-color: var(--c-surface);
+  box-shadow: var(--e-0);
+}
+
+// ── Brands ─────────────────────────────────────────
+.unix-brands {
+  .brand-item {
+    border-radius: var(--r-md);
+    transition: border-color var(--d-fast) var(--ease-out);
+
+    &:hover { border-color: var(--c-text-muted); opacity: 1; }
+    &:active { background-color: var(--c-surface-muted); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  }
+
+  :is(.brand-char, .brands-nav__item) {
+    min-inline-size: var(--tap);
+    min-block-size: var(--tap);
+    border-radius: var(--r-sm);
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+  }
+
+  .brands-nav__item {
+    &:hover { border-color: var(--c-text-muted); color: var(--c-text); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+
+    &.is-selected { border-color: var(--c-action); }
+  }
+
+  &__logo {
+    border: var(--line-w) solid var(--c-border);
+    border-radius: var(--r-md);
+    background-color: var(--c-surface);
+  }
+
+  .theme-unix & &__title {
+    margin-block: 0 var(--s-2);
+    font-size: var(--t-h2);
+    line-height: 1.3;
+  }
+
+  &__desc {
+    max-inline-size: 65ch;
+    color: var(--c-text-muted);
+    font-size: var(--t-body);
+  }
+
+  .theme-unix & &__empty-title {
+    margin-block: 0 var(--s-1);
+    font-size: var(--t-h3);
+    line-height: 1.35;
+  }
+}
+
+// ── Loyalty ────────────────────────────────────────
+.unix-loyalty {
+  .loyalty__banner { border-radius: var(--r-md); }
+
+  // .theme-unix prefix beats loyalty.scss `.loyalty__banner-content .info h1`
+  .theme-unix & .loyalty__banner-content .info h1 {
+    margin-block: 0 var(--s-3);
+    font-size: var(--t-h2);
+    line-height: 1.3;
+  }
+
+  .loyalty__banner-content .info p,
+  .loyalty-points { color: var(--c-text-muted); }
+
+  .loyalty-points .count-number { color: var(--c-text); }
+
+  &__star { color: var(--c-accent); }
+
+  .loyalty-star i { color: var(--c-surface-muted); }
+
+  .way-item {
+    border-radius: var(--r-md);
+
+    &__content p { color: var(--c-text-muted); }
+  }
+
+  .product-entry { border-radius: var(--r-md); overflow: hidden; }
+}
+
+// ── Testimonials ───────────────────────────────────
+.unix-testimonials {
+  padding-block-end: var(--section-md);
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-block: var(--s-4) var(--s-7);
+  }
+
+  .theme-unix & &__title {
+    margin: 0;
+    font-size: var(--t-h2);
+    line-height: 1.3;
+  }
+
+  &__sort {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  &__label {
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-brands .brand-item { transition: none; }
+}
