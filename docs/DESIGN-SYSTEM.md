@@ -235,7 +235,7 @@
   - الهيرو **2:3 على الموبايل و 16:9 على الديسكتوب** زي unix.sa (بين 560 و 920px)، أو `100svh` لو التاجر اختار «ملء الشاشة» (§8.1).
 - **أسلوب الصور:** إضاءة طبيعية، وخلفيات بيج أو رملي، ومن غير فلاتر قوية. ونفس الخلفية لكل صور الكتالوج.
 - `loading="lazy"` لكل الصور ما عدا أول صورة في الهيرو (`fetchpriority="high"`).
-- **اللوجو** `loading="eager"` دايمًا. `fetchpriority="high"` على اللوجو بس في الصفحات اللي مافيهاش هيرو؛ لو فيه هيرو، أول صورة فيه هي اللي تاخدها.
+- **اللوجو** `loading="eager"` دايمًا. The logo takes `fetchpriority=high` only on pages with no designated LCP image (hero §8.1, first gallery image §8.20, collection image, article image/first article card §8.42, first cart image). في الصفحات دي الصورة دي هي اللي تاخدها (ROADMAP 6.2).
 
 ---
 
@@ -748,6 +748,7 @@ unix.sa مافيهوش صفحة ماركات ولا برنامج ولاء ولا
 | Components | `src/views/components/**` وتتسجل في `twilight.json → components` |
 | Web components | `salla-*` بتتستايل من خلال CSS variables و `.s-*` classes. ماتعملش fork ليها |
 | Settings | أي حاجة التاجر يعدّلها (نصوص، وصور، ولينكات) بتبقى `fields` في الكومبوننت. ممنوع الـ hard-code |
+| Notifications | `salla.notify` بيعرض SweetAlert2 (toast أو modal، ستايل `05-utilities/swal.scss`)، وبيتحمّل مع أول إشعار (ROADMAP 6.2). لو واجهة الإشعارات ماتحمّلتش، الأخطاء والتأكيدات بترجع لـ dialog المتصفح، وإشعارات النجاح ممكن تتشال. |
 
 ---
 

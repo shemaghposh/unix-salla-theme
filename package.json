@@ -30,7 +30,6 @@
     "@salla.sa/twilight": "^2.14.551",
     "@salla.sa/twilight-components": "^2.14.551",
     "@tailwindcss/forms": "^0.5.11",
-    "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/nesting": "0.0.0-insiders.565cd3e",
     "autoprefixer": "^10.5.2",
     "babel-loader": "^10.1.1",
@@ -50,6 +49,17 @@
     "webpack": "^5.108.4",
     "webpack-cli": "^7.2.1"
   },
+  "browserslist": [
+    "chrome >= 111",
+    "and_chr >= 111",
+    "edge >= 111",
+    "firefox >= 121",
+    "and_ff >= 121",
+    "safari >= 16.2",
+    "ios_saf >= 16.2",
+    "samsung >= 22",
+    "opera >= 97"
+  ],
   "engines": {
     "node": "^22.18.0 || >=24.11.0"
   }

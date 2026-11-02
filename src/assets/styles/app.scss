@@ -4,9 +4,11 @@
 */
 
 /**
+ * ROADMAP 6.2: dead Raed partials (fonts, filters, menus, user-menu, font-customization) and dead
+ * selectors were removed; docs/PERFORMANCE.md §3 lists what was cut, what stays and why.
+ *
  * SETTINGS
  * Tailwind.............Import tailwind.
- * Fonts................Any font files.
  * Global...............Project-specific, globally available variables.
  * Breakpoints..........Mixins and variables for responsive styles.
  *
@@ -27,8 +29,6 @@
  * COMPONENTS
  * Header...............Specific styles for header styles.
  * Footer...............Specific styles for footer styles.
- * Menu.................Specific styles for main menu and mobile menu styles.
- * User Menu............Specific styles for user menu dropdown.
  * User Pages...........Specific styles for user pages like profile, notifications, orders...
  * Home Blocks..........Specific styles for home blocks.
  * Slider...............Specific styles for sliders.
@@ -50,7 +50,6 @@
 */
 
 @import './01-settings/tailwind';
-@import './01-settings/fonts';
 @import './01-settings/global';
 @import './01-settings/unix-tokens';
 @import './01-settings/breakpoints';
@@ -73,8 +72,6 @@
 
 @import './04-components/header';
 @import './04-components/footer';
-@import './04-components/menus';
-@import './04-components/user-menu';
 @import './04-components/user-pages';
 @import './04-components/home-blocks';
 @import './04-components/slider';
@@ -84,7 +81,6 @@
 @import './04-components/gifting';
 @import './04-components/loyalty';
 @import './04-components/virtooal';
-@import './04-components/filters';
 @import './04-components/add-product-toast';
 
 /* UNIX components (docs/DESIGN-SYSTEM.md) */
@@ -137,6 +133,5 @@
 @import './05-utilities/chat-bots';
 @import './05-utilities/swal';
 @import './05-utilities/safari-fixes';
-@import './05-utilities/font-customization';
 
 @import 'lite-youtube-embed/src/lite-yt-embed.css';
