@@ -33,7 +33,7 @@ class WishlistCard extends HTMLElement {
     const name = escapeHtml(product.name);
     const url = escapeHtml(product.url);
     const imageUrl = product.image && product.image.url ? escapeHtml(product.image.url) : '';
-    const removeLabel = escapeHtml(this.i18n('i18nRemove').replace('__NAME__', product.name || ''));
+    const removeLabel = escapeHtml(this.i18n('i18nRemove', '__NAME__').replace('__NAME__', product.name || ''));
 
     this.setAttribute('id', `wishlist-product-${product.id}`);
     this.classList.add('unix-wish');
@@ -61,22 +61,36 @@ class WishlistCard extends HTMLElement {
 
     const removeButton = this.querySelector('.unix-wish__remove');
     removeButton.addEventListener('click', () => {
-      removeButton.disabled = true;
+      // aria-disabled (not `disabled`) keeps the button focusable while the request runs
+      if (removeButton.getAttribute('aria-disabled') === 'true') return;
+      removeButton.setAttribute('aria-disabled', 'true');
       removeButton.setAttribute('aria-busy', 'true');
       Promise.resolve(salla.wishlist.remove(product.id))
         .then(() => this.moveFocusAway())
         .catch(() => {
-          removeButton.disabled = false;
+          removeButton.removeAttribute('aria-disabled');
           removeButton.removeAttribute('aria-busy');
+          removeButton.focus();
         });
     });
   }
 
+  // Nearest row that is not already fading out (js/wishlist.js adds .fade-out-collapse)
+  findNeighbour() {
+    const live = '.unix-wish:not(.fade-out-collapse)';
+    for (const step of ['nextElementSibling', 'previousElementSibling']) {
+      let el = this[step];
+      while (el && !el.matches(live)) el = el[step];
+      if (el) return el;
+    }
+    // Rows wrapped by salla-products-list (e.g. share-selection mode) are not siblings
+    const rows = [...document.querySelectorAll(`#wishlist ${live}`)].filter((row) => row !== this);
+    return rows[0] || null;
+  }
+
   // The row fades out and is removed (js/wishlist.js): keep keyboard focus on the list (DS §8.40)
   moveFocusAway() {
-    const cards = [...document.querySelectorAll('.unix-wish')];
-    const index = cards.indexOf(this);
-    const neighbour = cards[index + 1] || cards[index - 1];
+    const neighbour = this.findNeighbour();
     const target = neighbour
       ? neighbour.querySelector('.unix-wish__remove')
       : document.querySelector('.unix-account__title');

@@ -1077,6 +1077,7 @@
   &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
 
   &:disabled,
+  &[aria-disabled="true"],
   &[aria-busy="true"] {
     opacity: var(--o-disabled);
     cursor: default;
