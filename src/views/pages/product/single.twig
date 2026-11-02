@@ -175,7 +175,11 @@
 
                 {% hook 'product:single.description' %}
 
-                {# 4 · Installments: Salla's native Tamara / Tabby widgets (ROADMAP 3.5) #}
+                {#
+                    4 · Installments (ROADMAP 3.5 · DS §8.22): Salla's native Tamara / Tabby widgets with the
+                    store's own keys, where unix.sa renders unix_tamara + Tabby (after price, before options).
+                    No Tamara CDN script or public key in the theme; styling in unix-installment.scss.
+                #}
                 <salla-installment data-testid="store-product-installment" class="unix-pdp-installment" price="{{ product.price }}"></salla-installment>
 
                 {# Digital Files Settings #}

@@ -1,0 +1,95 @@
+/*
+ * UNIX installments (ROADMAP 3.5 · DS §8.22 · SPEC §5.2.5–6, §9)
+ * Salla's native <salla-installment> loads Tamara v2 / Tabby / … with the store's own keys;
+ * the theme loads no script and holds no key. It sits right after the price, before the
+ * options, where unix.sa renders unix_tamara + the Tabby app block.
+ * Only the wrappers outside the providers' shadow DOM are restyled (quiet: surface, hairline
+ * border, --r-sm, no shadow / hover lift). Tamara's widget only receives the theme font,
+ * the same thing unix.sa's tamaraWidgetConfig.css did (:host --font-primary: inherit).
+ */
+salla-installment.unix-pdp-installment {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  color: var(--c-text);
+  font-size: var(--t-small);
+
+  &:empty { display: none; }
+
+  // Salla's own .mb-5 wrappers (Tamara v2, Mispay v2): spacing comes from the gap
+  > .mb-5 { margin: 0; }
+
+  // Tamara v2 summary widget (shadow DOM): host-level custom properties win over its :host rules
+  tamara-widget {
+    display: block;
+    --font-primary: var(--f-body);
+    --font-secondary: var(--f-body);
+    font-family: var(--f-body);
+  }
+
+  // Tabby (Salla also strips Tabby's own border and adds a 15px margin from JS)
+  #tabbyPromoWrapper {
+    margin: 0;
+    border: var(--line-w) solid var(--c-border) !important; // Salla sets `border: unset !important`
+    border-radius: var(--r-sm);
+    background: var(--c-surface);
+    box-shadow: var(--e-0);
+    font-weight: 400;
+
+    &:hover { box-shadow: var(--e-0); }
+
+    #tabbyPromo * { font-family: var(--f-body); }
+    #tabbyPromo .tabby-promo-snippet {
+      min-block-size: 0;
+      padding: var(--s-3) var(--s-4);
+    }
+    #tabbyPromo :is(.tabby-promo-snippet__text, .tabby-promo-snippet__link) {
+      color: var(--c-text) !important; // Salla's own rule is !important
+      font-size: var(--t-small);
+    }
+  }
+
+  // Tamara v1 fallback and Spotii keep their logo offsets; only the frame changes
+  :is(.tamara-product-widget, .spotii-wrapper) {
+    margin: 0;
+    border: var(--line-w) solid var(--c-border) !important; // Salla sets `border: unset !important`
+    border-radius: var(--r-sm);
+    background: var(--c-surface);
+    box-shadow: var(--e-0);
+    color: var(--c-text);
+    font-family: var(--f-body) !important; // Salla sets `inherit !important`
+    font-size: var(--t-small);
+    font-weight: 400;
+
+    &:hover { box-shadow: var(--e-0); }
+  }
+
+  // Mispay / Madfu / Emkan / Al Rajhi / Klarna (Salla .s-installment-* wrappers)
+  :is(.s-installment-mispay-wrapper, .s-installment-madfu-wrapper, .s-installment-emkan-wrapper,
+      .s-installment-rajehi-wrapper, .s-installment-klarna-wrapper) {
+    margin: 0;
+    padding: var(--s-3) var(--s-4);
+    border: var(--line-w) solid var(--c-border);
+    border-radius: var(--r-sm);
+    background: var(--c-surface);
+    box-shadow: var(--e-0);
+    color: var(--c-text);
+    font-size: var(--t-small);
+    line-height: 1.6;
+    text-align: start;
+
+    &:hover { box-shadow: var(--e-0); }
+  }
+
+  :is(.s-installment-mispay-content-text, .s-installment-madfu-content-text, .s-installment-emkan-content-text,
+      .s-installment-rajehi-content-text) {
+    margin: 0;
+    color: var(--c-text);
+    font-size: var(--t-small);
+    font-weight: 400;
+    text-align: start;
+  }
+}
+
+// Tamara's details popup is appended to <body>, outside the component
+.theme-unix .tamara-popup__wrap { font-family: var(--f-body); }
