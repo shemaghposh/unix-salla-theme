@@ -1,0 +1,454 @@
+/*
+ * UNIX product info column (ROADMAP 3.2 · DS §8.21 · SPEC §5.2)
+ * unix.sa sections/main-product.liquid + assets/section-main-product.css:
+ * blocks 1.6rem apart (--s-4), title / price / tax note centred, variant buttons,
+ * quantity + add-to-cart in one row, closed accordions with a top and bottom border.
+ * Salla web components are styled through their .s-* classes, scoped to .unix-pdp-info.
+ */
+.unix-pdp-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+
+  // the column is overflow-hidden from md (sticky); keep focus rings (ring + offset) inside it
+  @media (min-width: 768px) { padding-inline: calc(var(--ring-w) * 2); }
+
+  // Salla components that render nothing when their feature is off would still take a flex gap
+  > :is(salla-installment, salla-quick-order, salla-metadata, digital-files-settings):empty { display: none; }
+}
+
+// ── 1 · Title + price head (centred like unix.sa) ──
+.unix-pdp-info__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+  text-align: center;
+}
+
+.theme-unix .unix-pdp-info__title {
+  margin: 0;
+  font-family: var(--f-heading);
+  font-size: var(--t-h3);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--c-text);
+  overflow-wrap: break-word;
+}
+
+.theme-unix .unix-pdp-info__subtitle,
+.theme-unix .unix-pdp-info__note {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+  line-height: 1.6;
+}
+
+.unix-pdp-info__note span + span::before {
+  content: "·";
+  margin-inline: var(--s-2);
+}
+
+// ── 2 · Price ──
+.unix-pdp-price {
+  margin-block-start: var(--s-2);
+  font-variant-numeric: tabular-nums;
+}
+
+// product.js toggles the `hidden` utility on these rows: display only when not hidden
+.unix-pdp-price__row:not(.hidden) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+}
+
+.unix-pdp-price__now {
+  color: var(--c-text);
+  font-size: var(--t-body-lg);
+  font-weight: 500;
+  line-height: 1.75; // DS §2.2 --t-body-lg; unix.sa's price inherits the body line-height (~1.8)
+
+  &.is-sale { color: var(--c-price-sale); }
+}
+
+.unix-pdp-price__old {
+  color: var(--c-price-old);
+  font-size: var(--t-body);
+  text-decoration-thickness: var(--line-w);
+}
+
+.unix-pdp-price__from {
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+}
+
+// DS §8.4 Badge: pill, 24 high, micro; «تخفيض» in the sale colour with the Cream-scheme border
+.unix-pdp-price__badge {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--s-5);
+  padding-inline: var(--s-3);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-pill);
+  background: var(--c-surface);
+  color: var(--c-price-sale);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.theme-unix .unix-pdp-price__out:not(.hidden) {
+  margin: 0;
+  color: var(--c-price-sale);
+  font-size: var(--t-body);
+  font-weight: 500;
+}
+
+// ── 5 · Variant picker (salla-product-options in button mode) ──
+.unix-pdp-info salla-product-options {
+  display: block;
+
+  .s-product-options-wrapper {
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .s-product-options-option-container { margin-block-end: var(--s-4); }
+  .s-product-options-option-container:last-child { margin-block-end: 0; }
+
+  // Salla lays label / content out in 3 columns from 640px; unix.sa stacks them
+  .s-product-options-option { display: block; }
+
+  .s-product-options-option-label {
+    margin: 0 0 var(--s-2);
+    color: var(--c-text);
+    font-size: var(--t-small);
+    font-weight: 500;
+    line-height: 1.6;
+
+    b span { color: var(--c-price-sale); }
+    small { color: var(--c-text-muted); }
+  }
+
+  .s-product-options-option-error .s-product-options-option-label { color: var(--c-price-sale); }
+
+  // overflow:auto here would clip focus rings
+  .s-product-options-option-content {
+    margin: 0;
+    overflow: visible;
+  }
+
+  // button mode
+  .s-product-options-grid-mode {
+    margin: 0;
+    gap: var(--s-2);
+
+    > label {
+      position: relative;
+      opacity: 1; // Salla dims the label AND the chip; the chip alone carries the state
+    }
+  }
+
+  .s-product-options-grid-mode-span {
+    box-sizing: border-box;
+    min-block-size: var(--tap);
+    min-inline-size: var(--tap);
+    padding-inline: var(--s-4);
+    border: var(--line-w) solid var(--c-border);
+    border-radius: var(--r-sm);
+    background: var(--c-surface);
+    color: var(--c-text);
+    font-size: var(--t-small);
+    font-weight: 500;
+    line-height: 1.3;
+    transition: border-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out),
+                transform var(--d-fast) var(--ease-out);
+
+    &:hover {
+      border-color: var(--c-text-muted);
+      background: var(--c-surface);
+    }
+  }
+
+  .s-product-options-grid-mode input:checked + div {
+    border-color: var(--c-text);
+    box-shadow: inset 0 0 0 var(--line-w) var(--c-text);
+    background: var(--c-surface);
+    color: var(--c-text);
+  }
+
+  .s-product-options-grid-mode input:focus-visible + div {
+    outline: var(--ring-w) solid var(--c-accent);
+    outline-offset: var(--ring-w);
+  }
+
+  .s-product-options-grid-mode label:active > div { transform: translateY(var(--press-y)); }
+
+  .s-product-options-option-stock-out > .s-product-options-grid-mode-span,
+  .s-product-options-grid-mode-span.s-product-options-disabled {
+    opacity: var(--o-disabled);
+    text-decoration: line-through;
+  }
+
+  .s-product-options-grid-mode-span.s-product-options-disabled { cursor: not-allowed; }
+
+  // Size finder «مقترح» mark (DS §8.11) sits under the label inside the same box: lift the text
+  label:has(> .unix-sf-mark) > .s-product-options-grid-mode-span { padding-block-end: var(--s-3); }
+
+  // colours
+  .s-product-options-colors-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+
+    .s-product-options-colors-item { margin: 0; inline-size: auto; }
+
+    input[type="radio"] + label {
+      gap: var(--s-1);
+      min-inline-size: var(--tap);
+
+      span {
+        margin: 0;
+        inline-size: var(--s-6);
+        block-size: var(--s-6);
+        border: var(--line-w) solid var(--c-border);
+        border-radius: var(--r-sm);
+        transition: box-shadow var(--d-fast) var(--ease-out);
+        &::after { display: none; }
+      }
+
+      div {
+        color: var(--c-text);
+        font-size: var(--t-small);
+      }
+    }
+
+    input[type="radio"]:hover + label span { border-color: var(--c-text-muted); }
+    input[type="radio"]:checked + label span { box-shadow: 0 0 0 var(--ring-w) var(--c-bg), 0 0 0 calc(var(--ring-w) * 2) var(--c-text); }
+    input[type="radio"]:focus-visible + label span { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * 2); }
+    input[type="radio"]:disabled + label { opacity: var(--o-disabled); }
+  }
+
+  // image thumbnails
+  .s-product-options-thumbnails-wrapper {
+    gap: var(--s-2);
+
+    label { border-radius: var(--r-sm); }
+    div input[type="radio"]:focus-visible + label { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+    div input[type="radio"]:disabled + label { opacity: var(--o-disabled); }
+    p { color: var(--c-text); font-size: var(--t-small); }
+  }
+
+  .s-form-control { border-radius: var(--r-sm); }
+}
+
+// ── 7 · Buy row: quantity + add to cart (+ wishlist ≥640) ──
+.unix-pdp-info__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.unix-pdp-buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.unix-pdp-buy__btn {
+  flex: 1 1 0;
+  min-inline-size: 0;
+}
+
+.unix-pdp-buy__wish { flex: none; }
+
+.unix-pdp-buy__qty {
+  flex: none;
+
+  .s-quantity-input-container {
+    box-sizing: border-box;
+    inline-size: var(--qty-w);
+    block-size: var(--btn-h);
+    border: 0;
+    border-radius: var(--r-pill);
+    background: var(--c-field);
+    font-size: var(--t-small);
+  }
+
+  .s-quantity-input-button {
+    flex: none;
+    inline-size: var(--tap);
+    border-radius: var(--r-pill);
+    color: var(--c-text-muted);
+    fill: currentColor;
+    transition: color var(--d-fast) var(--ease-out);
+
+    svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); fill: currentColor; }
+
+    &:hover { color: var(--c-text); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+    &:active { transform: translateY(var(--press-y)); }
+    &:disabled { opacity: var(--o-disabled); cursor: not-allowed; }
+  }
+
+  .s-quantity-input-input {
+    flex: 1 1 0;
+    min-inline-size: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--c-text);
+    font-weight: 500;
+    text-align: center;
+
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+  }
+}
+
+// Salla's notify / disabled states keep the pill (unix-controls); the row just spans the width
+.unix-pdp-buy salla-add-product-button .s-button-btn { inline-size: 100%; }
+
+// ── Branch availability (Salla, render only when on) ──
+.unix-pdp-info__branches {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  min-block-size: var(--tap);
+  padding-block: var(--s-2);
+  border-block: var(--line-w) solid var(--c-border);
+  color: var(--c-text);
+  font-size: var(--t-small);
+  text-align: start;
+  cursor: pointer;
+
+  &:hover .unix-pdp-info__branches-cta { color: var(--c-accent-text); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  &:active { transform: translateY(var(--press-y)); }
+}
+
+.unix-pdp-info__branches-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  text-decoration: underline;
+  text-underline-offset: var(--s-1);
+  transition: color var(--d-fast) var(--ease-out);
+
+  svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
+}
+
+// ── 8 · Accordions (DS §8.10 · unix.sa .about__accordion-item) ──
+.unix-pdp-acc__item {
+  border-block: var(--line-w) solid var(--c-border);
+
+  & + & { border-block-start: 0; }
+
+  &::details-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--d-base) var(--ease-out),
+                content-visibility var(--d-base) allow-discrete;
+  }
+  &[open]::details-content { grid-template-rows: 1fr; }
+}
+
+.unix-pdp-acc__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  min-block-size: var(--tap);
+  padding-block: var(--s-2);
+  list-style: none;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+
+  &::-webkit-details-marker { display: none; }
+  &::marker { content: ""; }
+
+  // DS §8.10: hover dims on hover-capable devices only (no sticky hover on touch)
+  @media (hover: hover) {
+    &:hover .unix-pdp-acc__title { opacity: var(--o-muted); }
+  }
+  &:active .unix-pdp-acc__title { opacity: var(--o-muted); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+}
+
+.unix-pdp-acc__title {
+  color: var(--c-text);
+  font-family: var(--f-body);
+  font-size: var(--t-h4);
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: start;
+  transition: opacity var(--d-fast) var(--ease-out);
+}
+
+.unix-pdp-acc__icon {
+  flex: none;
+  box-sizing: content-box;
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+  padding: calc((var(--tap) - var(--icon-sm)) / 2);
+  color: var(--c-text-muted);
+}
+
+.unix-pdp-acc__icon-v {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform var(--d-base) var(--ease-out);
+
+  .unix-pdp-acc__item[open] & { transform: rotate(90deg); }
+}
+
+.unix-pdp-acc__panel {
+  min-block-size: 0;
+  overflow: hidden;
+}
+
+// merchant HTML from the Salla editor
+.theme-unix .unix-pdp-acc__body {
+  padding-block-end: var(--s-2);
+  color: var(--c-text-muted);
+  font-size: var(--t-body);
+  line-height: 1.7;
+  overflow-wrap: break-word;
+
+  > :first-child { margin-block-start: 0; }
+  > :last-child { margin-block-end: 0; }
+  p { margin: 0; }
+  p + p { margin-block-start: var(--s-2); }
+  :is(h1, h2, h3, h4, h5, h6) { margin-block: var(--s-4) var(--s-2); font-size: var(--t-body); color: var(--c-text); }
+  :is(ul, ol) { margin-block: var(--s-2); padding-inline-start: var(--s-5); }
+  ul { list-style: disc; }  // Tailwind preflight strips list markers
+  ol { list-style: decimal; }
+  li + li { margin-block-start: var(--s-2); }
+  strong, b { color: var(--c-text); font-weight: 500; }
+  a {
+    color: var(--c-accent-text);
+    text-decoration: underline;
+    text-underline-offset: var(--s-1);
+    &:hover { color: var(--c-text); }
+  }
+  img { max-inline-size: 100%; block-size: auto; border-radius: var(--r-sm); }
+  table { inline-size: 100%; border-collapse: collapse; font-size: var(--t-small); }
+  :is(td, th) { padding: var(--s-2); border: var(--line-w) solid var(--c-border); }
+}
+
+// ── 9 · Rating ──
+.unix-pdp-info__rating { align-self: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-pdp-acc__item::details-content,
+  .unix-pdp-acc__icon-v,
+  .unix-pdp-info salla-product-options .s-product-options-grid-mode-span { transition: none; }
+  .unix-pdp-info salla-product-options .s-product-options-grid-mode label:active > div,
+  .unix-pdp-buy__qty .s-quantity-input-button:active,
+  .unix-pdp-info__branches:active { transform: none; }
+}

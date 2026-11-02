@@ -189,14 +189,6 @@ salla-button {
   }
 }
 
-#btn-show-more {
-  @apply transition;
-
-  &.is-expanded {
-    @apply opacity-0 pointer-events-none;
-  }
-}
-
 
 #blog-like{
   &.liked{

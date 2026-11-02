@@ -1,0 +1,35 @@
+/*
+ * UNIX mobile sticky add-to-cart (ROADMAP 3.2 · DS §8.21)
+ * unix.sa .product-form__submit-wrapper.fixed (max-width: 575px): a full-width bar at the
+ * bottom with the add button only. Fixed, so it never shifts layout; hidden = inert (JS).
+ */
+.unix-sticky-atc {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: var(--z-sticky-atc);
+  padding-block: var(--s-4) calc(var(--s-4) + env(safe-area-inset-bottom));
+  padding-inline: var(--page-margin);
+  border-block-start: var(--line-w) solid var(--c-border);
+  background: var(--c-bg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: opacity var(--d-base) var(--ease-out),
+              transform var(--d-base) var(--ease-out),
+              visibility 0s linear var(--d-base);
+
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  @media (min-width: 576px) { display: none; }
+}
+
+// DS §5: reduced motion keeps opacity only (the duration tokens are 0 there too)
+@media (prefers-reduced-motion: reduce) {
+  .unix-sticky-atc { transform: none; }
+}

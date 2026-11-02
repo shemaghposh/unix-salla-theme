@@ -497,8 +497,8 @@
         {
             "type": "boolean",
             "icon": "sicon-toggle-off",
-            "label": "تثبيت زر الإضافة والكمية أسفل شاشة الجوال",
-            "description": null,
+            "label": "تثبيت زر الإضافة أسفل شاشة الجوال",
+            "description": "يظهر تحت 576 بكسل عندما يخرج زر الإضافة من الشاشة، ويختفي عند الوصول إلى التذييل.",
             "id": "sticky_add_to_cart",
             "format": "switch",
             "required": false,

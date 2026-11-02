@@ -210,6 +210,14 @@
         "prev": "Previous articles",
         "next": "Next articles"
       },
+      "pdp_info": {
+        "add_to_cart": "Add to cart",
+        "on_sale": "Sale",
+        "sale_price": "Sale price",
+        "regular_price": "Regular price",
+        "description": "Description",
+        "sticky_label": "Add this product to your cart"
+      },
       "gallery": {
         "label": "Product images",
         "thumbs": "Choose an image",

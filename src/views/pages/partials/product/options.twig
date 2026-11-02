@@ -29,7 +29,10 @@
 | product.options[].details[].is_out              | bool                       | Does current option out of stock?                                                                           |
 #}
 {% if product.options|length %}
-    <salla-product-options data-testid="store-product-options" options="{{ product.options }}" product-id="{{ product.id }}"></salla-product-options>
+    {# UNIX 3.2: the product page passes unix_option_buttons so single/multiple options render as buttons
+       (unix.sa picker_type: button, DS §8.21); the cart keeps Salla's default controls. #}
+    <salla-product-options data-testid="store-product-options" options="{{ product.options }}" product-id="{{ product.id }}"
+        {% if unix_option_buttons is defined and unix_option_buttons %}config='{"single-option":{"type":"button"},"multiple-option":{"type":"button"}}'{% endif %}></salla-product-options>
 {% endif %}
 
 {% if product.has_bundle_products %}

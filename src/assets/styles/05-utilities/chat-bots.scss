@@ -81,13 +81,14 @@ iframe.tawk-widget {
 }
 
 
-.is-sticky-product-bar{ 
-  &.product-single{
+/* ROADMAP 3.2 (DS §8.21): lift chat bubbles above the mobile sticky add-to-cart while it is shown.
+   unix-sticky-atc.js toggles .unix-sticky-atc-on on <body>; the offset = button + bar padding + a gap. */
+@media (max-width: 575.98px) {
+  body.unix-sticky-atc-on {
     [id^="gb-widget"],
     iframe.tawk-widget,
-    #fb-root .fb_dialog iframe[data-testid="bubble_iframe"],
-    iframe.tawk-widget{
-      bottom: 70px !important;
+    #fb-root .fb_dialog iframe[data-testid="bubble_iframe"] {
+      bottom: calc(var(--btn-h) + var(--s-4) * 2 + var(--s-2) + env(safe-area-inset-bottom)) !important;
     }
   }
 }
