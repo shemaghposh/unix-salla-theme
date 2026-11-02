@@ -7,6 +7,12 @@
 | page.url     | string                |             |
 | page.slug    | string                |             |
 | page.type    | string                |             |
+
+UNIX (ROADMAP 5.5 · DS §8.43 · D102): unix.sa main-page.liquid → the page title as the page's single h1
+(at h2 size, `title--page h2`), then the merchant's content in a readable `.unix-rte` column. Server-side, like
+the article (5.4): an h1 inside the content becomes h2, content images get loading="lazy", and each table is
+wrapped in a keyboard-scrollable box. Salla's page comments only when unix_page_comments is on (unix.sa pages
+have none). Pages built with Salla's page builder (`customised`) keep Salla's hook untouched.
 #}
 {% extends "layouts.master" %}
 {% block content %}
@@ -18,21 +24,35 @@
       #}
       <div class="s-blocks-wrapper s-information-page !mt-0">{% hook 'information_page.information_page' %}</div>
     {% else %}
-      <div class="container">
+      {# Assumes Salla-editor HTML (lowercase tags, no loading attribute); pasted HTML may get a duplicate attribute (DS §8.43, D102) #}
+      {% set unix_table_open = '<div class="unix-rte__table" role="region" tabindex="0" aria-label="' ~ trans('blocks.unix.blog.table')|e('html_attr') ~ '">' %}
+      {% set unix_content = page.content|default('')|replace({
+        '&nbsp;': ' ',
+        '<h1': '<h2', '<H1': '<h2', '</h1>': '</h2>', '</H1>': '</h2>',
+        '<img ': '<img loading="lazy" decoding="async" ', '<IMG ': '<img loading="lazy" decoding="async" ',
+        '<table': unix_table_open ~ '<table', '<TABLE': unix_table_open ~ '<table',
+        '</table>': '</table></div>', '</TABLE>': '</table></div>'
+      }) %}
+      <div class="unix-container unix-page">
           {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
           <nav class="breadcrumbs w-full py-5">
               <salla-breadcrumb></salla-breadcrumb>
           </nav>
 
-          <div class="flex justify-center">
-              <div class="content content--single-page w-full lg:w-10/12 bg-white rounded p-6 lg:p-8 mt-4 lg:mt-12">
-                  <h1 class="font-bold text-2xl mb-6">{{ page.title }}</h1>
-                  <div class="content-entry">
-                      {{ page.content|raw }}
-                  </div>
-                  <salla-comments data-testid="store-page-comments" item-id="{{page.id}}" type="page"></salla-comments>
+          <article class="unix-page__article" aria-labelledby="unix-page-title">
+              <header class="unix-page__header">
+                  <h1 class="unix-page__title" id="unix-page-title">{{ page.title }}</h1>
+              </header>
+              <div class="unix-page__content unix-rte">
+                  {{ unix_content|raw }}
               </div>
-          </div>
+          </article>
+
+          {% if theme.settings.get('unix_page_comments', false) %}
+            <div class="unix-page__comments">
+              <salla-comments data-testid="store-page-comments" item-id="{{ page.id }}" type="page"></salla-comments>
+            </div>
+          {% endif %}
       </div>
     {% endif %}
 {% endblock %}

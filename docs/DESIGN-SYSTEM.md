@@ -622,6 +622,57 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **الكروت** (المنتجات، والكوبون، والفرع): `--c-surface` وبوردر `--line-w` `--c-border` و `--r-md` ومن غير ظل.
 - **«تابعي التسوق»:** `.unix-btn` primary في النص بعد آخر سكشن (`--s-6` فوقه) لصفحة كل المنتجات. على الموبايل زرار سلة الثابت تحت الشاشة بيفضل زي ما هو.
 
+<!-- §8.37–§8.40: حساب العميلة (المرحلة 5.1–5.3، فرع تاني) -->
+
+### 8.41 Blog Index (صفحة المدونة) — *المرحلة 5.4*
+مرجع الترتيب `reference/shopify-theme/templates/blog.json` و `sections/main-blog.liquid` (unix.sa: مدونتين `news` و `leggings-blog`). الكود: `pages/blog/index.twig` و `components/blog/unix-article-card.twig` و `04-components/unix-blog-pages.scss`. *(قرار مؤقت D100)*
+- **توكنز جديدة (المرحلة 5، `unix-tokens.scss`):** `--ratio-article` = 16 / 9 (صورة المقال الكبيرة والكروت المميزة)، و `--ratio-article-card` = 3 / 2 (كارت الأرشيف والمقالات ذات الصلة، زي `image_ratio: landscape` في الأصل)، و `--prose-max` = 720px (عمود القراية في المقال والصفحات الثابتة، حوالي 65–75 حرف في `--t-body-lg`).
+- **الصفحة:** `unix-container`، ومسار التنقل بتاع سلة، وبعده `h1` = عنوان الصفحة (ظاهر دايمًا، بحجم `--t-h2` زي `title--page h2` في الأصل)، والـ padding تحت `--section-sm`.
+- **التصنيفات:** صف chips أفقي (`<nav>` + لينكات حقيقية) بدل قايمة رائد الجانبية والـ dropdown: «كل المقالات» + كل تصنيف. الـ chip: ارتفاع `--tap`، و padding-inline `--s-4`، و `--r-sm`، وبوردر `--line-w` `--c-border`، و `--t-small` 500؛ الحالي `aria-current="page"` بوردر `--c-text` وحلقة داخلية `--line-w`؛ hover بوردر `--c-text-muted`؛ active `--c-press-tint`. على الموبايل الصف بيسكرول أفقي (scroll-snap، من غير scrollbar).
+- **المميزة (`slides` بتاعة سلة):** لحد 2 كارت كبير (`--ratio-article`) فوق الأرشيف، عمود واحد ثم 2 من md. بدل سلايدر رائد.
+- **الأرشيف:** `salla-infinite-scroll` (من غير autoload: زرار «تحميل المزيد» بتاع سلة، وهو `<a href>` لصفحة الصفحة اللي بعدها) في جريد 1 / 2 / 3 أعمدة (أقل من 768 / من 768 / من 1024)، والمسافة `--gutter` أفقي و `--s-7` رأسي.
+- **الكارت (`unix-article-card`):** الصورة اختيارية (`--ratio-article-card`، أو `--ratio-article` للمميز) بحواف `--r-md` وخلفية `--c-surface-muted`، و `alt=""` (العنوان هو نص اللينك)، و lazy ما عدا أول كارت في الصفحة (eager و `fetchpriority="high"`، صورة الـ LCP). من غير صورة: خط `--line-w` `--c-border` فوق الكارت زي §8.17. بعدها التاريخ (`<time>`، `--t-small` `--c-text-muted`)، والعنوان (`h2` في الصفحة، `h3` في «قد يعجبكِ أيضًا»؛ `--t-h4`، و `--t-h3` للمميز؛ 3 سطور بالكتير)، والمقتطف (`--t-small` `--c-text-muted`، 150 حرف و 3 سطور). الكارت كله لينك واحد (stretched link) بحلقة الفوكس حواليه. hover: العنوان `--o-muted` والصورة `scale(var(--zoom-hover))` في `--d-reveal`؛ مع reduced-motion مافيش scale. مافيش وسوم على الكارت (لينك جوه لينك).
+- **فاضية:** نص «لا توجد مقالات بعد» (`--c-text-muted`) وزرار primary «تسوقي الجديد» لكل المنتجات.
+
+### 8.42 Article (صفحة المقال) — *المرحلة 5.4*
+مرجع `reference/shopify-theme/templates/article.json` (`article-header` في النص، `heading_tag: h1`، الوسوم والتاريخ والكاتب) و `sections/main-article.liquid`. الكود: `pages/blog/single.twig` و `components/seo/unix-jsonld-article.twig` و `04-components/unix-blog-pages.scss` و `04-components/unix-rte.scss`. *(قرار مؤقت D101)*
+- **مسار التنقل** قبل `<article>` (مش جوه المقال).
+- **الهيدر (في النص، عرض `--prose-max`):** الوسوم (لينكات `--t-small` 500 `--c-accent-text`، ارتفاع لمس `--tap`)، والتاريخ (`<time>`، `--t-small` `--c-text-muted`)، والعنوان **`h1` الوحيد** (`--t-h2` زي الأصل، `text-wrap: balance`)، و«بقلم **الاسم**» (لينك للكاتب لو سلة بتدّيه). المسافة بين العناصر `--s-3`.
+- **الصورة الكبيرة:** `--ratio-article` و `--r-md`، بعرض المحتوى (`--content-max`)، و eager و `fetchpriority="high"` (صورة الـ LCP) مع width/height. الـ `alt` نص الصورة من سلة، وإلا فاضي.
+- **المحتوى:** `.unix-rte` (§8.43) بعرض `--prose-max` و `--t-body-lg`. أي `h1` جوه المحتوى بيتحوّل `h2` من السيرفر (`h1` واحد، §14.2)، وكل صورة جوه المحتوى `loading="lazy"`.
+- **الإعجاب والتعليقات** (لو مفعّلين في إعدادات مدونة سلة): زرار الإعجاب pill ارتفاعه `--tap` ببوردر `--c-border` (`aria-pressed` بيتحدّث من `blog.js`). الاسم المقروء = العدد + نص sr-only «أعجبني المقال»، من غير aria-label (العدد أول `span` لأن `blog.js` بيقراه)، و `salla-comments` بتاعة سلة زي ما هي (مستايلة من §8.26).
+- **الوسوم في الآخر:** نفس لينكات الهيدر بعد خط `--line-w` `--c-border`.
+- **«قد يعجبكِ أيضًا»** (نص unix.sa): سكشن تحت المقال (مش عمود جانبي)، `h2` بحجم `--t-h3`، ولحد 4 كروت §8.41 (`h3`، من غير مقتطف زي `show_excerpt: false` في الأصل) في جريد 1 / 2 / 4 (أقل من 576 / من 576 / من 1024)، وزرار outline «عرض الكل» للمدونة في صف العنوان. بيستخبى لو مافيش مقالات ذات صلة.
+- **البيانات المنظمة:** `BlogPosting` من السيرفر (§14).
+
+### 8.43 Rich Text (`.unix-rte`) والصفحات الثابتة — *المرحلة 5.4 / 5.5*
+محتوى محرر سلة (HTML حر من التاجر) في المقال والصفحات الثابتة. الكود: `04-components/unix-rte.scss`. كل الأحجام من §2.2، وكل حاجة logical properties.
+- **العمود:** `max-inline-size: var(--prose-max)` في النص، و `--t-body-lg` بـ line-height 1.75 و `--c-text`، و `overflow-wrap: anywhere` (روابط طويلة). الفقرات `max-width: none` جوه العمود (العمود هو اللي بيحدد الطول).
+- **الإيقاع:** المسافة بين البلوكات `--s-5`، وقبل العناوين `--s-7` وبعدها `--s-3`. أول عنصر من غير margin فوق وآخر عنصر من غير margin تحت.
+- **العناوين جوه المحتوى:** `h2` `--t-h3`، و `h3` `--t-h4`، و `h4`–`h6` `--t-body-lg` `--fw-bold` (أصغر من عنوان الصفحة، عشان الهرمية تبان).
+- **اللينكات:** `--c-accent-text` (5.7:1) بخط تحت `--line-w` و `text-underline-offset` `--s-1`؛ hover `--c-text`؛ focus الحلقة العامة.
+- **القوايم:** `disc` / `decimal` (ترجع بعد preflight بتاع Tailwind)، و `padding-inline-start` `--s-5`، وبين العناصر `--s-2`، والعلامة `--c-text-muted`.
+- **الاقتباس:** خط `--line-w-strong` `--c-accent` ناحية البداية، و padding-inline-start `--s-5`، و `--c-text-muted`.
+- **الصور والفيديو:** `max-inline-size: 100%` و `block-size: auto` و `--r-md`؛ `iframe` و `video` بنسبة `--ratio-article`. الصور lazy (من Twig).
+- **المعالجة النصية** (`h1` ← `h2`، و `loading="lazy"`، ولفّ الجداول، بالحروف الصغيرة والكبيرة): بتفترض HTML محرر سلة (tags بحروف صغيرة، ومن غير loading)؛ أي HTML ملصوق من برا ممكن يطلع فيه attribute مكرر، و `</table>` من غير `<table>` بيطلع `</div>` زيادة (D101، D102).
+- **الجداول (المقاسات والسياسات):** عرض كامل جوه صندوق `.unix-rte__table` (Twig بيلفّ كل جدول؛ `role="region"` و `tabindex="0"` و `aria-label` «جدول، اسحبي للعرض» عشان الكيبورد وقارئ الشاشة) بيسكرول أفقي لو الجدول أعرض من الشاشة (مش الصفحة كلها)، و `--t-small` tabular، والخلايا padding `--s-2` `--s-3` وبوردر `--line-w` `--c-border`، وصف العناوين `--c-surface-muted` `--fw-bold`. `text-align: start`.
+- **الخط الفاصل (`hr`):** `--line-w` `--c-border`، ومسافة `--s-7`.
+- **`strong`** `--fw-bold`؛ **`em`** مايل في الإنجليزي بس (العربي من غير italic، §2.2).
+- **الصفحة الثابتة (`page-single`، 5.5):** زي `main-page.liquid` في unix.sa: `unix-container`، ومسار التنقل، وبعده `h1` الوحيد = عنوان الصفحة بحجم `--t-h2` (زي `title--page h2`) فوق عمود `--prose-max` (`--s-4` فوقه و `--s-7` تحته)، وبعده المحتوى `.unix-rte`. الـ padding تحت `--section-md` (الأصل `padding_bottom: m`). نفس معالجة المقال من السيرفر (`h1` ← `h2`، والصور lazy، والجداول). تعليقات سلة على الصفحة بس لو `unix_page_comments` مفعّل (مقفول افتراضيًا: unix.sa مافيهوش تعليقات على الصفحات)، تحت خط `--c-border` و `--s-8` مسافة. الصفحات المعمولة بمحرر صفحات سلة (`customised`) بتفضل بالـ hook بتاعها زي ما هي. *(قرار مؤقت D102)*
+
+### 8.44 404 (صفحة غير موجودة) — *المرحلة 5.6*
+**مافيش قالب 404 في Twilight:** قايمة صفحات الثيم (`src/views/pages/`: `index` و `product/*` و `cart` و `thank-you` و `loyalty` و `customer/*` و `blog/*` و `brands/*` و `page-single` و `testimonials`) وأنواع `@salla.sa/twilight` مافيهاش صفحة خطأ، فصفحة 404 وكود الحالة 404 **مسؤولية سلة** بالكامل (زي `sitemap.xml` في §14.1). الثيم مابيضيفش ملف مش معروف (ممكن يترفض في رفع الثيم أو يتجاهل). *(قرار مؤقت D103)*
+- **لو سلة طلّعت قالب بعدين** (أو لو المعاينة بيّنت إن صفحة سلة بتترسم جوه `layouts/master.twig`): نفس `main-404.liquid` في unix.sa: `h1` واحد «الصفحة غير موجودة» بحجم `--t-h2`، وسطر شرح `--t-body-lg` `--c-text-muted`، وزرار primary يفتح بحث سلة (`salla.search.open()`، §1.5) + لينكات «كل المنتجات» و«الرئيسية»، وبعدها «الأكثر مبيعًا» (4 منتجات، `404.json` في الأصل) بكروت §8.3. النصوص تحت `blocks.unix.not_found.*`.
+- **دلوقتي:** الهيدر والفوتر والبحث بتوعنا بيظهروا في صفحة سلة بس لو بتستخدم الـ layout؛ ده يتأكد في المعاينة.
+
+### 8.45 Brands و Loyalty و Testimonials (صفحات رائد) — *المرحلة 5.7*
+unix.sa مافيهوش صفحة ماركات ولا برنامج ولاء ولا صفحة آراء (التقييمات في صفحة المنتج §8.26، والكاش باك رصيد محفظة §8.25). الصفحات دي بتفضل موجودة في سلة، فبتاخد **ستايل خفيف بس** من غير إعادة تصميم. الكود: `04-components/unix-legacy-pages.scss` (بعد `brands.scss` و `loyalty.scss`)، ومحصور بـ `.unix-brands` و `.unix-loyalty` و `.unix-testimonials`. *(قرار مؤقت D104)*
+- **الكروت** (الماركة، وحرف الماركات، وطرق كسب النقاط، والجوايز، وبانر الولاء): `--c-surface` وبوردر `--line-w` `--c-border` و `--r-md` (الحروف `--r-sm`) ومن غير ظل، بدل الأبيض بظل `shadow-default`. hover بوردر `--c-text-muted`، والفوكس الحلقة العامة، وحروف الماركات `--tap` بالقليل.
+- **العناوين:** `h1` الوحيد = اسم الماركة / اسم برنامج الولاء / عنوان صفحة الآراء، بحجم `--t-h2`. وصف الماركة بقى نص (`--c-text-muted`، 65ch) بدل `h2`.
+- **لوجو الماركة:** `alt=""` (زينة جنب الاسم الـ `h1`)، و eager لما مافيش بانر (هو صورة الـ LCP)، وإلا lazy. أيقونة الحالة الفاضية `aria-hidden`.
+- **الولاء:** حركة النجمة وعدّ النقاط (`loyalty.js`) بتتشال مع reduced-motion والعدد بيظهر على طول. النجمة الكبيرة `--c-accent` بدل الكهرماني، والنجوم الزينة في الخلفية `--c-surface-muted` و `aria-hidden`، والنص الثانوي `--c-text-muted`، وعدد النقاط `--c-text`. ألوان طرق الكسب (`point.color`) من سلة زي ما هي.
+- **الآراء:** `unix-container`، والعنوان والترتيب في صف واحد (بيلف على الموبايل)، و `salla-comments` بستايل §8.26 العام، من غير الكارت الأبيض.
+
 ---
 
 ## 9. نبرة الكلام (Copy)
@@ -833,6 +884,7 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 | `Organization` (كل الصفحات) و `WebSite` (الهوم) | **الثيم** (`unix_seo_jsonld_site`) | `components/seo/unix-jsonld-site.twig` |
 | `Product` + `ProductGroup` لألوان الموديل | **الثيم** (`unix_seo_jsonld_product`) | `components/seo/unix-jsonld-product.twig` |
 | `FAQPage` | **الثيم** (2.9) | `components/home/unix-faq.twig` |
+| `BlogPosting` لصفحة المقال (العنوان، والصورة، وتاريخ النشر والتعديل، والكاتب، والناشر = `@id` الـ Organization، والوسوم) | **الثيم** (`unix_seo_jsonld_article`، 5.4، D101). صفحة المدونة نفسها مالهاش JSON-LD (مافيش rich result ليها) | `components/seo/unix-jsonld-article.twig` |
 
 ### 14.2 قواعد
 - **`h1` واحد في كل صفحة:** المنتج = اسمه، والتصنيف = اسمه، والصفحات = عنوانها. الهوم = عنوان **أول** هيرو فيه عنوان (والهيروهات اللي بعده `h2`)؛ لو مافيش، اسم المتجر `sr-only` في آخر المحتوى. الهيدر مافيهوش أي عنوان (اللوجو `alt` باسم المتجر). عناوين السكاشن `h2`، وجوه الكروت `h3` أو أقل. *(قرار مؤقت D75)*
@@ -840,5 +892,6 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **Product:** الاسم، والرابط (`@id`)، والوصف نص من غير HTML (5000 حرف بالكتير)، وكل الصور، و `sku`، و `gtin` لو الباركود 8 أو 12 أو 13 أو 14 رقم، و `brand` (ماركة المنتج في سلة، وإلا `unix_seo_brand_name` = «UNIX»، وإلا اسم المتجر)، و `category`، و `color` (3.10). `offers`: السعر المعروض بالظبط زي بلوك السعر في `single.twig` (`sale_price` وقت الخصم، وإلا «يبدأ من»، وإلا `price`)، والعملة (`product.currency`، SAR)، والتوفر (InStock / OutOfStock / PreOrder)، و NewCondition، والبائع (`@id` بتاع الـ Organization لما `unix_seo_jsonld_site` مفعّل، وإلا الاسم بس)، والسعر القديم كـ `StrikethroughPrice` وقت الخصم. وقت الخصم ولو فيه `discount_ends`: `priceValidUntil` بصيغة YYYY-MM-DD. `aggregateRating` بس لو فيه تقييمات. الأطقم منتج عادي بسعر الطقم.
 - **ألوان الموديل (D72):** كل لون صفحة مستقلة بـ canonical بتاعها، والجزء ده بيطلع بس لو الموديل ليه لونين أو أكتر. `Product` بيحمل `inProductGroupWithID` = مفتاح المجموعة، و `isVariantOf` → `ProductGroup` بـ `productGroupID` = نفس المفتاح في `unix_colour_links`، و `variesBy` color، و `hasVariant` = `{ @type: Product, @id, url }` لكل لون (روابط مطلقة؛ الرابط اللي بيبدأ بـ `/` بياخد `store.url` قبله). اسم الـ ProductGroup = الجزء اللي قبل «|» في عنوان المنتج.
 - **لينكات داخلية من السيرفر:** مربعات الألوان (§8.28) `<a href>` حقيقية في الـ HTML.
+- **المدونة والصفحات (5.4، 5.5):** `h1` المدونة = عنوان الصفحة (ظاهر دايمًا)، والمقال = عنوانه، والصفحة الثابتة = عنوانها. أي `h1` كتبه التاجر جوه المحتوى بيتحوّل `h2` من السيرفر. كروت المقالات وتصنيفات المدونة ووسوم المقال `<a href>` حقيقية من السيرفر. `BlogPosting`: `@id` = رابط المقال + `#article`، و `headline` (110 حرف بالكتير)، و `description` (المقتطف وإلا أول 300 حرف من المحتوى نص من غير HTML)، و `image` لو فيه صورة، و `datePublished` / `dateModified` بصيغة ISO 8601، و `author` = `Person` باسم الكاتب (وإلا الـ Organization)، و `publisher` = `@id` الـ Organization لما `unix_seo_jsonld_site` مفعّل (وإلا الاسم واللوجو)، و `keywords` = الوسوم، و `inLanguage`.
 - **صفحة التصنيف (4.2):** الـ `h1` اسم التصنيف من السيرفر (§8.29) ومابيتغيّرش مع الفلترة. كروت المنتجات `<a href>` حقيقية بس بتترسم بالـ JS (§14.1، D82)؛ الاكتشاف الأساسي للمنتجات من الـ sitemap بتاع سلة والمنيو و«المفضلة دائما» وغيرهم. قبل الإطلاق: View Source + URL Inspection لتصنيف، ورابط فيه `?filters[...]` و `?sort=` نتأكد إن الـ canonical بتاعه رابط التصنيف من غير parameters.
 - **التحقق قبل الإطلاق (6.x):** مصدر الصفحة (View Source) للهوم ومنتج وتصنيف: مافيش `<title>` أو canonical أو OG مكررين، ومافيش `Product` تاني من سلة (لو فيه: نقفل `unix_seo_jsonld_product` أو نسيب بتاعنا لو أكمل)، و Google Rich Results Test على منتج فيه ألوان ومنتج فيه تقييمات وطقم.

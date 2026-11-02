@@ -1,0 +1,92 @@
+{#
+  Article structured data (ROADMAP 5.4 · DS §14 · D101), included from pages/blog/single.twig.
+  unix.sa: Shopify themes print an `article` schema from main-article.liquid; Salla's web components don't
+  print one for the article page, and we can't see whether {% hook head %} does, so ours sits behind
+  unix_seo_jsonld_article (default on): check the rendered source and turn it off if Salla already prints one.
+
+  BlogPosting: @id (article url + #article), mainEntityOfPage, url, headline (≤ 110 chars), description (the
+  summary, else the first 300 characters of the body as plain text), image (when there is a real one),
+  datePublished / dateModified (ISO 8601), author (Person with the author's name, else the store Organization),
+  publisher (the site Organization @id when unix_seo_jsonld_site is on, else name + logo), keywords (tags),
+  inLanguage. Same patterns as unix-jsonld-site / unix-jsonld-product (3.11).
+  Server-rendered; |json_encode escapes "/" so no value can close the <script>.
+#}
+{% if theme.settings.get('unix_seo_jsonld_article', true) and article is defined and article.url|default('') %}
+  {% set seo_home = store.url|default('')|trim('/', 'right') %}
+  {% set seo_entities = {
+    '&nbsp;': ' ', '&amp;': '&', '&quot;': '"', '&#39;': "'", '&#039;': "'", '&#x27;': "'",
+    '&lt;': '<', '&gt;': '>', '&hellip;': '…', '&rlm;': '', '&lrm;': '', '&ndash;': '–', '&mdash;': '—'
+  } %}
+
+  {% if theme.settings.get('unix_seo_jsonld_site', true) %}
+    {% set seo_publisher = { '@id': seo_home ~ '/#organization' } %}
+  {% else %}
+    {% set seo_publisher = { '@type': 'Organization', 'name': store.name, 'url': store.url|default('') } %}
+    {% if store.logo %}
+      {% set seo_publisher = seo_publisher|merge({ 'logo': store.logo }) %}
+    {% endif %}
+  {% endif %}
+
+  {% set seo_headline = article.title|default('')|striptags|replace(seo_entities)|trim %}
+  {% if seo_headline|length > 110 %}
+    {% set seo_headline = seo_headline|slice(0, 109)|trim ~ '…' %}
+  {% endif %}
+
+  {% set seo_desc = article.summary|default('')|striptags|replace(seo_entities)|trim %}
+  {% if not seo_desc %}
+    {# a space before every tag so «</p><p>» doesn't glue words together, then collapse the whitespace #}
+    {% set seo_desc = article.body|default('')|replace({'<': ' <'})|striptags|replace(seo_entities)|replace({"\n": ' ', "\r": ' ', "\t": ' '})|split(' ')|filter(w => w|trim != '')|join(' ')|trim %}
+  {% endif %}
+  {% if seo_desc|length > 300 %}
+    {% set seo_desc = seo_desc|slice(0, 299)|trim ~ '…' %}
+  {% endif %}
+
+  {% set seo_post = {
+    '@type': 'BlogPosting',
+    '@id': article.url ~ '#article',
+    'mainEntityOfPage': article.url,
+    'url': article.url,
+    'headline': seo_headline,
+    'inLanguage': language.code,
+    'publisher': seo_publisher
+  } %}
+  {% if seo_desc %}
+    {% set seo_post = seo_post|merge({ 'description': seo_desc }) %}
+  {% endif %}
+
+  {% set seo_image = article.image.url is defined ? article.image.url : '' %}
+  {% if article.has_image and seo_image and not (seo_image|is_placeholder) %}
+    {% set seo_post = seo_post|merge({ 'image': [seo_image] }) %}
+  {% endif %}
+
+  {% if article.created_at %}
+    {% set seo_post = seo_post|merge({ 'datePublished': article.created_at|date('c') }) %}
+    {% set seo_modified = article.updated_at is defined and article.updated_at ? article.updated_at : article.created_at %}
+    {% set seo_post = seo_post|merge({ 'dateModified': seo_modified|date('c') }) %}
+  {% endif %}
+
+  {% set seo_author_name = article.author.name|default('')|trim %}
+  {% if seo_author_name %}
+    {% set seo_author = { '@type': 'Person', 'name': seo_author_name } %}
+    {% if article.author.url|default('') starts with 'http' %}
+      {% set seo_author = seo_author|merge({ 'url': article.author.url }) %}
+    {% endif %}
+  {% elseif theme.settings.get('unix_seo_jsonld_site', true) %}
+    {% set seo_author = { '@id': seo_home ~ '/#organization' } %}
+  {% else %}
+    {% set seo_author = { '@type': 'Organization', 'name': store.name } %}
+  {% endif %}
+  {% set seo_post = seo_post|merge({ 'author': seo_author }) %}
+
+  {% set seo_tags = [] %}
+  {% for seo_tag in article.tags|default([]) %}
+    {% if seo_tag.name|default('')|trim %}
+      {% set seo_tags = seo_tags|merge([seo_tag.name|trim]) %}
+    {% endif %}
+  {% endfor %}
+  {% if seo_tags|length %}
+    {% set seo_post = seo_post|merge({ 'keywords': seo_tags|join(', ') }) %}
+  {% endif %}
+
+  <script type="application/ld+json">{{ { '@context': 'https://schema.org' }|merge(seo_post)|json_encode|raw }}</script>
+{% endif %}

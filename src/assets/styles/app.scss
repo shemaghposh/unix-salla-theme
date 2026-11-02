@@ -125,6 +125,12 @@
 @import './04-components/unix-cart-drawer';
 @import './04-components/unix-cart-page';
 @import './04-components/unix-thank-you';
+/* Phase 5 · content pages (5.4–5.7) */
+@import './04-components/unix-rte';
+@import './04-components/unix-blog-pages';
+@import './04-components/unix-page';
+/* after brands + loyalty (Raed): light token restyle of brands / loyalty / testimonials (5.7) */
+@import './04-components/unix-legacy-pages';
 
 @import './05-utilities/chat-bots';
 @import './05-utilities/swal';
