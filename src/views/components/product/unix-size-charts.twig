@@ -1,0 +1,46 @@
+{#
+  UNIX Size Charts (ROADMAP 3.4 · DS §8.23 · SPEC §5.2 item 9, §8.2)
+  Port of unix.sa templates/product.json → block size_guide_custom: underlined text buttons
+  «دليل المقاسات» / «دليل مقاسات الأعلى» / «دليل مقاسات الأسفل» opening a chart modal.
+
+  Usage: include ONCE in the product info column, directly after the size finder
+  (pages/product/single.twig):
+    {% include 'components.product.unix-size-charts' %}
+
+  Data source (D60): Salla's own product size guides (dashboard → size guides, linked to the
+  product) instead of Shopify metafields. Renders only when `product.has_size_guide` and the
+  setting `unix_size_charts_enabled` is on. The guide names + HTML come from
+  salla.product.getSizeGuides(id) (the API <salla-product-size-guide> uses), fetched after
+  window.load or on first click. One guide → one «دليل المقاسات» button (server-rendered);
+  several → one button per guide, labelled from its name (top / bottom / other).
+  JS: src/assets/js/partials/unix-size-charts.js (imported by product.js).
+#}
+{% if product.has_size_guide and theme.settings.get('unix_size_charts_enabled', true) %}
+  {% set sg_id = 'unix-sg-' ~ product.id %}
+  <div class="unix-sg" data-unix-sg
+       data-product-id="{{ product.id }}"
+       data-label-single="{{ trans('blocks.unix.size_charts.single') }}"
+       data-label-top="{{ trans('blocks.unix.size_charts.top') }}"
+       data-label-bottom="{{ trans('blocks.unix.size_charts.bottom') }}"
+       data-label-named="{{ trans('blocks.unix.size_charts.named', {'name': '__NAME__'}) }}"
+       data-label-loading="{{ trans('blocks.unix.size_charts.loading') }}"
+       data-label-error="{{ trans('blocks.unix.size_charts.error') }}">
+    <div class="unix-sg__buttons" data-sg-buttons>
+      <button type="button" class="unix-sg__btn" data-sg-open aria-haspopup="dialog" aria-controls="{{ sg_id }}">
+        {{- trans('blocks.unix.size_charts.single') -}}
+      </button>
+    </div>
+
+    <dialog class="unix-sg__dialog" id="{{ sg_id }}" data-sg-dialog aria-labelledby="{{ sg_id }}-title">
+      <div class="unix-sg__head">
+        <h2 class="sr-only" id="{{ sg_id }}-title" data-sg-title>{{ trans('blocks.unix.size_charts.single') }}</h2>
+        <button type="button" class="unix-sg__close" data-sg-close aria-label="{{ trans('blocks.unix.size_charts.close') }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      {# persistent live region: JS only swaps its text («لحظة…» / error), never re-creates it #}
+      <p class="unix-sg__status" role="status" data-sg-status></p>
+      <div class="unix-sg__content" data-sg-content></div>
+    </dialog>
+  </div>
+{% endif %}

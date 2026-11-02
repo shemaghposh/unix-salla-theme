@@ -1,5 +1,6 @@
 import BasePage from './base-page';
 import {validateProductOptions} from './partials/validate-product-options';
+import initCashbackNote from './partials/unix-cashback-note'; // ROADMAP 3.7 (DS §8.25)
 class Cart extends BasePage {
     onReady() {
         // keep update the dom base in the events
@@ -16,6 +17,8 @@ class Cart extends BasePage {
 
         this.initSubmitCart();
         validateProductOptions();
+        // ROADMAP 3.7: cashback amount follows the subtotal; guest link opens Salla's login
+        initCashbackNote();
     }
 
     initSubmitCart() {

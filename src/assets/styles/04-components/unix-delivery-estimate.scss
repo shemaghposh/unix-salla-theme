@@ -1,0 +1,114 @@
+/* ============================================================
+   UNIX Delivery estimate (ROADMAP 3.6 · DS §8.24)
+   Skin of unix.sa assets/unix-shipping.css on the design system.
+   Semantic tokens only.
+   ============================================================ */
+
+.unix-ship {
+  margin-block: var(--s-4) var(--s-2);
+  padding: var(--s-3) var(--s-4);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-md);
+}
+
+.theme-unix .unix-ship__title,
+.unix-ship__title {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0 0 var(--s-3);
+  font-size: var(--t-small);
+  line-height: 1.6;
+  color: var(--c-text);
+
+  svg {
+    flex: none;
+    inline-size: var(--icon-sm);
+    block-size: var(--icon-sm);
+    color: var(--c-text-muted);
+  }
+}
+
+.unix-ship__fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.unix-ship__field {
+  position: relative;
+  display: block;
+  flex: 1 1 100%;
+  min-inline-size: 0;
+
+  &[hidden] { display: none; }
+}
+
+@media (min-width: 768px) {
+  .unix-ship__field { flex-basis: 0; }
+}
+
+.unix-ship__select {
+  display: block;
+  inline-size: 100%;
+  min-block-size: var(--tap);
+  padding-block: var(--s-2);
+  padding-inline: var(--s-3) calc(var(--s-3) + var(--icon-sm) + var(--s-1));
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-sm);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font: inherit;
+  font-size: var(--t-small);
+  line-height: 1.6;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color var(--d-fast) var(--ease-out);
+
+  &:active { border-color: var(--c-text); }
+  &:disabled { opacity: var(--o-disabled); cursor: not-allowed; }
+}
+
+@media (hover: hover) {
+  .unix-ship__select:hover { border-color: var(--c-text-muted); }
+}
+
+.unix-ship__chev {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--s-3);
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+  color: var(--c-text-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.unix-ship__result {
+  margin-block-start: var(--s-3);
+  padding-block-start: var(--s-3);
+  border-block-start: var(--line-w) dashed var(--c-border);
+  font-size: var(--t-small);
+  line-height: 1.6;
+  color: var(--c-text);
+
+  &:empty {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+}
+
+.unix-ship__days { font-weight: 700; }
+
+.unix-ship__note {
+  display: block;
+  margin-block-start: var(--s-1);
+  font-size: var(--t-micro);
+  line-height: 1.5; /* --t-micro role (DS §2.2) */
+  color: var(--c-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-ship__select { transition: none; }
+}

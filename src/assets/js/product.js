@@ -6,6 +6,8 @@ window.fslightbox = Fslightbox;
 import initGallery from './partials/unix-gallery';
 import initSizeFinder from './partials/unix-size-finder'; // ROADMAP 3.3 (DS §8.11)
 import initStickyAtc from './partials/unix-sticky-atc'; // ROADMAP 3.2 (DS §8.21)
+import initSizeCharts from './partials/unix-size-charts'; // ROADMAP 3.4 (DS §8.23)
+import initDeliveryEstimate from './partials/unix-delivery-estimate'; // ROADMAP 3.6 (DS §8.24)
 
 class Product extends BasePage {
     onReady() {
@@ -23,6 +25,10 @@ class Product extends BasePage {
         initGallery();
         // ROADMAP 3.2: mobile sticky add-to-cart that drives the real Salla button
         initStickyAtc();
+        // ROADMAP 3.4: size chart buttons + dialog (Salla size guides)
+        initSizeCharts();
+        // ROADMAP 3.6: «متى يصلك طلبك؟» country / city selects
+        initDeliveryEstimate();
     }
 
     initProductOptionValidations() {

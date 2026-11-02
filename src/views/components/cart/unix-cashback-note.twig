@@ -1,0 +1,54 @@
+{#
+  UNIX Cashback note (ROADMAP 3.7 · DS §8.25 · SPEC §8.4)
+  Port of unix.sa snippets/cashback-note.liquid. Cart page + (4.3) cart drawer only; the original
+  does not render it on the product page.
+
+  Usage:
+    {% include 'components.cart.unix-cashback-note' %}                         {# base = cart.sub_total #}
+    {% include 'components.cart.unix-cashback-note' with { cbk_base: 250 } %}  {# any other base #}
+  JS: src/assets/js/partials/unix-cashback-note.js keeps the amount in step with cart updates
+  (salla.event.cart.onUpdated → sub_total) and opens Salla's login modal from the guest link.
+
+  Settings (twilight.json):
+    unix_cashback_enabled    boolean  show/hide (on until saved)
+    unix_cashback_percent    number   % of the subtotal (10, unix.sa)
+    unix_cashback_validity   text     multilanguage; null/empty → «صالح ٦ أشهر» / "valid 6 months"
+  Store-credit balance line of the original is not ported (D64).
+#}
+{% set cbk_pct = theme.settings.get('unix_cashback_percent', 10) %}
+{% if cbk_pct is null or cbk_pct == '' %}{% set cbk_pct = 10 %}{% endif %}
+{% if theme.settings.get('unix_cashback_enabled', true) and cbk_pct > 0 %}
+  {% set cbk_base = cbk_base is defined ? cbk_base : cart.sub_total %}
+  {% set cbk_amount = ((cbk_base|default(0)) * cbk_pct / 100)|round(2) %}
+
+  {% set cbk_validity = theme.settings.get('unix_cashback_validity') %}
+  {% if cbk_validity is iterable %}
+    {% set cbk_validity = cbk_validity[language.code] is defined ? cbk_validity[language.code] : null %}
+  {% endif %}
+  {% if cbk_validity is null or not cbk_validity|trim %}
+    {% set cbk_validity = trans('blocks.unix.cashback.default_validity') %}
+  {% endif %}
+
+  {# unix.sa writes the percentage in Arabic-Indic digits in the Arabic copy («كاش باك ١٠٪») #}
+  {% set cbk_pct_label = cbk_pct %}
+  {% if language.code == 'ar' %}
+    {% set cbk_pct_label = cbk_pct|replace({'0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤', '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩', '.': '٫'}) %}
+  {% endif %}
+
+  {% set cbk_lead = trans('blocks.unix.cashback.lead', {'amount': '__AMOUNT__'})|split('__AMOUNT__') %}
+
+  <div class="unix-cbk" data-unix-cbk data-percent="{{ cbk_pct }}"{% if cbk_amount <= 0 %} hidden{% endif %}>
+    <span class="unix-cbk__dot" aria-hidden="true"></span>
+    <span class="unix-cbk__body">
+      <span class="unix-cbk__lead">
+        {{- cbk_lead[0] -}}<strong data-cbk-amount>{{ cbk_amount|money }}</strong>{{- cbk_lead[1]|default('') -}}
+      </span>
+      <span class="unix-cbk__fine">
+        {{- trans('blocks.unix.cashback.fine', {'percent': cbk_pct_label, 'validity': cbk_validity|trim}) -}}
+        {% if user.type != 'user' %}
+          <button type="button" class="unix-cbk__link" data-cbk-login aria-haspopup="dialog">{{ trans('blocks.unix.cashback.login') }}</button>
+        {% endif %}
+      </span>
+    </span>
+  </div>
+{% endif %}

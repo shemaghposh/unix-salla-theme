@@ -1,0 +1,87 @@
+/* ============================================================
+   UNIX Cashback note (ROADMAP 3.7 · DS §8.25)
+   unix.sa snippets/cashback-note.liquid inline <style>, on the
+   design system. Cart page now, cart drawer in 4.3.
+   ============================================================ */
+
+.unix-cbk {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  margin-block: var(--s-4);
+  padding: var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--c-note-bg);
+  color: var(--c-text);
+  line-height: 1.6;
+
+  &[hidden] { display: none; }
+}
+
+.unix-cbk__dot {
+  flex: none;
+  inline-size: var(--s-2);
+  block-size: var(--s-2);
+  /* centre on the first line of the lead */
+  margin-block-start: calc((var(--t-body) * 1.7 - var(--s-2)) / 2);
+  border-radius: var(--r-pill);
+  background: var(--c-accent);
+}
+
+.unix-cbk__body {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.unix-cbk__lead {
+  display: block;
+  font-size: var(--t-body);
+  line-height: 1.7; /* --t-body role (DS §2.2) */
+
+  strong { font-weight: 600; white-space: nowrap; }
+}
+
+.unix-cbk__fine {
+  display: block;
+  margin-block-start: var(--s-1);
+  font-size: var(--t-small);
+  line-height: 1.6; /* --t-small role (DS §2.2) */
+}
+
+.unix-cbk__link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap); /* 44px touch target at every width */
+  vertical-align: middle;
+  margin-inline-start: var(--s-2);
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: var(--line-w);
+  text-underline-offset: var(--s-1);
+  cursor: pointer;
+  transition: opacity var(--d-fast) var(--ease-out);
+
+  &:active { opacity: var(--o-muted); }
+  &:disabled { opacity: var(--o-disabled); cursor: not-allowed; }
+}
+
+@media (hover: hover) {
+  .unix-cbk__link:hover { opacity: var(--o-muted); }
+}
+
+/* below md the link drops to its own line (unix.sa ≤749) */
+@media (max-width: 767.98px) {
+  .unix-cbk__link {
+    display: flex;
+    margin-inline-start: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-cbk__link { transition: none; }
+}

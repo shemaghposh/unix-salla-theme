@@ -39,16 +39,18 @@
 	<salla-multiple-bundle-product bundle-sections='{{ product|json_encode }}'></salla-multiple-bundle-product>
 {% endif %}
 
-{% if product.weight or product.has_size_guide %}
+{# ROADMAP 3.4: the UNIX size-chart buttons (components/product/unix-size-charts.twig) replace Raed's row #}
+{% set raed_size_guide = product.has_size_guide and not theme.settings.get('unix_size_charts_enabled', true) %}
+{% if product.weight or raed_size_guide %}
     <section class="bg-white p-5 rounded-md mb-5">
         {% if product.weight %}
-            <div class="center-between {% if product.has_size_guide %} pb-5 mb-5 border-b-[1px] {% endif %}">
+            <div class="center-between {% if raed_size_guide %} pb-5 mb-5 border-b-[1px] {% endif %}">
                 <b class="form-label rtl:space-x-reverse space-x-1"><i class="sicon-luggage-cart"></i>
                     <span>{{ trans('pages.products.weight') }}</span></b>
                 <span class="product-weight text-sm">{{ product.weight }}</span>
             </div>
         {% endif %}
-        {% if product.has_size_guide %}
+        {% if raed_size_guide %}
             <div class="center-between">
                 <b class="form-label rtl:space-x-reverse space-x-1">
                     <i class="sicon-pencil-ruler"></i>

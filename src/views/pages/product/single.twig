@@ -197,7 +197,8 @@
                     {% include 'pages.partials.product.options' with { unix_option_buttons: true } %}
                     {# 6 · Size finder (ROADMAP 3.3) #}
                     {% include 'components.product.unix-size-finder' %}
-                    {# 3.4 size charts #}
+                    {# ROADMAP 3.4 · DS §8.23: size charts (Salla size guides) #}
+                    {% include 'components.product.unix-size-charts' %}
 
                     {% hook 'product:single.form.end' %}
 
@@ -257,7 +258,8 @@
                     {% endif %}
                 </form>
 
-                {# 3.6 delivery estimate #}
+                {# ROADMAP 3.6 · DS §8.24: «متى يصلك طلبك؟» #}
+                {% include 'components.product.unix-delivery-estimate' %}
 
                 {#
                     Mobile sticky add-to-cart (DS §8.21): below 576px, visible while the real button

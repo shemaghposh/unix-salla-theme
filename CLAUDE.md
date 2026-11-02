@@ -17,6 +17,7 @@ This is a custom **Salla Twilight** theme for UNIX (unix.sa), a Saudi activewear
 - Use logical CSS properties only. The theme is RTL-first.
 - Merchant content comes from component `fields` or settings. Never hard-code it.
 - Use the built-in `salla-*` web components. Don't re-implement cart, auth or product logic.
+- A `salla-*` component may be replaced only for presentation, only when its data comes from the same `salla.*` API, and with a D-number recording the reason.
 - Every UI string goes through `trans()`, with keys in both `src/locales/ar.json` and `en.json`. The Arabic copy uses the feminine voice.
 - Make one roadmap task per commit, with the task number in the message (e.g. `feat(2.1): …`), and update ROADMAP.md in the same commit.
 - The base is Theme Raed (MIT). Keep `NOTICE.md`.

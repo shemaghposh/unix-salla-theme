@@ -1,0 +1,164 @@
+/* ============================================================
+   UNIX Size Charts (ROADMAP 3.4 · DS §8.23)
+   unix.sa size_guide_custom: underlined text buttons + chart modal,
+   on the design system. Semantic tokens only.
+   ============================================================ */
+
+.unix-sg {
+  margin-block: var(--s-2) var(--s-1);
+}
+
+.unix-sg__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--s-3);
+}
+
+.unix-sg__btn {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap);
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--c-text);
+  font: inherit;
+  font-size: var(--t-micro);
+  line-height: 1.5;
+  text-decoration: underline;
+  text-decoration-thickness: var(--line-w);
+  text-underline-offset: var(--s-1);
+  cursor: pointer;
+  transition: opacity var(--d-fast) var(--ease-out);
+
+  &:active { opacity: var(--o-muted); }
+  &:disabled { opacity: var(--o-disabled); cursor: not-allowed; }
+}
+
+@media (hover: hover) {
+  .unix-sg__btn:hover { opacity: var(--o-muted); }
+}
+
+/* ── dialog ── */
+.unix-sg__dialog {
+  inline-size: 100%;
+  max-inline-size: min(var(--sg-dialog-w), calc(100vw - 2 * var(--s-4)));
+  max-block-size: var(--sg-dialog-max-h);
+  margin: auto;
+  padding: 0 var(--s-4) var(--s-4);
+  border: 0;
+  border-radius: var(--r-lg);
+  background: var(--c-surface);
+  color: var(--c-text);
+  box-shadow: var(--e-2);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  &::backdrop { background: var(--c-backdrop); }
+  &[open] { animation: unix-sg-in var(--d-base) var(--ease-out); }
+}
+
+html:has(.unix-sg__dialog[open]) { overflow: hidden; }
+
+@keyframes unix-sg-in {
+  from { opacity: 0; transform: translateY(var(--s-1)); }
+  to { opacity: 1; transform: none; }
+}
+
+.unix-sg__head {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  margin-inline-end: calc(-1 * var(--s-3));
+  padding-block: var(--s-1);
+  background: var(--c-surface);
+}
+
+.unix-sg__close {
+  display: grid;
+  place-items: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: var(--r-pill);
+  color: var(--c-text);
+  cursor: pointer;
+  transition: background-color var(--d-fast) var(--ease-out);
+
+  svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
+  &:active { background-color: var(--c-press-tint); }
+}
+
+@media (hover: hover) {
+  .unix-sg__close:hover { background-color: var(--c-hover-tint); }
+}
+
+/* ── chart content (Salla size guide HTML, unix.sa .rte) ── */
+.unix-sg__content {
+  font-size: var(--t-small);
+  line-height: 1.6;
+  color: var(--c-text);
+}
+
+.unix-sg__status {
+  margin: 0;
+  padding-block: var(--s-6);
+  text-align: center;
+  color: var(--c-text-muted);
+
+  &:empty { padding: 0; } /* stays in the a11y tree as the live region, takes no space */
+}
+
+.unix-sg__rte:focus-visible { outline-offset: calc(-1 * var(--ring-w)); } /* scroll region ring stays inside the card */
+
+.unix-sg__chart + .unix-sg__chart { margin-block-start: var(--s-6); }
+
+.theme-unix .unix-sg__name,
+.unix-sg__name {
+  margin: 0 0 var(--s-3);
+  font-family: var(--f-heading);
+  font-size: var(--t-h4);
+  line-height: 1.4;
+}
+
+.unix-sg__rte {
+  overflow-x: auto; /* a wide table scrolls inside the card, never the page */
+
+  :where(p, ul, ol) { margin-block: 0 var(--s-3); }
+  :where(h1, h2, h3, h4) {
+    margin-block: var(--s-4) var(--s-2);
+    font-size: var(--t-h4);
+    line-height: 1.4;
+  }
+  :where(img) { max-inline-size: 100%; block-size: auto; }
+  :where(table) {
+    inline-size: 100%;
+    margin-block-end: var(--s-3);
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  :where(th, td) {
+    padding: var(--s-2);
+    border: var(--line-w) solid var(--c-border);
+    text-align: center;
+    white-space: nowrap;
+  }
+  :where(th, thead td) {
+    background: var(--c-surface-muted);
+    color: var(--c-text);
+    font-weight: 600;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-sg__btn,
+  .unix-sg__close,
+  .unix-sg__dialog {
+    animation: none !important;
+    transition: none !important;
+  }
+}
