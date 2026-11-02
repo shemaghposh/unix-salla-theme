@@ -1183,6 +1183,34 @@
                     "value": "custom"
                 }
             ]
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "عنوان صفحة الطلبات الفارغة",
+            "description": "يظهر في «طلباتي» عندما لا توجد طلبات للعميلة. إذا تركتِه فارغًا يظهر «لم تطلبي أي شيء بعد».",
+            "id": "unix_account_orders_empty_heading",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "لم تطلبي أي شيء بعد",
+            "minLength": 0,
+            "maxLength": 80
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "نص صفحة الطلبات الفارغة",
+            "description": "يظهر تحت العنوان مع زر «تسوقي الآن». إذا تركتِه فارغًا يظهر نص المتجر الأصلي.",
+            "id": "unix_account_orders_empty_text",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "لا توجد طلبات حتى الآن. قطع رائعة بانتظارك، ابدئي التسوق واطلبي طلبك الأول اليوم.",
+            "minLength": 0,
+            "maxLength": 200
         }
     ],
     "components": [

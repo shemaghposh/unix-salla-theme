@@ -30,7 +30,9 @@ class Wishlist extends BasePage {
                 if (e.propertyName === 'opacity') {
                     item.removeEventListener('transitionend', handler);
                     item.remove();
-                    if (!document.querySelector('#wishlist>*')) {
+                    // ROADMAP 5.3: the list wrapper always has children (hooks, salla-products-list),
+                    // so check for rows that are still there instead
+                    if (!document.querySelector('#wishlist .unix-wish:not(.fade-out-collapse)')) {
                         window.location.reload();
                     }
                 }

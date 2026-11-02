@@ -323,6 +323,19 @@
         "title": "Thank you",
         "continue": "Continue shopping"
       },
+      "account": {
+        "nav": "My account",
+        "greeting": "Hello, :name",
+        "orders_empty_heading": "You haven't placed any orders yet",
+        "orders_empty_text": "You haven't placed any orders yet. Great finds await. Start shopping and make your first order today.",
+        "shop_now": "Shop now",
+        "order_link": "Order :number",
+        "edit_rating": "Edit rating",
+        "delete_rating": "Delete rating",
+        "wishlist_remove": "Remove :name from your wishlist",
+        "sale_price": "Sale price",
+        "regular_price": "Regular price"
+      },
       "collection": {
         "filters": "Filters",
         "sort_by": "Sort by",

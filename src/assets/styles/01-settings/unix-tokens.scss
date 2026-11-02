@@ -303,6 +303,12 @@ html[lang="en"] .theme-unix :is(h1, h2, h3, h4) { letter-spacing: -.01em; }
   --cart-aside-w: 384px;               /* cart page summary column from lg (Raed w-96) */
 }
 
+/* ── Phase 5 · 5.1 Account shell, 5.3 Wishlist (DS §8.37, §8.40) ── */
+:root {
+  --account-nav-w: 288px;              /* account side menu column from lg (Raed w-72) */
+  --btn-w-wish: 160px;                 /* wishlist row add-to-cart button from md (Raed md:w-40) (5.3) */
+}
+
 /* ── Phase 5 · 5.4–5.5 Blog, article and static pages (DS §8.41–§8.43) ── */
 :root {
   --ratio-article: 16 / 9;             /* article hero + featured blog cards */

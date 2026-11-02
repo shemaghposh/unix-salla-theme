@@ -1,44 +1,59 @@
+{#
+  UNIX account shell (ROADMAP 5.1 · DS §8.37 · D93, D94)
+  Every page in pages/customer/** extends this layout:
+    {% extends "layouts.customer" %} … {% block inner_content %} (and optionally {% block inner_title %}).
+
+  Look: unix.sa's customer area (sections/main-account.liquid, assets/customer.css), quiet and on the
+  page background. Raed's primary-coloured header band is gone; the breadcrumb sits on --c-bg.
+  Navigation is Salla's own `salla-user-menu inline` (no theme logic); account.js only marks the
+  current page with aria-current. Below lg the side menu is hidden like Raed, and the header's
+  account menu (§8.7) is the way between pages.
+  One h1 per page: `page.title` from Salla (pages may override `inner_title` but must keep one h1).
+  Account pages are noindex and platform-owned (DS §14, D74).
+#}
 {% extends "layouts.master" %}
 {% block content %}
-    <div class="profile-header gradient-bg">
-        <div class="container relative flex justify-between h-full items-center">
-            {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
-            <nav class="breadcrumbs w-full py-5 self-start">
-                <salla-breadcrumb></salla-breadcrumb>
-            </nav>
+    {% set unix_is_profile = is_page('customer.profile') %}
+    <div class="unix-container unix-account">
+        {# Wrapper keeps the space when the merchant turns breadcrumbs off #}
+        <div class="unix-account__crumbs">
+            <salla-breadcrumb></salla-breadcrumb>
         </div>
-    </div>
-    <div class="container lg:mb-24">
-        <div class="flex items-start flex-col lg:flex-row justify-center">
-            <nav aria-label="Sidebar"
-                class="shrink-0 lg:sticky top-24 lg:-mt-28 lg:shadow-default rounded-md lg:bg-white w-full lg:w-72 rtl:lg:ml-8 ltr:lg:mr-8 lg:pt-8 lg:pb-11 sidebar space-y-px">
-                {% if is_page('customer.profile') %}
-                    <div class="text-center md:mb-9">
-                        <div class="h-20 w-20 m-auto avatar-wrap bg-gray-100 rounded-full">
-                            <salla-file-upload data-testid="store-profile-avatar-upload" profile-image value="{{ user.avatar }}">
-                                <span class='avatar-placeholder flex justify-center items-center flex-col'>
-                                    <span class='sicon-user'></span>
-                                    <span class='text'>{{ trans('common.uploader.choose_suitable_picture') }}</span>
-                                </span>
-                            </salla-file-upload>
-                        </div>
+
+        <div class="unix-account__layout">
+            <aside class="unix-account__aside{{ unix_is_profile ? ' unix-account__aside--avatar' : '' }}">
+                {% if unix_is_profile %}
+                    <div class="unix-account__avatar">
+                        <salla-file-upload data-testid="store-profile-avatar-upload" profile-image value="{{ user.avatar }}">
+                            <span class="avatar-placeholder unix-account__avatar-placeholder">
+                                <span class="sicon-user" aria-hidden="true"></span>
+                                <span class="text">{{ trans('common.uploader.choose_suitable_picture') }}</span>
+                            </span>
+                        </salla-file-upload>
                     </div>
                 {% endif %}
-                <div class="hidden lg:block">
+                <nav class="unix-account__nav" aria-label="{{ trans('blocks.unix.account.nav') }}">
                     <salla-user-menu data-testid="store-sidebar-user-menu" inline></salla-user-menu>
-                </div>
-            </nav>
-            <div class="main-content w-full flex-1 lg:pt-10 max-w-3xl">
-                {% block inner_title %}
-                    <h1 class="font-bold text-lg text-center sm:rtl:text-right sm:ltr:text-left mb-2">{{ page.title }}</h1>
-                {% endblock %}
-                {#
-                All customer pages have same header, this layout will wrap the different content.
-                Use it like: `{% extends "layouts.customer" %}` instead of `{% extends "layouts.master" %}`
-                Then body: `{% block inner_content %}` instead of `{% block content %}`
-                #}
+                </nav>
+            </aside>
+
+            <div class="main-content unix-account__main">
+                <header class="unix-account__head">
+                    {% block inner_title %}
+                        <div class="unix-account__heading">
+                            {% if unix_is_profile and user.first_name %}
+                                <p class="unix-account__greeting">{{ trans('blocks.unix.account.greeting', {'name': user.first_name}) }}</p>
+                            {% endif %}
+                            <h1 class="unix-account__title unix-size-h2">{{ page.title }}</h1>
+                        </div>
+                    {% endblock %}
+                </header>
                 {% block inner_content %}{% endblock %}
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script defer src="{{ 'account.js'|asset }}"></script>
 {% endblock %}
