@@ -889,6 +889,20 @@
             "selected": false
         },
         {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "الفلتر الذي يظهر على شكل مربعات",
+            "description": "اكتبي اسم الفلتر كما يظهر في سلة، مثل «مقاس». تظهر خياراته مربعات متجاورة داخل درج الفلاتر. إذا تركتِه فارغًا يُستخدم «مقاس» بالعربية و«Size» بالإنجليزية.",
+            "id": "unix_collection_highlight_filter",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "مقاس",
+            "minLength": 0,
+            "maxLength": 40
+        },
+        {
             "type": "static",
             "id": "unix-static-line-seo",
             "format": "line"

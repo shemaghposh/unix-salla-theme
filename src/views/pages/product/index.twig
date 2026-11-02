@@ -80,48 +80,119 @@
   #}
 	<div class="s-blocks-wrapper s-before-products-list !mt-0">{% hook 'product.index.before_products_group_with_filter' %}</div>
 
-	<div class="container container--products-list flex items-start flex-col md:flex-row">
-		{% if filters %}
-			<button class="btn--close-sm close-filters sicon-cancel hidden"></button>
-			<salla-filters data-testid="store-products-filters" class="md:w-72 lg:sticky lg:top-20 flex-none" id="filters-menu"></salla-filters>
+	{#
+		Product grid, sort and filters (ROADMAP 4.2 · DS §8.30, §8.31 · SPEC §6), unix.sa
+		main-collection-product-grid.liquid with facets `horizontal_united`: one bar (filters button at the
+		start, sort at the end), the filters in a side drawer at every width, the size filter as a box grid.
+		Salla logic as is: salla-products-list + salla-filters + salla-applied-filters (no fork).
+		Cards: the shared UNIX card (.unix-products, DS §8.3). Behaviour: js/products.js + partials/unix-plp-filters.js.
+		Setting: unix_collection_highlight_filter (empty = «مقاس» / «Size»).
+	#}
+	{% set highlight_filter = theme.settings.get('unix_collection_highlight_filter') %}
+	{% if highlight_filter is iterable %}
+		{% set highlight_filter = highlight_filter[language.code] is defined ? highlight_filter[language.code] : null %}
+	{% endif %}
+	{% if not highlight_filter|trim %}{% set highlight_filter = trans('blocks.unix.collection.highlight_default') %}{% endif %}
+
+	{# nothing is marked selected when the store default sort is disabled, so send the shown option with the first request #}
+	{% set sort_list = sort_options|default([]) %}
+	{% set first_sort = sort_list|first %}
+	{% set has_selected_sort = sort_list|filter(sort => sort.is_selected)|length %}
+	{% set fallback_sort = (sort_list|length and not has_selected_sort and first_sort.id != 'ourSuggest') ? first_sort.id : '' %}
+
+	<div class="unix-container unix-plp unix-products"
+		 data-unix-plp
+		 data-updated-text="{{ trans('blocks.unix.collection.results_updated') }}">
+		{% if filters or sort_list|length %}
+			<div class="unix-plp__toolbar">
+				{% if filters %}
+					<button type="button" class="unix-plp__filter-btn"
+							data-testid="store-products-filters-mobile-trigger"
+							aria-controls="unix-filters" aria-expanded="false" aria-haspopup="dialog">
+						<svg class="unix-plp__filter-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false">
+							<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/>
+							<circle cx="16" cy="7" r="2"/>
+							<circle cx="10" cy="17" r="2"/>
+						</svg>
+						<span>{{ trans('blocks.unix.collection.filters') }}</span>
+						<span class="unix-plp__filter-count" data-unix-filter-count hidden></span>
+					</button>
+				{% endif %}
+				{% if sort_list|length %}
+					<div class="unix-plp__sort">
+						<label class="sr-only" for="product-filter">{{ trans('blocks.unix.collection.sort_by') }}</label>
+						<select id="product-filter" class="unix-plp__select">
+							{% for sort in sort_list %}
+								<option value="{{ sort.id }}" {{ sort.is_selected ? 'selected' : '' }}>{{ sort.name }}</option>
+							{% endfor %}
+						</select>
+						<svg class="unix-plp__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+							<path d="m6 9 6 6 6-6"/>
+						</svg>
+					</div>
+				{% endif %}
+			</div>
+			{% if filters %}
+				<salla-applied-filters class="unix-plp__applied"></salla-applied-filters>
+			{% endif %}
 		{% endif %}
 
-		<div class="main-content flex-1 w-full {{ filters ? 'ltr:lg:ml-8 rtl:lg:mr-8' : '' }}">
-			<div class="mb-4 sm:mb-6 flex justify-end items-center">
-				<div class="flex items-center space-x-2 rtl:space-x-reverse">
-					{% if filters %}
-						<a data-testid="store-products-filters-mobile-trigger" href="#filters-menu" class="filters-trigger bg-border-color text-primary lg:hidden mt-2">
-							<i class="sicon-filter text-gray-text text-2xl me-2.5"></i>
-						</a>
-					{% endif %}
-					{% if sort_options|length %}
-						<div class="flex items-center">
-							<label class="hidden sm:block rtl:ml-3 ltr:mr-3 whitespace-nowrap" for="product-filter">{{ trans('pages.categories.sorting') }}</label>
-							<select id="product-filter" class="form-input pt-0 pb-1 rtl:md:pl-10 ltr:md:pr-10">
-								{% for sort in sort_options %}
-									<option value="{{ sort.id }}" {{ sort.is_selected?'selected':'' }}>{{ sort.name }}</option>
-								{% endfor %}
-							</select>
-						</div>
-					{% endif %}
+		{# Result count for screen readers, after a filter or sort change (not on first load) #}
+		<p class="sr-only" role="status" data-unix-plp-status></p>
+
+		{% hook 'product:index.items.start' %}
+
+		<div class="unix-plp__body">
+			<div class="unix-products__skeleton unix-plp__skeleton" aria-hidden="true">
+				{% for n in 1..4 %}
+					<div class="unix-products__skel-card">
+						<span class="unix-products__skel-media"></span>
+						<span class="unix-products__skel-line"></span>
+						<span class="unix-products__skel-line"></span>
+						<span class="unix-products__skel-line unix-products__skel-line--short"></span>
+					</div>
+				{% endfor %}
+			</div>
+			<salla-products-list data-testid="store-products-list"
+								 class="unix-plp__list"
+								 source="{{ page.slug }}"
+								 source-value="{{ page.id }}"
+								 sort-by="{{ fallback_sort }}"
+								 includes='["images"]'
+								 {{ filters ? 'filters-results' : '' }}></salla-products-list>
+		</div>
+
+		{% hook 'product:index.items.end' %}
+	</div>
+
+	{% if filters %}
+		{#
+			Filters drawer (DS §8.31, §8.9): the 1.3 Drawer (js/partials/unix-drawer.js) moves it under <body>,
+			traps focus, closes on Esc / backdrop / close button and returns focus to the «الفلاتر» button.
+			salla-filters applies a choice at once; «عرض النتائج» closes the drawer.
+		#}
+		<div id="unix-filters" class="unix-drawer unix-drawer--start unix-filters" role="dialog" aria-modal="true"
+			 aria-labelledby="unix-filters-title" data-unix-filters
+			 data-highlight="{{ highlight_filter|trim }}" hidden>
+			<div class="unix-drawer__backdrop" data-drawer-close></div>
+			<div class="unix-drawer__panel">
+				<div class="unix-drawer__header">
+					<h2 id="unix-filters-title" class="unix-drawer__title">{{ trans('blocks.unix.collection.filters') }}</h2>
+					<button type="button" class="unix-icon-btn unix-drawer__close" data-drawer-close
+							aria-label="{{ trans('blocks.unix.collection.close') }}">
+						<i class="sicon-cancel" aria-hidden="true"></i>
+					</button>
+				</div>
+				<div class="unix-drawer__body unix-filters__body">
+					<salla-filters data-testid="store-products-filters" id="filters-menu"></salla-filters>
+				</div>
+				<div class="unix-drawer__footer unix-filters__footer">
+					<button type="button" class="unix-btn unix-btn--outline" data-unix-filters-reset>{{ trans('blocks.unix.collection.clear_all') }}</button>
+					<button type="button" class="unix-btn" data-drawer-close>{{ trans('blocks.unix.collection.show_results') }}</button>
 				</div>
 			</div>
-
-			{% hook 'product:index.items.start' %}
-
-			{# nothing is marked selected when the store default sort is disabled, so send the shown option with the first request #}
-			{% set sort_list = sort_options|default([]) %}
-			{% set first_sort = sort_list|first %}
-			{% set has_selected_sort = sort_list|filter(sort => sort.is_selected)|length %}
-			{% set fallback_sort = (sort_list|length and not has_selected_sort and first_sort.id != 'ourSuggest') ? first_sort.id : '' %}
-
-			<div class="flex">
-				<salla-products-list data-testid="store-products-list" class="flex-1 min-w-0" source="{{ page.slug }}" source-value="{{ page.id }}" sort-by="{{ fallback_sort }}" {{ filters ?'filters-Results':'' }}></salla-products-list>
-			</div>
-
-			{% hook 'product:index.items.end' %}
 		</div>
-	</div>
+	{% endif %}
 
 	{#
     Hook: product.index.after_products_group_with_filter

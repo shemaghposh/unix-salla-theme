@@ -277,6 +277,15 @@
       },
       "colours": {
         "label": "Colour"
+      },
+      "collection": {
+        "filters": "Filters",
+        "sort_by": "Sort by",
+        "close": "Close filters",
+        "clear_all": "Clear all",
+        "show_results": "Show results",
+        "results_updated": "Results updated:",
+        "highlight_default": "Size"
       }
     }
   },

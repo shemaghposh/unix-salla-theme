@@ -193,7 +193,7 @@
 | `--blur-backdrop` / `--blur-ghost` | 4px / 6px | خلفية الدرج، والزرار الـ ghost (§5، §8.2) |
 | `--o-muted` / `--o-disabled` | .7 / .5 | أيقونات الدفع الرمادي (§8.8)، والحالة المعطلة |
 | `--z-header` / `--z-dropdown` / `--z-drawer` | 40 / 45 / 60 | ترتيب الطبقات: الهيدر، بعده الـ mega menu، بعده الدرج والمودال |
-| `--z-legacy-offcanvas` | 10000 | زرار إغلاق فلاتر المنتجات فوق overlay بتاع mmenu-light (~9994). **مؤقت لحد ما المرحلة 4 تشيل mmenu-light** |
+| ~~`--z-legacy-offcanvas`~~ | ~~10000~~ | **اتشال في 4.2:** فلاتر المنتجات بقت في درج §8.31 بطبقة `--z-drawer`، و mmenu-light اتشال من الكود |
 | `--mega-col-min` | 192px | أقل عرض لعمود لينكات في الـ mega menu (§8.7) |
 | `--mega-media-max` | 640px | أقصى عرض لمساحة الصورتين في الـ mega menu (§8.7) |
 | `--dropdown-min` | 256px | أقل عرض لقايمة «المزيد» المنسدلة |
@@ -549,6 +549,28 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **الصورة (اختيارية، مقفولة افتراضيًا زي `show_collection_image: false` في الأصل):** لو إعداد `unix_collection_show_image` مفعّل والتصنيف ليه صورة في سلة (`category.image`)، بتظهر تحت النص بـ `--s-4` (`--s-6` من 768، زي الأصل 1.6 / 3.2rem). النسبة `--banner-ratio` (4:5) تحت 576 و `--banner-ratio-wide` (16:9) من 576 (§6، نفس نقطة §8.13)، محجوزة بـ `aspect-ratio` فمافيش CLS، و `object-fit: cover`، وحواف `--r-md`. هي صورة الـ LCP: `loading="eager"` و `fetchpriority="high"` و `srcset` من `cdn(width)` و `width`/`height`. الـ `alt` اسم التصنيف.
 - **مافيش حركة ولا عناصر تفاعلية** غير اللينكات اللي ممكن تكون في وصف التاجر (underline بلون النص).
 
+### 8.30 Collection Grid (جريد المنتجات وشريط الترتيب) — *المرحلة 4.2*
+مطابق لـ `reference/shopify-theme/sections/main-collection-product-grid.liquid` و `snippets/facets.liquid` (`filter_type: horizontal_united`) و `assets/component-facets.css` و `assets/template-collection.css` (SPEC §6). الكود: `src/views/pages/product/index.twig` و `04-components/unix-plp.scss` و `js/products.js` + `js/partials/unix-plp.js`.
+- **منطق سلة زي ما هو:** `salla-products-list` (المصدر `page.slug` / `page.id`، و `filters-results`، و `includes='["images"]'` للصورة التانية) و `salla-filters` و `salla-applied-filters`. مافيش fork، والستايل من الـ classes العامة (`.s-products-list-*` و `.s-filters-*` و `.s-applied-filters-*` و `.s-infinite-scroll-*`).
+- **شريط الأدوات (زي `facets__horizontal-top`):** صف واحد تحت البانر، زرار «الفلاتر» ناحية البداية والترتيب ناحية النهاية (`space-between`)، والمسافة `--s-4`. padding `--s-4` فوق وتحت، وخط `--line-w` `--c-border` تحت. لو مافيش فلاتر (المتجر قافلها، أو سلة بعتت `filters::hidden`) الزرار بيختفي والترتيب بيفضل ناحية النهاية.
+  - **زرار «الفلاتر»:** أيقونة فلتر stroke 1.5 (`--icon-sm`) + نص `--t-body` 500، من غير خلفية، ارتفاع `--tap`. Hover: النص `--o-muted` (الأصل foreground .7) على أجهزة الـ hover بس؛ active `--press-y`؛ focus-visible الحلقة العامة. `aria-controls` الدرج و `aria-expanded` و `aria-haspopup="dialog"`. لو فيه فلاتر مختارة جنب النص عددها بين قوسين (tabular).
+  - **الترتيب:** `<select id="product-filter">` native (نفس منطق رائد في `products.js`: `?sort=` في الرابط و `sortBy` + `reload()`)، label مخفي «ترتيب حسب» زي الأصل. الشكل زي قوايم §8.24: ارتفاع `--tap`، وخلفية `--c-surface`، وبوردر `--line-w` `--c-border`، و `--r-sm`، و `--t-small`، و chevron ناحية النهاية. Hover بوردر `--c-text-muted`، و active بوردر `--c-text`، و focus-visible الحلقة العامة، و disabled `--o-disabled`.
+- **الفلاتر المختارة** (زي `active-facets` في الأصل): `salla-applied-filters` تحت الشريط بـ `--s-3`: كل فلتر pill (`--r-pill`) خلفيتها `--c-surface` وبوردر `--line-w` `--c-border` ونص `--t-small`، وزرار الشيل جواها `--tap` بأيقونة × (`--icon-sm`، hover `--c-hover-tint`)؛ و«مسح الكل» زرار نصي underline بارتفاع `--tap`. مابيظهرش لو مافيش اختيار.
+- **الجريد:** عمودين، و 3 من md، و 4 من lg (§3.3؛ الأصل 2 / 3 من 990 / 4 من 1185، D78). المسافة `--s-5` بين الصفوف (`--s-7` من 576، زي الأصل 2.4 / 4.8rem) و `--gutter` بين الأعمدة. الكارت هو كارت §8.3 الموحد (`.unix-products`، 4:5، من غير vendor ولا نجوم، D20/D26). أول ما الصفحة تفتح فيه skeleton (نفس skeleton §8.15) بنفس الأعمدة لحد ما أول كارت يظهر، فمافيش CLS جوه الجريد.
+- **الصفحات (D79):** «تحميل المزيد» بتاع سلة (`salla-products-list` بيحمّل الصفحة اللي بعدها بالـ API ويضيفها)، مش أرقام صفحات زي الأصل؛ سلة مافيهاش ترقيم صفحات للتصنيف. الزرار primary (§8.2) في النص بعد الجريد بـ `--s-7`، والـ spinner بتاع سلة وقت التحميل، وجملة «وصلتِ للنهاية» `--t-small` `--c-text-muted` في النص.
+- **مافيش نتايج:** placeholder سلة (`.s-products-list-placeholder`) في النص، الأيقونة والنص `--c-text-muted`.
+- **إعلان النتايج:** عنصر `role="status"` مخفي (`sr-only`) موجود دايمًا، بيتكتب فيه «تم تحديث النتائج: N منتج» (عدد سلة نفسه `blocks.header.products_count`، و«أكثر من» لو فيه صفحة بعدها) بعد أي فلترة أو ترتيب، مش في أول تحميل.
+- **المسافات:** padding تحت `--section-sm` (الأصل `padding_bottom: m`، §3.2)، ومن فوق مافيش (الأصل `no-indent`).
+
+### 8.31 Filters Drawer (درج الفلاتر) — *المرحلة 4.2*
+زي `facets__wrapper--horizontal_united` في الأصل: لوحة جانبية بتتفتح من زرار «الفلاتر» **في كل المقاسات** (مش sidebar)، والمقاس بشكل مربعات. الكود: الدرج في `index.twig`، و `Drawer` من `js/partials/unix-drawer.js` (1.3، §8.9)، والتحسينات في `js/partials/unix-plp.js`. سلة بتكتب ارتفاعات و padding inline جوه الفلاتر، فالـ CSS بيستخدم `!important` في الحالات دي بس (نفس استثناء §8.26).
+- **الدرج:** نفس درج §8.9 (`.unix-drawer.unix-drawer--start`): بيدخل من ناحية البداية، عرضه `--drawer-w` (الأصل 36.7rem)، خلفية `--c-surface` و `--e-2`، و backdrop `--c-backdrop`. focus trap، و Esc والـ backdrop وزرار × بيقفلوه، والفوكس بيرجع لزرار «الفلاتر». الهيدر: عنوان h2 «الفلاتر» (`--t-h4`) وزرار إغلاق `--tap`.
+- **الفوتر الثابت:** «مسح الكل» (`.unix-btn--outline`) بيستدعي `resetFilters()` بتاع `salla-filters`، و«عرض النتائج» (`.unix-btn` primary) بيقفل الدرج؛ الاتنين بالتساوي. سلة بتطبّق الفلتر أول ما يتختار (من غير زرار تطبيق)، والدرج بيفضل مفتوح عشان الاختيار المتعدد، والنتيجة بتتعلن (§8.30).
+- **كل فلتر (`salla-filters-widget`):** من غير خلفية ولا حواف، padding `--s-4` فوق وتحت، وخط `--line-w` `--c-border` تحت. العنوان `--t-body` 500 بلون `--c-text` وارتفاعه `--tap`، وعلامة +/− بلون `--c-text-muted` (المفتوح `--c-text`). العنوان بياخد بالـ JS `role="button"` و `tabindex="0"` و `aria-expanded` و Enter/Space (من غير fork). المحتوى بيفتح ويقفل فوري (`height: auto`) عشان سلة بتحسب الارتفاع وهو مخفي.
+- **الاختيارات:** كل صف `--tap` ارتفاع، و `--t-small`، والاسم `--c-text` (لون سلة الرمادي تباينه ضعيف). الـ checkbox / radio `accent-color: --c-action` وبوردر `--c-border`، و focus-visible الحلقة العامة. «عرض المزيد» زرار نصي `--c-accent-text` underline بارتفاع `--tap` (بالـ JS `role="button"` و `tabindex="0"`). خانة البحث جوه الفلتر حقل §8.5 مصغّر (`--tap`). حقول السعر (`salla-price-range`) حقول §8.5.
+- **الفلتر المميّز (المقاس، `hor_filter: مقاس` في الأصل):** الفلتر اللي اسمه فيه نص إعداد `unix_collection_highlight_filter` (افتراضيًا «مقاس» / «Size») بيتعرض مربعات (`facets__list--hor`): جريد `repeat(auto-fill, minmax(--s-8, 1fr))` بمسافة `--s-2`. كل مربع `--tap` ارتفاع، وخلفية `--c-surface`، وبوردر `--line-w` `--c-border`، و `--r-sm`، و `--t-small` 500 في النص، والـ input نفسه مخفي بصريًا بس فاضل للكيبورد. Hover بوردر `--c-text-muted`؛ المختار بوردر `--c-text` + حلقة داخلية `--line-w` (زي أزرار المقاس §8.21)؛ focus-visible (على الـ input) حلقة `--ring-w` `--c-accent` حوالين المربع؛ active `--press-y`.
+- **الحركة:** درج §8.9 (`--d-slow` `--ease-in-out`)، والباقي `--d-fast`؛ كله بيتقفل مع reduced-motion.
+
 ---
 
 ## 9. نبرة الكلام (Copy)
@@ -734,6 +756,12 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 | `WebSite` في الهوم فيه `SearchAction` (sitelinks search box) | `WebSite` من غير `SearchAction` (§14) | جوجل لغت مربع البحث في نتايج البحث (2024)، وشكل رابط البحث في سلة مش متأكدين منه |
 | **Phase 4 · 4.1** عنوان التصنيف فيه prefix مخفي «المجموعة: » | `h1` = اسم التصنيف بس (§8.29) | `h1` نضيف للـ SEO *(قرار مؤقت – محتاج مراجعة، D77)* |
 | وصف المجموعة rich text من شوبيفاي | وصف التصنيف من سلة لو متاح للثيم (`category.description`) | سلة مش موثّق إنها بتدّي الوصف في Twig؛ لو مش موجود البانر بيظهر العنوان بس *(D77)* |
+| **Phase 4 · 4.2** جريد 2 / 3 من 990 / 4 من 1185 | 2 / 3 من md / 4 من lg (§3.3، §8.30) | breakpoints النظام *(قرار مؤقت – محتاج مراجعة، D78)* |
+| كروت الجريد 2:3 `contain` مع الـ vendor ونجوم Judge.me | كارت §8.3 الموحد (4:5 بـ fit إعداد المتجر، من غير vendor ولا نجوم) | D20/D26، و §12 |
+| 12 منتج في الصفحة وأرقام صفحات (`pagination_type: pagination`) | «تحميل المزيد» بتاع `salla-products-list` بعدد سلة في الصفحة | سلة مافيهاش ترقيم صفحات للتصنيف، ومش هنعيد منطق الجلب *(قرار مؤقت – محتاج مراجعة، D79)* |
+| الفلاتر بتتطبق بعد ما الزائرة تضغط (الفورم بيتبعت مع التغيير) | سلة بتطبّق أول ما تختاري، والدرج بيفضل مفتوح، و«عرض النتائج» بيقفله (§8.31) | سلوك `salla-filters`، ومن غير fork *(D80)* |
+| عناوين الفلاتر `summary` | عنوان `h3` بتاع سلة + `role="button"` و `tabindex` و `aria-expanded` بالـ JS | الكيبورد يوصل للفلاتر من غير fork *(D81)* |
+| عدد المنتجات مش ظاهر ومش بيتعلن | إعلان مخفي (`role="status"`) بعد كل فلترة أو ترتيب | Accessibility (P6) |
 
 ---
 
@@ -748,6 +776,8 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 | عناوين و SEO كل منتج وتصنيف (العنوان والوصف والرابط) | **التاجر في سلة** | لوحة التحكم، لكل منتج |
 | `BreadcrumbList` | **سلة** لما مسار التنقل ظاهر (`salla-breadcrumb` بيكتبه بالـ JS)؛ **الثيم** لما التاجر يخفيه (من السيرفر، `unix_seo_jsonld_breadcrumb`) | `components/seo/unix-jsonld-breadcrumb.twig` (D76) |
 | `ItemList` لمنتجات التصنيف | **سلة** (`salla-products-list` بالـ JS) | — |
+| لينكات المنتجات في صفحة التصنيف (4.2) | **سلة** بالـ JS: `salla-products-list` بيجيب المنتجات من الـ API ويرسم كارت الثيم (`custom-salla-product-card`)، وكل كارت فيه `<a href>` حقيقي للمنتج (الصورة والاسم)، بس **بعد** تنفيذ الـ JS (Googlebot بينفّذه). مافيش منتجات في الـ HTML اللي جاي من السيرفر، لأن Twig صفحة التصنيف مافيهوش قايمة منتجات (D82) | `pages/product/index.twig` |
+| canonical صفحات التصنيف المفلترة والمترتبة | **سلة** (`{% hook head %}`). الفلترة والترتيب والصفحات كلها بتتعمل بالـ JS على نفس الرابط: `salla-filters` بيكتب `?filters[...]` (وأول مرة `filters[category_id]`) بـ `pushState`، والترتيب `?sort=`، و«تحميل المزيد» مابيغيّرش الرابط. يعني مافيش روابط صفحات `?page=` جديدة؛ ولازم الـ canonical لأي رابط فيه `filters` أو `sort` يشاور على رابط التصنيف النضيف (D82) | المنصة |
 | `Organization` (كل الصفحات) و `WebSite` (الهوم) | **الثيم** (`unix_seo_jsonld_site`) | `components/seo/unix-jsonld-site.twig` |
 | `Product` + `ProductGroup` لألوان الموديل | **الثيم** (`unix_seo_jsonld_product`) | `components/seo/unix-jsonld-product.twig` |
 | `FAQPage` | **الثيم** (2.9) | `components/home/unix-faq.twig` |
@@ -758,4 +788,5 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **Product:** الاسم، والرابط (`@id`)، والوصف نص من غير HTML (5000 حرف بالكتير)، وكل الصور، و `sku`، و `gtin` لو الباركود 8 أو 12 أو 13 أو 14 رقم، و `brand` (ماركة المنتج في سلة، وإلا `unix_seo_brand_name` = «UNIX»، وإلا اسم المتجر)، و `category`، و `color` (3.10). `offers`: السعر المعروض بالظبط زي بلوك السعر في `single.twig` (`sale_price` وقت الخصم، وإلا «يبدأ من»، وإلا `price`)، والعملة (`product.currency`، SAR)، والتوفر (InStock / OutOfStock / PreOrder)، و NewCondition، والبائع (`@id` بتاع الـ Organization لما `unix_seo_jsonld_site` مفعّل، وإلا الاسم بس)، والسعر القديم كـ `StrikethroughPrice` وقت الخصم. وقت الخصم ولو فيه `discount_ends`: `priceValidUntil` بصيغة YYYY-MM-DD. `aggregateRating` بس لو فيه تقييمات. الأطقم منتج عادي بسعر الطقم.
 - **ألوان الموديل (D72):** كل لون صفحة مستقلة بـ canonical بتاعها، والجزء ده بيطلع بس لو الموديل ليه لونين أو أكتر. `Product` بيحمل `inProductGroupWithID` = مفتاح المجموعة، و `isVariantOf` → `ProductGroup` بـ `productGroupID` = نفس المفتاح في `unix_colour_links`، و `variesBy` color، و `hasVariant` = `{ @type: Product, @id, url }` لكل لون (روابط مطلقة؛ الرابط اللي بيبدأ بـ `/` بياخد `store.url` قبله). اسم الـ ProductGroup = الجزء اللي قبل «|» في عنوان المنتج.
 - **لينكات داخلية من السيرفر:** مربعات الألوان (§8.28) `<a href>` حقيقية في الـ HTML.
+- **صفحة التصنيف (4.2):** الـ `h1` اسم التصنيف من السيرفر (§8.29) ومابيتغيّرش مع الفلترة. كروت المنتجات `<a href>` حقيقية بس بتترسم بالـ JS (§14.1، D82)؛ الاكتشاف الأساسي للمنتجات من الـ sitemap بتاع سلة والمنيو و«المفضلة دائما» وغيرهم. قبل الإطلاق: View Source + URL Inspection لتصنيف، ورابط فيه `?filters[...]` و `?sort=` نتأكد إن الـ canonical بتاعه رابط التصنيف من غير parameters.
 - **التحقق قبل الإطلاق (6.x):** مصدر الصفحة (View Source) للهوم ومنتج وتصنيف: مافيش `<title>` أو canonical أو OG مكررين، ومافيش `Product` تاني من سلة (لو فيه: نقفل `unix_seo_jsonld_product` أو نسيب بتاعنا لو أكمل)، و Google Rich Results Test على منتج فيه ألوان ومنتج فيه تقييمات وطقم.
