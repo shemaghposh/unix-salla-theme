@@ -111,14 +111,16 @@
                 {% set cl_url = cl_cells[1]|trim %}
                 {% set cl_hex = cl_cells|length > 3 ? cl_cells[3]|trim|lower : '' %}
                 {% set cl_path_end = cl_url|split('#')|first|split('?')|first|trim('/', 'right')|split('/')|last %}
+                {# a path like /slug/p123 becomes absolute (links + JSON-LD hasVariant need full URLs) #}
+                {% set cl_abs = (cl_url starts with '/' and not (cl_url starts with '//')) ? store.url|default('')|trim('/', 'right') ~ cl_url : cl_url %}
                 {% set cl_row = {
                     key: cl_cells[0]|trim|lower,
-                    url: cl_url,
+                    url: cl_abs,
                     name: cl_cells[2]|trim,
                     hex: (cl_hex matches '/^#([0-9a-f]{3}|[0-9a-f]{6})$/') ? cl_hex : '',
                     current: cl_path_end == ('p' ~ product.id)
                 } %}
-                {% if cl_row.key and cl_row.name and (cl_url starts with 'https://' or cl_url starts with 'http://' or cl_url starts with '/') %}
+                {% if cl_row.key and cl_row.name and (cl_abs starts with 'https://' or cl_abs starts with 'http://') %}
                     {% set cl_rows = cl_rows|merge([cl_row]) %}
                     {% if cl_row.current and not unix_colours.group %}
                         {% set unix_colours = unix_colours|merge({ group: cl_row.key, name: cl_row.name }) %}
