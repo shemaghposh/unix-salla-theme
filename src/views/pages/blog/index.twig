@@ -73,8 +73,9 @@ doesn't change while reading). Cards: components/blog/unix-article-card.twig.
 
       {% hook 'blog:index.items.end' %}
     {% elseif not unix_featured|length %}
-      <div class="unix-blog-index__empty">
-        <p>{{ trans('blocks.unix.blog.empty') }}</p>
+      {# DS §8.47 shared empty state #}
+      <div class="unix-empty">
+        <h2 class="unix-empty__title">{{ trans('blocks.unix.blog.empty') }}</h2>
         <a class="unix-btn" href="{{ link('products') }}">{{ trans('blocks.unix.blog.shop') }}</a>
       </div>
     {% endif %}

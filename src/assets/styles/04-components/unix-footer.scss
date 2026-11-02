@@ -66,9 +66,12 @@
     &:not(:has(*)) { display: none; } // no title and nothing from the newsletter hook
   }
 
-  &__newsletter-title {
+  // h2 (ROADMAP 6.3: footer headings sit right under the page outline) sized as --t-h4;
+  // `.theme-unix` beats the `.theme-unix h2` size rule.
+  .theme-unix &__newsletter-title {
     margin: 0;
     font-size: var(--t-h4);
+    line-height: 1.4;
   }
 
   // ── Link columns (accordion < lg) ──────────────
@@ -93,7 +96,7 @@
     color: var(--c-text);
     font-family: var(--f-heading);
     font-size: var(--t-h4);
-    font-weight: 700;
+    font-weight: var(--fw-bold);
     line-height: 1.4;
     list-style: none;
     cursor: pointer;
@@ -249,7 +252,14 @@
     display: inline-flex;
     min-block-size: var(--tap);
     align-items: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    transition: opacity var(--d-fast) var(--ease-out);
     &:hover { opacity: var(--o-muted); }
+    &:active { transform: translateY(var(--press-y)); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); border-radius: var(--r-sm); }
   }
 
   &__cred-text {
@@ -267,7 +277,7 @@
   &__cred-value {
     color: var(--c-text);
     font-size: var(--t-small);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
     font-variant-numeric: tabular-nums;
   }
 

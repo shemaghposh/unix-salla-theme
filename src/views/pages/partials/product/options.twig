@@ -44,7 +44,8 @@
 {% set unix_hides_size_guide = theme.settings.get('unix_size_charts_enabled', true) and not is_page('cart') %}
 {% set raed_size_guide = product.has_size_guide and not unix_hides_size_guide %}
 {% if product.weight or raed_size_guide %}
-    <section class="bg-white p-5 rounded-md mb-5">
+    {# ROADMAP 6.1 · DS §8.21: Raed's white card → a system panel (.unix-option-panel, unix-pdp-info.scss) #}
+    <section class="unix-option-panel">
         {% if product.weight %}
             <div class="center-between {% if raed_size_guide %} pb-5 mb-5 border-b-[1px] {% endif %}">
                 <b class="form-label rtl:space-x-reverse space-x-1"><i class="sicon-luggage-cart"></i>
@@ -61,7 +62,7 @@
 
                 <salla-button shape="link" color="primary" class="!p-0 text-sm with-arrow"
                               onclick="salla.event.dispatch('size-guide::open', '{{ product.id }}')">
-                    {{ trans('pages.products.show_size_guides') }} <i class="sicon-keyboard_arrow_left"></i>
+                    {{ trans('pages.products.show_size_guides') }} <i class="sicon-keyboard_arrow_right icon-dir" aria-hidden="true"></i>
                 </salla-button>
 
             </div>
@@ -72,7 +73,7 @@
 
 
 {% if product.can_add_note or product.can_upload_file %}
-    <section class="bg-white p-5 rounded-md mb-5">
+    <section class="unix-option-panel">
         <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
             <label class="form-label">
                 <b class="block">
@@ -103,7 +104,7 @@
                     <div class="collapse-content" id="note_{{ product.id }}">
                         <div class="pt-4">
                           <textarea
-                                  class="animated animatedfadeInDown fadeInDown form-input h-16 bg-gray-50 block"
+                                  class="animated animatedfadeInDown fadeInDown form-input block"
                                   placeholder="{{ trans('pages.products.notes_placeholder') }}"
                                   name="notes"
                                   cols="30"

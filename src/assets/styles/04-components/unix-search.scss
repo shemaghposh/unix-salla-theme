@@ -74,7 +74,7 @@ salla-search {
   .s-search-product-image-container {
     flex-shrink: 0;
     inline-size: var(--s-8);
-    aspect-ratio: 4 / 5;
+    aspect-ratio: var(--ratio-card);
     overflow: hidden;
     border-radius: var(--r-sm);
     background: var(--c-surface-muted);
@@ -85,7 +85,7 @@ salla-search {
   .s-search-product-title {
     color: var(--c-text);
     font-size: var(--t-small);
-    font-weight: 500;
+    font-weight: var(--fw-medium);
   }
 
   .s-search-product-price {

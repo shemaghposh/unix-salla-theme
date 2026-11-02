@@ -44,7 +44,7 @@
           <i class="sicon-cancel" aria-hidden="true"></i>
         </button>
       </div>
-      {% include 'components.cart.unix-free-shipping' %}
+      {% include 'components.cart.unix-free-shipping' with { fs_live: false } %}
     </div>
 
     {# First open: skeleton until Salla answers #}
@@ -64,12 +64,13 @@
     </p>
 
     {# Empty state (unix.sa drawer__empty) #}
-    <div class="unix-cd__empty" data-cd-empty hidden>
-      <p class="unix-cd__empty-heading">{{ cd_empty_heading|trim }}</p>
+    {# DS §8.47 shared empty state; h3 because the drawer title «السلة (n)» is the h2 #}
+    <div class="unix-empty unix-cd__empty" data-cd-empty hidden>
+      <h3 class="unix-empty__title">{{ cd_empty_heading|trim }}</h3>
       {% if cd_empty_text|trim %}
-        <p class="unix-cd__empty-text">{{ cd_empty_text|trim }}</p>
+        <p class="unix-empty__text">{{ cd_empty_text|trim }}</p>
       {% endif %}
-      <a class="unix-btn unix-cd__empty-btn" href="{{ link('products') }}">{{ trans('blocks.unix.cart_drawer.shop_now') }}</a>
+      <a class="unix-btn" href="{{ link('products') }}">{{ trans('blocks.unix.cart_drawer.shop_now') }}</a>
     </div>
 
     {# Lines + cashback, scrolling between the fixed header and footer #}

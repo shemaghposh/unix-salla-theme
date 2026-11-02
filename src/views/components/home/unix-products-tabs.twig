@@ -187,7 +187,8 @@
     {% if show_button %}
       {% set first = tabs|first %}
       <div class="unix-ptabs__cta">
-        <a class="unix-btn unix-btn--outline"
+        {# ROADMAP 6.1 · DS §8.2 (D106): section-header «view all» buttons are primary site-wide #}
+        <a class="unix-btn"
            data-unix-ptabs-cta
            {% if first.btn_url %}href="{{ first.btn_url }}"{% else %}aria-disabled="true"{% endif %}>{{ first.btn_label }}</a>
       </div>

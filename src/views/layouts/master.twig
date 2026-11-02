@@ -70,7 +70,8 @@
 
 
     <script data-cfasync="false">
-        window.header_is_sticky = "{{theme.settings.get('header_is_sticky', 'Default Value')}}"
+        {# ROADMAP 6.1: real boolean default (was the placeholder string 'Default Value'); app.js reads !!window.header_is_sticky #}
+        window.header_is_sticky = {{ theme.settings.get('header_is_sticky', true) ? 'true' : 'false' }}
         window.can_access_wallet = {{ user.can_access_wallet | json_encode }}
         window.enable_more_menu = "{{ theme.settings.get('enable_more_menu', true) }}"
         window.enable_add_product_toast = "{{ unix_add_toast }}"
@@ -116,14 +117,16 @@
 <body id="app" class="theme-raed theme-unix overflow-x-hidden {% hook 'body:classes' %}
   ">
 <noscript>
-    To get full functionality of this site you need to enable JavaScript. Here is how
+    {{ trans('blocks.unix.noscript.text') }}
     <a href="https://www.enable-javascript.com/" rel="noreferrer"
-       target="_blank">To enable JavaScript on webpage</a>.
+       target="_blank">{{ trans('blocks.unix.noscript.link') }}</a>.
 </noscript>
 <div class="app-inner flex flex-col min-h-full">
+    {# ROADMAP 6.3 · DS §8.46: skip link (WCAG 2.4.1), first focusable element on every page #}
+    <a class="unix-skip-link" href="#main-content">{{ trans('blocks.unix.header.skip') }}</a>
     {% hook 'body:start' %}
     {% component 'header.header' %}
-    <main id="main-content" role="main"{{ (page.slug == 'product.single' or page.slug starts with 'product.index') ? ' class="flex flex-col space-y-8 sm:space-y-16"' : '' }}>
+    <main id="main-content" role="main" tabindex="-1"{{ (page.slug == 'product.single' or page.slug starts with 'product.index') ? ' class="flex flex-col space-y-8 sm:space-y-16"' : '' }}>
     {% block content %}{% endblock %}
     </main>
     {% component 'footer.footer' %}

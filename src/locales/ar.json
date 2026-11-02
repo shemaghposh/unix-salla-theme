@@ -4,9 +4,16 @@
       "cart": "السلة"
     },
     "appBanner": {
-      "download_now": "حمله الان"
+      "download_now": "حمّليه الآن"
     },
     "unix": {
+      "noscript": {
+        "text": "لتعمل كل ميزات المتجر، فعّلي JavaScript في متصفحكِ.",
+        "link": "طريقة تفعيل JavaScript"
+      },
+      "card": {
+        "wishlist": ":name في المفضلة"
+      },
       "announcement": {
         "label": "إعلانات المتجر",
         "pause_hint": "تتبدّل الإعلانات تلقائيًا. انتقلي إلى الشريط لإيقافها مؤقتًا.",
@@ -14,6 +21,7 @@
         "default_2": "شحن مجاني داخل السعودية للطلبات فوق :amount ر.س"
       },
       "header": {
+        "skip": "انتقلي إلى المحتوى",
         "open_menu": "افتحي القائمة",
         "search": "ابحثي في المتجر",
         "language": "اختاري اللغة",
@@ -58,7 +66,7 @@
       "hero": {
         "default_eyebrow": "UNIX NEW COLLECTION",
         "default_title": "تحركي بثقة.",
-        "default_text": "ملابس رياضية و بيجامات صُممت لكل لحظة في يومك",
+        "default_text": "ملابس رياضية وبيجامات صُممت لكل لحظة في يومك",
         "default_cta_label": "اكتشفي المجموعة",
         "pause_video": "أوقفي الفيديو مؤقتًا",
         "scroll_down": "انتقلي إلى القسم التالي"
@@ -97,7 +105,7 @@
         "step": ":current / :total",
         "back": "رجوع",
         "skip": "تخطّي",
-        "close": "إغلاق",
+        "close": "أغلقي النافذة",
         "think": "نحسب مقاسك",
         "loading": "لحظة…",
         "q_height": "كم طولك؟",
@@ -248,7 +256,7 @@
         "top": "دليل مقاسات الأعلى",
         "bottom": "دليل مقاسات الأسفل",
         "named": "دليل المقاسات: :name",
-        "close": "إغلاق",
+        "close": "أغلقي النافذة",
         "loading": "لحظة…",
         "error": "تعذّر تحميل دليل المقاسات. حاولي مرة أخرى."
       },
@@ -283,7 +291,7 @@
         "add": "أضيفي"
       },
       "recommendations": {
-        "title": "قد يعجبك أيضًا",
+        "title": "قد يعجبكِ أيضًا",
         "view_all": "عرض الكل"
       },
       "colours": {
@@ -325,6 +333,7 @@
       },
       "account": {
         "nav": "حسابي",
+        "notifications": "الإشعارات",
         "greeting": "أهلًا :name",
         "orders_empty_heading": "لم تطلبي أي شيء بعد",
         "orders_empty_text": "لا توجد طلبات حتى الآن. قطع رائعة بانتظارك، ابدئي التسوق واطلبي طلبك الأول اليوم.",
@@ -338,6 +347,7 @@
       },
       "collection": {
         "filters": "الفلاتر",
+        "products": "المنتجات",
         "sort_by": "ترتيب حسب",
         "close": "أغلقي الفلاتر",
         "clear_all": "مسح الكل",
@@ -355,24 +365,24 @@
       "barcode": "الباركود"
     },
     "order": {
-      "can_edit_or_delete_your_review_within": "يمكنك تعديل أو حذف تقييمك خلال",
-      "edit_period_ended": "تم انتهاء المدة المحددة لتعديل التقييم",
-      "delete_period_ended": "تم انتهاء المدة المحددة لحذف التقييم",
+      "can_edit_or_delete_your_review_within": "يمكنكِ تعديل تقييمكِ أو حذفه خلال",
+      "edit_period_ended": "انتهت المدة المحددة لتعديل التقييم",
+      "delete_period_ended": "انتهت المدة المحددة لحذف التقييم",
       "days_since_added": "أيام من إضافته",
       "option_name": "الخيار",
       "option_content": "المحتوى"
     },
     "thank_you": {
       "view_invoice": "عرض الفاتورة",
-      "contact_us": "في بالك سؤال أو استفسار؟ نسعد بتواصلك معنا",
+      "contact_us": "هل لديكِ سؤال أو استفسار؟ يسعدنا تواصلكِ معنا",
       "cashback": "الاسترداد النقدي",
       "loyalty_points": "نقاط الولاء",
-      "gifts_title": "هدايا لا تفوت 🎉",
-      "order_received": "شكرا لتسوقكم عبر متجرنا وجاري العمل على طلبكم"
+      "gifts_title": "هدايا لا تفوّتيها",
+      "order_received": "شكرًا لتسوقكِ من متجرنا، ونعمل الآن على تجهيز طلبكِ"
     }
   },
   "common": {
-    "bank_offer_sub_title_multiple": "ادفع قيمة مشترياتك عبر أحد البطاقات البنكة التالية واحصل على الخصم المحدد",
-    "bank_offer_sub_title_single": "ادفع قيمة مشترياتك عبر أحد بطاقات بنك :bank_name واحصل على خصم بنسبة "
+    "bank_offer_sub_title_multiple": "ادفعي قيمة مشترياتكِ بإحدى البطاقات البنكية التالية، واحصلي على الخصم المحدد",
+    "bank_offer_sub_title_single": "ادفعي قيمة مشترياتكِ بإحدى بطاقات بنك :bank_name، واحصلي على خصم بنسبة "
   }
 }

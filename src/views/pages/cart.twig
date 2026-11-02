@@ -149,9 +149,10 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
                     {% set empty_text = theme.settings.get('unix_cart_empty_text') %}
                     {% if empty_text is iterable %}{% set empty_text = empty_text[lang] is defined ? empty_text[lang] : null %}{% endif %}
                     {% if empty_text is null or not empty_text|trim %}{% set empty_text = trans('blocks.unix.cart_drawer.empty_text') %}{% endif %}
-                    <div data-testid="store-cart-empty" class="unix-cart__empty">
-                        <h2 class="unix-cart__empty-heading">{{ trans('blocks.unix.cart.empty') }}</h2>
-                        <p class="unix-cart__empty-text">{{ empty_text|trim }}</p>
+                    {# DS §8.47 shared empty state #}
+                    <div data-testid="store-cart-empty" class="unix-empty">
+                        <h2 class="unix-empty__title">{{ trans('blocks.unix.cart.empty') }}</h2>
+                        <p class="unix-empty__text">{{ empty_text|trim }}</p>
                         <a data-testid="store-cart-back-home" href="{{ link('products') }}" class="unix-btn">{{ trans('blocks.unix.cart_drawer.shop_now') }}</a>
                     </div>
                 {% endfor %}

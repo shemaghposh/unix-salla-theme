@@ -52,7 +52,7 @@
 				{% if has_category %}
 					<h1 class="unix-plp-banner__title unix-size-h2" id="page-main-title">{{ category.name }}</h1>
 				{% else %}
-					<h1 class="unix-plp-banner__title unix-size-h2" id="page-main-title">{{ page.title|raw }}</h1>
+					<h1 class="unix-plp-banner__title unix-size-h2" id="page-main-title">{{ page.title|striptags }}</h1>
 				{% endif %}
 				{% if banner_desc %}
 					<div class="unix-plp-banner__desc">{{ banner_desc|raw }}</div>
@@ -142,6 +142,8 @@
 
 		{% hook 'product:index.items.start' %}
 
+		{# ROADMAP 6.3: the card titles are h3, so the list gets an h2 between them and the banner h1 #}
+		<h2 class="sr-only">{{ trans('blocks.unix.collection.products') }}</h2>
 		<div class="unix-plp__body">
 			<div class="unix-products__skeleton unix-plp__skeleton" aria-hidden="true">
 				{# 8 cards; unix-plp.scss shows 2 rows of --cols (4 / 6 / 8) #}

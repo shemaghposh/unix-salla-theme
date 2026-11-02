@@ -121,7 +121,7 @@
   overflow: hidden;
   min-block-size: 2lh;
   font-size: var(--t-body);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   line-height: 1.7; // DS §2.2 --t-body
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;

@@ -99,7 +99,7 @@
   }
 }
 
-.unix-ship__days { font-weight: 700; }
+.unix-ship__days { font-weight: var(--fw-bold); }
 
 .unix-ship__note {
   display: block;

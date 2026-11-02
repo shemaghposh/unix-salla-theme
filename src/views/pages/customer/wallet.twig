@@ -6,6 +6,12 @@
 | page.slug                      | string   |                                                     |
 #}
 {% extends "layouts.customer" %}
+{#
+    ROADMAP 5.8 · DS §8.48: Salla's salla-wallet as is (balance, gift-card redeem, transactions, load more),
+    restyled through its public .s-wallet-* classes under .unix-wallet (unix-account.scss).
+#}
 {% block inner_content %}
-    <salla-wallet data-testid="store-wallet"></salla-wallet>
+    <div class="unix-wallet">
+        <salla-wallet data-testid="store-wallet"></salla-wallet>
+    </div>
 {% endblock %}

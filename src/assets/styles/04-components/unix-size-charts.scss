@@ -76,26 +76,7 @@ html:has(.unix-sg__dialog[open]) { overflow: hidden; }
   background: var(--c-surface);
 }
 
-.unix-sg__close {
-  display: grid;
-  place-items: center;
-  inline-size: var(--tap);
-  block-size: var(--tap);
-  padding: 0;
-  background: none;
-  border: 0;
-  border-radius: var(--r-pill);
-  color: var(--c-text);
-  cursor: pointer;
-  transition: background-color var(--d-fast) var(--ease-out);
-
-  svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
-  &:active { background-color: var(--c-press-tint); }
-}
-
-@media (hover: hover) {
-  .unix-sg__close:hover { background-color: var(--c-hover-tint); }
-}
+/* Close: the shared .unix-icon-btn (unix-controls.scss) */
 
 /* ── chart content (Salla size guide HTML, unix.sa .rte) ── */
 .unix-sg__content {
@@ -150,13 +131,12 @@ html:has(.unix-sg__dialog[open]) { overflow: hidden; }
   :where(th, thead td) {
     background: var(--c-surface-muted);
     color: var(--c-text);
-    font-weight: 600;
+    font-weight: var(--fw-bold);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .unix-sg__btn,
-  .unix-sg__close,
   .unix-sg__dialog {
     animation: none !important;
     transition: none !important;

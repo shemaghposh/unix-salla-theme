@@ -41,7 +41,7 @@
 
       <div class="unix-footer__newsletter">
         {% if newsletter_title|trim %}
-          <h3 class="unix-footer__newsletter-title">{{ newsletter_title }}</h3>
+          <h2 class="unix-footer__newsletter-title">{{ newsletter_title }}</h2>
         {% endif %}
         {# Salla has no built-in newsletter web component. Custom hook slot for a newsletter app; the provider
            is open decision D7 (docs/ROADMAP.md). Renders nothing until something is registered on it. #}
@@ -147,9 +147,10 @@
         {% if store.settings.tax.number %}
           <div class="unix-trust__cred">
             {% if store.settings.tax.certificate %}
-              <a class="load-img-onclick unix-trust__cred-badge-link" data-modal-id="modal-value-tax" href="#/" aria-label="{{ trans('common.elements.tax_number') }}">
+              {# ROADMAP 6.3: opens a modal, so a button (no fake "#/" link); app.js .load-img-onclick handles the click #}
+              <button type="button" class="load-img-onclick unix-trust__cred-badge-link" data-modal-id="modal-value-tax" aria-haspopup="dialog" aria-label="{{ trans('common.elements.tax_number') }}">
                 <img width="40" height="50" src="{{ 'images/tax.png'|cdn(70,70) }}" loading="lazy" class="unix-trust__cred-badge" alt="">
-              </a>
+              </button>
             {% endif %}
             <div class="unix-trust__cred-text">
               <span class="unix-trust__cred-label">{{ trans('common.elements.tax_number') }}</span>
