@@ -269,32 +269,7 @@
   }
 }
 
-// ── Empty state (orders, wishlist) ───────────────
-.unix-account-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--s-2);
-}
-
-.theme-unix .unix-account-empty__title {
-  margin: 0;
-  font-size: var(--t-h4);
-  line-height: 1.4;
-}
-
-.unix-account-empty__text {
-  margin: 0;
-  color: var(--c-text-muted);
-  font-size: var(--t-body);
-}
-
-.unix-account-empty__cta {
-  margin-block-start: var(--s-3); // + the flex gap = --s-5 above the button
-  inline-size: 100%;
-
-  @media (min-width: 576px) { inline-size: auto; }
-}
+// ── Empty state (orders): the shared .unix-empty (DS §8.47, unix-controls.scss) inside a panel ──
 
 /*
  * ── 5.2 Orders list (DS §8.38 · D95) ─────────────
@@ -446,6 +421,339 @@
     justify-content: center;
     margin-block-start: var(--s-5);
   }
+}
+
+/*
+ * ── 5.8 Notifications (DS §8.48 · D107) ──────────
+ * salla-notifications (light DOM, Salla's CSS is global and may load after app.css, so every rule
+ * is prefixed by .unix-notifications to win on specificity). Hairline rows like the orders list,
+ * no white cards and no shadow.
+ */
+.unix-notifications {
+  .s-notifications-container > :not([hidden]) ~ :not([hidden]) { margin: 0; }
+
+  .s-notifications-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-4);
+    padding: var(--s-4) 0;
+    border-block-end: var(--line-w) solid var(--c-border);
+    border-radius: 0;
+    background: transparent;
+    color: var(--c-text);
+    box-shadow: var(--e-0);
+    transition: color var(--d-fast) var(--ease-out);
+
+    > :not([hidden]) ~ :not([hidden]) { margin: 0; } // Salla's space-x (physical margins) → gap
+
+    &:first-child { padding-block-start: 0; }
+    &:last-child { border-block-end: 0; padding-block-end: 0; }
+    &:hover { color: var(--c-text-muted); box-shadow: var(--e-0); }
+    &:active { opacity: var(--o-muted); }
+    &:focus-visible {
+      outline: var(--ring-w) solid var(--c-accent);
+      outline-offset: var(--ring-w);
+      border-radius: var(--r-sm);
+    }
+  }
+
+  .s-notifications-item-shadow:hover { box-shadow: var(--e-0); }
+
+  // Bell in a --tap circle; unread: --c-accent bell (shape, 3.4:1 on sand-200) + bold title
+  .s-notifications-item-icon {
+    flex: none;
+    inline-size: var(--tap);
+    block-size: var(--tap);
+    border: 0;
+    background: var(--c-surface-muted);
+    color: var(--c-text);
+    font-size: var(--icon-sm);
+  }
+
+  .s-notifications-item-icon-new { color: var(--c-accent); }
+
+  .s-notifications-item-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-inline-size: 0;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: var(--s-4);
+    }
+  }
+
+  // Salla renders the title as h4: sized as body text, not a heading (DS §2.2 levels stay Salla's)
+  .theme-unix & .s-notifications-item-content-leading h4 {
+    margin: 0 0 var(--s-1);
+    color: inherit;
+    font-family: var(--f-body);
+    font-size: var(--t-body);
+    font-weight: var(--fw-bold);
+    line-height: 1.7;
+  }
+
+  .s-notifications-item-read .s-notifications-item-content-leading h4 { font-weight: var(--fw-medium); }
+
+  .s-notifications-item-content-leading p {
+    margin: 0;
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+    line-height: 1.6;
+  }
+
+  .s-notifications-item-content-trailing {
+    gap: var(--s-1);
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .s-notifications-item-content-trailing-icon { margin: 0; }
+
+  // Read rows keep --c-text (Salla's grey is 4.8:1 on white but fails on --c-surface-muted hover)
+  .s-notifications-item-read { color: var(--c-text); }
+
+  // Empty: salla-placeholder in the DS §8.47 look
+  .s-notifications-no-content {
+    padding-block: var(--s-7);
+    color: var(--c-text-muted);
+  }
+
+  .s-placeholder-icon {
+    inline-size: var(--s-9);
+    block-size: var(--s-9);
+    margin-block-end: var(--s-4);
+    border-radius: var(--r-pill);
+    background: var(--c-surface-muted);
+    color: var(--c-text-muted);
+    font-size: var(--icon-md);
+  }
+
+  .s-placeholder-title {
+    color: var(--c-text);
+    font-size: var(--t-h4);
+    font-weight: var(--fw-medium);
+  }
+
+  .s-placeholder-description {
+    color: var(--c-text-muted);
+    font-size: var(--t-body);
+  }
+
+  .s-infinite-scroll-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-block-start: var(--s-5);
+  }
+
+  .s-infinite-scroll-btn { flex: none; }
+}
+
+/*
+ * ── 5.8 Wallet (DS §8.48 · D107) ─────────────────
+ * salla-wallet: balance card + Salla's gift-card redeem, transactions table, load more, empty state.
+ * Same prefix rule as above (.unix-wallet beats Salla's global one-class rules).
+ */
+.unix-wallet {
+  .s-wallet-summary {
+    gap: var(--s-4);
+    margin-block: 0 var(--s-5);
+  }
+
+  .s-wallet-balance-card {
+    border: var(--line-w) solid var(--c-border);
+    border-radius: var(--r-md);
+    background: var(--c-surface);
+    padding: var(--s-5);
+    color: var(--c-text);
+  }
+
+  .s-wallet-balance-mark {
+    inline-size: var(--s-7);
+    block-size: var(--s-7);
+    margin-block-end: var(--s-3);
+    background: var(--c-surface-muted);
+    color: var(--c-text);
+    font-size: var(--icon-md);
+  }
+
+  .s-wallet-balance-figure {
+    color: var(--c-text);
+    font-size: var(--t-h4);
+    font-weight: var(--fw-bold);
+    line-height: 1.4;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .s-wallet-balance-label {
+    margin-block-start: var(--s-1);
+    color: var(--c-text-muted);
+    font-size: var(--t-small);
+  }
+
+  // Transactions: one panel, hairline rows (like the orders list, DS §8.38)
+  .s-wallet-table {
+    inline-size: 100%;
+    margin: 0;
+    border: var(--line-w) solid var(--c-border);
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--r-md);
+    background: var(--c-surface);
+    overflow: hidden;
+  }
+
+  .s-wallet-table-head {
+    margin: 0;
+    background: var(--c-surface-muted);
+  }
+
+  .s-wallet-table-head-tr-th {
+    padding: var(--s-3) var(--s-4);
+    color: var(--c-text);
+    font-size: var(--t-small);
+    font-weight: var(--fw-medium);
+    text-align: start;
+    text-transform: none;
+    letter-spacing: 0;
+
+    &:last-child { text-align: end; }
+  }
+
+  .s-wallet-table-tbody-tr {
+    padding: var(--s-3) var(--s-4);
+    border: 0;
+    border-block-end: var(--line-w) solid var(--c-border);
+    border-radius: 0;
+    background: transparent;
+    color: var(--c-text);
+
+    &:last-child { border-block-end: 0; }
+
+    @media (min-width: 768px) { padding: 0; }
+
+    a:focus-visible {
+      outline: var(--ring-w) solid var(--c-accent);
+      outline-offset: calc(var(--ring-w) * -1);
+    }
+  }
+
+  .s-wallet-table-tbody-tr-shadow:hover { box-shadow: var(--e-0); }
+
+  .s-wallet-table-tbody-tr-td {
+    color: inherit;
+    font-size: var(--t-small);
+    font-variant-numeric: tabular-nums;
+
+    &:first-child { font-weight: var(--fw-medium); }
+
+    @media (min-width: 768px) {
+      block-size: auto;
+      border-block-end: var(--line-w) solid var(--c-border);
+    }
+  }
+
+  .s-wallet-table-tbody-tr:last-child .s-wallet-table-tbody-tr-td { border-block-end: 0; }
+
+  .s-wallet-table-tbody-tr-td-content {
+    padding: var(--s-1) 0;
+    font-size: var(--t-small);
+
+    @media (min-width: 768px) { padding: var(--s-4); }
+  }
+
+  .s-wallet-mobile-title {
+    inline-size: var(--s-10);
+    color: var(--c-text-muted);
+    font-weight: var(--fw-regular);
+  }
+
+  // Amounts: sign + colour (credit --c-success, debit --c-price-sale); the sign carries the meaning too
+  .s-wallet-amount { font-weight: var(--fw-medium); }
+  .s-wallet-amount-credit { color: var(--c-success); }
+  .s-wallet-amount-debit { color: var(--c-price-sale); }
+
+  .s-wallet-transaction-type { color: var(--c-text); }
+
+  // Salla's four coloured type pills → one quiet pill; the type name carries the meaning
+  .s-wallet-table-transaction-status {
+    border-radius: var(--r-pill);
+    background: var(--c-surface-muted);
+    color: var(--c-text);
+    font-size: var(--t-small);
+  }
+
+  .s-wallet-table-transaction-status-default,
+  .s-wallet-table-transaction-status-cashback,
+  .s-wallet-table-transaction-status-refund,
+  .s-wallet-table-transaction-status-purchase {
+    background: var(--c-surface-muted);
+    color: var(--c-text);
+  }
+
+  .s-wallet-table-transaction-status-icon-success,
+  .s-wallet-table-transaction-status-icons-success { color: var(--c-success); }
+
+  .s-wallet-rated-text { color: var(--c-accent); }
+  .s-wallet-unrated-text { color: var(--c-border); }
+
+  // Empty (no transactions): DS §8.47 look
+  .s-wallet-table-empty-state,
+  .s-wallet-no-content {
+    padding-block: var(--s-7);
+    color: var(--c-text-muted);
+    text-align: center;
+
+    i {
+      display: grid;
+      place-items: center;
+      inline-size: var(--s-9);
+      block-size: var(--s-9);
+      margin: 0 0 var(--s-4);
+      border-radius: var(--r-pill);
+      background: var(--c-surface-muted);
+      color: var(--c-text-muted);
+      font-size: var(--icon-md);
+    }
+
+    .icon {
+      inline-size: var(--s-9);
+      block-size: var(--s-9);
+      margin-block-end: var(--s-4);
+      background: var(--c-surface-muted);
+      color: var(--c-text-muted);
+      font-size: var(--icon-md);
+    }
+
+    p {
+      margin: 0;
+      color: var(--c-text-muted);
+      font-size: var(--t-body);
+    }
+  }
+
+  // Salla's empty-state title / text use Tailwind utilities inside the component
+  .s-wallet-table-empty-state .font-bold {
+    color: var(--c-text);
+    font-size: var(--t-h4);
+    font-weight: var(--fw-medium);
+  }
+
+  .s-wallet-table-empty-state .text-gray-400 { color: var(--c-text-muted); }
+
+  .s-infinite-scroll-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-block-start: var(--s-5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-notifications .s-notifications-item { transition: none; }
 }
 
 /*

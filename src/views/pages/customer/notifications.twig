@@ -15,9 +15,15 @@
 #}
 {% extends "layouts.customer" %}
 {% block inner_content %}
+	{#
+		ROADMAP 5.8 · DS §8.48: Salla's salla-notifications as is (fetch, «load more», links), inside an
+		account panel and restyled through its public .s-notifications-* classes (unix-account.scss).
+	#}
 	{% hook 'customer:notifications.items.start' %}
 
-	<salla-notifications data-testid="store-notifications"></salla-notifications>
+	<div class="unix-account-panel unix-notifications">
+		<salla-notifications data-testid="store-notifications"></salla-notifications>
+	</div>
 
 	{% hook 'customer:notifications.items.end' %}
 {% endblock %}
