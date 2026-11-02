@@ -961,6 +961,17 @@
             "selected": true
         },
         {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "بيانات المقال لمحركات البحث (BlogPosting)",
+            "description": "يضيف الثيم في صفحة المقال العنوان والصورة وتاريخ النشر واسم الكاتب والناشر والوسوم. أوقفيه فقط إذا ظهر في مصدر الصفحة وصف BlogPosting أو Article آخر من سلة.",
+            "id": "unix_seo_jsonld_article",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
             "type": "static",
             "id": "unix-static-line-cart",
             "format": "line"

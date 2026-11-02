@@ -16,102 +16,118 @@
 | article.tags            | BlogTag[]      |             |
 | article.tags[].name     | string         |             |
 | article.tags[].url      | string         |             |
+
+UNIX (ROADMAP 5.4 · DS §8.42, §8.43, §14 · D101): unix.sa article.json → centred article header (tags, date,
+h1 title, author), wide hero image, the body in a reading column, then «قد يعجبكِ أيضًا» (unix.sa's aside heading)
+as a section under the article. The title is the page's only h1: an h1 typed inside the body becomes h2, and
+body images get loading="lazy", and each table is wrapped in a keyboard-scrollable box (all server-side). BlogPosting JSON-LD: components/seo/unix-jsonld-article.twig.
+The like button keeps Raed's #blog-like contract (blog.js: an <i> icon + a <span> count).
 #}
 {% extends "layouts.master" %}
 {% block content %}
-    <div class="container mb-8 sm:mb-24">
-        {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
-        <nav class="breadcrumbs w-full py-5 center-between">
-            <salla-breadcrumb></salla-breadcrumb>
-        </nav>
-        <div class="md:flex items-start">
-            <div class="main-content blog-category md:w-96 flex-1 bg-white lg:p-8 rounded-md mb-10 md:mb-0">
-                <h1 class="font-bold text-3xl mb-5 leading-10">{{ article.title }}</h1>
-                <div class="mb-10 text-gray-500 rounded-md inline-flex text-sm rtl:space-x-reverse space-x-5">
-                    <div class=" flex items-center">
-                        <i class="sicon-calendar-date rtl:ml-1 ltr:mr-1"></i>
-                        <span class="">{{ article.created_at|date }}</span>
-                    </div>
-                    <a href="{{ article.author.url }}" class=" flex items-center hover:text-dark">
-                        <i class="sicon-user rtl:ml-1 ltr:mr-1"></i>
-                        <span class="">{{ article.author.name }}</span>
-                    </a>
-                </div>
-                {% if article.has_image %}
-                    <img src="{{ article.image.url }}" alt="{{ article.image.alt }}" title="{{ article.image.alt }}"
-                         class="h-80 mb-10 w-full object-cover rounded-md"/>
-                {% endif %}
-                
-                {% if store.settings.blog.allow_likes_and_comments %}
-                <div class="flex items-center gap-2.5 text-gray-500 text-base mb-2">
-                    <button id="blog-like" data-blog-id="{{ article.key }}" class="flex items-center gap-1">
-                        <i class="sicon-thumbs-up text-primary"></i>
-                        <span>{{article.likes_count}}</span>
-                    </button>                    
-                    {% if article.comments_count %}
-                        <div class="flex items-center gap-1">
-                            <i class="sicon-chat text-primary"></i>
-                            {{article.comments_count}}
-                        </div>
-                    {% endif %}
-                </div>
-                {% endif %}
+  {% set unix_related = related is defined and related ? related : article.related|default([]) %}
+  {% set unix_image = article.image.url is defined ? article.image.url : '' %}
+  {% set unix_has_image = article.has_image and unix_image and not (unix_image|is_placeholder) %}
+  {% set unix_body = article.body|default('')|replace({
+    '&nbsp;': ' ',
+    '<h1': '<h2', '<H1': '<h2', '</h1>': '</h2>', '</H1>': '</h2>',
+    '<img ': '<img loading="lazy" decoding="async" ',
+    '<table': '<div class="unix-rte__table" tabindex="0"><table', '</table>': '</table></div>'
+  }) %}
 
-                <article class="leading-7 text-sm mb-10">{{ article.body|replace({'&nbsp;': ' '})|raw }}</article>
-                {% if article.tags|length %}
-                    <div class="p-4 flex flex-wrap items-center border-t border-gray-200">
-                        {% for tag in article.tags %}
-                            <a href="{{ tag.url }}"
-                               class="py-2 px-4 rounded-large inline-flex items-center text-gray-500 hover:text-dark justify-center text-sm">
-                                <i class="font-medium sicon-tag rtl:ml-1.5 ltr:mr-1.5"></i>
-                                <span class="fix-align whitespace-nowrap">{{ tag.name }}</span>
-                            </a>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-                {% if store.settings.blog.allow_likes_and_comments %}
-                    <salla-comments data-testid="store-blog-comments" item-id="{{article.key}}"   type="blog"></salla-comments>
-                {% endif %}
-            </div>
+  <article class="unix-article" aria-labelledby="unix-article-title">
+    <div class="unix-container">
+      {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
+      <nav class="breadcrumbs w-full py-5">
+        <salla-breadcrumb></salla-breadcrumb>
+      </nav>
 
-            <aside aria-label="Sidebar" class="sticky shrink-0 top-24 md:w-96 rtl:lg:mr-8 ltr:lg:ml-8 pb-11">
-                {% if related|length %}
-                    <h2 class="font-bold mb-3">{{ trans('pages.blog_articles.related') }}</h2>
+      <header class="unix-article__header">
+        {% if article.tags|default([])|length %}
+          <ul class="unix-article__tags" role="list" aria-label="{{ trans('blocks.unix.blog.tags') }}">
+            {% for tag in article.tags %}
+              <li><a class="unix-article__tag" href="{{ tag.url }}">{{ tag.name }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% if article.created_at %}
+          <time class="unix-article__date" datetime="{{ article.created_at|date('Y-m-d') }}">{{ article.created_at|date }}</time>
+        {% endif %}
+        <h1 class="unix-article__title" id="unix-article-title">{{ article.title }}</h1>
+        {% if article.author.name|default('') %}
+          <p class="unix-article__author">
+            {{ trans('blocks.unix.blog.by') }}
+            {% if article.author.url|default('') %}
+              <a href="{{ article.author.url }}">{{ article.author.name }}</a>
+            {% else %}
+              <span>{{ article.author.name }}</span>
+            {% endif %}
+          </p>
+        {% endif %}
+      </header>
 
-                    {% hook 'blog:single.items.start' %}
+      {% if unix_has_image %}
+        <figure class="unix-article__hero">
+          <img src="{{ unix_image }}" alt="{{ article.image.alt|default('') }}" width="1600" height="900"
+               loading="eager" fetchpriority="high">
+        </figure>
+      {% endif %}
 
-                    {% for article in related %}
-                        <div class="mt-5 flex items-center bg-white p-5 rounded-md">
-                            <div class="shrink-0">
-                                <a href="{{ article.url }}"
-                                   class="bg-border-color h-24 w-24 rounded-md overflow-hidden flex items-center justify-center">
-                                    <span class="sr-only">{{ article.name }}</span>
+      <div class="unix-article__body unix-rte">{{ unix_body|raw }}</div>
 
-                                    {% if article.has_image %}
-                                        <img class="h-full w-full object-cover" src="{{ article.image.url }}"
-                                             alt="{{ article.image.alt }}">
-                                    {% else %}
-                                        <img class="sm:h-full w-10 object-contain opacity-60"
-                                             src="{{ 'images/placeholder.png' | asset }}" alt="post image"/>
-                                    {% endif %}
-                                </a>
-                            </div>
-                            <div class="rtl:mr-3 ltr:ml-3">
-                                <div class="flex items-center text-sm text-gray-500 mb-2">
-                                    <i class="sicon-calendar-date rtl:ml-1 ltr:mr-1 rtl:pl-px ltr:pr-px"></i>
-                                    <time>{{ article.created_at|date }}</time>
-                                </div>
-
-                                <h3 class="text-sm font-bold text-gray-800 leading-6">
-                                    <a href="{{ article.url }}" class="hover:underline">{{ article.title }}</a>
-                                </h3>
-                            </div>
-                        </div>
-                    {% endfor %}
-
-                    {% hook 'blog:single.items.end' %}
-                {% endif %}
-            </aside>
+      {% if store.settings.blog.allow_likes_and_comments %}
+        <div class="unix-article__actions">
+          <button type="button" id="blog-like" class="unix-article__like" data-blog-id="{{ article.key }}"
+                  aria-pressed="false" aria-label="{{ trans('blocks.unix.blog.like') }}">
+            <i class="sicon-thumbs-up" aria-hidden="true"></i>
+            <span>{{ article.likes_count|default(0) }}</span>
+          </button>
+          {% if article.comments_count %}
+            <span class="unix-article__count">
+              <i class="sicon-chat" aria-hidden="true"></i>
+              <span class="sr-only">{{ trans('blocks.unix.blog.comments') }}</span>
+              {{ article.comments_count }}
+            </span>
+          {% endif %}
         </div>
+      {% endif %}
+
+      {% if article.tags|default([])|length %}
+        <footer class="unix-article__footer">
+          <ul class="unix-article__tags" role="list" aria-label="{{ trans('blocks.unix.blog.tags') }}">
+            {% for tag in article.tags %}
+              <li><a class="unix-article__tag" href="{{ tag.url }}">{{ tag.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </footer>
+      {% endif %}
+
+      {% if store.settings.blog.allow_likes_and_comments %}
+        <div class="unix-article__comments">
+          <salla-comments data-testid="store-blog-comments" item-id="{{ article.key }}" type="blog"></salla-comments>
+        </div>
+      {% endif %}
     </div>
+  </article>
+
+  {% if unix_related|length %}
+    <section class="unix-article-related" aria-labelledby="unix-article-related-title">
+      <div class="unix-container">
+        <div class="unix-article-related__head">
+          <h2 class="unix-article-related__title" id="unix-article-related-title">{{ trans('blocks.unix.blog.related') }}</h2>
+          <a class="unix-btn unix-btn--outline unix-btn--sm" href="{{ link('blog') }}">{{ trans('blocks.unix.blog.view_all') }}</a>
+        </div>
+
+        {% hook 'blog:single.items.start' %}
+        <div class="unix-article-related__grid">
+          {% for item in unix_related|slice(0, 4) %}
+            {% include 'components.blog.unix-article-card' with { article: item, heading: 'h3' } only %}
+          {% endfor %}
+        </div>
+        {% hook 'blog:single.items.end' %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% include 'components.seo.unix-jsonld-article' %}
 {% endblock %}
