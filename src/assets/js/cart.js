@@ -8,13 +8,9 @@ class Cart extends BasePage {
         // keep update the dom base in the events
         salla.event.cart.onUpdated(data => this.updateCartPageInfo(data));
 
-        // ROADMAP 4.4: an add from «اختيارات تناسبك» (or an offer) creates a line this page never
-        // rendered; Salla's page is server-rendered, so reload to show it.
-        salla.cart.event.onItemAdded(response => {
-            const items = response?.data?.cart?.items;
-            const missing = !Array.isArray(items) || items.some(item => !document.querySelector('#item-' + item.id));
-            if (missing) window.location.reload();
-        });
+        // ROADMAP 4.4: an add from «اختيارات تناسبك» (or an offer) creates a new line or raises an
+        // existing line's quantity; the lines are server-rendered, so reload to show the real cart.
+        salla.cart.event.onItemAdded(() => window.location.reload());
 
         app.watchElements({
             cartGifting: '#cart-gifting',
