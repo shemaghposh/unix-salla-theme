@@ -529,6 +529,16 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
   - **زرار «عرض الكل»:** `.unix-btn` (primary: `--c-action` و `--c-text-inverse`) لأن ده شكل `button--secondary` في scheme Cream على unix.sa وهو واقف (D70). اللينك من إعداد `unix_recommendations_button_link`، وإلا صفحة كل المنتجات (`link('products')`، بدل `/collections/all`).
 - **من غير CLS جوه السكشن:** لحد ما الكروت تيجي فيه skeleton بنفس الأعمدة ونسبة `--ratio-card` وتلات سطور (نفس skeleton §8.15)، وبيتشال أول ما يظهر أول كارت.
 
+### 8.28 Colour Links (ألوان الموديل كمنتجات منفصلة) — *المرحلة 3.10*
+بديل تطبيق G: Combined Listings في unix.sa (SPEC §5.2 بند 7، §9، و `reference/shopify-theme/snippets/product-linked-products.liquid`). في متجر العميل **كل لون منتج لوحده** (`sculpting-leggings-vanilla` و `-chocolate`…) وليه صفحته و SEO بتاعه، والعنوان «اسم الموديل | اللون». الكود: `pages/product/single.twig` (قراءة الإعداد) و `components/product/unix-colour-links.twig` و `04-components/unix-colour-links.scss`. **مش على الكروت** (unix.sa مخبّيها هناك).
+- **مصدر البيانات:** إعداد واحد `unix_colour_links` (textarea متعدد اللغات، والإنجليزي الفاضي بيرجع للعربي)، سطر لكل منتج: `مفتاح المجموعة | رابط المنتج | اسم اللون | #hex`. المنتج الحالي = السطر اللي رابطه بينتهي بـ `/p{product.id}`، ومجموعته هي اللي بتظهر. الـ hex اختياري (`#rgb` أو `#rrggbb` بس، أي حاجة تانية بتتشال)، والرابط لازم يبدأ بـ `http` أو `/`. Twig مايقدرش يجيب منتجات تانية، فده الطريق الوحيد إن اللينكات تطلع **من السيرفر** كـ `<a href>` حقيقية (لينكات داخلية الـ crawler يشوفها، 3.11). *(قرار مؤقت D72)*
+- **المكان:** أول حاجة جوه فورم المنتج، قبل خيارات المقاس (مكان «اللون» في variant picker بتاع unix.sa، §8.21). بيظهر بس لو المجموعة فيها منتجين أو أكتر والإعداد `unix_colour_links_enabled` مفعّل.
+- **الـ label:** «اللون: فانيليا» (`blocks.unix.colours.label` + اسم لون المنتج الحالي)، `--t-small` 500 بلون `--c-text` والاسم 400، زي `.s-product-options-option-label`. المسافة بينه وبين المربعات `--s-2`.
+- **القايمة:** `<ul role="list" aria-label="اللون">`، والعناصر جنب بعض بـ wrap ومسافة `--s-2`، بترتيب السطور في الإعداد.
+- **المربع (فيه hex):** `--s-6` بحواف `--r-sm` وبوردر `--line-w` `--c-border` (نفس دواير الألوان في §8.21)، جوه لينك `--tap` × `--tap`. اللون نفسه `background-color` inline من الإعداد (محتوى تاجر، مش token). اسم اللون في `aria-label` و `title`. Hover: بوردر المربع `--c-text-muted`. الحالي: `aria-current="page"` وحلقة مزدوجة `--ring-w` (`--c-bg` ثم `--c-text`) زي اللون المختار في §8.21، و cursor عادي. *(قرار مؤقت D73)*
+- **من غير hex:** chip نصي بنفس شكل أزرار المقاس (§8.21): `--tap`، padding-inline `--s-4`، `--c-surface`، بوردر `--c-border`، `--r-sm`، `--t-small` 500؛ الحالي بوردر `--c-text` + حلقة داخلية `--line-w`.
+- **الحالات:** focus-visible حلقة `--ring-w` `--c-accent` بـ offset `--ring-w`؛ active `--press-y` (مش على الحالي)؛ مافيش disabled لأن الثيم مايعرفش مخزون المنتجات التانية (اللينك بيفتح صفحتها وهي اللي بتقول نفد). الـ transitions `--d-fast` `--ease-out` وبتتقفل مع reduced-motion. RTL: logical properties بس، ومافيش أيقونات اتجاه.
+
 ---
 
 ## 9. نبرة الكلام (Copy)

@@ -274,6 +274,9 @@
       "recommendations": {
         "title": "قد يعجبك أيضًا",
         "view_all": "عرض الكل"
+      },
+      "colours": {
+        "label": "اللون"
       }
     }
   },

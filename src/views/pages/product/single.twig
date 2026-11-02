@@ -87,6 +87,56 @@
 #}
 {% extends "layouts.master" %}
 {% block content %}
+    {#
+        ROADMAP 3.10 · DS §8.28 · SPEC §5.2 item 7, §9: colour links (unix.sa's G: Combined Listings).
+        Each colour is its own product. Siblings come from the theme setting unix_colour_links
+        (multilanguage textarea), one line per colour product: «group key | product URL | colour name | #hex».
+        The hex is optional (no hex → text chip). The current product is the line whose URL ends in
+        /p{product.id}. Parsed here, not in the include, so the JSON-LD (3.11) can reuse the group key and
+        colour name (D72). Twig can't query other products, so the links come from the setting and
+        render server-side as real <a href> (crawlable).
+        unix_colours = { group: key of the current product's group, name: its colour, items: rows of that group (≥ 2, else []) }
+    #}
+    {% set unix_colours = { group: '', name: '', items: [] } %}
+    {% set cl_raw = theme.settings.get('unix_colour_links') %}
+    {% if cl_raw is iterable %}
+        {% set cl_lang = cl_raw[language.code] is defined ? cl_raw[language.code]|default('')|trim : '' %}
+        {% set cl_raw = cl_lang ?: (cl_raw.ar is defined ? cl_raw.ar|default('') : '') %}
+    {% endif %}
+    {% if theme.settings.get('unix_colour_links_enabled', true) and cl_raw|default('')|trim %}
+        {% set cl_rows = [] %}
+        {% for cl_line in cl_raw|replace({"\r": ''})|split("\n") %}
+            {% set cl_cells = cl_line|split('|') %}
+            {% if cl_cells|length >= 3 %}
+                {% set cl_url = cl_cells[1]|trim %}
+                {% set cl_hex = cl_cells|length > 3 ? cl_cells[3]|trim|lower : '' %}
+                {% set cl_path_end = cl_url|split('#')|first|split('?')|first|trim('/', 'right')|split('/')|last %}
+                {% set cl_row = {
+                    key: cl_cells[0]|trim|lower,
+                    url: cl_url,
+                    name: cl_cells[2]|trim,
+                    hex: (cl_hex matches '/^#([0-9a-f]{3}|[0-9a-f]{6})$/') ? cl_hex : '',
+                    current: cl_path_end == ('p' ~ product.id)
+                } %}
+                {% if cl_row.key and cl_row.name and (cl_url starts with 'https://' or cl_url starts with 'http://' or cl_url starts with '/') %}
+                    {% set cl_rows = cl_rows|merge([cl_row]) %}
+                    {% if cl_row.current and not unix_colours.group %}
+                        {% set unix_colours = unix_colours|merge({ group: cl_row.key, name: cl_row.name }) %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if unix_colours.group %}
+            {% set cl_items = [] %}
+            {% for cl_row in cl_rows %}
+                {% if cl_row.key == unix_colours.group %}
+                    {% set cl_items = cl_items|merge([cl_row]) %}
+                {% endif %}
+            {% endfor %}
+            {% set unix_colours = unix_colours|merge({ items: cl_items|length > 1 ? cl_items : [] }) %}
+        {% endif %}
+    {% endif %}
+
     {% if theme.settings.get('product_show_breadcrumbs', true) %}
       <div class="container container--breadcrumbs">
           {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
@@ -193,6 +243,8 @@
 
                     {% hook 'product:single.form.start' %}
 
+                    {# 5a · Colour links to sibling products (ROADMAP 3.10 · DS §8.28): before the size options, like unix.sa #}
+                    {% include 'components.product.unix-colour-links' %}
                     {# 5 · Variant picker: button mode like unix.sa picker_type: button (DS §8.21) #}
                     {% include 'pages.partials.product.options' with { unix_option_buttons: true } %}
                     {# 6 · Size finder (ROADMAP 3.3) #}

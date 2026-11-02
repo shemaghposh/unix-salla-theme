@@ -549,6 +549,31 @@
         {
             "type": "boolean",
             "icon": "sicon-toggle-off",
+            "label": "ألوان الموديل في صفحة المنتج",
+            "description": "عندما يكون كل لون منتجًا مستقلًا، يظهر صف «اللون» قبل المقاسات بمربع لكل لون، والضغط عليه يفتح صفحة ذلك اللون. تُكتب الألوان في «روابط ألوان الموديلات» أدناه.",
+            "id": "unix_colour_links_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "روابط ألوان الموديلات",
+            "description": "سطر لكل منتج (لون)، وبين الخانات علامة |: اسم الموديل | رابط المنتج | اسم اللون | كود اللون (اختياري). اسم الموديل نفسه في كل ألوان الموديل الواحد، بالإنجليزية ودون مسافات، مثل sculpting-leggings. انسخي رابط المنتج من المتجر كما هو (ينتهي بحرف p ثم رقم المنتج). كود اللون مثل #E9DFCF، وإذا تركتِه فارغًا يظهر اسم اللون كزر. في خانة الإنجليزية اكتبي الأسطر نفسها بأسماء الألوان والروابط الإنجليزية، وإذا تركتِها فارغة تُستخدم العربية.",
+            "id": "unix_colour_links",
+            "format": "textarea",
+            "multilanguage": true,
+            "required": false,
+            "value": null,
+            "placeholder": "sculpting-leggings | https://unix.sa/sculpting-leggings-vanilla/p123456789 | فانيليا | #E9DFCF",
+            "minLength": 0,
+            "maxLength": 20000
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
             "label": "أداة «اعرفي مقاسك» في صفحة المنتج",
             "description": "تظهر تحت اختيار المقاس في المنتجات اللي فيها خيار اسمه «مقاس» أو Size.",
             "id": "unix_size_finder_enabled",
