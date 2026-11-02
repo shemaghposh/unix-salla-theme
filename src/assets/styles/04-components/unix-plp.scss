@@ -72,11 +72,16 @@
 // Sort select, the compact select of DS §8.24
 .unix-plp__sort {
   position: relative;
+  min-inline-size: 0;
   margin-inline-start: auto; // stays at the end when the filters button is hidden
 }
 
 .unix-plp__select {
   display: block;
+  max-inline-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   min-block-size: var(--tap);
   padding-block: var(--s-2);
   padding-inline: var(--s-3) calc(var(--s-3) + var(--icon-sm) + var(--s-1));
@@ -202,6 +207,22 @@
   margin-block-end: 0;
 
   @media (min-width: 576px) { row-gap: var(--s-7); }
+}
+
+// Two rows of skeleton cards: 2 × --cols of the 8 rendered (4 / 6 / 8)
+.unix-plp__skeleton .unix-products__skel-card {
+  display: flex;
+
+  &:nth-child(n + 5) { display: none; }
+
+  @media (min-width: 768px) {
+    &:nth-child(n + 5) { display: flex; }
+    &:nth-child(n + 7) { display: none; }
+  }
+
+  @media (min-width: 1024px) {
+    &:nth-child(n + 7) { display: flex; }
+  }
 }
 
 // Skeleton until the first card exists (or JS saw the list settle)

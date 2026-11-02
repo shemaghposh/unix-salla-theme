@@ -85,7 +85,7 @@
 		main-collection-product-grid.liquid with facets `horizontal_united`: one bar (filters button at the
 		start, sort at the end), the filters in a side drawer at every width, the size filter as a box grid.
 		Salla logic as is: salla-products-list + salla-filters + salla-applied-filters (no fork).
-		Cards: the shared UNIX card (.unix-products, DS §8.3). Behaviour: js/products.js + partials/unix-plp-filters.js.
+		Cards: the shared UNIX card (.unix-products, DS §8.3). Behaviour: js/products.js + partials/unix-plp.js.
 		Setting: unix_collection_highlight_filter (empty = «مقاس» / «Size»).
 	#}
 	{% set highlight_filter = theme.settings.get('unix_collection_highlight_filter') %}
@@ -144,7 +144,8 @@
 
 		<div class="unix-plp__body">
 			<div class="unix-products__skeleton unix-plp__skeleton" aria-hidden="true">
-				{% for n in 1..4 %}
+				{# 8 cards; unix-plp.scss shows 2 rows of --cols (4 / 6 / 8) #}
+				{% for n in 1..8 %}
 					<div class="unix-products__skel-card">
 						<span class="unix-products__skel-media"></span>
 						<span class="unix-products__skel-line"></span>

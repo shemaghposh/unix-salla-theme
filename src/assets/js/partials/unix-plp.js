@@ -61,7 +61,7 @@ function countChoices(data) {
   const pageId = String(salla.config.get('page.id') ?? '');
   return Object.entries(data || {}).reduce((sum, [key, value]) => {
     if (key === 'variants' && value && typeof value === 'object') return sum + Object.keys(value).length;
-    if (Array.isArray(value)) return sum + value.length;
+    if (Array.isArray(value)) return sum + value.filter(v => !(key === 'category_id' && String(v) === pageId)).length;
     if (value && typeof value === 'object') return sum + 1; // price range
     if (key === 'category_id' && String(value) === pageId) return sum;
     return value == null || value === '' ? sum : sum + 1;
@@ -119,7 +119,15 @@ function initFilters(drawerEl) {
     setTimeout(() => updateCount(), 0);
   });
   salla.event.on('filters::hidden', () => {
-    drawer.isOpen && drawer.close({ focusTarget: document.getElementById('product-filter') || document.body });
+    if (drawer.isOpen) {
+      // The filters button is about to hide: focus the sort select, else the page h1 (like unix-drawer.js)
+      let target = document.getElementById('product-filter');
+      if (!target) {
+        target = document.getElementById('page-main-title');
+        if (target && !target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      }
+      drawer.close({ focusTarget: target || document.body });
+    }
     if (button) button.hidden = true;
   });
   salla.event.on('salla-filters::changed', data => updateCount(data));
@@ -134,8 +142,8 @@ function initResults(section) {
   let firstLoad = true;
 
   const settle = () => body?.setAttribute('data-loaded', '');
-  // componentOnReady rejects when the first request fails: nothing will come, drop the skeleton
-  if (typeof list?.componentOnReady === 'function') list.componentOnReady().catch(settle);
+  // componentOnReady settles after the first request (or rejects when it fails): drop the skeleton either way
+  if (typeof list?.componentOnReady === 'function') list.componentOnReady().then(settle, settle);
 
   salla.event.on('salla-products-list::products.fetched', response => {
     if (!response || (response.cursor && response.cursor.current !== 1)) return; // «load more» pages
