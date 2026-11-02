@@ -1,5 +1,3 @@
-import Swal from 'sweetalert2';
-import Anime from './partials/anime';
 import initTootTip from './partials/tooltip';
 import AppHelpers from "./app-helpers";
 import initAnnouncement from "./partials/unix-announcement";
@@ -7,6 +5,25 @@ import initHeader from "./partials/unix-header";
 import initMenuDrawer from "./partials/unix-drawer";
 import initFooter from "./partials/unix-footer";
 import initCartDrawer from "./partials/unix-cart-drawer"; // ROADMAP 4.3 (DS §8.33)
+
+/**
+ * ROADMAP 6.2: SweetAlert2 (~75KB min, about two thirds of the old app.js) is only needed when Salla
+ * shows a notification, so it loads on the first one instead of on every page (docs/PERFORMANCE.md §4).
+ * The module promise is cached: later notifications reuse it. A failed chunk load is not cached, so the
+ * next notification tries again.
+ */
+let swalModule = null;
+const loadSwal = () => {
+  if (!swalModule) {
+    swalModule = import(/* webpackChunkName: "sweetalert2" */ 'sweetalert2')
+      .then(({ default: Swal }) => Swal)
+      .catch((error) => {
+        swalModule = null;
+        throw error;
+      });
+  }
+  return swalModule;
+};
 
 class App extends AppHelpers {
   constructor() {
@@ -23,7 +40,6 @@ class App extends AppHelpers {
     initFooter();
     this.cartDrawer = initCartDrawer();
     this.initAddToCart();
-    this.initiateDropdowns();
     this.initiateModals();
     this.initiateCollapse();
 
@@ -109,10 +125,10 @@ isElementLoaded(selector){
         return;
       }
       if (typeof message == 'object') {
-        return Swal.fire(message).then(type);
+        return loadSwal().then(Swal => Swal.fire(message)).then(type);
       }
 
-      return Swal.mixin({
+      return loadSwal().then(Swal => Swal.mixin({
         toast: true,
         position: salla.config.get('theme.is_rtl') ? 'top-start' : 'top-end',
         showConfirmButton: false,
@@ -126,22 +142,7 @@ isElementLoaded(selector){
         title: message,
         showCloseButton: true,
         timerProgressBar: true
-      })
-    });
-  }
-
-
-  initiateDropdowns() {
-    this.onClick('.dropdown__trigger', ({ target: btn }) => {
-      btn.parentElement.classList.toggle('is-opened');
-      document.body.classList.toggle('dropdown--is-opened');
-      // Click Outside || Click on close btn
-      window.addEventListener('click', ({ target: element }) => {
-        if (!element.closest('.dropdown__menu') && element !== btn || element.classList.contains('dropdown__close')) {
-          btn.parentElement.classList.remove('is-opened');
-          document.body.classList.remove('dropdown--is-opened');
-        }
-      });
+      }));
     });
   }
 
@@ -187,19 +188,7 @@ isElementLoaded(selector){
   }
 
 
-  /**
-   * Workaround for seeking to simplify & clean, There are three ways to use this method:
-   * 1- direct call: `this.anime('.my-selector')` - will use default values
-   * 2- direct call with overriding defaults: `this.anime('.my-selector', {duration:3000})`
-   * 3- return object to play it letter: `this.anime('.my-selector', false).duration(3000).play()` - will not play animation unless calling play method.
-   * @param {string|HTMLElement} selector
-   * @param {object|undefined|null|null} options - in case there is need to set attributes one by one set it `false`;
-   * @return {Anime|*}
-   */
-  anime(selector, options = null) {
-    let anime = new Anime(selector, options);
-    return options === false ? anime : anime.play();
-  }
+  // ROADMAP 6.2: Raed's app.anime() helper and the animejs dependency are gone; nothing called them.
 
   /**
    * These actions are responsible for pressing "add to cart" button,
