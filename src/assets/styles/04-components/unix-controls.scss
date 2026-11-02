@@ -128,7 +128,12 @@
 .unix-btn {
   @include unix-button-base;
 
-  &--sm { min-block-size: var(--btn-h-sm); }
+  &--sm {
+    min-block-size: var(--btn-h-sm);
+
+    // DS §8.2 / P6: 44px touch target on touch / narrow viewports
+    @media not all and (hover: hover) and (min-width: 1024px) { min-block-size: var(--tap); }
+  }
   &--lg { min-block-size: var(--btn-h-lg); }
   &--block { inline-size: 100%; }
 
@@ -145,7 +150,13 @@
 body.theme-unix .s-button-btn {
   @include unix-button-base;
 
-  &.s-button-small { min-block-size: var(--btn-h-sm); padding-inline: var(--s-5); }
+  &.s-button-small {
+    min-block-size: var(--btn-h-sm);
+    padding-inline: var(--s-5);
+
+    // DS §8.2 / P6: 44px touch target on touch / narrow viewports
+    @media not all and (hover: hover) and (min-width: 1024px) { min-block-size: var(--tap); }
+  }
   &.s-button-large { min-block-size: var(--btn-h-lg); }
   &.s-button-wide { inline-size: 100%; }
 
