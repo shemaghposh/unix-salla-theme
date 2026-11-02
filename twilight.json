@@ -77,12 +77,6 @@
             "selected": false
         },
         {
-            "type": "boolean",
-            "id": "is_more_button_enabled",
-            "label": "عرض (زر الكل) في الصفحة الرئيسية",
-            "format": "switch"
-        },
-        {
             "type": "static",
             "id": "static-line1",
             "format": "line"
@@ -815,7 +809,7 @@
             "label": "رابط زر «قد يعجبك أيضًا» (اختياري)",
             "id": "unix_recommendations_button_link",
             "value": null,
-            "description": "إذا تركتِه فارغًا يفتح الزر صفحة كل المنتجات كما في الأصل.",
+            "description": "إذا تركتِه فارغًا يفتح الزر صفحة كل المنتجات، كما في unix.sa.",
             "required": false,
             "format": "variable-list",
             "searchable": true,
@@ -1766,7 +1760,7 @@
                     "type": "boolean",
                     "icon": "sicon-toggle-off",
                     "label": "زر «عرض المزيد»",
-                    "description": "مع أكثر من 3 أسئلة: يظهر 3 أسئلة ورابع باهت، والباقي بعد الضغط على الزر (مثل الأصل)",
+                    "description": "مع أكثر من 3 أسئلة: يظهر 3 أسئلة ورابع باهت، والباقي بعد الضغط على الزر، كما في unix.sa",
                     "id": "show_more",
                     "format": "switch",
                     "required": false,
