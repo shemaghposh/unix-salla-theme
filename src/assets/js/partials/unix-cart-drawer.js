@@ -109,7 +109,7 @@ class CartDrawer {
     document.addEventListener('click', (event) => {
       const host = event.target.closest('salla-cart-summary[data-unix-cart-open]');
       if (!host || event.defaultPrevented) return;
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button === 1) return; // new tab keeps the link
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; // new tab/window keeps the link
       event.preventDefault();
       this.drawer.open(host.querySelector('a') || host);
     });

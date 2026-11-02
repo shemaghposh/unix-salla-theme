@@ -59,6 +59,8 @@ export class Drawer {
     document.addEventListener('click', event => {
       const trigger = event.target.closest(`a[href="#${this.id}"], [aria-controls="${this.id}"]`);
       if (!trigger || el.contains(trigger)) return;
+      // A real link trigger (e.g. the header cart) keeps the browser's own new-tab/window clicks
+      if (trigger.matches('a[href]:not([href^="#"])') && (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)) return;
       event.preventDefault();
       this.isOpen ? this.close() : this.open(trigger);
     });
