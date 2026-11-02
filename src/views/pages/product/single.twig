@@ -386,9 +386,19 @@
     #}
     <div class="s-blocks-wrapper s-before-reviews">{% hook 'product.single.before_customer_reviews' %}</div>
 
-    {# Comments Area #}
+    {#
+        Reviews (ROADMAP 3.8 · DS §8.21): Salla's own reviews in place of unix.sa's Judge.me widget,
+        styled through the public .s-comments-* / .s-rating-stars-* classes (unix-reviews.scss).
+        Title: theme setting unix_reviews_title (multilanguage), else the translated default (D67).
+    #}
     {% if store.settings.rating.show_on_product %}
-        <salla-comments data-testid="store-product-comments" item-id="{{product.id}}" type="product"></salla-comments>
+        {% set reviews_title = theme.settings.get('unix_reviews_title') %}
+        {% if reviews_title is iterable %}
+            {% set reviews_title = reviews_title[language.code] is defined ? reviews_title[language.code] : null %}
+        {% endif %}
+        {% if not reviews_title|trim %}{% set reviews_title = trans('blocks.unix.reviews.title') %}{% endif %}
+        <salla-comments data-testid="store-product-comments" item-id="{{product.id}}" type="product"
+                        block-title="{{ reviews_title|trim|e('html_attr') }}"></salla-comments>
     {% endif %}
 
     {#

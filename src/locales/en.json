@@ -223,6 +223,9 @@
         "counter": ":index of :total",
         "play_video": "Play video",
         "wishlist": "Add to wishlist"
+      },
+      "reviews": {
+        "title": "Customer reviews"
       }
     }
   },

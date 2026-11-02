@@ -215,6 +215,11 @@
 
 @media (min-width: 1280px) { :root { --gallery-thumb-w: 96px; } }
 
+/* ── Phase 3 · 3.8 additions (DS §13.1, §8.21 reviews) ── */
+:root {
+  --reviews-max: 1200px;               /* reviews section width (unix.sa Judge.me max_width 1200) */
+}
+
 /* ── Base ─────────────────────────────────────── */
 .theme-unix {
   background-color: var(--c-bg);

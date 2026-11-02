@@ -223,6 +223,9 @@
         "counter": ":index من :total",
         "play_video": "شغّلي الفيديو",
         "wishlist": "أضيفي المنتج للمفضلة"
+      },
+      "reviews": {
+        "title": "تقييمات العميلات"
       }
     }
   },

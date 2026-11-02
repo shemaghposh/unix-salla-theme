@@ -569,6 +569,20 @@
             "placeholder": "{\"PRODUCTS\": {\"123456\": {\"cat\": \"leggings\"}}}",
             "minLength": 0,
             "maxLength": 20000
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "عنوان التقييمات في صفحة المنتج",
+            "description": "يظهر فوق ملخص التقييمات لما يكون فيه تقييمات. فاضي = «تقييمات العميلات» بالعربي و «Customer reviews» بالإنجليزي",
+            "id": "unix_reviews_title",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "تقييمات العميلات",
+            "minLength": 0,
+            "maxLength": 60
         }
     ],
     "components": [

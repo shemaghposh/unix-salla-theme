@@ -459,6 +459,16 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **فوق الصورة:** `promotion_title` بتاع المنتج كـ Badge (§8.4) ناحية البداية فوق، والسعرات (لو موجودة) دايرة `--s-8` خلفيتها `--c-surface` تحت ناحية النهاية، وزرار المفضلة (`salla-button`) تحت ناحية البداية لحد 640px بس (بعدها زرار عمود المعلومات بتاع رائد هو اللي بيظهر). الحاجات اللي تحت بتتزق فوق شريط التقدّم على الموبايل.
 - **الكيبورد:** زرار الزووم بتاع الشريحة الظاهرة بس هو اللي في الـ tab order (الباقي `tabindex=-1`)، بعده الأسهم، بعده الـ thumbnails.
 
+### 8.21 Reviews (التقييمات) — *المرحلة 3.8*
+بديل Judge.me في unix.sa (SPEC §5.3 و §9، و `reference/shopify-theme/assets/unix-reviews.css` و `assets/unix-stars.css` و `templates/product.json` → `apps`). الكومبوننتس بتاعة سلة زي ما هي: `salla-comments` (وجواه `salla-reviews-summary` و `salla-comment-form` و `salla-comment-item`) و `salla-rating-stars`. الستايل من الـ classes العامة بس (`.s-comments-*` و `.s-reviews-summary-*` و `.s-rating-stars-*` و `.s-comment-form-*` و `.s-progress-bar-*`)، ومن غير fork. الكود: `04-components/unix-reviews.scss`.
+- **ربط ألوان Judge.me بالتوكنز:** النص `#241e1a` ← `--c-text`. الثانوي `#8a8079` ← `--c-text-muted` (§12). الأزرار `#373542` و hover `#4b4960` ← `--c-action` و `--c-action-hover` (أزرار سلة متربوطة أصلًا، §8.2). النجوم والجزء المليان من شريط التوزيع `#8b7355` ← `--c-accent`. مسار الشريط `#e8e0d5` ← `--c-surface-muted`. النجمة الفاضية والبوردر `#ddd3c6` ← `--c-border`. الحقل `#efeae1` ← `--c-field` وفوكسه `#8b7355` ← حلقة `--c-accent` (§8.5). كارت التقييم `#ffffff` ← `--c-surface` (مافيش أبيض في النظام).
+- **السكشن:** خلفية `--c-bg`، و padding `--section-sm` فوق وتحت، وعرض أقصى `--reviews-max` (1200px، زي `max_width: 1200` في الأصل) في النص، و padding-inline `--page-margin`. العنوان h2 بحجم `--t-h3` (عناوين سكاشن صفحة المنتج في الأصل بـ `h3`)، ونصه من إعداد `unix_reviews_title` وإلا «تقييمات العميلات» (D67). سلة بتظهر العنوان بس لما يكون فيه تقييمات.
+- **الملخص:** المتوسط `--t-h2` بخط العناوين و tabular، وجنبه النجوم والعدد (`--t-small`، `--c-text-muted`). صفوف التوزيع: الرقم ونجمة `--c-accent`، والشريط، والنسبة (`--t-micro`، `--c-text-muted`، tabular). الشريط ارتفاعه `--s-2` و pill، المسار `--c-surface-muted` والمليان `--c-accent`. سلة بتكتب لون الشريط وارتفاعه inline، فهنا بس بنستخدم `!important` عشان نغلبهم.
+- **كارت التقييم:** خلفية `--c-surface`، وبوردر `--line-w` من `--c-border`، وحواف `--r-md`، و padding `--s-4` (`--s-5` من md)، وبين الكروت `--s-3`. الاسم `--t-body` 500 بخط النص (مش حجم h3 بتاع الثيم)، والتاريخ `--t-small` `--c-text-muted`. علامة «اشترت المنتج»: دايرة `--c-surface-muted` والعلامة `--c-accent-text`، والنص `--t-small` `--c-accent-text` (taupe-700 عشان AA؛ الأصل taupe-500). نص التقييم `--t-body` `--c-text`. رد المتجر: خلفية `--c-bg`، و `--r-sm`، و padding `--s-4`. صور التقييم `--r-sm`.
+- **النجوم:** المليانة `--c-accent` والفاضية `--c-border`، في كل مكان (الملخص، والكروت، وجنب اسم المنتج). عدد التقييمات جنبها `--c-text-muted`. الـ label («ممتاز»…) pill خلفيتها `--c-surface-muted` ونصها `--c-text` و `--t-micro`.
+- **الفورم والتحكم:** الـ textarea حقل §8.5 (`--c-field`، من غير بوردر، `--r-sm`، ارتفاعه `2 × --field-h`، فوكس `--c-accent`). زرار الإرسال `salla-button` primary (§8.2)، بعرض كامل تحت md زي الأصل. الترتيب `select` حقل §8.5 والـ label بتاعه `--t-small` `--c-text-muted`. «تحميل المزيد» زرار primary. «مفيد» outline small. لينك «تفاصيل التقييم» `--c-accent-text`، والـ hover underline، والفوكس حلقة `--c-accent`.
+- **مافيش تقييمات:** الدايرة `--c-surface-muted`، والأيقونة والنص `--c-text-muted`.
+
 ---
 
 ## 9. نبرة الكلام (Copy)
@@ -544,6 +554,8 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 | `--sf-fig` | 44px | رسم شكل الجسم (الأصل 4.4rem) (3.3) |
 | `--sf-think-w` | 120px | خط «نحسب مقاسك» (الأصل 12rem) (3.3) |
 | `--d-sf-scan` | 1.1s | دورة خط «نحسب مقاسك» (الأصل 1.1s). بيتقفل مع reduced-motion (3.3) |
+| **Phase 3 · 3.8** | | **التقييمات (§8.21)** |
+| `--reviews-max` | 1200px | أقصى عرض لسكشن التقييمات (`max_width: 1200` بتاع Judge.me في الأصل) (3.8) |
 
 ### 13.2 فروقات مقصودة عن الأصل (تتنقل لـ §12)
 | شوبيفاي | هنا | السبب |
@@ -594,3 +606,8 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 | Size Finder: علامة «مقترح» absolute تحت زرار المقاس بلون `#2F5D46` ثابت | absolute برضه، `--c-success`، و `--c-text-inverse` لما المقاس متختار | التباين على الزرار المختار الغامق |
 | Size Finder: الفئة من `product.type`، والكومفي من metafield جدول المقاسات، و `fit_delta` metafield | الفئة والكومفي من اسم المنتج (كلمات زي الأصل + العربي)، ويتغيّروا لكل منتج من `unix_size_finder_data.PRODUCTS` | سلة مافيهاش product type ولا metafields في الثيم *(قرار مؤقت – محتاج مراجعة)* |
 | Size Finder: التوصية بتتكتب في الطلب كـ line-item property مخفية (`_rec_size`) للمعايرة | مش بتتكتب | سلة مابتقبلش properties مخفية على عنصر السلة من الثيم *(قرار مؤقت – محتاج مراجعة)* |
+| **Phase 3 · 3.8** تقييمات Judge.me (ملخص وترقيم صفحات وشكل Judge.me) | تقييمات سلة (`salla-comments`): ملخص سلة، و«تحميل المزيد» بدل الترقيم، بنفس ألوان الأصل (§8.21) | سلة مافيهاش Judge.me، ومش بنعمل fork للكومبوننت *(قرار مؤقت – محتاج مراجعة، D67)* |
+| كارت التقييم أبيض `#fff`، و padding 18px | `--c-surface`، و `--s-4` (`--s-5` من md) | مافيش أبيض ولا 18px في النظام (P4) |
+| حقول الفورم ببوردر `#ddd3c6` وحواف 12px | حقل §8.5: `--c-field` من غير بوردر و `--r-sm` | §8.5 |
+| «مشتري موثّق» بلون taupe-500 كنص | `--c-accent-text` (taupe-700) | taupe-500 كنص تباينه 4.0 (§1.3) |
+| أزرار Judge.me حوافها 30px | pill (`--r-pill`) | §12 |
