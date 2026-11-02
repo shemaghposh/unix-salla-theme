@@ -15,7 +15,8 @@ unix_account_orders_empty_text (multilanguage; null/empty → translation), and 
 {% block inner_content %}
     {% if orders|length %}
         {% hook 'customer:orders.index.items.start' %}
-        <div class="unix-account-panel unix-orders">
+        <div class="unix-account-panel unix-orders"
+             data-i18n-order="{{ trans('blocks.unix.account.order_link', {'number': '__NUMBER__'})|e('html_attr') }}">
             <salla-orders data-testid="store-orders-list"></salla-orders>
         </div>
         {% hook 'customer:orders.index.items.end' %}

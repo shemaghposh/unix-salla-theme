@@ -79,7 +79,7 @@ dashboard are not used (the status name carries the meaning).
 {% extends "layouts.customer" %}
 {% block inner_title %}
     <div class="unix-account__heading">
-        <h1 class="unix-account__title">
+        <h1 class="unix-account__title unix-size-h2">
             {{ page.title }}
             {% if order.source is same as('buy_as_gift') %}
                 <span class="unix-order__gift"><i class="sicon-gift-sharing" aria-hidden="true"></i>{{ trans('pages.orders.gift_tag') }}</span>
@@ -122,6 +122,7 @@ dashboard are not used (the status name carries the meaning).
                 <p class="unix-order__note"><i class="sicon-info" aria-hidden="true"></i><span>{{ trans('pages.orders.your_order_is_under_review') }}</span></p>
             {% endif %}
 
+            {% if order.links|length or can_print_invoice %}
             <div class="unix-order__actions">
                 {% for link in order.links %}
                     <a href="{{ link.url }}" class="unix-btn unix-btn--outline unix-btn--sm" target="_blank" rel="noopener">
@@ -137,6 +138,7 @@ dashboard are not used (the status name carries the meaning).
                     </salla-button>
                 {% endif %}
             </div>
+            {% endif %}
 
             {% if not can_print_invoice %}
                 <p class="unix-order__hint">
@@ -461,6 +463,7 @@ dashboard are not used (the status name carries the meaning).
                             </div>
                             {% if not unix_rating.can_update %}
                                 <p class="unix-order__row-desc">{{ trans('pages.order.edit_period_ended') }}.</p>
+                                <p class="unix-order__row-desc">{{ trans('pages.order.delete_period_ended') }}.</p>
                             {% endif %}
                         </div>
                     {% endif %}

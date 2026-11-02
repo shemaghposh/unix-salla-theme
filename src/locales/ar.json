@@ -329,6 +329,7 @@
         "orders_empty_heading": "لم تطلبي أي شيء بعد",
         "orders_empty_text": "لا توجد طلبات حتى الآن. قطع رائعة بانتظارك، ابدئي التسوق واطلبي طلبك الأول اليوم.",
         "shop_now": "تسوقي الآن",
+        "order_link": "الطلب رقم :number",
         "edit_rating": "عدّلي التقييم",
         "delete_rating": "احذفي التقييم",
         "wishlist_remove": "احذفي :name من المفضلة",

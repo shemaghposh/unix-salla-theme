@@ -415,9 +415,6 @@
     i { margin: 0; }
   }
 
-  .s-orders-rated-text { color: var(--c-accent); }
-  .s-orders-unrated-text { color: var(--c-border); }
-
   .s-orders-leave-review-btn {
     color: var(--c-text);
     font-weight: var(--fw-medium);
@@ -539,8 +536,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--s-3);
-
-  &:empty { display: none; }
 }
 
 .unix-order__hint {
