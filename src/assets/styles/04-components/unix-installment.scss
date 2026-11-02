@@ -27,26 +27,19 @@ salla-installment.unix-pdp-installment {
     font-family: var(--f-body);
   }
 
-  // Tabby (Salla also strips Tabby's own border and adds a 15px margin from JS)
+  // Tabby renders inside a shadow root, and Salla's JS sets an inline `margin: 15px 0 !important`
+  // on the snippet there, so only this outer frame is ours (D59)
   #tabbyPromoWrapper {
     margin: 0;
+    padding-inline: var(--s-4);
     border: var(--line-w) solid var(--c-border) !important; // Salla sets `border: unset !important`
     border-radius: var(--r-sm);
     background: var(--c-surface);
     box-shadow: var(--e-0);
+    font-family: var(--f-body);
     font-weight: 400;
 
     &:hover { box-shadow: var(--e-0); }
-
-    #tabbyPromo * { font-family: var(--f-body); }
-    #tabbyPromo .tabby-promo-snippet {
-      min-block-size: 0;
-      padding: var(--s-3) var(--s-4);
-    }
-    #tabbyPromo :is(.tabby-promo-snippet__text, .tabby-promo-snippet__link) {
-      color: var(--c-text) !important; // Salla's own rule is !important
-      font-size: var(--t-small);
-    }
   }
 
   // Tamara v1 fallback and Spotii keep their logo offsets; only the frame changes
