@@ -1,0 +1,383 @@
+/*
+ * UNIX cart page (ROADMAP 4.4 · DS §8.35 · SPEC §7.2)
+ * pages/cart.twig: lines, Salla's summary column (summary card, coupons, gifting, loyalty,
+ * tiered offer) styled to the system through their light-DOM .s-* classes, and the
+ * «اختيارات تناسبك» section (2.3 markup + .unix-cart-picks).
+ * Raed's JS hooks (.item-*, .free-ribbon, .old-offers, .hidden toggles) are kept as is.
+ */
+
+// ── Layout: lines | summary column (lg) ─────────
+.unix-cart__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-5);
+  align-items: start;
+  padding-block: var(--s-5) var(--section-sm);
+
+  @media (min-width: 1024px) {
+    grid-template-columns: minmax(0, 1fr) var(--cart-aside-w);
+    gap: var(--s-6);
+  }
+}
+
+.unix-cart__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  min-inline-size: 0;
+}
+
+.unix-cart__aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+
+  @media (min-width: 1024px) {
+    position: sticky;
+    inset-block-start: calc(var(--header-h) + var(--s-5));
+  }
+
+  .unix-cbk { margin-block: 0; }
+}
+
+// Bordered surface for each summary block (Raed: white card with a shadow)
+.unix-cart__panel {
+  padding: var(--s-5);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+
+  &.hidden { display: none; }
+}
+
+// No bordered box around a hidden free-shipping bar (empty cart, threshold 0, or no rule)
+.unix-cart__fs:has(> .unix-fs[hidden]) { display: none; }
+
+.unix-cart__coupons,
+.unix-cart__gifting { padding-block: var(--s-2); }
+
+// ── Line ─────────────────────────────────────────
+.unix-cart-item {
+  position: relative;
+  padding: var(--s-4);
+  border: var(--line-w) solid var(--c-border);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+
+  @media (min-width: 768px) { padding: var(--s-5); }
+}
+
+.unix-cart-item__row {
+  display: grid;
+  grid-template-columns: var(--cart-thumb-w) minmax(0, 1fr) var(--tap);
+  grid-template-areas:
+    "media details remove"
+    "media aside   aside";
+  gap: var(--s-3) var(--s-4);
+  align-items: start;
+
+  @media (min-width: 768px) {
+    grid-template-columns: var(--cart-thumb-w-lg) minmax(0, 1fr) auto var(--tap);
+    grid-template-areas: "media details aside remove";
+    column-gap: var(--s-5);
+  }
+}
+
+.unix-cart-item__media {
+  grid-area: media;
+  position: relative;
+  display: block;
+  aspect-ratio: var(--ratio-cart-thumb);
+  border-radius: var(--r-sm);
+  background: var(--c-surface-muted);
+  overflow: hidden;
+}
+
+.unix-cart-item__media-link {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.unix-cart-item__img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  transition: transform var(--d-reveal) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .unix-cart-item__media-link:hover .unix-cart-item__img { transform: scale(var(--zoom-hover)); }
+}
+
+// Free-product badge (DS §8.4 pill), replaces Raed's rotated red ribbon
+.unix-cart-item__badge {
+  position: absolute;
+  inset-block-start: var(--s-2);
+  inset-inline-start: var(--s-2);
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--s-5);
+  max-inline-size: calc(100% - var(--s-4));
+  padding-inline: var(--s-2);
+  border-radius: var(--r-pill);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-size: var(--t-micro);
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.hidden { display: none; } // cart.js toggles Raed's .hidden; this rule loads after the utility
+}
+
+.unix-cart-item__details {
+  grid-area: details;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  min-inline-size: 0;
+}
+
+// h2 for the outline (3.11), card-name size for the look (DS §8.3, §8.35); .theme-unix beats `.theme-unix h2`
+.theme-unix .unix-cart-item__name {
+  margin: 0;
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  font-weight: var(--fw-medium);
+  line-height: 1.6;
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+
+  a {
+    color: var(--c-text);
+    transition: opacity var(--d-fast) var(--ease-out);
+
+    &:hover { opacity: var(--o-muted); }
+    &:active { opacity: var(--o-disabled); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); border-radius: var(--r-sm); }
+  }
+}
+
+.unix-cart-item__prices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--s-2);
+  margin: 0;
+  font-size: var(--t-small);
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+}
+
+.unix-cart-item__price-old {
+  color: var(--c-price-old);
+  text-decoration: line-through;
+}
+
+.unix-cart-item__price {
+  color: var(--c-text);
+
+  &.is-sale { color: var(--c-price-sale); }
+}
+
+.unix-cart-item__meta,
+.unix-cart-item__offer {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+  line-height: 1.6;
+
+  &.hidden { display: none; }
+}
+
+.unix-cart-item__offer { color: var(--c-accent-text); }
+
+.unix-cart-item__aside {
+  grid-area: aside;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-5);
+
+  @media (min-width: 768px) {
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+}
+
+.unix-cart-item__total {
+  display: flex;
+  gap: var(--s-1);
+  margin: 0;
+  color: var(--c-text);
+  font-size: var(--t-small);
+  font-weight: var(--fw-medium);
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.unix-cart-item__total-label {
+  color: var(--c-text-muted);
+  font-weight: var(--fw-regular);
+}
+
+.unix-cart-item__qty-text {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap);
+  font-size: var(--t-small);
+  font-variant-numeric: tabular-nums;
+}
+
+// salla-quantity-input pill: shared with the drawer (unix-cart-drawer.scss)
+
+.unix-cart-item__remove {
+  grid-area: remove;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  margin-block-start: calc(var(--s-3) * -1);
+  margin-inline-end: calc(var(--s-3) * -1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--c-text-muted);
+  cursor: pointer;
+  transition: color var(--d-fast) var(--ease-out), background-color var(--d-fast) var(--ease-out);
+
+  svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
+
+  &:hover { color: var(--c-text); background: var(--c-hover-tint); }
+  &:active { background: var(--c-press-tint); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+  &:disabled { opacity: var(--o-disabled); cursor: not-allowed; }
+}
+
+// ── Empty ────────────────────────────────────────
+.unix-cart__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-3);
+  padding-block: var(--section-sm);
+  text-align: center;
+
+  .unix-btn { margin-block-start: var(--s-3); }
+}
+
+.theme-unix .unix-cart__empty-heading {
+  margin: 0;
+  font-size: var(--t-h3);
+  line-height: 1.35;
+}
+
+.unix-cart__empty-text {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+  line-height: 1.6;
+}
+
+// ── salla-cart-summary-card (light DOM) ──────────
+.theme-unix .s-cart-summary-card {
+  background: var(--c-surface);
+  color: var(--c-text);
+
+  @media (min-width: 1024px) {
+    padding: var(--s-5);
+    margin-block-end: 0;
+    border: var(--line-w) solid var(--c-border);
+    border-radius: var(--r-md);
+    box-shadow: var(--e-0);
+  }
+
+  // < lg Salla pins it to the bottom of the screen as a sheet; keep that, on system values
+  @media (max-width: 1023px) {
+    border-start-start-radius: var(--r-lg);
+    border-start-end-radius: var(--r-lg);
+    border-block-start: var(--line-w) solid var(--c-border);
+    box-shadow: var(--e-2);
+  }
+}
+
+.theme-unix .s-cart-summary-card-bar { background: var(--c-surface); }
+
+@media (max-width: 1023px) {
+  .theme-unix .s-cart-summary-card-sheet-wrap {
+    background: var(--c-surface);
+    border-start-start-radius: var(--r-lg);
+    border-start-end-radius: var(--r-lg);
+  }
+}
+
+.theme-unix .s-cart-summary-card-sheet-title,
+.theme-unix .s-cart-summary-card-bar-label-text,
+.theme-unix .s-cart-summary-card-bar-total {
+  color: var(--c-text);
+  font-family: var(--f-body);
+}
+
+.theme-unix .s-cart-summary-card-line {
+  font-size: var(--t-small);
+  line-height: 1.6;
+
+  span { color: var(--c-text-muted); }
+  b { color: var(--c-text); font-weight: var(--fw-medium); font-variant-numeric: tabular-nums; }
+}
+
+// Salla writes the discount red with !important; the system's sale colour has to match it
+.theme-unix .s-cart-summary-card-line--discount b,
+.theme-unix .s-cart-summary-card-line--discount b * { color: var(--c-price-sale) !important; }
+
+.theme-unix .s-cart-summary-card-bar-count,
+.theme-unix .s-cart-summary-card-bar-label-sub { color: var(--c-text-muted); font-size: var(--t-micro); }
+
+.theme-unix .s-cart-summary-card-bar-total { font-size: var(--t-body-lg); font-variant-numeric: tabular-nums; }
+.theme-unix .s-cart-summary-card-bar-original { color: var(--c-price-old); font-size: var(--t-small); }
+
+.theme-unix .s-cart-summary-card-bar-savings-badge {
+  border-radius: var(--r-pill);
+  background: var(--c-surface-muted);
+  color: var(--c-text);
+  font-size: var(--t-micro);
+}
+
+.theme-unix .s-cart-summary-card-chevron {
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  border-radius: var(--r-pill);
+  color: var(--c-text-muted);
+
+  &:hover { color: var(--c-text); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+}
+
+// The fixed summary sheet (< lg) would cover the end of the page
+@media (max-width: 1023px) {
+  body:has(.s-cart-summary-card) .store-footer { padding-block-end: var(--s-10); }
+}
+
+// ── «اختيارات تناسبك» (unix.sa popular-products, heading h3 size) ──
+.theme-unix .unix-cart-picks__title {
+  font-size: var(--t-h3);
+  line-height: 1.35;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unix-cart-item__img,
+  .unix-cart-item__name a,
+  .unix-cart-item__remove { transition: none; }
+}

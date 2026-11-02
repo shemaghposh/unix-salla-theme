@@ -338,9 +338,9 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 ### 8.9 Drawer (السلة والمنيو)
 - عرضه `min(440px, 92vw)`، وخلفية `--c-surface`، و `--e-2`.
 - **Header:** عنوان وعدد المنتجات وزرار إغلاق 44px.
-- **Footer** ثابت تحت: المجموع، وملاحظة الكاش باك، وزرار primary عرضه كامل.
+- **Footer** ثابت تحت: المجموع والأزرار (التفاصيل في سكشن كل درج؛ السلة بتحط الكاش باك بين السطور والفوتر، §8.33).
 - **Focus trap**، والـ Esc بيقفله، والفوكس بيرجع للعنصر اللي فتحه.
-- **الصفحة ورا الدرج المفتوح `inert`** وهو مفتوح، وبيتشال لما يتقفل. *(هدف، لسه مش متنفّذ في `unix-drawer.js`، 4.2: مودالات سلة زي نافذة الدخول بتترسم برا الدرج تحت `<body>`، ولو اتفتحت من جوه الدرج من غير ما يتقفل (زي لينك الدخول في ملاحظة الكاش باك جوه درج السلة 4.3) هتبقى inert ومتتلمسش. التنفيذ محتاج استثناء لمودالات سلة، ويتعمل مع 4.3. لحد ده الـ focus trap و `aria-modal="true"` هما الحماية)*
+- **الصفحة ورا الدرج:** طول ما فيه درج مفتوح `.app-inner` بيبقى `inert` وسكرول الـ body مقفول (`body.unix-drawer-open`). القفل بالعدّ: لو أكتر من درج مفتوحين بيتشال لما آخر واحد يتقفل، و Esc و Tab بيشتغلوا على الدرج اللي فوق بس. مودالات سلة (الدخول، والبحث، والعروض، والفروع) برا `.app-inner` في `master.twig`، فبتفضل شغالة؛ ومودال العملة/اللغة اللي في الهيدر بيتفتح بعد ما الدرج يتقفل. *(4.3، بيحل D83)*
 
 ### 8.10 Accordion (الأسئلة والتفاصيل)
 - بوردر تحت كل عنصر. العنوان `--t-h4`. أيقونة + بتتحول لـ − (الخط الرأسي بيلف 90° وينطبق على الأفقي، في `--d-base`)، زي unix.sa *(اتعدّلت في 2.9 من «+ بتلف وتبقى ×» عشان تطابق الأصل، D6)*. الأيقونة `--icon-sm` جوه مساحة `--tap` بلون `--c-text-muted`.
@@ -573,12 +573,62 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **فلاتر الصور:** unix.sa فيه إعداد فلاتر بصور (`image_filter_ratio: 4/5`، و `image_filter_columns: 2`)، بس فلاتر سلة مافيهاش عرض بالصور، فده مش منطبق هنا (D83).
 - **الحركة:** درج §8.9 (`--d-slow` `--ease-in-out`)، والباقي `--d-fast`؛ كله بيتقفل مع reduced-motion.
 
+### 8.33 Cart Drawer (درج السلة) — *المرحلة 4.3*
+مطابق لـ `reference/shopify-theme/snippets/cart-drawer.liquid` و `assets/cart-drawer.js` و `assets/components-sections.css` (`.drawer*`) (SPEC §7.1). الكود: `src/views/components/cart/unix-cart-drawer.twig` و `04-components/unix-cart-drawer.scss` و `js/partials/unix-cart-drawer.js`. السلوك الأساسي (focus trap، Esc، الخلفية، رجوع الفوكس) من `Drawer` في `unix-drawer.js` (1.3)، ومافيش منطق سلة من عندنا: البيانات من `salla.cart.api.details(null, ['options'])`، والتعديل `salla.cart.updateItem` / `salla.cart.deleteItem`، والإتمام `salla.cart.submit()`، والتحديث من `salla.cart.event.onUpdated`.
+- **بيتفتح من:** أيقونة السلة في الهيدر (`salla-cart-summary`، اللينك بتاعها بيفضل لو الـ JS مااشتغلش)، وبعد كل إضافة للسلة (`salla.cart.event.onItemAdded`) زي unix.sa. وهو شغّال: toast الإضافة بتاع رائد وتنبيه سلة «تمت الإضافة» وحركة الصورة الطايرة للسلة بيتقفلوا (الدرج هو التأكيد). مش موجود في صفحة السلة نفسها (الأيقونة لينك للصفحة). إعداد `unix_cart_drawer_enabled` (مفعّل) زي `cart_type: drawer` في الأصل. *(قرار مؤقت D85)*
+- **الجنب:** بيدخل من **ناحية النهاية** (`.unix-drawer--end`: شمال في العربي، يمين في الإنجليزي) زي unix.sa (`justify-content: flex-end` و `[dir=rtl] translate(-100%)`)، يعني من ناحية أيقونة السلة. ده عكس درج المنيو (§5 «Drawer» = ناحية البداية). العرض `--drawer-w`، وخلفية `--c-surface`، و `--e-2`، والركنين الداخليين `--r-lg`، والخلفية `--c-backdrop` + `--blur-backdrop`، والحركة `--d-slow` `--ease-in-out` (§8.9). *(قرار مؤقت D86)*
+- **الهيدر:** `h2` «السلة (n)» (`--t-h4`، و n من عدد سلة) وهو اسم الدايلوج (`aria-labelledby`)، وزرار إغلاق `--tap`. تحته شريط الشحن المجاني (§8.34). *(قرار مؤقت D87)*
+- **المنتجات:** `ul` بمسافة `--s-5` بين العناصر، و padding `--s-5`. كل عنصر: صورة `--cart-thumb-w` (84px) بنسبة `--ratio-cart-thumb` (3:4، الأصل `cart_image_ratio: 3/4` و cover) وحواف `--r-sm`، والاسم لينك `--t-small` `--c-text` (hover `--o-muted`)، والخيارات `--t-micro` `--c-text-muted` («المقاس: M»)، وسطر تحت فيه الكمية (`salla-quantity-input` بشكل §8.21: pill `--c-field`، عرض `--qty-w`، ارتفاع `--tap`)، والسعر (`--t-small` 500 tabular؛ وقت الخصم السعر بعد الخصم ومعاه القديم `--c-price-old` line-through)، وزرار حذف أيقونة سلة stroke 1.5 `--icon-sm` جوه `--tap` بلون `--c-text-muted` (hover `--c-text`). صورة اللينك `tabindex="-1"` و `aria-hidden` (نفس لينك الاسم). العنصر وهو بيتحدّث: `aria-busy` و `--o-disabled`. المنتج النافد: «نفدت الكمية» بدل السعر.
+- **أول فتح:** الصفوف بتتجاب بعد الفتح (عناصر السلة مش موجودة في Twig برا صفحة السلة)، فيه skeleton صفين (`--c-surface-muted`) لحد ما توصل.
+- **الكاش باك:** §8.25 بين المنتجات والفوتر، بـ padding-inline `--s-5` (الأصل `.cbk-drawer-wrap {padding: 0 16px}`).
+- **الفوتر:** ثابت تحت (§8.9)، بوردر فوق `--line-w` `--c-border`، و padding `--s-5`، والمسافة `--s-4`. «المجموع الفرعي» والمبلغ في صف واحد (`--t-body-lg`، المبلغ 500 tabular). بعده «إتمام الطلب» و «عرض السلة» بعرض كامل، الاتنين `.unix-btn` primary (زي `button--secondary` في scheme Cream على unix.sa، D70). وتحتهم ملاحظة الضريبة `--t-small` `--c-text-muted`. *(قرار مؤقت D89)*
+- **فاضية:** «لا تفوّتي جديدنا!» (`--t-body-lg` 500) وتحتها النص (`--t-body` `--c-text-muted`) وزرار primary «تسوقي الآن» لكل المنتجات، بمسافة `--s-4`؛ النصين إعدادات (`unix_cart_empty_*`) والفاضي = نص unix.sa.
+- **قارئ الشاشة:** `role="status"` مخفي (`sr-only`) بيقول العدد والمجموع بعد كل تغيير (مش في أول فتح). المجموع نفسه مش live عشان مايتقالش مرتين.
+- **reduced-motion:** الدخول والخلفية من غير حركة (`--d-slow` بيبقى 0)، والـ skeleton من غير نبض.
+
+**Tokens (4.3–4.4):**
+| Token | القيمة | الاستخدام |
+|---|---|---|
+| `--cart-thumb-w` | 84px | صورة المنتج في الدرج وفي صفحة السلة على الموبايل (الأصل `.drawer .cart-item__media {width: 8.4rem}`) |
+| `--cart-thumb-w-lg` | 120px | صورة المنتج في صفحة السلة من md |
+| `--ratio-cart-thumb` | `3 / 4` | نسبة صورة السلة (الأصل `cart_image_ratio: 3/4`) |
+| `--cart-aside-w` | 384px | عمود الملخص في صفحة السلة من lg (عرض رائد الأصلي `w-96`) |
+
+### 8.34 Free Shipping Bar (شريط الشحن المجاني) — *المرحلة 4.3*
+مكانه في هيدر درج السلة (زي `cart-shipping-slider` في الأصل) وأول حاجة في عمود الملخص في صفحة السلة (بدل كارت الشحن بتاع رائد). الكود: `components/cart/unix-free-shipping.twig` و `04-components/unix-free-shipping.scss` و `js/partials/unix-free-shipping.js`.
+- **البيانات:** لو المتجر عنده قاعدة شحن مجاني في سلة (`free_shipping_bar` في بيانات السلة) هي اللي بتحكم (الحد والباقي والنسبة)؛ وإلا حد الثيم `unix_free_shipping_threshold` (500، D1) مقارنة بـ `sub_total`. إعداد `unix_cart_free_shipping` (مفعّل؛ في unix.sa مقفول). *(قرار مؤقت D88)*
+- **النص:** «أنفقي **المبلغ** إضافية للحصول على شحن مجاني داخل السعودية»، ولما توصل «مبروك! أصبحتِ مؤهلة للشحن المجاني!» (نص unix.sa بالحرف، بعلامات التعجب بتاعته). `--t-small` `--c-text-muted`، والمبلغ `--c-text` 500. النص `role="status"` (`aria-live="polite"`).
+- **الشريط:** مسار ارتفاعه `--s-1` و pill بلون `--c-surface-muted`، والمليان `--c-accent` من ناحية البداية، بعرض النسبة (`--fs-progress`) و transition `--d-base` `--ease-out`. بيستخبى لما الشحن يبقى مجاني. `aria-hidden` (النص هو المعلومة). المسافة بين النص والشريط `--s-2`.
+- **بيستخبى** لو السلة فاضية أو الحد صفر أو الإعداد مقفول.
+
+### 8.35 Cart Page (صفحة السلة) — *المرحلة 4.4*
+بترتيب `reference/shopify-theme/templates/cart.json` (SPEC §7.2): السطور + الملخص والأزرار، بعدها الكاش باك (§8.25، D66)، بعدها «اختيارات تناسبك». الكود: `pages/cart.twig` و `04-components/unix-cart-page.scss` و `js/cart.js` (رائد، والـ hooks بتاعته متسابة). كومبوننتس سلة زي ما هي (`salla-cart-summary-card` و `salla-cart-coupons` و `salla-cart-item-offers` و `salla-gifting` و `salla-loyalty-panel` و `salla-tiered-offer` و `salla-offer` و `salla-conditional-offer`)، ومتستايلة من الـ classes العامة (`.s-cart-summary-card-*`). *(قرار مؤقت D91)*
+- **الصفحة:** `h1` مخفي «السلة» (3.11). Grid: عمود واحد، ومن lg السطور + عمود الملخص `--cart-aside-w` (384px) sticky تحت الهيدر، والمسافة `--s-5` (`--s-6` من lg). الـ padding تحت `--section-sm`.
+- **السطر:** كارت `--c-surface` ببوردر `--line-w` `--c-border` و `--r-md`، و padding `--s-4` (`--s-5` من md)، وبين السطور `--s-4`. Grid: الصورة (`--cart-thumb-w`، و `--cart-thumb-w-lg` من md، نسبة `--ratio-cart-thumb`، `--r-sm`)، والتفاصيل، والكمية + الإجمالي (تحت التفاصيل على الموبايل، وعمود لوحدهم من md)، وزرار الحذف (§8.33) في الركن ناحية النهاية.
+  - **الاسم:** `h2` (عشان الـ outline) بحجم اسم الكارت `--t-body` 500 بخط النص (§8.3)، بدل `unix-size-h1` المؤقت من 3.11.
+  - **السعر:** `--t-small` tabular؛ العادي `--c-text`، والمخصوم `--c-price-sale`، والقديم `--c-price-old` line-through. العروض والوزن `--t-small` (العرض `--c-accent-text`).
+  - **منتج مجاني:** badge §8.4 (pill، `--c-surface`، `--t-micro`) ناحية البداية فوق الصورة، بدل شريط رائد الأحمر المايل. برا لينك الصورة المخفي (`aria-hidden`) عشان قارئ الشاشة يقراه. أول صورة `eager` و `fetchpriority="high"`.
+  - **الكمية:** نفس pill الدرج (§8.33).
+- **فاضية:** «سلتك فارغة» (`h2` بحجم `--t-h3`) ونص السلة الفاضية (إعداد `unix_cart_empty_text`) وزرار primary «تسوقي الآن» لكل المنتجات، في النص.
+- **بعد الحذف** الفوكس بيروح لزرار حذف السطر اللي بعده (أو اللي قبله، وإلا `#main-content`). **إضافة منتج من الصفحة** (مثلًا من «اختيارات تناسبك») بتعمل reload دايمًا، لأن السطر الجديد أو الكمية الجديدة مش مرسومين (السطور من السيرفر).
+- **عمود الملخص:** شريط الشحن المجاني (§8.34، أول رسمة من Twig بنفس حساب الـ JS، والكارت بيستخبى لو الشريط مخفي) والكوبونات والهدايا في `unix-cart__panel` (`--c-surface`، بوردر `--line-w`، `--r-md`، padding `--s-5`؛ بدل كروت رائد البيضا بظل). `salla-cart-summary-card`: من lg كارت بنفس الشكل؛ أقل من lg سلة بتثبّته تحت الشاشة كـ sheet، وده متساب بحواف فوق `--r-lg` و `--e-2`، والفوتر بياخد padding تحت `--s-10` عشان مايتغطاش. السطور `--t-small` (الـ label `--c-text-muted` والقيمة `--c-text` 500)، والخصم `--c-price-sale` (سلة كاتبة الأحمر بـ `!important`، فبنغلبه بـ `!important`)، والإجمالي `--t-body-lg`، وشارة التوفير `--c-surface-muted` و `--c-text`.
+- **«اختيارات تناسبك»:** نفس markup و JS سكشن المنتجات 2.3 (§8.15، كروت §8.3، و `salla-products-slider` 2 / 3 / 4 في الصف) من غير تابات، والعنوان `h2` بحجم `--t-h3` (الأصل `heading_size: h3`)، وزرار `.unix-btn` primary (زي `button_style: secondary` في Cream، D70) في صف العنوان من 576px وبعرض كامل تحت أقل من كده. المنتجات من إعداد `unix_cart_picks_products`، والفاضي = أحدث المنتجات. *(قرار مؤقت D90)*
+
+### 8.36 Thank-you Page (صفحة الشكر) — *المرحلة 4.5*
+صفحة الشكر في unix.sa جزء من checkout شوبيفاي (مش في تصدير الثيم)، فمافيش نص أصلي. الكود: `pages/thank-you.twig` و `04-components/unix-thank-you.scss`. كومبوننتس سلة زي ما هي (`salla-thank-you-page` و `salla-thank-you-header` و `salla-order-shipments` / `salla-order-branch` و `salla-order-payment` و `salla-order-rewards` و `salla-next-order-coupon` و `salla-contacts`) والـ hooks بتاعتها، ومتستايلة من متغيرات سلة: `--color-text-primary` ← `--c-text`، و `--color-text-secondary` ← `--c-text-muted`، و `--color-surface` ← `--c-surface`، و `--color-border-light` ← `--c-border`. *(قرار مؤقت D92)*
+- **الصفحة:** `unix-container` بـ padding `--section-sm` فوق وتحت.
+- **`h1` واحد:** عنوان سلة `.s-thank-you-header-title` (الكومبوننت بيكتبه `h1`)، بخط العناوين و `--t-h2` و `--fw-bold` (تأكيد هادي، مش عنوان صفحة كبير). نصه `thank_you_title` بتاع التاجر، والفاضي «شكرًا لكِ»، فمايبقاش فاضي أبدًا. الثيم مابيضيفش `h1` تاني.
+- **الهيدر:** دايرة النجاح `--s-8` بلون `--c-action` والعلامة `--c-text-inverse`، والسطر التاني `--t-body` `--c-text-muted` (65ch)، والفاصل `--c-border`، ورقم الطلب والتاريخ `--t-small` `--c-text-muted` tabular (زرار نسخ الرقم `--tap`، hover `--c-text`، focus الحلقة العامة).
+- **الكروت** (المنتجات، والكوبون، والفرع): `--c-surface` وبوردر `--line-w` `--c-border` و `--r-md` ومن غير ظل.
+- **«تابعي التسوق»:** `.unix-btn` primary في النص بعد آخر سكشن (`--s-6` فوقه) لصفحة كل المنتجات. على الموبايل زرار سلة الثابت تحت الشاشة بيفضل زي ما هو.
+
 ---
 
 ## 9. نبرة الكلام (Copy)
 
 - **خطاب أنثوي** في العربي: «تسوقي»، «اختاري»، «سلتك».
 - **قصير وواثق.** مافيش علامات تعجب، ولا كلام زي «أفضل منتج في العالم».
+  - استثناء: النص المنقول بالحرف من unix.sa بيحتفظ بعلامات الترقيم بتاعته (D88).
 - **الـ CTAs:** فعل + مفعول: «تسوقي الجديد»، «أضيفي للسلة»، «اكتشفي المجموعة».
 - **الأخطاء:** بتشرح الحل: «المقاس ده خلص. نبلغك لما يرجع؟».
 - **لوحة التاجر:** نصوص إعدادات لوحة التاجر (labels و descriptions في `twilight.json`) بالعربي الفصيح البسيط وبخطاب المؤنث.

@@ -1009,6 +1009,146 @@
             "placeholder": "صالح ٦ أشهر",
             "minLength": 0,
             "maxLength": 60
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "السلة الجانبية",
+            "description": "تُفتح السلة كنافذة جانبية عند الضغط على أيقونة السلة وبعد كل إضافة للسلة. عند إيقافها تفتح الأيقونة صفحة السلة.",
+            "id": "unix_cart_drawer_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "شريط الشحن المجاني في السلة",
+            "description": "يوضح المبلغ المتبقي للشحن المجاني. يعتمد على قاعدة الشحن المجاني في سلة إن وُجدت، وإلا على «حد الشحن المجاني» في الأعلى.",
+            "id": "unix_cart_free_shipping",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "عنوان السلة الفارغة",
+            "description": "إذا تركتِه فارغًا يظهر «لا تفوّتي جديدنا!».",
+            "id": "unix_cart_empty_heading",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "لا تفوّتي جديدنا!",
+            "minLength": 0,
+            "maxLength": 80
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "نص السلة الفارغة",
+            "description": "يظهر تحت العنوان. إذا تركتِه فارغًا يظهر نص المتجر الأصلي.",
+            "id": "unix_cart_empty_text",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "سلتك فارغة الآن، اكتشفي تشكيلتنا واملئيها بما يعجبك",
+            "minLength": 0,
+            "maxLength": 200
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "قسم «اختيارات تناسبك» في صفحة السلة",
+            "description": "شريط منتجات أسفل صفحة السلة، أربعة منتجات في الصف على الشاشات الكبيرة.",
+            "id": "unix_cart_picks_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "عنوان «اختيارات تناسبك»",
+            "description": "إذا تركتِه فارغًا يظهر «اختيارات تناسبك» بالعربية و«Picked for you» بالإنجليزية.",
+            "id": "unix_cart_picks_title",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "اختيارات تناسبك",
+            "minLength": 0,
+            "maxLength": 60
+        },
+        {
+            "type": "items",
+            "icon": "sicon-keyboard_arrow_down",
+            "label": "منتجات «اختيارات تناسبك»",
+            "description": "اختاري حتى 8 منتجات بالترتيب. إذا لم تختاري منتجات تظهر أحدث المنتجات.",
+            "id": "unix_cart_picks_products",
+            "format": "dropdown-list",
+            "selected": [],
+            "options": [],
+            "required": false,
+            "multichoice": true,
+            "source": "products",
+            "searchable": true,
+            "maxLength": 8,
+            "minLength": 0,
+            "value": []
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "نص زر «اختيارات تناسبك»",
+            "description": "إذا تركتِه فارغًا يظهر «تسوقي الآن» بالعربية و«Shop now» بالإنجليزية.",
+            "id": "unix_cart_picks_button_label",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "تسوقي الآن",
+            "minLength": 0,
+            "maxLength": 40
+        },
+        {
+            "type": "items",
+            "icon": "sicon-link",
+            "label": "رابط زر «اختيارات تناسبك» (اختياري)",
+            "id": "unix_cart_picks_button_link",
+            "value": null,
+            "description": "في المتجر الأصلي يفتح الزر تصنيف الأكثر مبيعًا. إذا تركتِه فارغًا يفتح صفحة كل المنتجات.",
+            "required": false,
+            "format": "variable-list",
+            "searchable": true,
+            "source": "custom",
+            "sources": [
+                {
+                    "label": "تصنيف",
+                    "key": "categories",
+                    "value": "categories"
+                },
+                {
+                    "label": "منتجات مع وسم",
+                    "key": "products_tags",
+                    "value": "products_tags"
+                },
+                {
+                    "label": "التخفيضات",
+                    "key": "offers_link",
+                    "value": "offers_link"
+                },
+                {
+                    "label": "رابط خارجي",
+                    "key": "custom",
+                    "value": "custom"
+                }
+            ]
         }
     ],
     "components": [

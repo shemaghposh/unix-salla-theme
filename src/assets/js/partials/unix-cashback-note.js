@@ -9,7 +9,8 @@
 
 let bound = false;
 
-function update(subtotal) {
+/** Also called by the 4.3 cart drawer after it loads the cart (DS §8.33). */
+export function updateCashbackNote(subtotal) {
   const value = Number(subtotal);
   if (!Number.isFinite(value)) return;
   document.querySelectorAll('[data-unix-cbk]').forEach((root) => {
@@ -32,6 +33,6 @@ export default function initCashbackNote() {
   });
 
   window.salla?.event?.cart?.onUpdated?.((data) => {
-    if (data && data.sub_total != null) update(data.sub_total);
+    if (data && data.sub_total != null) updateCashbackNote(data.sub_total);
   });
 }

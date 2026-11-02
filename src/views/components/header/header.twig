@@ -13,6 +13,8 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
 #}
 {% set header_overlay = is_page('index') and theme.settings.get('unix_header_transparent_home', true) %}
 {% set inverse_logo = theme.settings.get('unix_header_logo_inverse') %}
+{# ROADMAP 4.3 (D85): the cart drawer is the cart everywhere except the cart page itself #}
+{% set cart_drawer_on = theme.settings.get('unix_cart_drawer_enabled', true) and not is_page('cart') %}
 <header data-testid="store-header" class="store-header unix-header" data-unix-header{{ header_overlay ? ' data-overlay-capable' }}>
   {% include 'components.header.announcement-bar' %}
 
@@ -93,7 +95,8 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
             </button>
           {% endif %}
 
-          <salla-cart-summary data-testid="store-header-cart" class="unix-header__cart">
+          {# ROADMAP 4.3: opens the cart drawer when it is on (D85); the link to /cart is the no-JS fallback #}
+          <salla-cart-summary data-testid="store-header-cart" class="unix-header__cart"{{ cart_drawer_on ? ' data-unix-cart-open' : '' }}>
             <i slot="icon" class="header-btn__icon icon sicon-shopping-bag" aria-hidden="true"></i>
           </salla-cart-summary>
         </div>
@@ -160,4 +163,9 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
       </div>
     </div>
   </div>
+
+  {# Cart drawer (ROADMAP 4.3 · DS §8.33). unix-drawer.js moves it under <body>. #}
+  {% if cart_drawer_on %}
+    {% include 'components.cart.unix-cart-drawer' %}
+  {% endif %}
 </header>
