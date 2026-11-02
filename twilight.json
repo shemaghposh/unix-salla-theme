@@ -973,6 +973,29 @@
         },
         {
             "type": "static",
+            "id": "unix-static-line-pages",
+            "format": "line"
+        },
+        {
+            "type": "static",
+            "format": "title",
+            "id": "unix-static-pages",
+            "value": "<div class='rounded-lg' style='background-color: #21636d; display: flex; justify-content: center; align-items: center;padding: 15px;margin-bottom: 20px !important; flex-direction: column;gap: 15px;'><h6 style='color: #ffffff;font-size: 15px; font-weight: bold;'> الصفحات الثابتة</h6></div>",
+            "variant": "h6"
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "تعليقات العميلات على الصفحات الثابتة",
+            "description": "يعرض نموذج التعليقات أسفل صفحات مثل «من نحن» والسياسات. مغلق افتراضيًا لأن هذه الصفحات للقراءة فقط.",
+            "id": "unix_page_comments",
+            "format": "switch",
+            "required": false,
+            "value": false,
+            "selected": false
+        },
+        {
+            "type": "static",
             "id": "unix-static-line-cart",
             "format": "line"
         },
