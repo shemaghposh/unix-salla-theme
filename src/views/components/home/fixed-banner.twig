@@ -26,8 +26,8 @@
                     loading="lazy"
                     alt="{{ alt_text }}"
                     style="height:auto;max-width:100%;object-fit: contain;"
-                    fetchpriority="high"
                 />
+                {# ROADMAP 6.2: no fetchpriority="high" on a lazy banner; high is for the LCP image only (DS §6) #}
             </picture>
         </a>
     </div>
