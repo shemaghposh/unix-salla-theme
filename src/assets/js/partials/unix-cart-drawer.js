@@ -99,6 +99,7 @@ class CartDrawer {
         const link = host.querySelector('a');
         if (!link) return false;
         link.setAttribute('aria-haspopup', 'dialog');
+        link.setAttribute('aria-controls', this.el.id); // Drawer then owns the click + aria-expanded
         link.setAttribute('aria-expanded', 'false');
         return true;
       };
@@ -133,8 +134,8 @@ class CartDrawer {
       if (this.drawer.isOpen) this.schedule();
     });
 
-    // Salla's login modal sits under the drawer: hand the screen over to it
-    window.salla?.event?.on?.('login::open', () => this.drawer.close());
+    // Salla's login modal sits under the drawer: hand the screen (and focus) over to it
+    window.salla?.event?.on?.('login::open', () => this.drawer.close({ returnFocus: false }));
   }
 
   schedule() {
@@ -154,6 +155,15 @@ class CartDrawer {
       this.loaded = true;
       this.parts.error.hidden = true;
     } catch (error) {
+      // A guest who never added anything has no cart yet: that is the empty state, not an error
+      if (error?.name === 'CartNotCreated') {
+        if (ticket === this.request) {
+          this.render({});
+          this.loaded = true;
+          this.parts.error.hidden = true;
+        }
+        return;
+      }
       if (ticket !== this.request) return;
       window.salla?.log?.('UNIX cart drawer: could not load the cart', error);
       this.stale = true;
@@ -287,13 +297,16 @@ class CartDrawer {
       }
     }
 
-    // quantity coming back from Salla (another tab, an offer, a max cap): no change event
+    // quantity coming back from Salla (another tab, an offer, a max cap): no change event,
+    // and only when the visible value differs (no re-render under the shopper's fingers)
+    node.dataset.qty = String(item.quantity);
     const qty = node.querySelector('salla-quantity-input');
-    if (qty && node.dataset.qty !== String(item.quantity)) {
-      node.dataset.qty = String(item.quantity);
+    if (qty && qty.querySelector('input')?.value !== String(item.quantity)) {
       if (typeof qty.setValue === 'function') qty.setValue(item.quantity, false);
       else qty.setAttribute('value', String(item.quantity));
     }
+    const qtyText = node.querySelector('.unix-cd-item__qty-text');
+    if (qtyText) qtyText.textContent = number(item.quantity);
 
     node.removeAttribute('aria-busy');
   }
@@ -309,6 +322,7 @@ class CartDrawer {
       node.dataset.qty = String(quantity);
       node.setAttribute('aria-busy', 'true');
       this.announceNext = true;
+      this.request++; // drop any details() still in flight: it predates this change
       window.salla.cart.updateItem({ id: node.dataset.id, quantity })
         .catch(() => { this.stale = true; this.schedule(); }) // Salla shows the error; re-read the real quantity
         .finally(() => node.removeAttribute('aria-busy'));
@@ -322,6 +336,7 @@ class CartDrawer {
       node.setAttribute('aria-busy', 'true');
       button.disabled = true;
       this.announceNext = true;
+      this.request++; // drop any details() still in flight: it predates this removal
       window.salla.cart.deleteItem(node.dataset.id)
         .then(() => {
           // focus moves to the next line's remove button, else the previous one, else the close button
@@ -350,7 +365,12 @@ class CartDrawer {
         button.removeAttribute('aria-busy');
       };
       window.salla?.event?.once?.('login::open', release);
-      window.salla?.event?.once?.('cart::submit.failed', release);
+      window.salla?.event?.once?.('cart::submit.failed', (error) => {
+        release();
+        // Required cart-level options etc. are validated by Salla's server (D89): surface its message
+        const message = error?.response?.data?.error?.message || error?.message;
+        if (message && typeof message === 'string') window.salla?.notify?.error?.(message);
+      });
       window.salla.cart.submit();
     });
   }

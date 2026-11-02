@@ -298,7 +298,7 @@
         "sale_price": "Sale price",
         "regular_price": "Regular price",
         "live": "Cart: :count · subtotal :total",
-        "free_shipping_remaining": "Spend :amount more for free shipping",
+        "free_shipping_remaining": "Spend :amount more for free shipping within Saudi Arabia",
         "free_shipping_done": "Congratulations! You qualify for free shipping!"
       },
       "cart": {

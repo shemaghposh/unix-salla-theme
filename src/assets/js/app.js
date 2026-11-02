@@ -104,7 +104,7 @@ isElementLoaded(selector){
   initiateNotifier() {
     salla.notify.setNotifier(function (message, type, data) {
       // The add-product toast or (ROADMAP 4.3, D85) the cart drawer already confirms the add
-      const addConfirmed = window.enable_add_product_toast || document.getElementById('cart-drawer');
+      const addConfirmed = window.enable_add_product_toast || window.app?.cartDrawer;
       if (addConfirmed && data?.data?.googleTags?.event === "addToCart") {
         return;
       }

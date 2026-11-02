@@ -3,6 +3,8 @@
  * - Slides in from the inline-start side (styles in unix-menu.scss).
  * - Focus is trapped inside while open; Esc and the backdrop close it.
  * - Focus returns to the element that opened it.
+ * - While any drawer is open the page (.app-inner) is inert and the body scroll is locked
+ *   (counted, so stacked drawers release it only when the last one closes).
  * Markup: <div data-unix-drawer id="..." hidden> … [data-drawer-close] … </div>,
  * opened by any <a href="#id"> or [aria-controls="id"] trigger.
  */
@@ -12,6 +14,23 @@ const FOCUSABLE = [
 ].join(',');
 
 const OPEN_BODY_CLASS = 'unix-drawer-open';
+
+/*
+ * Open drawers, newest last (menu, filters, cart can stack). The body scroll lock and the
+ * inert page stay on until the last one closes; only the top drawer handles Esc and Tab.
+ * Drawers live under <body> and so do Salla's modals (login, search, offers, scopes:
+ * layouts/master.twig, after .app-inner), so making .app-inner inert leaves them usable.
+ * The localization modal sits in the header, but its triggers close the drawer first.
+ */
+// Shared on window: this module is bundled twice (app.js: menu + cart; product.js: filters).
+const openStack = window.unixOpenDrawers || (window.unixOpenDrawers = []);
+
+function syncPageState() {
+  const anyOpen = openStack.length > 0;
+  document.body.classList.toggle(OPEN_BODY_CLASS, anyOpen);
+  const page = document.querySelector('.app-inner');
+  if (page) page.inert = anyOpen;
+}
 
 function cssDuration(name) {
   const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -64,7 +83,8 @@ export class Drawer {
     // Next frame so the transition runs from the closed position.
     requestAnimationFrame(() => requestAnimationFrame(() => this.el.classList.add('is-open')));
 
-    document.body.classList.add(OPEN_BODY_CLASS);
+    openStack.push(this);
+    syncPageState();
     this.triggers().forEach(node => node.setAttribute('aria-expanded', 'true'));
     document.addEventListener('keydown', this.onKeydown);
 
@@ -74,26 +94,30 @@ export class Drawer {
   }
 
   /**
-   * @param {{focusTarget?: HTMLElement}} [options] focusTarget replaces the trigger as the element
-   *   that gets focus back (used when the trigger is no longer visible).
+   * @param {{focusTarget?: HTMLElement, returnFocus?: boolean}} [options] focusTarget replaces the
+   *   trigger as the element that gets focus back (used when the trigger is no longer visible);
+   *   returnFocus: false leaves focus alone (another dialog, e.g. Salla's login, is taking over).
    */
-  close({ focusTarget } = {}) {
+  close({ focusTarget, returnFocus = true } = {}) {
     if (!this.isOpen) return;
     this.isOpen = false;
 
     this.el.classList.remove('is-open');
-    document.body.classList.remove(OPEN_BODY_CLASS);
+    const index = openStack.indexOf(this);
+    if (index > -1) openStack.splice(index, 1);
+    syncPageState();
     this.triggers().forEach(node => node.setAttribute('aria-expanded', 'false'));
     document.removeEventListener('keydown', this.onKeydown);
 
     this.closeTimer = setTimeout(() => { this.el.hidden = true; }, cssDuration('--d-slow'));
 
     const target = focusTarget || this.returnFocusTo;
-    if (target && document.contains(target)) target.focus({ preventScroll: true });
+    if (returnFocus && target && document.contains(target)) target.focus({ preventScroll: true });
     this.el.dispatchEvent(new CustomEvent('drawer:close', { bubbles: true }));
   }
 
   onKeydown(event) {
+    if (openStack[openStack.length - 1] !== this) return; // only the top drawer reacts
     if (event.key === 'Escape') {
       event.preventDefault();
       this.close();
