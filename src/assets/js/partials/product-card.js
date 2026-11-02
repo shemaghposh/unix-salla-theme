@@ -119,7 +119,7 @@ class ProductCard extends HTMLElement {
 
   /**
    * Quick-add label. A UNIX section can ask for its own short label for products on plain sale
-   * through `data-unix-add-label` on an ancestor («أضيفي» in «أكملي الإطلالة», ROADMAP 3.9 · DS §8.22).
+   * through `data-unix-add-label` on an ancestor («أضيفي» in «أكملي الإطلالة», ROADMAP 3.9 · DS §8.27).
    * Pre-order, booking, donation and out-of-stock keep Salla's own wording.
    */
   getCardAddLabel() {
