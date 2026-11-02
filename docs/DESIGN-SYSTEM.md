@@ -748,6 +748,7 @@ unix.sa مافيهوش صفحة ماركات ولا برنامج ولاء ولا
 | Components | `src/views/components/**` وتتسجل في `twilight.json → components` |
 | Web components | `salla-*` بتتستايل من خلال CSS variables و `.s-*` classes. ماتعملش fork ليها |
 | Settings | أي حاجة التاجر يعدّلها (نصوص، وصور، ولينكات) بتبقى `fields` في الكومبوننت. ممنوع الـ hard-code |
+| Notifications | `salla.notify` بيعرض SweetAlert2 (toast أو modal، ستايل `05-utilities/swal.scss`)، وبيتحمّل مع أول إشعار (ROADMAP 6.2). لو واجهة الإشعارات ماتحمّلتش، الأخطاء والتأكيدات بترجع لـ dialog المتصفح، وإشعارات النجاح ممكن تتشال. |
 
 ---
 

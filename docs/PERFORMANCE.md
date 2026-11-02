@@ -122,7 +122,9 @@ the three, and no `@apply` depends on them.
 
 | Change | Where | Safe because |
 |---|---|---|
-| SweetAlert2 loads through `import()` on the first notification, and the promise is cached | `app.js` | The notifier already returned a promise. Same `Swal.fire` and `mixin` options. A failed load is retried on the next notification. |
+| SweetAlert2 loads through `import()`, and the promise is cached | `app.js` | The notifier already returned a promise. Same `Swal.fire` and `mixin` options. A failed load is retried on the next notification. |
+| Warm cache | `app.js` | After `load`, `requestIdleCallback` (or a `setTimeout` fallback) fetches the chunk, so the first toast doesn't wait on the network. This is off the critical path, and errors are ignored. |
+| `fallbackNotify()` | `app.js`, DS §10 | If the chunk can't load, errors and object (confirm or modal) messages fall back to `alert()` with markup stripped by `DOMParser`. Success and info toasts are only logged. Both return paths `.catch()` into it, and the object path keeps `.then(type)` after the catch. |
 | `app.anime()`, `partials/anime.js` and the `window.anime` global removed from `app.js` | `app.js` | Nothing calls `app.anime()`; the only mention is a commented-out line in `cart.js`. The global had two users. The first fix missed both, and the reviewer caught it. |
 | Blog like count is now a plain text update | `blog.js` | Same number, without the tween and scale. The reduced-motion branch only guarded the scale, so it is gone. |
 | `animejs` loads through `import()` on the loyalty page only | `loyalty.js` (`pages` entry), `package.json` keeps `animejs` | Same timeline. Under reduced motion, or if the chunk fails to load, the final points show without animation. |

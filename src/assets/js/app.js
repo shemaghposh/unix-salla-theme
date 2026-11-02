@@ -25,6 +25,41 @@ const loadSwal = () => {
   return swalModule;
 };
 
+/**
+ * DS §10 (Notifications): if SweetAlert2 can't load, errors and confirmation dialogs fall back to the
+ * browser dialog; success/info toasts may be dropped (logged only). Markup is reduced to plain text with
+ * DOMParser, which neither runs scripts nor loads images.
+ */
+const toPlainText = (value) => {
+  if (value === undefined || value === null) return '';
+  return new DOMParser().parseFromString(String(value), 'text/html').body.textContent.trim();
+};
+
+const fallbackNotify = (message, type) => {
+  const isObject = message && typeof message === 'object';
+  const text = isObject
+    ? toPlainText(message.title || message.text || message.html || '')
+    : toPlainText(message);
+
+  if (text && (isObject || type === 'error')) {
+    window.alert(text);
+    return;
+  }
+  salla.log(`Notification (${type}): ${text}`);
+};
+
+/**
+ * Warm the SweetAlert2 chunk once the page is idle after `load`, so the first notification doesn't
+ * wait on the network. It stays off the critical path; a failure here is ignored (the notifier retries).
+ */
+const warmSwal = () => {
+  const run = () => loadSwal().catch(() => {});
+  if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 5000 });
+  else setTimeout(run, 2000);
+};
+if (document.readyState === 'complete') warmSwal();
+else window.addEventListener('load', warmSwal, { once: true });
+
 class App extends AppHelpers {
   constructor() {
     super();
@@ -125,7 +160,10 @@ isElementLoaded(selector){
         return;
       }
       if (typeof message == 'object') {
-        return loadSwal().then(Swal => Swal.fire(message)).then(type);
+        return loadSwal()
+          .then(Swal => Swal.fire(message))
+          .catch(() => fallbackNotify(message, type))
+          .then(type);
       }
 
       return loadSwal().then(Swal => Swal.mixin({
@@ -142,7 +180,7 @@ isElementLoaded(selector){
         title: message,
         showCloseButton: true,
         timerProgressBar: true
-      }));
+      })).catch(() => fallbackNotify(message, type));
     });
   }
 
