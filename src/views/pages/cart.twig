@@ -220,6 +220,8 @@
                     {% hook 'cart:summary-card.start' %}
                     <salla-cart-summary-card data-testid="store-cart-summary"></salla-cart-summary-card>
                     {% hook 'cart:summary-card.end' %}
+                    {# ROADMAP 3.7: unix.sa cashback note, after the subtotal + checkout (SPEC §7.2 cashback-note-section) #}
+                    {% include 'components.cart.unix-cashback-note' %}
                     {% hook 'cart:summary.end' %}
 
                      <!-- Tiered Offer Component -->

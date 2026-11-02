@@ -203,6 +203,9 @@
   /* ── Phase 3 · 3.4 Size Charts (DS §8.21, §13.1) ── */
   --sg-dialog-w: 900px;                /* chart dialog max width (unix.sa max-width: 900px) */
   --sg-dialog-max-h: 90dvh;            /* chart dialog max height (unix.sa max-height: 90vh) */
+
+  /* ── Phase 3 · 3.7 Cashback note (DS §8.23, §13.1) ── */
+  --c-note-bg: color-mix(in srgb, var(--unix-ink-700) 5%, transparent); /* unix.sa rgba(55,53,66,.05); text on it = --c-text */
 }
 
 @media (prefers-reduced-motion: reduce) {

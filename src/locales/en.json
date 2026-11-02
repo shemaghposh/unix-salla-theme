@@ -249,6 +249,12 @@
         "default_tier1_cities": "Riyadh",
         "default_tier2_cities": "Jeddah,Makkah,Madinah,Dammam,Khobar,Dhahran,Jubail,Al Ahsa,Taif,Qatif",
         "default_tier3_cities": "Abha,Khamis Mushait,Tabuk,Buraidah,Unaizah,Hail,Najran,Jazan,Al Baha,Arar,Sakaka,Yanbu,Al Kharj,Hafar Al Batin,Wadi ad-Dawasir,Qurayyat,Bisha,Sabya,Muhayil,Zulfi,Majmaah,Shaqra,Dawadmi,Al Qunfudhah,Rabigh,Umluj,Duba,Turaif,Nairyah,Ras Tanura,Ar Rass,Al Bukayriyah,Al Aflaj,Afif,Diriyah,Another city"
+      },
+      "cashback": {
+        "lead": "Earn :amount back as store credit once delivered",
+        "fine": ":percent% cashback · :validity",
+        "default_validity": "valid 6 months",
+        "login": "Sign in to use your credit"
       }
     }
   },

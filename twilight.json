@@ -703,6 +703,56 @@
             "placeholder": "الإمارات,الكويت,...",
             "minLength": 0,
             "maxLength": 2000
+        },
+        {
+            "type": "static",
+            "id": "unix-static-line-cart",
+            "format": "line"
+        },
+        {
+            "type": "static",
+            "format": "title",
+            "id": "unix-static-cart",
+            "value": "<div class='rounded-lg' style='background-color: #21636d; display: flex; justify-content: center; align-items: center;padding: 15px;margin-bottom: 20px !important; flex-direction: column;gap: 15px;'><h6 style='color: #ffffff;font-size: 15px; font-weight: bold;'> خيارات السلة</h6></div>",
+            "variant": "h6"
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "ملاحظة الكاش باك في السلة",
+            "description": "«يرجع لكِ X رصيدًا بعد استلام طلبك» تحت ملخص الطلب. للعرض فقط: الرصيد نفسه يُضاف من نظام الولاء أو المحفظة.",
+            "id": "unix_cashback_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "id": "unix_cashback_percent",
+            "type": "number",
+            "format": "integer",
+            "icon": "sicon-discount-calculator",
+            "label": "نسبة الكاش باك (%)",
+            "description": "من مجموع المنتجات في السلة. الأصل 10",
+            "placeholder": "10",
+            "value": 10,
+            "required": false,
+            "minimum": 0,
+            "maximum": 100
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "مدة صلاحية الرصيد",
+            "description": "تظهر بعد «كاش باك ١٠٪ ·». فاضي = «صالح ٦ أشهر»",
+            "id": "unix_cashback_validity",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "صالح ٦ أشهر",
+            "minLength": 0,
+            "maxLength": 60
         }
     ],
     "components": [
