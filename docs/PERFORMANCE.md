@@ -82,8 +82,6 @@ This file records what each page loads, what 6.2 changed and why, and the build 
   - Samsung 22 and Opera 97 are the Chromium 111 equivalents.
   - Below these floors, `color-mix()` colours and `:has()`-driven states (such as the transparent header)
     were never going to work, with or without fallbacks.
-  - The reviewer suggested Chrome and Edge 108 and Samsung 21. I raised them to 111 and 22 because
-    `color-mix()` needs Chromium 111; at 108, preset-env keeps emitting `color-mix()` fallbacks.
 - `postcss.config.js`: `'logical-properties-and-values': false` is set explicitly. Logical properties
   reach the browser as written whatever the targets are, so RTL can't regress through the build again.
 - Effects:
@@ -174,33 +172,33 @@ asked for them.
 
 ## 6. Estimated vs measured
 
-All sizes are minified. "Measured" is the main session's `pnpm prod` of this branch with the first
-browserslist (100 / 15.4), before the blocker fixes. The anime and notifier fixes and the raised floors
-(§2) come after it, so the rows marked ⏳ need the next build.
+All sizes are minified. "Measured" is the main session's `pnpm prod` after merging 6.2 into `main`
+(`dc424d2`), which includes the blocker fixes and the raised floors from §2.
 
 | Metric | Before | Estimated | Measured |
 |---|---|---|---|
-| `app.css` | 444KB | about 230–270KB | **347KB** (−22%). Next build expected lower: see below. |
-| `app.js` | 122KB | about 25–35KB | **29KB** (−76%). The fallback and warm-cache code adds well under 1KB. |
+| `app.css` | 444KB | about 230–270KB | **346KB** (−22%). Above the estimate: see below. |
+| `app.js` | 122KB | about 25–35KB | **29.1KB** (−76%) |
 | `sweetalert2.[hash].js` chunk | — | about 75–80KB | **77KB**, fetched after `load` when idle, or on the first notification |
-| `home.js` | 46KB | about 10–15KB | **15KB** (−67%) |
-| `product.js` | 76KB | about 30–35KB | **45KB** (−41%). Above the estimate: see below. |
-| `fslightbox.[hash].js` chunk | — | about 31KB | **30KB**, product pages with a video slide only |
-| `animejs.[hash].js` chunk | — | about 17KB | ⏳ (new with the loyalty fix; loyalty page only) |
+| `home.js` | 46KB | about 10–15KB | **15.1KB** (−67%) |
+| `product.js` | 76KB | about 30–35KB | **44.8KB** (−41%). Above the estimate: see below. |
+| `fslightbox.[hash].js` chunk | — | about 31KB | **30.1KB**, product pages with a video slide only |
+| `animejs.[hash].js` chunk | — | about 17KB | **17.3KB**, loyalty page only |
 | Theme JS per page (gz): home, PDP, PLP, cart | — | well under 150KB | ⏳. Minified totals before `load`, counting `app` plus the page entry plus the three `<head>` scripts (about 26KB together): about 70KB on home and about 100KB on the PDP. The idle-warmed 77KB SweetAlert2 chunk comes after `load` on top of that. |
 | Lighthouse Mobile Performance: home, PDP, PLP | ⏳ | at least 85 | ⏳ |
 | LCP (mobile): home hero, PDP gallery | ⏳ | under 2.5s | ⏳ |
 | CLS: home, PDP, PLP | ⏳ | under 0.05 | ⏳ |
 
 **Why two results came in above the estimate:**
-- **`app.css` (347KB, not 230–270KB).**
-  - The 100 / 15.4 floor still let preset-env emit fallbacks for `color-mix()`, which needs Chromium 111
-    or Safari 16.2.
-  - The estimate also overrated how much of the file was custom-property fallbacks. A large share is real
-    rules: about 50 `unix-*` partials, the Raed home blocks kept in §3, Tailwind preflight and utilities,
-    and `@tailwindcss/forms`.
-  - Raising the floor (§2) should remove the `color-mix()` fallbacks. Re-measure it.
-- **`product.js` (45KB, not 30–35KB).**
+- **`app.css` (346KB, not 230–270KB).**
+  - The estimate overrated how much of the file was custom-property fallbacks.
+  - Raising the floor to 111 / 16.2 (§2) saved only about 1KB more (347KB to 346KB), so `color-mix()`
+    fallbacks were not a significant share either.
+  - Most of the file is real rules: about 50 `unix-*` partials, the Raed home blocks kept in §3, Tailwind
+    preflight and utilities, and `@tailwindcss/forms`.
+  - Further cuts need the Raed-block decisions in §3, or splitting page-only CSS (account, PDP, blog) out
+    of the global `app.css`. That is a candidate follow-up, to be prioritised with the Lighthouse results.
+- **`product.js` (44.8KB, not 30–35KB).**
   - The Size Finder (`unix-size-finder.js` is about 24KB of source, plus about 12KB for
     `unix-size-finder-model.js`) is bundled into `product.js`.
   - That entry also serves product listings, which never use the Size Finder.

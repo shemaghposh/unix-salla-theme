@@ -235,7 +235,7 @@
   - الهيرو **2:3 على الموبايل و 16:9 على الديسكتوب** زي unix.sa (بين 560 و 920px)، أو `100svh` لو التاجر اختار «ملء الشاشة» (§8.1).
 - **أسلوب الصور:** إضاءة طبيعية، وخلفيات بيج أو رملي، ومن غير فلاتر قوية. ونفس الخلفية لكل صور الكتالوج.
 - `loading="lazy"` لكل الصور ما عدا أول صورة في الهيرو (`fetchpriority="high"`).
-- **اللوجو** `loading="eager"` دايمًا. The logo takes `fetchpriority=high` only on pages with no designated LCP image (hero §8.1, first gallery image §8.20, collection image, article image/first article card §8.42, first cart image). في الصفحات دي الصورة دي هي اللي تاخدها (ROADMAP 6.2).
+- **اللوجو** `loading="eager"` دايمًا. `fetchpriority="high"` على اللوجو بس في الصفحات اللي مالهاش صورة LCP محددة (الهيرو §8.1، وأول صورة في المعرض §8.20، وصفحة التصنيف (أول كارت أو صورة التصنيف)، وصورة المقال أو أول كارت مقال §8.42، وأول صورة في السلة). في الصفحات دي الصورة دي هي اللي تاخدها (ROADMAP 6.2).
 
 ---
 

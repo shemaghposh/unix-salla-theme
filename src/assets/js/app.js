@@ -38,10 +38,15 @@ const toPlainText = (value) => {
 const fallbackNotify = (message, type) => {
   const isObject = message && typeof message === 'object';
   const text = isObject
-    ? toPlainText(message.title || message.text || message.html || '')
+    ? [message.title, message.text || message.html].map(toPlainText).filter(Boolean).join('\n')
     : toPlainText(message);
 
-  if (text && (isObject || type === 'error')) {
+  if (isObject) {
+    if (text) window.alert(text);
+    // Same shape as a confirmed Swal result, so `.then(type)` callers carry on as if accepted
+    return { isConfirmed: true, isDismissed: false };
+  }
+  if (text && type === 'error') {
     window.alert(text);
     return;
   }
