@@ -214,8 +214,9 @@
   font-variant-numeric: tabular-nums;
 }
 
-// salla-quantity-input in the drawer: same pill as the product page (DS §8.21)
-.unix-cd-item__qty {
+// salla-quantity-input in the drawer and on the cart page (4.4): same pill as the product page (DS §8.21)
+.unix-cd-item__qty,
+.unix-cart-item__qty {
   .s-quantity-input-container {
     box-sizing: border-box;
     display: flex;
@@ -396,5 +397,8 @@
   .unix-cd-item__img,
   .unix-cd-item__name,
   .unix-cd-item__remove { transition: none; }
-  .unix-cd-item__qty .s-quantity-input-button:active { transform: none; }
+  .unix-cd-item__qty .s-quantity-input-button,
+  .unix-cart-item__qty .s-quantity-input-button { transition: none; }
+  .unix-cd-item__qty .s-quantity-input-button:active,
+  .unix-cart-item__qty .s-quantity-input-button:active { transform: none; }
 }

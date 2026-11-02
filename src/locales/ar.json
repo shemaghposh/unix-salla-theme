@@ -300,6 +300,13 @@
         "live": "في سلتك :count · المجموع الفرعي :total",
         "free_shipping_remaining": "أنفقي :amount إضافية للحصول على شحن مجاني داخل السعودية",
         "free_shipping_done": "مبروك! أصبحتِ مؤهلة للشحن المجاني!"
+      },
+      "cart": {
+        "empty": "سلتك فارغة",
+        "remove": "إزالة :name",
+        "quantity": "الكمية لمنتج :name",
+        "picks_title": "اختيارات تناسبك",
+        "picks_button": "تسوقي الآن"
       }
     }
   },

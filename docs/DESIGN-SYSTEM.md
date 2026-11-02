@@ -568,6 +568,18 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **الشريط:** مسار ارتفاعه `--s-1` و pill بلون `--c-surface-muted`، والمليان `--c-accent` من ناحية البداية، بعرض النسبة (`--fs-progress`) و transition `--d-base` `--ease-out`. بيستخبى لما الشحن يبقى مجاني. `aria-hidden` (النص هو المعلومة). المسافة بين النص والشريط `--s-2`.
 - **بيستخبى** لو السلة فاضية أو الحد صفر أو الإعداد مقفول.
 
+### 8.35 Cart Page (صفحة السلة) — *المرحلة 4.4*
+بترتيب `reference/shopify-theme/templates/cart.json` (SPEC §7.2): السطور + الملخص والأزرار، بعدها الكاش باك (§8.25، D66)، بعدها «اختيارات تناسبك». الكود: `pages/cart.twig` و `04-components/unix-cart-page.scss` و `js/cart.js` (رائد، والـ hooks بتاعته متسابة). كومبوننتس سلة زي ما هي (`salla-cart-summary-card` و `salla-cart-coupons` و `salla-cart-item-offers` و `salla-gifting` و `salla-loyalty-panel` و `salla-tiered-offer` و `salla-offer` و `salla-conditional-offer`)، ومتستايلة من الـ classes العامة (`.s-cart-summary-card-*`). *(قرار مؤقت D91)*
+- **الصفحة:** `h1` مخفي «السلة» (3.11). Grid: عمود واحد، ومن lg السطور + عمود الملخص `--cart-aside-w` (384px) sticky تحت الهيدر، والمسافة `--s-5` (`--s-6` من lg). الـ padding تحت `--section-sm`.
+- **السطر:** كارت `--c-surface` ببوردر `--line-w` `--c-border` و `--r-md`، و padding `--s-4` (`--s-5` من md)، وبين السطور `--s-4`. Grid: الصورة (`--cart-thumb-w`، و `--cart-thumb-w-lg` من md، نسبة `--ratio-cart-thumb`، `--r-sm`)، والتفاصيل، والكمية + الإجمالي (تحت التفاصيل على الموبايل، وعمود لوحدهم من md)، وزرار الحذف (§8.33) في الركن ناحية النهاية.
+  - **الاسم:** `h2` (عشان الـ outline) بحجم اسم الكارت `--t-body` 500 بخط النص (§8.3)، بدل `unix-size-h1` المؤقت من 3.11.
+  - **السعر:** `--t-small` tabular؛ العادي `--c-text`، والمخصوم `--c-price-sale`، والقديم `--c-price-old` line-through. العروض والوزن `--t-small` (العرض `--c-accent-text`).
+  - **منتج مجاني:** badge §8.4 (pill، `--c-surface`، `--t-micro`) ناحية البداية فوق الصورة، بدل شريط رائد الأحمر المايل.
+  - **الكمية:** نفس pill الدرج (§8.33).
+- **فاضية:** «سلتك فارغة» (`h2` بحجم `--t-h3`) ونص السلة الفاضية (إعداد `unix_cart_empty_text`) وزرار primary «تسوقي الآن» لكل المنتجات، في النص.
+- **عمود الملخص:** شريط الشحن المجاني (§8.34) والكوبونات والهدايا في `unix-cart__panel` (`--c-surface`، بوردر `--line-w`، `--r-md`، padding `--s-5`؛ بدل كروت رائد البيضا بظل). `salla-cart-summary-card`: من lg كارت بنفس الشكل؛ أقل من lg سلة بتثبّته تحت الشاشة كـ sheet، وده متساب بحواف فوق `--r-lg` و `--e-2`، والفوتر بياخد padding تحت `--s-10` عشان مايتغطاش. السطور `--t-small` (الـ label `--c-text-muted` والقيمة `--c-text` 500)، والخصم `--c-price-sale` (سلة كاتبة الأحمر بـ `!important`، فبنغلبه بـ `!important`)، والإجمالي `--t-body-lg`، وشارة التوفير `--c-surface-muted` و `--c-text`.
+- **«اختيارات تناسبك»:** نفس markup و JS سكشن المنتجات 2.3 (§8.15، كروت §8.3، و `salla-products-slider` 2 / 3 / 4 في الصف) من غير تابات، والعنوان `h2` بحجم `--t-h3` (الأصل `heading_size: h3`)، وزرار `.unix-btn` primary (زي `button_style: secondary` في Cream، D70) في صف العنوان من 576px وبعرض كامل تحت أقل من كده. المنتجات من إعداد `unix_cart_picks_products`، والفاضي = أحدث المنتجات. *(قرار مؤقت D90)*
+
 ---
 
 ## 9. نبرة الكلام (Copy)

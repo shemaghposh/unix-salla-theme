@@ -292,4 +292,5 @@ html[lang="en"] .theme-unix :is(h1, h2, h3, h4) { letter-spacing: -.01em; }
   --cart-thumb-w: 84px;                /* cart line image, drawer + page < md (unix.sa .drawer .cart-item__media 8.4rem) */
   --cart-thumb-w-lg: 120px;            /* cart line image on the cart page from md */
   --ratio-cart-thumb: 3 / 4;           /* cart line image ratio (unix.sa cart_image_ratio 3/4) */
+  --cart-aside-w: 384px;               /* cart page summary column from lg (Raed w-96) */
 }

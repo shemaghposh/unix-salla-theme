@@ -300,6 +300,13 @@
         "live": "Cart: :count · subtotal :total",
         "free_shipping_remaining": "Spend :amount more for free shipping",
         "free_shipping_done": "Congratulations! You qualify for free shipping!"
+      },
+      "cart": {
+        "empty": "Your cart is empty",
+        "remove": "Remove :name",
+        "quantity": "Quantity for :name",
+        "picks_title": "Picked for you",
+        "picks_button": "Shop now"
       }
     }
   },

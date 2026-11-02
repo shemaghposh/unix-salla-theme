@@ -1,24 +1,41 @@
 import BasePage from './base-page';
 import {validateProductOptions} from './partials/validate-product-options';
 import initCashbackNote from './partials/unix-cashback-note'; // ROADMAP 3.7 (DS §8.25)
+import initFreeShipping from './partials/unix-free-shipping'; // ROADMAP 4.3/4.4 (DS §8.34)
+import initProductsTabs from './partials/unix-products-tabs'; // ROADMAP 4.4: «اختيارات تناسبك» reuses the 2.3 section
 class Cart extends BasePage {
     onReady() {
         // keep update the dom base in the events
         salla.event.cart.onUpdated(data => this.updateCartPageInfo(data));
 
         app.watchElements({
-            freeShipping: '#free-shipping',
-            freeShippingBar: '#free-shipping-bar',
-            freeShippingMsg: '#free-shipping-msg',
-            freeShipApplied: '#free-shipping-applied',
             cartGifting: '#cart-gifting',
             sallaGifting:'#salla-gifting'
         });
 
         this.initSubmitCart();
+        this.initRemoveItem();
         validateProductOptions();
         // ROADMAP 3.7: cashback amount follows the subtotal; guest link opens Salla's login
         initCashbackNote();
+        // ROADMAP 4.4: the drawer's free-shipping bar replaces Raed's #free-shipping card (D88)
+        initFreeShipping();
+        initProductsTabs();
+    }
+
+    /**
+     * ROADMAP 4.4: the line's remove icon (replaces Raed's red salla-button). Salla does the work.
+     */
+    initRemoveItem() {
+        document.addEventListener('click', event => {
+            const button = event.target.closest('[data-unix-cart-remove]');
+            if (!button || button.disabled) return;
+            const id = button.dataset.unixCartRemove;
+            button.disabled = true;
+            salla.cart.deleteItem(id)
+                .then(() => document.querySelector('#item-' + id)?.remove())
+                .catch(() => { button.disabled = false; });
+        });
     }
 
     initSubmitCart() {
@@ -100,22 +117,7 @@ class Cart extends BasePage {
         cartData.items?.forEach(item => this.updateItemInfo(item));
 
         // Summary totals (subtotal, discount, shipping, tax, options) are owned by
-        // <salla-cart-summary-card> now; the theme only manages the free-shipping bar.
-        app.toggleElementClassIf(app.freeShipping, 'has_free', 'hidden', () => !!cartData.free_shipping_bar);
-
-        if (!cartData.free_shipping_bar) {
-            return;
-        }
-
-        let isFree = cartData.free_shipping_bar.has_free_shipping;
-        app.toggleElementClassIf(app.freeShippingBar, 'active', 'hidden', () => !isFree)
-            .toggleElementClassIf(app.freeShipApplied, 'active', 'hidden', () => isFree);
-
-        app.freeShippingMsg.innerHTML = isFree
-            ? salla.lang.get('pages.cart.has_free_shipping')
-            : salla.lang.get('pages.cart.free_shipping_alert', { amount: salla.money(cartData.free_shipping_bar.remaining) });
-        app.freeShippingBar.children[0].style.width = cartData.free_shipping_bar.percent + '%';
-
+        // <salla-cart-summary-card>; the free-shipping bar by unix-free-shipping.js (ROADMAP 4.4).
     }
 
     /**
@@ -151,7 +153,8 @@ class Cart extends BasePage {
         app.toggleElementClassIf([offerElement, oldOffers], 'offer-applied', 'hidden', () => hasSpecialPrice && !newOffersActive)
             .toggleElementClassIf([regularPriceElement, offerIconElement], 'offer-applied', 'hidden', () => hasSpecialPrice)
             .toggleElementClassIf([itemOriginalPrice], 'offer-applied', 'hidden', () => hasSalePrice)
-            .toggleElementClassIf(priceElement, 'text-red-400', 'text-sm text-gray-400', () => hasSpecialPrice)
+            // ROADMAP 4.4: system price states (unix-cart-page.scss) instead of Raed's red/gray utilities
+            .toggleElementClassIf(priceElement, 'is-sale', 'is-regular', () => hasSpecialPrice)
             // Keep this condition in sync with cart.twig — the ribbon marks an item made
             // free by an offer, not any item that happens to cost 0 (e.g. request-a-quote
             // products). Dropping `has_discount` here regressed #789 once already.
