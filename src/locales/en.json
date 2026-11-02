@@ -307,6 +307,10 @@
         "quantity": "Quantity for :name",
         "picks_title": "Picked for you",
         "picks_button": "Shop now"
+      },
+      "thank_you": {
+        "title": "Thank you",
+        "continue": "Continue shopping"
       }
     }
   },

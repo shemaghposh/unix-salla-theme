@@ -16,6 +16,12 @@ Digital orders are out of scope here (they are redirected to the order summary p
 
 The fulfilment CTA lives inside those components: on desktop it renders in-flow above the cards
 (as in the design), on mobile it is the sticky bottom bar.
+
+UNIX (ROADMAP 4.5 · DS §8.36 · D92): unix.sa's thank-you page is Shopify checkout (not in the theme
+export), so there is no original copy to port. The page keeps Salla's components and is restyled through
+their CSS variables (.unix-thank-you in unix-thank-you.scss). The page's single h1 is Salla's
+`.s-thank-you-header-title` (salla-thank-you-header renders it); the theme adds no second one and
+never lets it be empty (fallback «شكرًا لكِ»). A «تابعي التسوق» link closes the page.
 #}
 {% extends "layouts.master" %}
 
@@ -43,12 +49,14 @@ The fulfilment CTA lives inside those components: on desktop it renders in-flow 
 
 {% block content %}
     {% hook 'thank-you:start' %}
-    <div class="container">
+    {# ROADMAP 4.5: never an empty h1 (Salla renders `heading` as the page's only <h1>) #}
+    {% set unix_ty_heading = thank_you_title|default('')|trim ?: trans('blocks.unix.thank_you.title') %}
+    <div class="unix-container unix-thank-you">
         <salla-thank-you-page class="thank-you-content">
         {# Header, fulfillment, and payment use responsive component spacing. #}
         <div slot="main">
             {# Header: merchant main/subtext (Header Customization story), order number, date & time #}
-            <salla-thank-you-header heading="{{ thank_you_title }}"
+            <salla-thank-you-header heading="{{ unix_ty_heading }}"
                 subtitle="{{ thank_you_components.subtitle ?? thank_you_subtitle ?? trans('pages.thank_you.order_received') }}"
                 store-logo="{{ store.logo ? store.logo|cdn(48, 48) : '' }}" store-name="{{ store.name }}"
                 reference-id="{{ order.reference_id }}" created-at="{{ order.created_at|date('c') }}">
@@ -106,6 +114,11 @@ The fulfilment CTA lives inside those components: on desktop it renders in-flow 
                 {% if thank_you_components.contact_channels is defined and thank_you_components.contact_channels is not null %}channels="{{ thank_you_components.contact_channels|join(',') }}"{% endif %}
                 introduction="{{ trans('pages.thank_you.contact_us') }}" hide-title horizontal icons-only></salla-contacts>
         {% endif %}
+
+        {# ROADMAP 4.5: back to shopping (DS §8.36) #}
+        <div class="unix-thank-you__cta">
+            <a class="unix-btn" href="{{ link('products') }}" data-testid="store-thankyou-continue">{{ trans('blocks.unix.thank_you.continue') }}</a>
+        </div>
 
         {% hook 'thank-you:end' %}
         </salla-thank-you-page>

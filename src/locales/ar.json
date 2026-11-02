@@ -307,6 +307,10 @@
         "quantity": "الكمية لمنتج :name",
         "picks_title": "اختيارات تناسبك",
         "picks_button": "تسوقي الآن"
+      },
+      "thank_you": {
+        "title": "شكرًا لكِ",
+        "continue": "تابعي التسوق"
       }
     }
   },

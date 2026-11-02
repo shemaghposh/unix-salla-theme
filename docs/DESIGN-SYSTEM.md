@@ -580,6 +580,14 @@ pill، ارتفاع 24، و `--t-micro`. الخلفية `--c-surface` والنص
 - **عمود الملخص:** شريط الشحن المجاني (§8.34) والكوبونات والهدايا في `unix-cart__panel` (`--c-surface`، بوردر `--line-w`، `--r-md`، padding `--s-5`؛ بدل كروت رائد البيضا بظل). `salla-cart-summary-card`: من lg كارت بنفس الشكل؛ أقل من lg سلة بتثبّته تحت الشاشة كـ sheet، وده متساب بحواف فوق `--r-lg` و `--e-2`، والفوتر بياخد padding تحت `--s-10` عشان مايتغطاش. السطور `--t-small` (الـ label `--c-text-muted` والقيمة `--c-text` 500)، والخصم `--c-price-sale` (سلة كاتبة الأحمر بـ `!important`، فبنغلبه بـ `!important`)، والإجمالي `--t-body-lg`، وشارة التوفير `--c-surface-muted` و `--c-text`.
 - **«اختيارات تناسبك»:** نفس markup و JS سكشن المنتجات 2.3 (§8.15، كروت §8.3، و `salla-products-slider` 2 / 3 / 4 في الصف) من غير تابات، والعنوان `h2` بحجم `--t-h3` (الأصل `heading_size: h3`)، وزرار `.unix-btn` primary (زي `button_style: secondary` في Cream، D70) في صف العنوان من 576px وبعرض كامل تحت أقل من كده. المنتجات من إعداد `unix_cart_picks_products`، والفاضي = أحدث المنتجات. *(قرار مؤقت D90)*
 
+### 8.36 Thank-you Page (صفحة الشكر) — *المرحلة 4.5*
+صفحة الشكر في unix.sa جزء من checkout شوبيفاي (مش في تصدير الثيم)، فمافيش نص أصلي. الكود: `pages/thank-you.twig` و `04-components/unix-thank-you.scss`. كومبوننتس سلة زي ما هي (`salla-thank-you-page` و `salla-thank-you-header` و `salla-order-shipments` / `salla-order-branch` و `salla-order-payment` و `salla-order-rewards` و `salla-next-order-coupon` و `salla-contacts`) والـ hooks بتاعتها، ومتستايلة من متغيرات سلة: `--color-text-primary` ← `--c-text`، و `--color-text-secondary` ← `--c-text-muted`، و `--color-surface` ← `--c-surface`، و `--color-border-light` ← `--c-border`. *(قرار مؤقت D92)*
+- **الصفحة:** `unix-container` بـ padding `--section-sm` فوق وتحت.
+- **`h1` واحد:** عنوان سلة `.s-thank-you-header-title` (الكومبوننت بيكتبه `h1`)، بخط العناوين و `--t-h2` و `--fw-bold` (تأكيد هادي، مش عنوان صفحة كبير). نصه `thank_you_title` بتاع التاجر، والفاضي «شكرًا لكِ»، فمايبقاش فاضي أبدًا. الثيم مابيضيفش `h1` تاني.
+- **الهيدر:** دايرة النجاح `--s-8` بلون `--c-action` والعلامة `--c-text-inverse`، والسطر التاني `--t-body` `--c-text-muted` (65ch)، والفاصل `--c-border`، ورقم الطلب والتاريخ `--t-small` `--c-text-muted` tabular (زرار نسخ الرقم `--tap`، hover `--c-text`، focus الحلقة العامة).
+- **الكروت** (المنتجات، والكوبون، والفرع): `--c-surface` وبوردر `--line-w` `--c-border` و `--r-md` ومن غير ظل.
+- **«تابعي التسوق»:** `.unix-btn` primary في النص بعد آخر سكشن (`--s-6` فوقه) لصفحة كل المنتجات. على الموبايل زرار سلة الثابت تحت الشاشة بيفضل زي ما هو.
+
 ---
 
 ## 9. نبرة الكلام (Copy)
