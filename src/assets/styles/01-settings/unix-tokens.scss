@@ -181,7 +181,8 @@
   --d-stagger: 60ms;                   /* reveal stagger step (DS §5) */
   --d-hint: 2s;                        /* scroll-indicator bob cycle */
   /* product sections (2.3, 2.6) */
-  --ratio-card: 4 / 5;                 /* product card + featured lifestyle image (DS §6) */
+  --ratio-card: 4 / 5;                 /* featured lifestyle image, blog, menu images (DS §6) */
+  --ratio-product: 2 / 3;              /* product card image, like unix.sa card media 150% (6.4, owner) */
   --zoom-hover: 1.04;                  /* image hover scale (DS §5 "Image hover") */
   --overlay-card-max: 376px;           /* mini card over a lifestyle image (unix.sa 37.5rem, on the 4px grid) */
 

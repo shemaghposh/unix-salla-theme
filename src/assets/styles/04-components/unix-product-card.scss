@@ -4,7 +4,7 @@
  * scoped to `.unix-products` (home 2.3 today; Phase 4 grids can opt in by adding the class),
  * plus the carousel arrows used by 2.3 (.unix-carousel-arrow) and 2.6 (salla-slider arrows).
  *
- * Layout contract (no CLS): image 4:5 (--ratio-card) → title (two reserved lines) → price (one
+ * Layout contract (no CLS): image 2:3 (--ratio-product) → title (two reserved lines) → price (one
  * line). The quick-add button sits OVER the image bottom, outside the flow, so every card has the
  * same height as the skeleton in unix-products-tabs.scss.
  */
@@ -38,7 +38,7 @@
     inline-size: 100%;
     block-size: auto;
     max-block-size: none;
-    aspect-ratio: var(--ratio-card);
+    aspect-ratio: var(--ratio-product);
     border-radius: var(--r-md);
     background: var(--c-surface-muted);
 
