@@ -10,16 +10,6 @@
         "fonts",
         "breadcrumb",
         "unite-cards-height",
-        "component-featured-products",
-        "component-fixed-banner",
-        "component-fixed-products",
-        "component-products-slider",
-        "component-photos-slider",
-        "component-parallax-background",
-        "component-testimonials",
-        "component-square-photos",
-        "component-store-features",
-        "component-youtube",
         "menu-images",
         "filters"
     ],
@@ -1206,6 +1196,7 @@
             "icon": "sicon-image",
             "path": "home.unix-hero",
             "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
+            "is_default": true,
             "fields": [
                 {
                     "type": "static",
@@ -1281,17 +1272,61 @@
                     "searchable": true,
                     "source": "custom",
                     "sources": [
-                        { "label": "منتج", "key": "products", "value": "products" },
-                        { "label": "منتجات مع وسم", "key": "products_tags", "value": "products_tags" },
-                        { "label": "تصنيف", "key": "categories", "value": "categories" },
-                        { "label": "ماركة تجارية", "key": "brands", "value": "brands" },
-                        { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
-                        { "label": "مقالة", "key": "blog_articles", "value": "blog_articles" },
-                        { "label": "تصنيف ضمن المدونة", "key": "blog_categories", "value": "blog_categories" },
-                        { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
-                        { "label": "الماركات التجارية", "key": "brands_link", "value": "brands_link" },
-                        { "label": "المدونة", "key": "blog_link", "value": "blog_link" },
-                        { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                        {
+                            "label": "منتج",
+                            "key": "products",
+                            "value": "products"
+                        },
+                        {
+                            "label": "منتجات مع وسم",
+                            "key": "products_tags",
+                            "value": "products_tags"
+                        },
+                        {
+                            "label": "تصنيف",
+                            "key": "categories",
+                            "value": "categories"
+                        },
+                        {
+                            "label": "ماركة تجارية",
+                            "key": "brands",
+                            "value": "brands"
+                        },
+                        {
+                            "label": "صفحة تعريفية",
+                            "key": "pages",
+                            "value": "pages"
+                        },
+                        {
+                            "label": "مقالة",
+                            "key": "blog_articles",
+                            "value": "blog_articles"
+                        },
+                        {
+                            "label": "تصنيف ضمن المدونة",
+                            "key": "blog_categories",
+                            "value": "blog_categories"
+                        },
+                        {
+                            "label": "التخفيضات",
+                            "key": "offers_link",
+                            "value": "offers_link"
+                        },
+                        {
+                            "label": "الماركات التجارية",
+                            "key": "brands_link",
+                            "value": "brands_link"
+                        },
+                        {
+                            "label": "المدونة",
+                            "key": "blog_link",
+                            "value": "blog_link"
+                        },
+                        {
+                            "label": "رابط خارجي",
+                            "key": "custom",
+                            "value": "custom"
+                        }
                     ]
                 },
                 {
@@ -1421,6 +1456,7 @@
             "icon": "sicon-format-text-alt",
             "path": "home.unix-offer-strip",
             "image": "https://cdn.salla.network/images/themes/raed/main-links-with-bg.jpg?v=1.1",
+            "is_default": true,
             "fields": [
                 {
                     "type": "static",
@@ -1507,17 +1543,736 @@
                     "searchable": true,
                     "source": "custom",
                     "sources": [
-                        { "label": "منتج", "key": "products", "value": "products" },
-                        { "label": "منتجات مع وسم", "key": "products_tags", "value": "products_tags" },
-                        { "label": "تصنيف", "key": "categories", "value": "categories" },
-                        { "label": "ماركة تجارية", "key": "brands", "value": "brands" },
-                        { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
-                        { "label": "مقالة", "key": "blog_articles", "value": "blog_articles" },
-                        { "label": "تصنيف ضمن المدونة", "key": "blog_categories", "value": "blog_categories" },
-                        { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
-                        { "label": "الماركات التجارية", "key": "brands_link", "value": "brands_link" },
-                        { "label": "المدونة", "key": "blog_link", "value": "blog_link" },
-                        { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                        {
+                            "label": "منتج",
+                            "key": "products",
+                            "value": "products"
+                        },
+                        {
+                            "label": "منتجات مع وسم",
+                            "key": "products_tags",
+                            "value": "products_tags"
+                        },
+                        {
+                            "label": "تصنيف",
+                            "key": "categories",
+                            "value": "categories"
+                        },
+                        {
+                            "label": "ماركة تجارية",
+                            "key": "brands",
+                            "value": "brands"
+                        },
+                        {
+                            "label": "صفحة تعريفية",
+                            "key": "pages",
+                            "value": "pages"
+                        },
+                        {
+                            "label": "مقالة",
+                            "key": "blog_articles",
+                            "value": "blog_articles"
+                        },
+                        {
+                            "label": "تصنيف ضمن المدونة",
+                            "key": "blog_categories",
+                            "value": "blog_categories"
+                        },
+                        {
+                            "label": "التخفيضات",
+                            "key": "offers_link",
+                            "value": "offers_link"
+                        },
+                        {
+                            "label": "الماركات التجارية",
+                            "key": "brands_link",
+                            "value": "brands_link"
+                        },
+                        {
+                            "label": "المدونة",
+                            "key": "blog_link",
+                            "value": "blog_link"
+                        },
+                        {
+                            "label": "رابط خارجي",
+                            "key": "custom",
+                            "value": "custom"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "7d1f3c52-8a4e-4b6f-9c21-5e0a7b1d2c43",
+            "title": {
+                "en": "UNIX · Products with tabs",
+                "ar": "يونكس · منتجات بتبويبات (المفضلة دائما)"
+            },
+            "icon": "sicon-list-play",
+            "path": "home.unix-products-tabs",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/slider-products-with-bg.png?v=1.1",
+            "is_default": true,
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-ptabs-desc",
+                    "value": "<div>عنوان، وتبويبات تتنقلين بينها، وسلايدر منتجات لكل تبويب، وزر في الأسفل يتغير مع التبويب. مصدر كل تبويب: التصنيف إن اخترتِه، وإلا المنتجات المختارة، وإلا أحدث المنتجات.</div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": "المفضلة دائما",
+                    "required": false,
+                    "format": "text",
+                    "description": "اتركيه فارغاً لإخفاء العنوان",
+                    "placeholder": "أدخلي العنوان هنا...",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "id": "tabs",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "التبويبات",
+                    "description": "تبويب واحد = بدون شريط تبويبات",
+                    "item_label": "تبويب",
+                    "icon": "sicon-list-add",
+                    "required": true,
+                    "minLength": 1,
+                    "maxLength": 8,
+                    "value": [
+                        {
+                            "tabs.label": "وصل حديثًا",
+                            "tabs.limit": 8,
+                            "tabs.button_label": "تسوّقي الجديد"
+                        },
+                        {
+                            "tabs.label": "الأكثر مبيعا",
+                            "tabs.limit": 8
+                        },
+                        {
+                            "tabs.label": "توبات كومفي",
+                            "tabs.limit": 4
+                        },
+                        {
+                            "tabs.label": "اطقم كومفي",
+                            "tabs.limit": 4
+                        },
+                        {
+                            "tabs.label": "ليقينز رياضية",
+                            "tabs.limit": 4
+                        }
+                    ],
+                    "fields": [
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "اسم التبويب",
+                            "multilanguage": true,
+                            "id": "tabs.label",
+                            "value": null,
+                            "required": true,
+                            "format": "text",
+                            "description": null,
+                            "placeholder": "مثال: وصل حديثًا",
+                            "minLength": 1,
+                            "maxLength": 40
+                        },
+                        {
+                            "type": "items",
+                            "icon": "sicon-keyboard_arrow_down",
+                            "label": "التصنيف",
+                            "id": "tabs.category",
+                            "format": "dropdown-list",
+                            "description": "إذا اخترتِ تصنيفًا تُعرض منتجاته حتى لو اخترتِ منتجات أيضًا، كما في unix.sa",
+                            "selected": [],
+                            "options": [],
+                            "source": "categories",
+                            "multichoice": false,
+                            "searchable": true,
+                            "required": false,
+                            "value": []
+                        },
+                        {
+                            "type": "items",
+                            "icon": "sicon-keyboard_arrow_down",
+                            "label": "منتجات مختارة (اختياري)",
+                            "id": "tabs.products",
+                            "format": "dropdown-list",
+                            "description": "تُستخدم فقط إذا تركتِ التصنيف فارغاً",
+                            "selected": [],
+                            "options": [],
+                            "source": "products",
+                            "multichoice": true,
+                            "searchable": true,
+                            "required": false,
+                            "minLength": 0,
+                            "maxLength": 12,
+                            "value": []
+                        },
+                        {
+                            "type": "number",
+                            "icon": "sicon-pencil-ruler",
+                            "label": "عدد منتجات التصنيف",
+                            "id": "tabs.limit",
+                            "format": "integer",
+                            "description": null,
+                            "value": 8,
+                            "required": false,
+                            "minimum": 1,
+                            "maximum": 12
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "نص الزر لهذا التبويب (اختياري)",
+                            "multilanguage": true,
+                            "id": "tabs.button_label",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "إذا تركتِه فارغاً: «تصفحي» + اسم التبويب",
+                            "placeholder": "مثال: تسوّقي الجديد",
+                            "minLength": 0,
+                            "maxLength": 40
+                        },
+                        {
+                            "type": "items",
+                            "icon": "sicon-link",
+                            "label": "رابط الزر لهذا التبويب (اختياري)",
+                            "id": "tabs.button_url",
+                            "value": null,
+                            "description": "إذا تركتِه فارغاً: رابط التصنيف، وإلا رابط زر القسم",
+                            "required": false,
+                            "format": "variable-list",
+                            "searchable": true,
+                            "source": "custom",
+                            "sources": [
+                                {
+                                    "label": "منتج",
+                                    "key": "products",
+                                    "value": "products"
+                                },
+                                {
+                                    "label": "منتجات مع وسم",
+                                    "key": "products_tags",
+                                    "value": "products_tags"
+                                },
+                                {
+                                    "label": "تصنيف",
+                                    "key": "categories",
+                                    "value": "categories"
+                                },
+                                {
+                                    "label": "ماركة تجارية",
+                                    "key": "brands",
+                                    "value": "brands"
+                                },
+                                {
+                                    "label": "صفحة تعريفية",
+                                    "key": "pages",
+                                    "value": "pages"
+                                },
+                                {
+                                    "label": "التخفيضات",
+                                    "key": "offers_link",
+                                    "value": "offers_link"
+                                },
+                                {
+                                    "label": "رابط خارجي",
+                                    "key": "custom",
+                                    "value": "custom"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "إظهار الزر أسفل القسم",
+                    "description": null,
+                    "id": "show_button",
+                    "format": "switch",
+                    "required": false,
+                    "value": true,
+                    "selected": true
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "نص الزر الاحتياطي",
+                    "multilanguage": true,
+                    "id": "button_label",
+                    "value": "تصفحي الجميع",
+                    "required": false,
+                    "format": "text",
+                    "description": "يظهر فقط إذا لم يكن للتبويب اسم أو نص زر",
+                    "placeholder": "تصفحي الجميع",
+                    "minLength": 0,
+                    "maxLength": 40,
+                    "conditions": [
+                        {
+                            "id": "show_button",
+                            "operation": "=",
+                            "value": true
+                        }
+                    ]
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-link",
+                    "label": "رابط الزر الاحتياطي",
+                    "id": "button_url",
+                    "value": null,
+                    "description": "يُستخدم إذا لم يكن للتبويب رابط أو تصنيف (في unix.sa: كل المنتجات)",
+                    "required": false,
+                    "format": "variable-list",
+                    "searchable": true,
+                    "source": "custom",
+                    "sources": [
+                        {
+                            "label": "منتج",
+                            "key": "products",
+                            "value": "products"
+                        },
+                        {
+                            "label": "منتجات مع وسم",
+                            "key": "products_tags",
+                            "value": "products_tags"
+                        },
+                        {
+                            "label": "تصنيف",
+                            "key": "categories",
+                            "value": "categories"
+                        },
+                        {
+                            "label": "ماركة تجارية",
+                            "key": "brands",
+                            "value": "brands"
+                        },
+                        {
+                            "label": "صفحة تعريفية",
+                            "key": "pages",
+                            "value": "pages"
+                        },
+                        {
+                            "label": "التخفيضات",
+                            "key": "offers_link",
+                            "value": "offers_link"
+                        },
+                        {
+                            "label": "رابط خارجي",
+                            "key": "custom",
+                            "value": "custom"
+                        }
+                    ],
+                    "conditions": [
+                        {
+                            "id": "show_button",
+                            "operation": "=",
+                            "value": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "c7a1e2d4-3b5f-4e8a-9c21-5d4f0a7b2e14",
+            "title": {
+                "en": "UNIX · Collection over image (New from UNIX)",
+                "ar": "يونكس · تصنيف فوق صورة (جديد من يونكس)"
+            },
+            "icon": "sicon-image",
+            "path": "home.unix-collection-overlay",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/slider-products-with-bg.png?v=1.1",
+            "is_default": true,
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "static-desc",
+                    "value": "<div>منتجات تصنيف مختار في شريط متحرك فوق صورة كبيرة، مثل قسم «جديد من يونكس» في unix.sa. إذا تُرك العنوان فارغًا ولم تُحفظ الإعدادات يظهر النص الافتراضي</div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان الصغير (فوق العنوان)",
+                    "multilanguage": true,
+                    "id": "subtitle",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: NEW COLLECTION",
+                    "placeholder": "NEW COLLECTION",
+                    "minLength": 0,
+                    "maxLength": 60
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: جديد من يونكس",
+                    "placeholder": "جديد من يونكس",
+                    "minLength": 0,
+                    "maxLength": 100
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-keyboard_arrow_down",
+                    "label": "التصنيف",
+                    "id": "category",
+                    "format": "dropdown-list",
+                    "description": "منتجات هذا التصنيف هي التي تظهر في الشريط المتحرك (في unix.sa: New Collection)",
+                    "selected": [],
+                    "options": [],
+                    "source": "categories",
+                    "multichoice": false,
+                    "searchable": true,
+                    "required": true,
+                    "value": []
+                },
+                {
+                    "type": "number",
+                    "format": "integer",
+                    "icon": "sicon-list",
+                    "label": "عدد المنتجات",
+                    "id": "limit",
+                    "value": 8,
+                    "required": false,
+                    "minimum": 2,
+                    "maximum": 20
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-image",
+                    "label": "صورة الخلفية (الشاشات الكبيرة)",
+                    "id": "image",
+                    "format": "image",
+                    "value": null,
+                    "required": false,
+                    "placeholder": null,
+                    "description": "المقاس المناسب 1920×1080 بكسل (16:9). إذا تُركت فارغة تُستخدم صورة التصنيف",
+                    "settings": {
+                        "height": 1080,
+                        "width": 1920
+                    }
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-image",
+                    "label": "صورة الخلفية (الجوال)",
+                    "id": "image_mobile",
+                    "format": "image",
+                    "value": null,
+                    "required": false,
+                    "placeholder": null,
+                    "description": "اختيارية، تظهر تحت عرض 576px. المقاس المناسب 800×1000 بكسل (4:5)",
+                    "settings": {
+                        "height": 1000,
+                        "width": 800
+                    }
+                },
+                {
+                    "type": "number",
+                    "format": "integer",
+                    "icon": "sicon-sun",
+                    "label": "درجة التعتيم فوق الصورة (%)",
+                    "id": "overlay",
+                    "value": 30,
+                    "required": false,
+                    "minimum": 20,
+                    "maximum": 60,
+                    "description": "من 20 إلى 60. أقل من 20 قد لا يظهر النص الفاتح بوضوح على الصور الفاتحة، ويوجد تدرّج غامق ثابت تحت العنوان والبطاقات"
+                }
+            ]
+        },
+        {
+            "key": "e3b9d6f1-8a2c-4f7e-b5d0-1c6a9e4f7b38",
+            "title": {
+                "en": "UNIX · Collections grid (Move. Train. Unwind.)",
+                "ar": "يونكس · بطاقات التصنيفات (حركة. رياضة. استرخاء.)"
+            },
+            "icon": "sicon-layout-grid-rearrange",
+            "path": "home.unix-collections-grid",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
+            "is_default": true,
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "static-desc",
+                    "value": "<div>عنوان ووصف وزر، وتحتها بطاقات تصنيفات بنسبة 3:4، مثل قسم «حركة. رياضة. استرخاء.» في unix.sa. إذا تُركت النصوص فارغة ولم تُحفظ الإعدادات يظهر النص الافتراضي</div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: حركة. رياضة. استرخاء.",
+                    "placeholder": "حركة. رياضة. استرخاء.",
+                    "minLength": 0,
+                    "maxLength": 100
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-typography",
+                    "label": "الوصف",
+                    "multilanguage": true,
+                    "id": "text",
+                    "value": null,
+                    "required": false,
+                    "format": "textarea",
+                    "description": null,
+                    "placeholder": "مجموعة صُممت بعناية...",
+                    "minLength": 0,
+                    "maxLength": 300
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "نص الزر",
+                    "multilanguage": true,
+                    "id": "button_label",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "الافتراضي: تسوقي الآن",
+                    "placeholder": "تسوقي الآن",
+                    "minLength": 0,
+                    "maxLength": 40
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-link",
+                    "label": "رابط الزر",
+                    "id": "button_url",
+                    "value": null,
+                    "description": "إذا تُرك الرابط فارغًا لا يظهر الزر. في unix.sa يفتح صفحة كل التصنيفات",
+                    "required": false,
+                    "format": "variable-list",
+                    "searchable": true,
+                    "source": "custom",
+                    "sources": [
+                        {
+                            "label": "تصنيف",
+                            "key": "categories",
+                            "value": "categories"
+                        },
+                        {
+                            "label": "منتج",
+                            "key": "products",
+                            "value": "products"
+                        },
+                        {
+                            "label": "التخفيضات",
+                            "key": "offers_link",
+                            "value": "offers_link"
+                        },
+                        {
+                            "label": "صفحة تعريفية",
+                            "key": "pages",
+                            "value": "pages"
+                        },
+                        {
+                            "label": "رابط خارجي",
+                            "key": "custom",
+                            "value": "custom"
+                        }
+                    ]
+                },
+                {
+                    "id": "cards",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "بطاقات التصنيفات",
+                    "item_label": "كارت",
+                    "icon": "sicon-list-add",
+                    "required": true,
+                    "minLength": 1,
+                    "maxLength": 6,
+                    "value": [
+                        {
+                            "cards.title": null,
+                            "cards.image": null,
+                            "cards.url__type": "categories",
+                            "cards.overlay": 10
+                        },
+                        {
+                            "cards.title": null,
+                            "cards.image": null,
+                            "cards.url__type": "categories",
+                            "cards.overlay": 20
+                        },
+                        {
+                            "cards.title": null,
+                            "cards.image": null,
+                            "cards.url__type": "categories",
+                            "cards.overlay": 20
+                        }
+                    ],
+                    "fields": [
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "اسم التصنيف",
+                            "multilanguage": true,
+                            "id": "cards.title",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "إذا تُرك فارغًا في البطاقات الثلاث الأولى يظهر الاسم الافتراضي (أطقم رياضية / أطقم كومفي / إكسسوارات) بالعربية والإنجليزية",
+                            "placeholder": "مثلًا: أطقم كومفي",
+                            "minLength": 1,
+                            "maxLength": 60
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-image",
+                            "label": "الصورة",
+                            "id": "cards.image",
+                            "format": "image",
+                            "value": null,
+                            "required": false,
+                            "placeholder": null,
+                            "description": "* المقاس المناسب 600×800 بكسل (3:4)",
+                            "settings": {
+                                "height": 800,
+                                "width": 600
+                            }
+                        },
+                        {
+                            "type": "items",
+                            "icon": "sicon-link",
+                            "label": "الرابط",
+                            "id": "cards.url",
+                            "value": null,
+                            "description": null,
+                            "required": false,
+                            "format": "variable-list",
+                            "searchable": true,
+                            "source": "custom",
+                            "sources": [
+                                {
+                                    "label": "تصنيف",
+                                    "key": "categories",
+                                    "value": "categories"
+                                },
+                                {
+                                    "label": "منتج",
+                                    "key": "products",
+                                    "value": "products"
+                                },
+                                {
+                                    "label": "التخفيضات",
+                                    "key": "offers_link",
+                                    "value": "offers_link"
+                                },
+                                {
+                                    "label": "رابط خارجي",
+                                    "key": "custom",
+                                    "value": "custom"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "number",
+                            "format": "integer",
+                            "icon": "sicon-sun",
+                            "label": "درجة التعتيم (%)",
+                            "id": "cards.overlay",
+                            "value": 20,
+                            "required": false,
+                            "minimum": 0,
+                            "maximum": 60
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "3b9e6a1d-2f47-4c8e-b5d0-8a6c4e2f1b97",
+            "title": {
+                "en": "UNIX · Featured products with lifestyle images",
+                "ar": "يونكس · منتجات مختارة مع صور"
+            },
+            "icon": "sicon-image",
+            "path": "home.unix-featured-products",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
+            "is_default": true,
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-fprods-desc",
+                    "value": "<div>شريط متحرك: لكل عنصر صورة لايف ستايل وفوقها بطاقة صغيرة للمنتج (الصورة والاسم والسعر) تفتح صفحته. ثلاثة عناصر في الشاشات الكبيرة، وسحب على الجوال.</div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": "اختاري قطعتك المفضلة لوقت الاسترخاء",
+                    "required": false,
+                    "format": "text",
+                    "description": "اتركيه فارغاً لإخفاء العنوان",
+                    "placeholder": "أدخلي العنوان هنا...",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "id": "items",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "المنتجات",
+                    "description": "إذا لم تضيفي منتجات تظهر أحدث 4 منتجات بصورها",
+                    "item_label": "منتج",
+                    "icon": "sicon-list-add",
+                    "required": false,
+                    "minLength": 0,
+                    "maxLength": 8,
+                    "value": [],
+                    "fields": [
+                        {
+                            "type": "items",
+                            "icon": "sicon-keyboard_arrow_down",
+                            "label": "المنتج",
+                            "id": "items.product",
+                            "format": "dropdown-list",
+                            "description": null,
+                            "selected": [],
+                            "options": [],
+                            "source": "products",
+                            "multichoice": false,
+                            "searchable": true,
+                            "required": true,
+                            "value": []
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-image",
+                            "label": "صورة لايف ستايل",
+                            "id": "items.image",
+                            "format": "image",
+                            "value": null,
+                            "required": false,
+                            "placeholder": null,
+                            "description": "* المقاس المناسب 1200×1500 بكسل (4:5). إذا تركتِها فارغة تظهر صورة المنتج"
+                        }
                     ]
                 }
             ]
@@ -1531,6 +2286,7 @@
             "icon": "sicon-camera",
             "path": "home.unix-video-tiles",
             "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
+            "is_default": true,
             "fields": [
                 {
                     "type": "static",
@@ -1619,13 +2375,41 @@
                             "searchable": true,
                             "source": "custom",
                             "sources": [
-                                { "label": "منتج", "key": "products", "value": "products" },
-                                { "label": "تصنيف", "key": "categories", "value": "categories" },
-                                { "label": "ماركة تجارية", "key": "brands", "value": "brands" },
-                                { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
-                                { "label": "مقالة", "key": "blog_articles", "value": "blog_articles" },
-                                { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
-                                { "label": "رابط خارجي", "key": "custom", "value": "custom" }
+                                {
+                                    "label": "منتج",
+                                    "key": "products",
+                                    "value": "products"
+                                },
+                                {
+                                    "label": "تصنيف",
+                                    "key": "categories",
+                                    "value": "categories"
+                                },
+                                {
+                                    "label": "ماركة تجارية",
+                                    "key": "brands",
+                                    "value": "brands"
+                                },
+                                {
+                                    "label": "صفحة تعريفية",
+                                    "key": "pages",
+                                    "value": "pages"
+                                },
+                                {
+                                    "label": "مقالة",
+                                    "key": "blog_articles",
+                                    "value": "blog_articles"
+                                },
+                                {
+                                    "label": "التخفيضات",
+                                    "key": "offers_link",
+                                    "value": "offers_link"
+                                },
+                                {
+                                    "label": "رابط خارجي",
+                                    "key": "custom",
+                                    "value": "custom"
+                                }
                             ]
                         },
                         {
@@ -1661,126 +2445,6 @@
             ]
         },
         {
-            "key": "9b4d2e6f-1a3c-4f8b-b7e2-5c0a8d1f4e96",
-            "title": {
-                "en": "UNIX FAQ",
-                "ar": "يونكس: الأسئلة الشائعة"
-            },
-            "icon": "sicon-chat-conversation-alt",
-            "path": "home.unix-faq",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
-            "fields": [
-                {
-                    "type": "static",
-                    "format": "description",
-                    "id": "unix-faq-desc",
-                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>أسئلة وأجوبة بعنوان في المنتصف، وإجابة واحدة مفتوحة في كل مرة. اتركي الأسئلة فارغة لعرض أسئلة يونكس الافتراضية (7 أسئلة باللغتين). (صورة المعاينة مؤقتة)</small></div>"
-                },
-                {
-                    "type": "string",
-                    "icon": "sicon-format-text-alt",
-                    "label": "العنوان",
-                    "multilanguage": true,
-                    "id": "title",
-                    "value": null,
-                    "required": false,
-                    "format": "text",
-                    "description": "الافتراضي: إجابات لكل تفصيلة",
-                    "placeholder": "إجابات لكل تفصيلة",
-                    "minLength": 0,
-                    "maxLength": 80
-                },
-                {
-                    "type": "string",
-                    "icon": "sicon-typography",
-                    "label": "نص قصير تحت العنوان",
-                    "multilanguage": true,
-                    "id": "text",
-                    "value": null,
-                    "required": false,
-                    "format": "textarea",
-                    "description": "الافتراضي: جمعنا لكِ أكثر الأسئلة تكرارًا، لتتسوّقي بثقة وراحة",
-                    "placeholder": "أدخلي النص هنا...",
-                    "minLength": 0,
-                    "maxLength": 200
-                },
-                {
-                    "id": "items",
-                    "type": "collection",
-                    "format": "collection",
-                    "required": false,
-                    "minLength": 0,
-                    "maxLength": 20,
-                    "label": "الأسئلة",
-                    "item_label": "سؤال",
-                    "value": [],
-                    "fields": [
-                        {
-                            "type": "string",
-                            "icon": "sicon-format-text-alt",
-                            "label": "السؤال",
-                            "multilanguage": true,
-                            "id": "items.question",
-                            "value": null,
-                            "required": true,
-                            "format": "text",
-                            "description": null,
-                            "placeholder": "مثال: كيف أعرف مقاسي المناسب؟",
-                            "minLength": 1,
-                            "maxLength": 150
-                        },
-                        {
-                            "type": "string",
-                            "icon": "sicon-typography",
-                            "label": "الإجابة",
-                            "multilanguage": true,
-                            "id": "items.answer",
-                            "value": null,
-                            "required": false,
-                            "format": "textarea",
-                            "description": "نص عادي، والأسطر الجديدة تظهر كما هي",
-                            "placeholder": "أدخلي الإجابة هنا...",
-                            "minLength": 0,
-                            "maxLength": 1000
-                        },
-                        {
-                            "type": "boolean",
-                            "icon": "sicon-toggle-off",
-                            "label": "مفتوح افتراضياً",
-                            "description": "يُفتح سؤال واحد فقط في كل مرة",
-                            "id": "items.opened",
-                            "format": "switch",
-                            "required": false,
-                            "value": false,
-                            "selected": false
-                        }
-                    ]
-                },
-                {
-                    "type": "boolean",
-                    "icon": "sicon-toggle-off",
-                    "label": "زر «عرض المزيد»",
-                    "description": "مع أكثر من 3 أسئلة: يظهر 3 أسئلة ورابع باهت، والباقي بعد الضغط على الزر، كما في unix.sa",
-                    "id": "show_more",
-                    "format": "switch",
-                    "required": false,
-                    "value": true,
-                    "selected": true
-                },
-                {
-                    "type": "boolean",
-                    "icon": "sicon-toggle-off",
-                    "label": "بيانات الأسئلة لمحركات البحث (FAQPage)",
-                    "description": "تساعد جوجل على عرض الأسئلة في نتائج البحث",
-                    "id": "schema",
-                    "format": "switch",
-                    "required": false,
-                    "value": true,
-                    "selected": true
-                }
-            ]
-        },
-        {
             "key": "7c1e2b8a-28a0-4b6e-9f3d-5a1b0c2d8e01",
             "title": {
                 "en": "UNIX · From the world of UNIX (blog)",
@@ -1789,6 +2453,7 @@
             "icon": "sicon-list-play",
             "path": "home.unix-blog",
             "image": "https://cdn.salla.network/images/themes/raed/preview-images/main-links.png?v=1.1",
+            "is_default": true,
             "fields": [
                 {
                     "type": "static",
@@ -1945,20 +2610,21 @@
             ]
         },
         {
-            "key": "7d1f3c52-8a4e-4b6f-9c21-5e0a7b1d2c43",
+            "key": "9b4d2e6f-1a3c-4f8b-b7e2-5c0a8d1f4e96",
             "title": {
-                "en": "UNIX · Products with tabs",
-                "ar": "يونكس · منتجات بتبويبات (المفضلة دائما)"
+                "en": "UNIX FAQ",
+                "ar": "يونكس: الأسئلة الشائعة"
             },
-            "icon": "sicon-list-play",
-            "path": "home.unix-products-tabs",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/slider-products-with-bg.png?v=1.1",
+            "icon": "sicon-chat-conversation-alt",
+            "path": "home.unix-faq",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
+            "is_default": true,
             "fields": [
                 {
                     "type": "static",
                     "format": "description",
-                    "id": "unix-ptabs-desc",
-                    "value": "<div>عنوان، وتبويبات تتنقلين بينها، وسلايدر منتجات لكل تبويب، وزر في الأسفل يتغير مع التبويب. مصدر كل تبويب: التصنيف إن اخترتِه، وإلا المنتجات المختارة، وإلا أحدث المنتجات.</div>"
+                    "id": "unix-faq-desc",
+                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>أسئلة وأجوبة بعنوان في المنتصف، وإجابة واحدة مفتوحة في كل مرة. اتركي الأسئلة فارغة لعرض أسئلة يونكس الافتراضية (7 أسئلة باللغتين). (صورة المعاينة مؤقتة)</small></div>"
                 },
                 {
                     "type": "string",
@@ -1966,552 +2632,101 @@
                     "label": "العنوان",
                     "multilanguage": true,
                     "id": "title",
-                    "value": "المفضلة دائما",
+                    "value": null,
                     "required": false,
                     "format": "text",
-                    "description": "اتركيه فارغاً لإخفاء العنوان",
-                    "placeholder": "أدخلي العنوان هنا...",
+                    "description": "الافتراضي: إجابات لكل تفصيلة",
+                    "placeholder": "إجابات لكل تفصيلة",
                     "minLength": 0,
                     "maxLength": 80
                 },
                 {
-                    "id": "tabs",
+                    "type": "string",
+                    "icon": "sicon-typography",
+                    "label": "نص قصير تحت العنوان",
+                    "multilanguage": true,
+                    "id": "text",
+                    "value": null,
+                    "required": false,
+                    "format": "textarea",
+                    "description": "الافتراضي: جمعنا لكِ أكثر الأسئلة تكرارًا، لتتسوّقي بثقة وراحة",
+                    "placeholder": "أدخلي النص هنا...",
+                    "minLength": 0,
+                    "maxLength": 200
+                },
+                {
+                    "id": "items",
                     "type": "collection",
                     "format": "collection",
-                    "label": "التبويبات",
-                    "description": "تبويب واحد = بدون شريط تبويبات",
-                    "item_label": "تبويب",
-                    "icon": "sicon-list-add",
-                    "required": true,
-                    "minLength": 1,
-                    "maxLength": 8,
-                    "value": [
-                        {
-                            "tabs.label": "وصل حديثًا",
-                            "tabs.limit": 8,
-                            "tabs.button_label": "تسوّقي الجديد"
-                        },
-                        {
-                            "tabs.label": "الأكثر مبيعا",
-                            "tabs.limit": 8
-                        },
-                        {
-                            "tabs.label": "توبات كومفي",
-                            "tabs.limit": 4
-                        },
-                        {
-                            "tabs.label": "اطقم كومفي",
-                            "tabs.limit": 4
-                        },
-                        {
-                            "tabs.label": "ليقينز رياضية",
-                            "tabs.limit": 4
-                        }
-                    ],
+                    "required": false,
+                    "minLength": 0,
+                    "maxLength": 20,
+                    "label": "الأسئلة",
+                    "item_label": "سؤال",
+                    "value": [],
                     "fields": [
                         {
                             "type": "string",
                             "icon": "sicon-format-text-alt",
-                            "label": "اسم التبويب",
+                            "label": "السؤال",
                             "multilanguage": true,
-                            "id": "tabs.label",
+                            "id": "items.question",
                             "value": null,
                             "required": true,
                             "format": "text",
                             "description": null,
-                            "placeholder": "مثال: وصل حديثًا",
+                            "placeholder": "مثال: كيف أعرف مقاسي المناسب؟",
                             "minLength": 1,
-                            "maxLength": 40
-                        },
-                        {
-                            "type": "items",
-                            "icon": "sicon-keyboard_arrow_down",
-                            "label": "التصنيف",
-                            "id": "tabs.category",
-                            "format": "dropdown-list",
-                            "description": "إذا اخترتِ تصنيفًا تُعرض منتجاته حتى لو اخترتِ منتجات أيضًا، كما في unix.sa",
-                            "selected": [],
-                            "options": [],
-                            "source": "categories",
-                            "multichoice": false,
-                            "searchable": true,
-                            "required": false,
-                            "value": []
-                        },
-                        {
-                            "type": "items",
-                            "icon": "sicon-keyboard_arrow_down",
-                            "label": "منتجات مختارة (اختياري)",
-                            "id": "tabs.products",
-                            "format": "dropdown-list",
-                            "description": "تُستخدم فقط إذا تركتِ التصنيف فارغاً",
-                            "selected": [],
-                            "options": [],
-                            "source": "products",
-                            "multichoice": true,
-                            "searchable": true,
-                            "required": false,
-                            "minLength": 0,
-                            "maxLength": 12,
-                            "value": []
-                        },
-                        {
-                            "type": "number",
-                            "icon": "sicon-pencil-ruler",
-                            "label": "عدد منتجات التصنيف",
-                            "id": "tabs.limit",
-                            "format": "integer",
-                            "description": null,
-                            "value": 8,
-                            "required": false,
-                            "minimum": 1,
-                            "maximum": 12
+                            "maxLength": 150
                         },
                         {
                             "type": "string",
-                            "icon": "sicon-format-text-alt",
-                            "label": "نص الزر لهذا التبويب (اختياري)",
+                            "icon": "sicon-typography",
+                            "label": "الإجابة",
                             "multilanguage": true,
-                            "id": "tabs.button_label",
+                            "id": "items.answer",
                             "value": null,
                             "required": false,
-                            "format": "text",
-                            "description": "إذا تركتِه فارغاً: «تصفحي» + اسم التبويب",
-                            "placeholder": "مثال: تسوّقي الجديد",
+                            "format": "textarea",
+                            "description": "نص عادي، والأسطر الجديدة تظهر كما هي",
+                            "placeholder": "أدخلي الإجابة هنا...",
                             "minLength": 0,
-                            "maxLength": 40
+                            "maxLength": 1000
                         },
                         {
-                            "type": "items",
-                            "icon": "sicon-link",
-                            "label": "رابط الزر لهذا التبويب (اختياري)",
-                            "id": "tabs.button_url",
-                            "value": null,
-                            "description": "إذا تركتِه فارغاً: رابط التصنيف، وإلا رابط زر القسم",
+                            "type": "boolean",
+                            "icon": "sicon-toggle-off",
+                            "label": "مفتوح افتراضياً",
+                            "description": "يُفتح سؤال واحد فقط في كل مرة",
+                            "id": "items.opened",
+                            "format": "switch",
                             "required": false,
-                            "format": "variable-list",
-                            "searchable": true,
-                            "source": "custom",
-                            "sources": [
-                                { "label": "منتج", "key": "products", "value": "products" },
-                                { "label": "منتجات مع وسم", "key": "products_tags", "value": "products_tags" },
-                                { "label": "تصنيف", "key": "categories", "value": "categories" },
-                                { "label": "ماركة تجارية", "key": "brands", "value": "brands" },
-                                { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
-                                { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
-                                { "label": "رابط خارجي", "key": "custom", "value": "custom" }
-                            ]
+                            "value": false,
+                            "selected": false
                         }
                     ]
                 },
                 {
                     "type": "boolean",
                     "icon": "sicon-toggle-off",
-                    "label": "إظهار الزر أسفل القسم",
-                    "description": null,
-                    "id": "show_button",
+                    "label": "زر «عرض المزيد»",
+                    "description": "مع أكثر من 3 أسئلة: يظهر 3 أسئلة ورابع باهت، والباقي بعد الضغط على الزر، كما في unix.sa",
+                    "id": "show_more",
                     "format": "switch",
                     "required": false,
                     "value": true,
                     "selected": true
                 },
                 {
-                    "type": "string",
-                    "icon": "sicon-format-text-alt",
-                    "label": "نص الزر الاحتياطي",
-                    "multilanguage": true,
-                    "id": "button_label",
-                    "value": "تصفحي الجميع",
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "بيانات الأسئلة لمحركات البحث (FAQPage)",
+                    "description": "تساعد جوجل على عرض الأسئلة في نتائج البحث",
+                    "id": "schema",
+                    "format": "switch",
                     "required": false,
-                    "format": "text",
-                    "description": "يظهر فقط إذا لم يكن للتبويب اسم أو نص زر",
-                    "placeholder": "تصفحي الجميع",
-                    "minLength": 0,
-                    "maxLength": 40,
-                    "conditions": [
-                        { "id": "show_button", "operation": "=", "value": true }
-                    ]
-                },
-                {
-                    "type": "items",
-                    "icon": "sicon-link",
-                    "label": "رابط الزر الاحتياطي",
-                    "id": "button_url",
-                    "value": null,
-                    "description": "يُستخدم إذا لم يكن للتبويب رابط أو تصنيف (في unix.sa: كل المنتجات)",
-                    "required": false,
-                    "format": "variable-list",
-                    "searchable": true,
-                    "source": "custom",
-                    "sources": [
-                        { "label": "منتج", "key": "products", "value": "products" },
-                        { "label": "منتجات مع وسم", "key": "products_tags", "value": "products_tags" },
-                        { "label": "تصنيف", "key": "categories", "value": "categories" },
-                        { "label": "ماركة تجارية", "key": "brands", "value": "brands" },
-                        { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
-                        { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
-                        { "label": "رابط خارجي", "key": "custom", "value": "custom" }
-                    ],
-                    "conditions": [
-                        { "id": "show_button", "operation": "=", "value": true }
-                    ]
-                }
-            ]
-        },
-        {
-            "key": "3b9e6a1d-2f47-4c8e-b5d0-8a6c4e2f1b97",
-            "title": {
-                "en": "UNIX · Featured products with lifestyle images",
-                "ar": "يونكس · منتجات مختارة مع صور"
-            },
-            "icon": "sicon-image",
-            "path": "home.unix-featured-products",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
-            "fields": [
-                {
-                    "type": "static",
-                    "format": "description",
-                    "id": "unix-fprods-desc",
-                    "value": "<div>شريط متحرك: لكل عنصر صورة لايف ستايل وفوقها بطاقة صغيرة للمنتج (الصورة والاسم والسعر) تفتح صفحته. ثلاثة عناصر في الشاشات الكبيرة، وسحب على الجوال.</div>"
-                },
-                {
-                    "type": "string",
-                    "icon": "sicon-format-text-alt",
-                    "label": "العنوان",
-                    "multilanguage": true,
-                    "id": "title",
-                    "value": "اختاري قطعتك المفضلة لوقت الاسترخاء",
-                    "required": false,
-                    "format": "text",
-                    "description": "اتركيه فارغاً لإخفاء العنوان",
-                    "placeholder": "أدخلي العنوان هنا...",
-                    "minLength": 0,
-                    "maxLength": 80
-                },
-                {
-                    "id": "items",
-                    "type": "collection",
-                    "format": "collection",
-                    "label": "المنتجات",
-                    "description": "إذا لم تضيفي منتجات تظهر أحدث 4 منتجات بصورها",
-                    "item_label": "منتج",
-                    "icon": "sicon-list-add",
-                    "required": false,
-                    "minLength": 0,
-                    "maxLength": 8,
-                    "value": [],
-                    "fields": [
-                        {
-                            "type": "items",
-                            "icon": "sicon-keyboard_arrow_down",
-                            "label": "المنتج",
-                            "id": "items.product",
-                            "format": "dropdown-list",
-                            "description": null,
-                            "selected": [],
-                            "options": [],
-                            "source": "products",
-                            "multichoice": false,
-                            "searchable": true,
-                            "required": true,
-                            "value": []
-                        },
-                        {
-                            "type": "string",
-                            "icon": "sicon-image",
-                            "label": "صورة لايف ستايل",
-                            "id": "items.image",
-                            "format": "image",
-                            "value": null,
-                            "required": false,
-                            "placeholder": null,
-                            "description": "* المقاس المناسب 1200×1500 بكسل (4:5). إذا تركتِها فارغة تظهر صورة المنتج"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "key": "c7a1e2d4-3b5f-4e8a-9c21-5d4f0a7b2e14",
-            "title": {
-                "en": "UNIX · Collection over image (New from UNIX)",
-                "ar": "يونكس · تصنيف فوق صورة (جديد من يونكس)"
-            },
-            "icon": "sicon-image",
-            "path": "home.unix-collection-overlay",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/slider-products-with-bg.png?v=1.1",
-            "fields": [
-                {
-                    "type": "static",
-                    "format": "description",
-                    "id": "static-desc",
-                    "value": "<div>منتجات تصنيف مختار في شريط متحرك فوق صورة كبيرة، مثل قسم «جديد من يونكس» في unix.sa. إذا تُرك العنوان فارغًا ولم تُحفظ الإعدادات يظهر النص الافتراضي</div>"
-                },
-                {
-                    "type": "string",
-                    "icon": "sicon-format-text-alt",
-                    "label": "العنوان الصغير (فوق العنوان)",
-                    "multilanguage": true,
-                    "id": "subtitle",
-                    "value": null,
-                    "required": false,
-                    "format": "text",
-                    "description": "الافتراضي: NEW COLLECTION",
-                    "placeholder": "NEW COLLECTION",
-                    "minLength": 0,
-                    "maxLength": 60
-                },
-                {
-                    "type": "string",
-                    "icon": "sicon-format-text-alt",
-                    "label": "العنوان",
-                    "multilanguage": true,
-                    "id": "title",
-                    "value": null,
-                    "required": false,
-                    "format": "text",
-                    "description": "الافتراضي: جديد من يونكس",
-                    "placeholder": "جديد من يونكس",
-                    "minLength": 0,
-                    "maxLength": 100
-                },
-                {
-                    "type": "items",
-                    "icon": "sicon-keyboard_arrow_down",
-                    "label": "التصنيف",
-                    "id": "category",
-                    "format": "dropdown-list",
-                    "description": "منتجات هذا التصنيف هي التي تظهر في الشريط المتحرك (في unix.sa: New Collection)",
-                    "selected": [],
-                    "options": [],
-                    "source": "categories",
-                    "multichoice": false,
-                    "searchable": true,
-                    "required": true,
-                    "value": []
-                },
-                {
-                    "type": "number",
-                    "format": "integer",
-                    "icon": "sicon-list",
-                    "label": "عدد المنتجات",
-                    "id": "limit",
-                    "value": 8,
-                    "required": false,
-                    "minimum": 2,
-                    "maximum": 20
-                },
-                {
-                    "type": "string",
-                    "icon": "sicon-image",
-                    "label": "صورة الخلفية (الشاشات الكبيرة)",
-                    "id": "image",
-                    "format": "image",
-                    "value": null,
-                    "required": false,
-                    "placeholder": null,
-                    "description": "المقاس المناسب 1920×1080 بكسل (16:9). إذا تُركت فارغة تُستخدم صورة التصنيف",
-                    "settings": {
-                        "height": 1080,
-                        "width": 1920
-                    }
-                },
-                {
-                    "type": "string",
-                    "icon": "sicon-image",
-                    "label": "صورة الخلفية (الجوال)",
-                    "id": "image_mobile",
-                    "format": "image",
-                    "value": null,
-                    "required": false,
-                    "placeholder": null,
-                    "description": "اختيارية، تظهر تحت عرض 576px. المقاس المناسب 800×1000 بكسل (4:5)",
-                    "settings": {
-                        "height": 1000,
-                        "width": 800
-                    }
-                },
-                {
-                    "type": "number",
-                    "format": "integer",
-                    "icon": "sicon-sun",
-                    "label": "درجة التعتيم فوق الصورة (%)",
-                    "id": "overlay",
-                    "value": 30,
-                    "required": false,
-                    "minimum": 20,
-                    "maximum": 60,
-                    "description": "من 20 إلى 60. أقل من 20 قد لا يظهر النص الفاتح بوضوح على الصور الفاتحة، ويوجد تدرّج غامق ثابت تحت العنوان والبطاقات"
-                }
-            ]
-        },
-        {
-            "key": "e3b9d6f1-8a2c-4f7e-b5d0-1c6a9e4f7b38",
-            "title": {
-                "en": "UNIX · Collections grid (Move. Train. Unwind.)",
-                "ar": "يونكس · بطاقات التصنيفات (حركة. رياضة. استرخاء.)"
-            },
-            "icon": "sicon-layout-grid-rearrange",
-            "path": "home.unix-collections-grid",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
-            "fields": [
-                {
-                    "type": "static",
-                    "format": "description",
-                    "id": "static-desc",
-                    "value": "<div>عنوان ووصف وزر، وتحتها بطاقات تصنيفات بنسبة 3:4، مثل قسم «حركة. رياضة. استرخاء.» في unix.sa. إذا تُركت النصوص فارغة ولم تُحفظ الإعدادات يظهر النص الافتراضي</div>"
-                },
-                {
-                    "type": "string",
-                    "icon": "sicon-format-text-alt",
-                    "label": "العنوان",
-                    "multilanguage": true,
-                    "id": "title",
-                    "value": null,
-                    "required": false,
-                    "format": "text",
-                    "description": "الافتراضي: حركة. رياضة. استرخاء.",
-                    "placeholder": "حركة. رياضة. استرخاء.",
-                    "minLength": 0,
-                    "maxLength": 100
-                },
-                {
-                    "type": "string",
-                    "icon": "sicon-typography",
-                    "label": "الوصف",
-                    "multilanguage": true,
-                    "id": "text",
-                    "value": null,
-                    "required": false,
-                    "format": "textarea",
-                    "description": null,
-                    "placeholder": "مجموعة صُممت بعناية...",
-                    "minLength": 0,
-                    "maxLength": 300
-                },
-                {
-                    "type": "string",
-                    "icon": "sicon-format-text-alt",
-                    "label": "نص الزر",
-                    "multilanguage": true,
-                    "id": "button_label",
-                    "value": null,
-                    "required": false,
-                    "format": "text",
-                    "description": "الافتراضي: تسوقي الآن",
-                    "placeholder": "تسوقي الآن",
-                    "minLength": 0,
-                    "maxLength": 40
-                },
-                {
-                    "type": "items",
-                    "icon": "sicon-link",
-                    "label": "رابط الزر",
-                    "id": "button_url",
-                    "value": null,
-                    "description": "إذا تُرك الرابط فارغًا لا يظهر الزر. في unix.sa يفتح صفحة كل التصنيفات",
-                    "required": false,
-                    "format": "variable-list",
-                    "searchable": true,
-                    "source": "custom",
-                    "sources": [
-                        { "label": "تصنيف", "key": "categories", "value": "categories" },
-                        { "label": "منتج", "key": "products", "value": "products" },
-                        { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
-                        { "label": "صفحة تعريفية", "key": "pages", "value": "pages" },
-                        { "label": "رابط خارجي", "key": "custom", "value": "custom" }
-                    ]
-                },
-                {
-                    "id": "cards",
-                    "type": "collection",
-                    "format": "collection",
-                    "label": "بطاقات التصنيفات",
-                    "item_label": "كارت",
-                    "icon": "sicon-list-add",
-                    "required": true,
-                    "minLength": 1,
-                    "maxLength": 6,
-                    "value": [
-                        {
-                            "cards.title": null,
-                            "cards.image": null,
-                            "cards.url__type": "categories",
-                            "cards.overlay": 10
-                        },
-                        {
-                            "cards.title": null,
-                            "cards.image": null,
-                            "cards.url__type": "categories",
-                            "cards.overlay": 20
-                        },
-                        {
-                            "cards.title": null,
-                            "cards.image": null,
-                            "cards.url__type": "categories",
-                            "cards.overlay": 20
-                        }
-                    ],
-                    "fields": [
-                        {
-                            "type": "string",
-                            "icon": "sicon-format-text-alt",
-                            "label": "اسم التصنيف",
-                            "multilanguage": true,
-                            "id": "cards.title",
-                            "value": null,
-                            "required": false,
-                            "format": "text",
-                            "description": "إذا تُرك فارغًا في البطاقات الثلاث الأولى يظهر الاسم الافتراضي (أطقم رياضية / أطقم كومفي / إكسسوارات) بالعربية والإنجليزية",
-                            "placeholder": "مثلًا: أطقم كومفي",
-                            "minLength": 1,
-                            "maxLength": 60
-                        },
-                        {
-                            "type": "string",
-                            "icon": "sicon-image",
-                            "label": "الصورة",
-                            "id": "cards.image",
-                            "format": "image",
-                            "value": null,
-                            "required": false,
-                            "placeholder": null,
-                            "description": "* المقاس المناسب 600×800 بكسل (3:4)",
-                            "settings": {
-                                "height": 800,
-                                "width": 600
-                            }
-                        },
-                        {
-                            "type": "items",
-                            "icon": "sicon-link",
-                            "label": "الرابط",
-                            "id": "cards.url",
-                            "value": null,
-                            "description": null,
-                            "required": false,
-                            "format": "variable-list",
-                            "searchable": true,
-                            "source": "custom",
-                            "sources": [
-                                { "label": "تصنيف", "key": "categories", "value": "categories" },
-                                { "label": "منتج", "key": "products", "value": "products" },
-                                { "label": "التخفيضات", "key": "offers_link", "value": "offers_link" },
-                                { "label": "رابط خارجي", "key": "custom", "value": "custom" }
-                            ]
-                        },
-                        {
-                            "type": "number",
-                            "format": "integer",
-                            "icon": "sicon-sun",
-                            "label": "درجة التعتيم (%)",
-                            "id": "cards.overlay",
-                            "value": 20,
-                            "required": false,
-                            "minimum": 0,
-                            "maximum": 60
-                        }
-                    ]
+                    "value": true,
+                    "selected": true
                 }
             ]
         }
