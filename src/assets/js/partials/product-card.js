@@ -165,7 +165,8 @@ class ProductCard extends HTMLElement {
     // ROADMAP 6.4: salla.lang in the browser lacks the theme's keys; fall back to the bundled locale.
     if (typeof label !== 'string' || label === key) {
       const isEn = (document.documentElement.lang || 'ar').toLowerCase().startsWith('en');
-      label = (isEn ? enLocale : arLocale).blocks.unix.card.wishlist.split(':name').join(name);
+      // Static member chains so webpack keeps only these two strings, not the whole locale files.
+      label = (isEn ? enLocale.blocks.unix.card.wishlist : arLocale.blocks.unix.card.wishlist).split(':name').join(name);
     }
     return this.escapeHTML(label);
   }
