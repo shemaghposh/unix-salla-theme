@@ -108,7 +108,10 @@ class ProductCard extends HTMLElement {
     }
 
     if (this.product.status === 'sale') {
-      return salla.lang.get('pages.cart.add_to_cart');
+      // ROADMAP 6.4: Salla's own «أضف إلى السلة» is masculine; the card uses the theme's feminine label
+      // (same string as the product page button), bundled because salla.lang lacks theme keys.
+      const isEn = (document.documentElement.lang || 'ar').toLowerCase().startsWith('en');
+      return isEn ? enLocale.blocks.unix.pdp_info.add_to_cart : arLocale.blocks.unix.pdp_info.add_to_cart;
     }
 
     if (this.product.type !== 'donating') {
