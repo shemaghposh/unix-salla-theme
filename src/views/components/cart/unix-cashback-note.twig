@@ -3,9 +3,9 @@
   Port of unix.sa snippets/cashback-note.liquid. Cart page + (4.3) cart drawer only; the original
   does not render it on the product page.
 
-  Usage:
-    {% include 'components.cart.unix-cashback-note' %}                         {# base = cart.sub_total #}
-    {% include 'components.cart.unix-cashback-note' with { cbk_base: 250 } %}  {# any other base #}
+  Usage (no comment markers inside this block: Twig comments don't nest, ROADMAP 6.8):
+    {% include 'components.cart.unix-cashback-note' %}                         → base = cart.sub_total
+    {% include 'components.cart.unix-cashback-note' with { cbk_base: 250 } %}  → any other base
   JS: src/assets/js/partials/unix-cashback-note.js keeps the amount in step with cart updates
   (salla.event.cart.onUpdated → sub_total) and opens Salla's login modal from the guest link.
 
