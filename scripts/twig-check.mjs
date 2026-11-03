@@ -7,6 +7,8 @@
  *      outer one and the rest of the "comment" runs as code), and stray `#}` in text.
  *   2. Syntax: every .twig under src/views is compiled with twig.js. Salla's own tags (`hook`, `component`)
  *      are registered as no-op tags and Salla's filters/functions get stubs, so only real syntax errors fail.
+ *      PHP-Twig arrow functions (`x => …`, `(k, v) => …`), which twig.js can't parse, are rewritten to
+ *      `(…)` first, so their bodies and the rest of the expression are still checked.
  *   3. References: every literal include / extends / embed / component target must exist, and a template
  *      must not include itself.
  *   4. twilight.json: every registered component path has its .twig file, and every
@@ -146,6 +148,117 @@ function scanComments(src) {
     return { problems, code: out };
 }
 
+/** Index of `close` after `from`, skipping quoted strings; returns the index just past it (or src.length). */
+function findClose(src, from, close) {
+    let quote = null;
+    for (let j = from; j < src.length; j++) {
+        const c = src[j];
+        if (quote) {
+            if (c === '\\') j++;
+            else if (c === quote) quote = null;
+        } else if (c === '"' || c === "'") {
+            quote = c;
+        } else if (src.startsWith(close, j)) {
+            return j + 2;
+        }
+    }
+    return src.length;
+}
+
+function arrowOutsideQuotes(s) {
+    let quote = null;
+    let last = -1;
+    for (let j = 0; j < s.length - 1; j++) {
+        const c = s[j];
+        if (quote) {
+            if (c === '\\') j++;
+            else if (c === quote) quote = null;
+        } else if (c === '"' || c === "'") {
+            quote = c;
+        } else if (c === '=' && s[j + 1] === '>') {
+            last = j;
+        }
+    }
+    return last;
+}
+
+/**
+ * PHP Twig (≥ 2.10) has arrow functions (`|filter(x => …)`, `|map((k, v) => …)`, Raed uses them); twig.js
+ * can't parse them. Inside {{ }} / {% %} only, `params => body` becomes `(body)`: the body is still
+ * compiled (its params are just unknown variables), the rest of the expression is untouched.
+ * Innermost / last arrow first, so nested arrows work. Newlines are kept, so line numbers still match.
+ */
+function rewriteArrows(span) {
+    let s = span;
+    for (let idx = arrowOutsideQuotes(s); idx !== -1; idx = arrowOutsideQuotes(s)) {
+        // params: `name` or `(a, b)`
+        let k = idx - 1;
+        while (k >= 0 && /\s/.test(s[k])) k--;
+        let start;
+        if (s[k] === ')') {
+            let depth = 0;
+            for (; k >= 0; k--) {
+                if (s[k] === ')') depth++;
+                else if (s[k] === '(' && --depth === 0) break;
+            }
+            start = Math.max(k, 0);
+        } else {
+            while (k >= 0 && /[A-Za-z0-9_]/.test(s[k])) k--;
+            start = k + 1;
+        }
+        // body: up to the `,` or closing bracket that ends this argument
+        let p = idx + 2;
+        let depth = 0;
+        let quote = null;
+        for (; p < s.length; p++) {
+            const c = s[p];
+            if (quote) {
+                if (c === '\\') p++;
+                else if (c === quote) quote = null;
+            } else if (c === '"' || c === "'") {
+                quote = c;
+            } else if ('([{'.includes(c)) {
+                depth++;
+            } else if (')]}'.includes(c)) {
+                if (depth === 0) break;
+                depth--;
+            } else if (c === ',' && depth === 0) {
+                break;
+            }
+        }
+        s = s.slice(0, start) + '(' + s.slice(idx + 2, p).trim() + ')' + s.slice(p);
+    }
+    return s;
+}
+
+/** Applies rewriteArrows to every {{ }} / {% %} span; comments and text pass through unchanged. */
+function forTwigJs(src) {
+    let out = '';
+    let i = 0;
+    while (i < src.length) {
+        const next = src.slice(i).search(/\{[{%#]/);
+        if (next === -1) {
+            out += src.slice(i);
+            break;
+        }
+        const at = i + next;
+        out += src.slice(i, at);
+        const pair = src.slice(at, at + 2);
+        let end;
+        if (pair === '{#') {
+            const c = src.indexOf('#}', at + 2);
+            end = c === -1 ? src.length : c + 2;
+            out += src.slice(at, end);
+        } else {
+            end = findClose(src, at + 2, pair === '{{' ? '}}' : '%}');
+            const span = src.slice(at, end);
+            out += span.includes('=>') ? rewriteArrows(span) : span;
+        }
+        i = end;
+    }
+    return out;
+}
+
 function lookup(obj, dotted) {
     return dotted.split('.').reduce((node, key) => (node && typeof node === 'object' ? node[key] : undefined), obj);
 }
@@ -188,7 +301,7 @@ for (const file of files) {
     // 2. syntax
     twigLog.length = 0;
     try {
-        const tpl = Twig.twig({ data: src, rethrow: true, allowInlineIncludes: true });
+        const tpl = Twig.twig({ data: forTwigJs(src), rethrow: true, allowInlineIncludes: true });
         if (!tpl || !tpl.tokens) {
             err(file, 0, 'twig.js could not compile the template' + (twigLog.length ? ': ' + twigLog.join(' | ') : ''));
         }

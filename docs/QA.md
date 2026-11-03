@@ -23,7 +23,7 @@ Script: `scripts/twig-check.mjs` (dev-only, not part of the theme build). It che
 
 Run it after every change to `src/views/**`, `twilight.json` or the locales, and before closing a phase (with `pnpm prod`).
 
-**Limits.** twig.js is a JavaScript port, not the PHP Twig 3 that Salla runs. A pass means the templates tokenize and compile; it does not prove they render. If twig.js rejects a construct PHP Twig 3 accepts, note it here and narrow the script rather than rewriting the template.
+**Limits.** twig.js is a JavaScript port, not the PHP Twig 3 that Salla runs. A pass means the templates tokenize and compile; it does not prove they render. If twig.js rejects a construct PHP Twig 3 accepts, note it here and narrow the script rather than rewriting the template. Known so far: **arrow functions** (`|filter(x => …)`, `|map(…)`) — the script rewrites `params => body` to `(body)` inside `{{ }}` / `{% %}` before compiling, so the body and the rest of the expression are still checked. `matches`, `a ? b` without else and `{ (key): v }` compile in twig.js as they are.
 
 ## 2. Runtime rules (review by hand)
 
