@@ -87,8 +87,14 @@
       'itemCondition': 'https://schema.org/NewCondition',
       'seller': seo_seller
     } %}
-    {% if product.is_on_sale and product.discount_ends %}
-      {% set seo_offer = seo_offer|merge({ 'priceValidUntil': product.discount_ends|date('Y-m-d') }) %}
+    {#
+      6.8: Twig's |date throws on a string it can't parse, and Raed never reads discount_ends, so its
+      shape is unverified. Only a date object, a Unix timestamp or a YYYY-MM-DD… string reaches |date;
+      anything else just drops priceValidUntil (optional for Google).
+    #}
+    {% set seo_ends = product.is_on_sale ? product.discount_ends : null %}
+    {% if seo_ends and (seo_ends.timestamp is defined or (seo_ends is not iterable and (seo_ends ~ '') matches '/^([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{9,11}$)/')) %}
+      {% set seo_offer = seo_offer|merge({ 'priceValidUntil': seo_ends|date('Y-m-d') }) %}
     {% endif %}
     {% if product.is_on_sale and (product.regular_price ~ '') matches '/^[0-9]+([.][0-9]+)?$/' %}
       {% set seo_offer = seo_offer|merge({ 'priceSpecification': {
