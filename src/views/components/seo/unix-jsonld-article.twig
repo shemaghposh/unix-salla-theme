@@ -61,7 +61,12 @@
 
   {% if article.created_at %}
     {% set seo_post = seo_post|merge({ 'datePublished': article.created_at|date('c') }) %}
-    {% set seo_modified = article.updated_at is defined and article.updated_at ? article.updated_at : article.created_at %}
+    {# 6.8: updated_at isn't in Raed's article docs; |date throws on an unparseable string, so only a date object or a YYYY-MM-DD… string is used #}
+    {% set seo_updated = article.updated_at is defined ? article.updated_at : null %}
+    {% set seo_modified = article.created_at %}
+    {% if seo_updated and (seo_updated.timestamp is defined or (seo_updated is not iterable and (seo_updated ~ '') matches '/^[0-9]{4}-[0-9]{2}-[0-9]{2}/')) %}
+      {% set seo_modified = seo_updated %}
+    {% endif %}
     {% set seo_post = seo_post|merge({ 'dateModified': seo_modified|date('c') }) %}
   {% endif %}
 
