@@ -3,9 +3,9 @@
   unix.sa snippets/cart-shipping-slider.liquid: message + (here) a progress line.
   Used in the cart drawer header and at the top of the cart page summary column.
 
-  Usage:
-    {% include 'components.cart.unix-free-shipping' %}                                   {# filled by JS #}
-    {% include 'components.cart.unix-free-shipping' with { fs_cart: cart } %}            {# cart page: first paint from Twig #}
+  Usage (no comment markers inside this block: Twig comments don't nest, ROADMAP 6.8):
+    {% include 'components.cart.unix-free-shipping' %}                                   → filled by JS
+    {% include 'components.cart.unix-free-shipping' with { fs_cart: cart } %}            → cart page: first paint from Twig
 
   Same rules in Twig (first paint) and in src/assets/js/partials/unix-free-shipping.js (updates).
   Source of truth (D88):
