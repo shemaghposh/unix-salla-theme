@@ -13,6 +13,9 @@
 .s-product-card-image-secondary { display: none; }
 
 .unix-products {
+  // Gap between the --tap hit area and the visible --s-5 chip of the touch quick add (6.4)
+  --_chip-inset: calc((var(--tap) - var(--s-5)) / 2);
+
   // ── Card shell ────────────────────────────────
   .s-products-slider-card { block-size: auto; }
 
@@ -70,7 +73,7 @@
     .s-product-card-entry:hover .s-product-card-image .s-product-card-image-secondary { opacity: 1; }
   }
 
-  // ── Badge: one pill at the top start (DS §8.4) ─
+  // ── Badge: one cream chip at the top start (DS §8.4, unix.sa) ─
   .s-product-card-entry .s-product-card-promotion-title {
     inset-block-start: var(--s-3);
     inset-inline-start: var(--s-3);
@@ -80,11 +83,11 @@
     padding-block: 0;
     padding-inline: var(--s-3);
     overflow: hidden;
-    border-radius: var(--r-pill);
-    background: var(--c-surface);
+    border-radius: var(--r-xs);
+    background: var(--c-bg);
     color: var(--c-text);
     font-size: var(--t-micro);
-    font-weight: var(--fw-medium);
+    font-weight: var(--fw-regular);
     line-height: var(--s-5);
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -187,7 +190,7 @@
   }
 
   body.theme-unix & .s-product-card-content-footer .s-button-btn {
-    --_bg: var(--c-surface);
+    --_bg: var(--c-bg);
     --_fg: var(--c-text);
     --_ring: none;
     --_fill: var(--c-action);
@@ -210,19 +213,43 @@
     }
   }
 
-  // Touch / smaller screens: a bag icon at the end corner, label kept for screen readers
+  // Touch / smaller screens: a bag icon at the end corner, label kept for screen readers.
+  // Like unix.sa: a transparent --tap hit area around a visible --s-5 cream square (--r-xs),
+  // drawn by the button's own ::before (the hover-fill layer, re-used as the chip). The hit area
+  // is pulled out by --_chip-inset so the visible square sits --s-3 from the image corner.
   @media not all and (hover: hover) and (min-width: 1024px) {
-    .s-product-card-entry .s-product-card-content-footer { inset-inline-start: auto; }
+    .s-product-card-entry .s-product-card-content-footer {
+      inset-block-end: calc(100% + var(--s-3) - var(--_chip-inset));
+      inset-inline-start: auto;
+      inset-inline-end: calc(var(--s-3) - var(--_chip-inset));
+    }
 
-    // No empty disc: out-of-stock cards and buttons without an icon get no touch quick add
+    // No empty square: out-of-stock cards and buttons without an icon get no touch quick add
     .s-product-card-out-of-stock .s-product-card-content-footer,
     .s-product-card-entry .s-product-card-content-footer:not(:has(salla-add-product-button i)) { display: none; }
 
     body.theme-unix & .s-product-card-content-footer .s-button-btn {
+      --_bg: transparent;
+      --_fill: var(--c-bg);
+      --_fill-fg: var(--c-text);
       inline-size: var(--tap);
       min-inline-size: var(--tap);
       min-block-size: var(--tap);
       padding-inline: 0;
+      overflow: visible;
+
+      &::before {
+        inset: var(--_chip-inset);
+        border-radius: var(--r-xs);
+        transform: none;
+        transition: background-color var(--d-fast) var(--ease-out);
+      }
+
+      &:hover::before { background: var(--c-surface-muted); }
+      &:focus-visible { outline-offset: calc(var(--ring-w) - var(--_chip-inset)); }
+      &:is(:disabled, [disabled], [aria-disabled="true"])::before { display: block; }
+
+      i { font-size: var(--icon-sm); }
     }
 
     .s-product-card-content-footer salla-add-product-button span:not([class]) {
@@ -238,7 +265,9 @@
 }
 
 // ── Wishlist heart on every product card (ROADMAP 6.3 · DS §8.3) ──
-// A --tap circle on --c-surface at the top end corner; icon --c-text; saved = filled heart.
+// A transparent --tap hit area at the top end corner whose visible part is an --s-5 --c-bg square
+// (--r-xs, drawn by ::before), like unix.sa's card controls (6.4); icon --c-text; saved = filled heart.
+// The host is pulled out by --_chip-inset so the square itself sits --s-3 from the corner.
 // The saved state is aria-pressed on the host AND on the inner <button> (product-card.js + wishlist.js).
 // salla-button shape="icon" renders <button class="… s-button-element s-button-icon"> and copies the
 // host's attributes onto it, including class="s-product-card-wishlist-btn …". So Raed's rule
@@ -247,19 +276,22 @@
 // button is reset to static. `!important` only against Raed's `!bg-white` / `m-0` utilities.
 body.theme-unix .s-product-card-vertical salla-button.s-product-card-wishlist-btn {
   position: absolute;
-  inset-block-start: var(--s-3);
+  inset-block-start: calc(var(--s-3) - var(--_chip-inset));
   inset-block-end: auto;
-  inset-inline-end: var(--s-3);
+  inset-inline-end: calc(var(--s-3) - var(--_chip-inset));
   inset-inline-start: auto;
   z-index: 1;
   opacity: 1;
 }
 
 body.theme-unix salla-button.s-product-card-wishlist-btn {
+  --_chip-inset: calc((var(--tap) - var(--s-5)) / 2);
+
   > .s-button-element,
   > .s-button-icon {
-    position: static;
+    position: relative; // anchors the ::before chip; inset stays auto, so Raed's offsets don't apply
     inset: auto;
+    isolation: isolate;
     opacity: 1;
     display: inline-grid;
     place-items: center;
@@ -270,14 +302,23 @@ body.theme-unix salla-button.s-product-card-wishlist-btn {
     margin: 0 !important;
     padding: 0;
     border: 0;
-    border-radius: var(--r-pill);
-    background: var(--c-surface) !important;
+    border-radius: 0;
+    background: transparent !important;
     color: var(--c-text);
-    transition: background-color var(--d-fast) var(--ease-out);
 
-    &:hover { background: var(--c-surface-muted) !important; }
+    &::before {
+      content: "";
+      position: absolute;
+      inset: var(--_chip-inset);
+      z-index: -1;
+      border-radius: var(--r-xs);
+      background: var(--c-bg);
+      transition: background-color var(--d-fast) var(--ease-out);
+    }
+
+    &:hover::before { background: var(--c-surface-muted); }
     &:active { transform: translateY(var(--press-y)); }
-    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) - var(--_chip-inset)); }
     &:disabled { opacity: var(--o-disabled); }
   }
 
