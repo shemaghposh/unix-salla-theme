@@ -130,6 +130,7 @@
 | 6.5 | Screenshots 1366×768 (3 بالقليل) وبيانات النشر |
 | 6.6 | طلب نشر كثيم **خاص**، ومراجعة سلة، ولينك التركيب |
 | 6.7 | الترقية لـ «سلة برو» وتركيب الثيم على المتجر الحقيقي |
+| 6.8 | 🟨 **فحص Twig قبل المعاينة** (`docs/QA.md`): `pnpm twig:check` (`scripts/twig-check.mjs`، devDependency `twig`) بيعمل compile لكل قوالب `src/views` بـ twig.js (تاجات سلة `hook` و `component` مسجّلة)، وبيمسك التعليقات المتداخلة، و `include`/`extends`/`component` لملف مش موجود أو الملف بيعمل include لنفسه، ومسارات كومبوننتس `twilight.json`، ومفاتيح `trans('blocks.unix.…')` الناقصة في `ar.json` أو `en.json`. **المراجعة اليدوية لقت ومصلّحة:** تعليقين متداخلين بيعملوا recursion لا نهائي (3.7، 4.3، كانوا هيوقعوا كل الصفحات)، و `|date` على قيم نوعها مش مؤكد في JSON-LD المنتج والمقال (3.11، 5.4). فاضل: `pnpm install` و `pnpm twig:check` في الجلسة الرئيسية، وأي false positive من twig.js يتسجّل في `QA.md` |
 
 ---
 
