@@ -237,6 +237,7 @@
       min-block-size: var(--tap);
       padding-inline: 0;
       overflow: visible;
+      border-radius: 0; // square focus ring around the chip (the ::before draws the --r-xs corners)
 
       &::before {
         inset: var(--_chip-inset);
@@ -245,7 +246,7 @@
         transition: background-color var(--d-fast) var(--ease-out);
       }
 
-      &:hover::before { background: var(--c-surface-muted); }
+      @media (hover: hover) { &:hover::before { background: var(--c-surface-muted); } }
       &:focus-visible { outline-offset: calc(var(--ring-w) - var(--_chip-inset)); }
       &:is(:disabled, [disabled], [aria-disabled="true"])::before { display: block; }
 
@@ -316,7 +317,7 @@ body.theme-unix salla-button.s-product-card-wishlist-btn {
       transition: background-color var(--d-fast) var(--ease-out);
     }
 
-    &:hover::before { background: var(--c-surface-muted); }
+    @media (hover: hover) { &:hover::before { background: var(--c-surface-muted); } } // no sticky hover after a tap
     &:active { transform: translateY(var(--press-y)); }
     &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) - var(--_chip-inset)); }
     &:disabled { opacity: var(--o-disabled); }
