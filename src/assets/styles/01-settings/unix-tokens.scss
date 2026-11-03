@@ -83,8 +83,8 @@
   --section-md: clamp(64px, 8vw, 112px);
   --section-lg: clamp(96px, 11vw, 160px);
   --content-max: 1440px;
-  --gutter: 12px;
-  --page-margin: 16px;
+  --gutter: 8px;        /* < 576: unix.sa grid and carousel gap (6.4, measured) */
+  --page-margin: 20px;  /* < 576: unix.sa page edge (6.4, measured) */
 
   /* ── 4 Shape & depth ────────────────────────── */
   --r-xs: 2px;  /* product-card overlay chips: badge, quick add, wishlist (DS §8.3/§8.4, 6.4) */
@@ -215,7 +215,7 @@
 
 /* ── Phase 3 · 3.1 additions (DS §13.1, §8.20 product gallery) ── */
 :root {
-  --ratio-pdp: 4 / 5;                  /* product page images + thumbnails (DS §6; unix.sa 2:3) */
+  --ratio-pdp: 2 / 3;                  /* product page images + thumbnails, as unix.sa (6.4, owner; was 4:5) */
   --gallery-thumb-w: 72px;             /* desktop thumbnail column (unix.sa 10rem → 14.7rem) */
   --o-thumb: .4;                       /* idle thumbnail (unix.sa .2) */
   --zoom-scale: 2;                     /* image magnification inside the zoom dialog */
