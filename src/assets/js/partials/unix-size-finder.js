@@ -16,13 +16,28 @@
 import {
   SIZES, buildConfig, createModel, productProfile, loadProfile, saveProfile, hasProfile,
 } from './unix-size-finder-model';
+import arLocale from '../../../locales/ar.json';
+import enLocale from '../../../locales/en.json';
 
 const KEY = 'blocks.unix.size_finder.';
 const instances = new WeakMap();
 
+// ROADMAP 6.4: salla.lang in the browser doesn't carry the theme's own keys (the first live preview showed
+// raw "blocks.unix.size_finder.open_new"), so the strings ship with the bundle from src/locales.
+// Only this subtree is kept (webpack JSON tree shaking).
+const STRINGS = (document.documentElement.lang || 'ar').toLowerCase().startsWith('en')
+  ? enLocale.blocks.unix.size_finder
+  : arLocale.blocks.unix.size_finder;
+
 const t = (key, params) => {
-  const value = window.salla?.lang?.get(KEY + key, params);
-  return typeof value === 'string' ? value : key;
+  const fromSalla = window.salla?.lang?.get(KEY + key, params);
+  if (typeof fromSalla === 'string' && fromSalla !== KEY + key) return fromSalla;
+  let value = STRINGS[key];
+  if (typeof value !== 'string') return key;
+  Object.keys(params || {})
+    .sort((a, b) => b.length - a.length)
+    .forEach(name => { value = value.split(`:${name}`).join(String(params[name])); });
+  return value;
 };
 
 // Content timing from unix.sa, not motion: unchanged under prefers-reduced-motion (DS §8.11).

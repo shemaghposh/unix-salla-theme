@@ -1,4 +1,6 @@
 import BasePage from '../base-page';
+import arLocale from '../../../locales/ar.json';
+import enLocale from '../../../locales/en.json';
 class ProductCard extends HTMLElement {
   constructor(){
     super()
@@ -157,7 +159,14 @@ class ProductCard extends HTMLElement {
    * the product; the saved state lives in aria-pressed only (never in the label).
    */
   getWishlistLabel() {
-    const label = salla.lang.get('blocks.unix.card.wishlist', { name: this.product?.name || '' });
+    const name = this.product?.name || '';
+    const key = 'blocks.unix.card.wishlist';
+    let label = salla.lang.get(key, { name });
+    // ROADMAP 6.4: salla.lang in the browser lacks the theme's keys; fall back to the bundled locale.
+    if (typeof label !== 'string' || label === key) {
+      const isEn = (document.documentElement.lang || 'ar').toLowerCase().startsWith('en');
+      label = (isEn ? enLocale : arLocale).blocks.unix.card.wishlist.split(':name').join(name);
+    }
     return this.escapeHTML(label);
   }
 
