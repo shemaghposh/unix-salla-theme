@@ -99,6 +99,10 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     gap: var(--s-2);
     min-inline-size: 0;
     justify-self: start;
+
+    // ≥ lg the inline menu must be held to the start column, otherwise it runs under the logo and the
+    // "More" overflow check (main-menu.js) never fires (ROADMAP 6.4, first live preview).
+    @screen lg { justify-self: stretch; }
   }
 
   &__end {
@@ -109,7 +113,8 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     justify-self: end;
   }
 
-  &__menu-toggle {
+  // `.unix-header` prefix: .unix-icon-btn (declared later, same specificity) would set it back to inline-flex.
+  .unix-header &__menu-toggle {
     @screen lg { display: none; }
   }
 
