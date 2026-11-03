@@ -230,7 +230,7 @@
 
     body.theme-unix & .s-product-card-content-footer .s-button-btn {
       --_bg: transparent;
-      --_fill: var(--c-bg);
+      --_fill: transparent; // owner (6.4): icon straight on the photo, no chip
       --_fill-fg: var(--c-text);
       inline-size: var(--tap);
       min-inline-size: var(--tap);
@@ -313,7 +313,7 @@ body.theme-unix salla-button.s-product-card-wishlist-btn {
       inset: var(--_chip-inset);
       z-index: -1;
       border-radius: var(--r-xs);
-      background: var(--c-bg);
+      background: transparent; // owner (6.4): icon straight on the photo, no chip
       transition: background-color var(--d-fast) var(--ease-out);
     }
 
