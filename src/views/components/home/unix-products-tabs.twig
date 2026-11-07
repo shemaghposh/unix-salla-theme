@@ -40,10 +40,10 @@
 {% if not fallback_label|trim %}{% set fallback_label = trans('blocks.unix.products_tabs.browse_all') %}{% endif %}
 {% set show_button = component.show_button is defined ? component.show_button : true %}
 
-{# Swiper config (salla-slider): per-view 2 / 3 / 4. The spaceBetween numbers MIRROR --gutter
-   (DS §3.3: 12 / 16 @576 / 20 @768 / 24 @1024 / 32 @1440); Swiper needs px numbers, not CSS vars.
+{# Swiper config (salla-slider): per-view 2 / 3 / 4. The spaceBetween numbers MIRROR --slider-gap
+   (6.4, unix.sa spaceBetween: 8, then 24 from lg); Swiper needs px numbers, not CSS vars.
    Keep them in sync with unix-tokens.scss. #}
-{% set slider_config = '{"slidesPerView":2,"spaceBetween":12,"breakpoints":{"576":{"slidesPerView":2,"spaceBetween":16},"768":{"slidesPerView":3,"spaceBetween":20},"1024":{"slidesPerView":4,"spaceBetween":24},"1440":{"slidesPerView":4,"spaceBetween":32}}}' %}
+{% set slider_config = '{"slidesPerView":2,"spaceBetween":8,"breakpoints":{"768":{"slidesPerView":3,"spaceBetween":8},"1024":{"slidesPerView":4,"spaceBetween":24}}}' %}
 
 {% set tabs = [] %}
 {% for tab in component.tabs|default([]) %}
@@ -169,9 +169,9 @@
           {% for n in 1..4 %}
             <div class="unix-products__skel-card">
               <span class="unix-products__skel-media"></span>
-              <span class="unix-products__skel-line"></span>
-              <span class="unix-products__skel-line"></span>
-              <span class="unix-products__skel-line unix-products__skel-line--short"></span>
+              <span class="unix-products__skel-line unix-products__skel-line--short"></span>{# vendor #}
+              <span class="unix-products__skel-line"></span>{# title #}
+              <span class="unix-products__skel-line unix-products__skel-line--short"></span>{# price #}
             </div>
           {% endfor %}
         </div>
@@ -184,11 +184,14 @@
     {% endfor %}
     </div>
 
+    {# 6.4: unix.sa's thin progress line under the slider (unix-products-tabs.js fills it; decorative) #}
+    <div class="unix-ptabs__progress" data-unix-ptabs-progress aria-hidden="true" hidden></div>
+
     {% if show_button %}
       {% set first = tabs|first %}
       <div class="unix-ptabs__cta">
-        {# ROADMAP 6.1 · DS §8.2 (D106): section-header «view all» buttons are primary site-wide #}
-        <a class="unix-btn"
+        {# 6.4 · DS §8.2 (amends D106): outline like unix.sa (products_with_tabs button_style: outline) #}
+        <a class="unix-btn unix-btn--outline"
            data-unix-ptabs-cta
            {% if first.btn_url %}href="{{ first.btn_url }}"{% else %}aria-disabled="true"{% endif %}>{{ first.btn_label }}</a>
       </div>

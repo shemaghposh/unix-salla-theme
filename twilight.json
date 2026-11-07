@@ -293,8 +293,8 @@
         {
             "type": "boolean",
             "icon": "sicon-toggle-off",
-            "label": "هيدر شفاف فوق صورة الرئيسية",
-            "description": "يظهر الهيدر شفافًا بأيقونات فاتحة فوق الهيرو في الصفحة الرئيسية، ويرجع لخلفيته عند التمرير",
+            "label": "هيدر شفاف فوق الهيرو في الرئيسية",
+            "description": "يظهر الهيدر شفافًا فوق صورة أو فيديو الهيرو في الصفحة الرئيسية، بأيقونات وشعار بلونهما الداكن مثل unix.sa، ويرجع لخلفيته البيضاء عند التمرير (Transparent header over the home hero)",
             "id": "unix_header_transparent_home",
             "format": "switch",
             "required": false,
@@ -302,10 +302,21 @@
             "selected": true
         },
         {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "شعار وأيقونات فاتحة فوق الهيرو",
+            "description": "فعّليه فقط إذا كانت صورة أو فيديو الهيرو داكنة. في unix.sa الشعار والأيقونات داكنة (معطّل افتراضيًا) (Light logo and icons over a dark hero)",
+            "id": "unix_header_overlay_light",
+            "format": "switch",
+            "required": false,
+            "value": false,
+            "selected": false
+        },
+        {
             "type": "string",
             "icon": "sicon-image",
             "label": "لوجو فاتح للهيدر الشفاف (اختياري)",
-            "description": "نسخة فاتحة من اللوجو تظهر فوق الهيرو. العرض المناسب 240 بكسل بخلفية شفافة (PNG أو SVG)",
+            "description": "يظهر فقط مع «شعار وأيقونات فاتحة فوق الهيرو» (Light logo, used only with the light hero option)",
             "id": "unix_header_logo_inverse",
             "format": "image",
             "value": null,
@@ -324,6 +335,61 @@
             "selected": true
         },
         {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "إظهار زر AR / EN",
+            "description": "زر تبديل اللغة في الهيدر وفي قائمة الجوال (Show the AR / EN switch). مفعّل في unix.sa",
+            "id": "unix_header_show_lang",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "إظهار زر البحث",
+            "description": "أيقونة البحث في الهيدر (Show search). مفعّل في unix.sa",
+            "id": "unix_header_show_search",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "إظهار زر الحساب",
+            "description": "أيقونة الحساب في الهيدر من التابلت وأكبر، وزر الدخول في قائمة الجوال (Show account). مفعّل في unix.sa",
+            "id": "unix_header_show_account",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "إظهار الخط قبل السلة",
+            "description": "خط رفيع بين الأيقونات وأيقونة السلة على الشاشات الكبيرة (Show the divider before the cart). مفعّل في unix.sa",
+            "id": "unix_header_show_divider",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "إظهار زر العملة",
+            "description": "زر «العملة» في الهيدر وفي قائمة الجوال (Show the currency button). غير موجود في unix.sa، فهو معطّل افتراضيًا",
+            "id": "unix_header_show_currency",
+            "format": "switch",
+            "required": false,
+            "value": false,
+            "selected": false
+        },
+        {
             "type": "static",
             "id": "static-line3",
             "format": "line"
@@ -338,8 +404,44 @@
         {
             "type": "string",
             "icon": "sicon-format-text-alt",
+            "label": "عنوان القائمة الأولى في الفوتر",
+            "description": "عنوان قائمة الفوتر من لوحة سلة (قائمة الفوتر). الافتراضي «سياسات» (Footer menu 1 heading)",
+            "id": "unix_footer_menu1_title",
+            "format": "text",
+            "value": null,
+            "required": false,
+            "multilanguage": true,
+            "placeholder": "سياسات"
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "عنوان القائمة الثانية في الفوتر",
+            "description": "الافتراضي «القائمة» (Footer menu 2 heading)",
+            "id": "unix_footer_menu2_title",
+            "format": "text",
+            "value": null,
+            "required": false,
+            "multilanguage": true,
+            "placeholder": "القائمة"
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "روابط القائمة الثانية في الفوتر",
+            "description": "سطر لكل رابط: النص ثم | ثم الرابط، مثل «من نحن | /p/about». تختفي القائمة إذا تركتِها فارغة (Footer menu 2 links: one 'label | url' per line)",
+            "id": "unix_footer_menu2_links",
+            "format": "textarea",
+            "value": null,
+            "required": false,
+            "multilanguage": true,
+            "placeholder": "طلب الإرجاع أو الاستبدال | /\nبطاقة هدية | /\nتواصلي معنا | /contact"
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
             "label": "عنوان النشرة البريدية",
-            "description": "يظهر فوق نموذج النشرة البريدية في الفوتر (من تطبيق النشرة). اتركيه فارغًا لإخفائه",
+            "description": "يظهر فوق نموذج النشرة البريدية في الفوتر. اتركيه بدون حفظ ليظهر «لا يفوتكِ جديدنا»، أو امسحيه لإخفائه (Newsletter heading)",
             "id": "unix_footer_newsletter_title",
             "format": "text",
             "value": null,
@@ -1427,7 +1529,7 @@
                     "type": "boolean",
                     "icon": "sicon-toggle-off",
                     "label": "هيدر شفاف فوق الواجهة",
-                    "description": "يعمل فقط عندما تكون الواجهة أول عنصر في الصفحة وفيها صورة، ومع تفعيل خيار الهيدر الشفاف في إعدادات الثيم",
+                    "description": "يعمل عندما تكون الواجهة أول عنصر في الصفحة وفيها صورة أو فيديو، ومع تفعيل خيار الهيدر الشفاف في إعدادات الثيم (مفعّلان افتراضيًا مثل unix.sa)",
                     "id": "header_overlay",
                     "format": "switch",
                     "required": false,

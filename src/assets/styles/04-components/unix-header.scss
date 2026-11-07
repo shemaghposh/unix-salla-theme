@@ -1,17 +1,18 @@
 /*
- * UNIX header (ROADMAP 1.2 · DS §8.7)
- * 60px mobile / 72px desktop (--header-h). Grid: start (menu) · centre (logo) · end (actions).
+ * UNIX header (ROADMAP 1.2 · DS §8.7; matched to unix.sa in 6.4)
+ * 60px at every width (--header-h). Grid: start (menu) · centre (logo) · end (actions).
  * States set by src/assets/js/partials/unix-header.js:
  *   .is-stuck    bar is fixed to the top with --e-1 and --c-bg
  *   .is-hidden   bar slid out while scrolling down
  *   .is-settling one-frame flag that suppresses the slide when the bar first becomes fixed
- *   .is-overlay  transparent bar with cream icons over a [data-header-overlay] hero
+ *   .is-overlay  clear bar over a [data-header-overlay] hero (6.4, D113: dark logo + icons like unix.sa)
  */
 
-// The transparent look applies only while the bar sits over the hero and nobody is using it.
-// Colours only, never layout: the hero pulls itself under the bar server-side (DS §8.1, unix-hero.scss).
-// `:has()` applies it in the first paint; `.is-overlay` (added by JS) is the fallback without :has().
-$overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .unix-header[data-overlay-capable]):not(.is-stuck):not(:hover):not(:focus-within)';
+// Like unix.sa (header-overlay.js + section-media-banner.css): the bar is clear while it sits over the hero
+// and turns solid only once it is sticky (no hover switch). Colours only, never layout: the hero pulls itself
+// under the bar server-side (DS §8.1, unix-hero.scss). `:has()` applies it in the first paint; `.is-overlay`
+// (added by JS) is the fallback without :has().
+$overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .unix-header[data-overlay-capable]):not(.is-stuck)';
 
 // Skip link (ROADMAP 6.3 · DS §8.46 · WCAG 2.4.1): first child of .app-inner (master.twig).
 // Visually hidden until focused, then a --c-surface pill at the top start corner, above the drawers.
@@ -68,8 +69,9 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     color: var(--c-action);
     border-block-end: var(--line-w) solid var(--c-border);
     transition:
-      transform var(--d-base) var(--ease-out),
+      transform var(--d-fast) var(--ease-out), // unix.sa .animate: transform .15s ease-out
       background-color var(--d-base) var(--ease-out),
+      border-color var(--d-base) var(--ease-out),
       color var(--d-base) var(--ease-out),
       box-shadow var(--d-base) var(--ease-out);
   }
@@ -140,7 +142,8 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     @screen md { display: flex; align-items: center; }
   }
 
-  &__desktop-only {
+  // `.unix-header &` (0,2,0) so it beats `.unix-text-btn {display: inline-flex}` (6.4: «العملة» leaked onto phones)
+  .unix-header &__desktop-only {
     display: none;
     @screen lg { display: flex; align-items: center; }
   }
@@ -171,7 +174,7 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     salla-user-menu { display: flex; align-items: center; }
 
     :is(.s-user-menu-trigger, .s-user-menu-login-btn, button) {
-      border: 0; // 6.4: plain outline icon, no bordered circle (unix.sa)
+      border: 0; // 6.4: plain icon, no bordered circle (unix.sa)
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -180,10 +183,10 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
       border-radius: var(--r-pill);
       color: inherit;
       background: transparent;
-      transition: background-color var(--d-fast) var(--ease-out);
+      transition: opacity var(--d-fast) var(--ease-out);
 
-      &:hover { background: var(--c-hover-tint); }
-      &:active { background: var(--c-press-tint); }
+      &:hover { background: transparent; opacity: var(--o-hover); } // unix.sa .header__icon--account:hover
+      &:active { opacity: var(--o-muted); }
     }
 
     :is(.s-user-menu-trigger-avatar, img) {
@@ -194,6 +197,7 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
 
     i { font-size: var(--icon-sm); }
     svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
+    svg.unix-hicon--box { inline-size: var(--tap); block-size: var(--tap); }
     // Salla's own fallback login icon (a person in a circle) is filled; only shown if the slot is ignored
     .s-user-menu-login-btn svg { fill: currentColor; }
   }
@@ -211,21 +215,22 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
       min-block-size: var(--tap);
       border-radius: var(--r-pill);
       color: inherit;
-      transition: background-color var(--d-fast) var(--ease-out);
+      transition: opacity var(--d-fast) var(--ease-out);
 
-      &:hover { background: var(--c-hover-tint); }
-      &:active { background: var(--c-press-tint); }
+      &:hover { opacity: var(--o-hover); } // unix.sa .header__icon--cart:hover
+      &:active { opacity: var(--o-muted); }
     }
 
     .s-cart-summary-content { display: none; }
 
+    // unix.sa icon-cart: 44 × 44 artwork filling the tap box
+    .unix-hicon,
     .header-btn__icon {
-      display: inline-flex;
-      inline-size: auto;
-      block-size: auto;
+      display: block;
+      inline-size: var(--tap);
+      block-size: var(--tap);
       margin: 0;
       border: 0;
-      font-size: var(--icon-sm);
       color: inherit;
     }
 
@@ -275,11 +280,20 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
   transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);
 
   svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
+  svg.unix-hicon--box { inline-size: var(--tap); block-size: var(--tap); } // unix.sa 44 × 44 header artwork
 
   &:hover { background: var(--c-hover-tint); }
   &:active { background: var(--c-press-tint); }
   &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
   &:disabled, &[aria-disabled="true"] { opacity: var(--o-disabled); pointer-events: none; }
+}
+
+// Header bar icons: unix.sa hover is opacity .6 with no background (6.4, DS §8.7). Dialog closes keep the tint.
+.unix-header__bar .unix-icon-btn {
+  transition: opacity var(--d-fast) var(--ease-out);
+
+  &:hover { background: transparent; opacity: var(--o-hover); }
+  &:active { background: transparent; opacity: var(--o-muted); }
 }
 
 // ── Text button (currency trigger) ─────────────────
@@ -301,82 +315,88 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
 }
 
 // ── AR/EN pill (DS §8.7, SPEC §2 header-lang-toggle) ─
+// 6.4: unix.sa custom-language-mobile.css: a ~74 × 28 grey pill, 3px padding, 2px gap, 12px labels in
+// 5 × 9px buttons (7px below 576); the active one is a white chip with a soft shadow. Each button keeps
+// a --tap tall hit area (the visible chip sits in its middle); its width is the chip's (~34px, see DS §8.7).
 .unix-lang {
   display: inline-flex;
   align-items: center;
+  gap: var(--lang-gap);
+  margin-inline: var(--s-1);
+  padding: var(--lang-pad);
   border-radius: var(--r-pill);
-  background: var(--c-field);
-  color: var(--c-text);
+  background: var(--c-panel);
+  color: var(--c-action); // inactive label: ink-700 on --c-panel ≈ 10:1 (--c-text-muted was 4.36:1 at 12px, DS §1.3)
 
   &__btn {
     position: relative;
-    isolation: isolate;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-inline-size: var(--tap);
-    min-block-size: var(--tap);
-    padding-inline: var(--s-3);
+    padding: var(--lang-btn-pad-block) var(--lang-btn-pad-inline);
+    border: 0;
     border-radius: var(--r-pill);
+    background: transparent;
     color: inherit;
     font-size: var(--t-micro);
-    font-weight: var(--fw-medium);
+    font-weight: var(--fw-regular);
     line-height: 1;
+    cursor: pointer;
+    transition: color var(--d-fast) var(--ease-out), background-color var(--d-fast) var(--ease-out);
 
     html[lang="en"] & { letter-spacing: .04em; } // DS §2.2: +0.04em for English micro only
 
-    // Visible pill sits inside the 44px hit area.
+    // --tap tall hit area around the small chip
     &::before {
       content: "";
       position: absolute;
-      inset: var(--s-1);
-      z-index: -1;
-      border-radius: var(--r-pill);
-      background: transparent;
-      transition: background-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out);
+      inset-inline: 0;
+      inset-block: calc((var(--tap) - 100%) / -2);
     }
 
-    &:hover::before { background: var(--c-hover-tint); }
-    &:active::before { background: var(--c-press-tint); }
-    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
+    &:hover { color: var(--c-text); }
+    &:active { opacity: var(--o-muted); }
+    &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: 0; }
     &:disabled { opacity: var(--o-disabled); pointer-events: none; }
 
     &.is-active {
-      font-weight: var(--fw-bold);
+      background: var(--c-bg);
+      color: var(--c-text);
+      box-shadow: var(--e-1);
       cursor: default;
-
-      &::before {
-        background: var(--c-surface);
-        box-shadow: inset 0 0 0 var(--line-w) var(--c-border);
-      }
     }
   }
 }
 
-// ── Transparent variant over the hero (DS §8.1, §8.7) ─
+// ── Transparent variant over the hero (DS §8.1, §8.7, 6.4 D113: like unix.sa section-media-banner.css) ─
+// Clear bar, a faint ink hairline, the regular dark logo and icons; the AR/EN pill on white 20%.
 #{$overlay-active} {
   .unix-header__bar {
     background: transparent;
-    color: var(--c-text-inverse);
-    border-block-end-color: transparent;
+    border-block-end-color: var(--c-border-overlay);
   }
 
-  .unix-header__logo-img { display: none; }
-  .unix-header__logo-img--inverse { display: block; }
-  // Without an inverse logo, keep the regular one visible.
-  .unix-header__logo:not(:has(.unix-header__logo-img--inverse)) .unix-header__logo-img { display: block; }
+  .unix-header__divider { background: var(--c-border-overlay); }
+  .unix-lang { background: var(--c-field-overlay); }
 
-  .unix-lang { background: var(--c-press-tint); color: inherit; }
+  // The taupe ring is 2.69:1 on sand / unknown on media: currentColor in both modes (DS §8.7). The bar stays
+  // clear while it has focus (no :focus-within switch, like unix.sa), so this is the ring keyboard users see.
+  :is(.unix-icon-btn, .unix-lang__btn, .unix-nav__link, .unix-header__account button, .unix-header__cart button):focus-visible {
+    outline-color: currentColor;
+  }
+}
+
+// Light mode for dark hero media (setting unix_header_overlay_light, off by default; D113): cream logo,
+// icons and links, with the light logo when the merchant uploaded one. Only while the hero shows real media:
+// it has an image, or its video is actually playing (a video-only hero sits on sand until then, where cream
+// would fail contrast). Browsers without :has() keep the dark default.
+body:has(.unix-hero[data-header-overlay]:is(:not(.unix-hero--no-media), .is-video-playing)) #{$overlay-active}.unix-header--overlay-light {
+  .unix-header__bar { color: var(--c-text-inverse); }
   .unix-header__divider { background: var(--c-press-tint); }
-  .unix-lang__btn.is-active { color: var(--c-text); }
-
-  .s-cart-summary-count {
-    background: var(--c-text-inverse);
-    color: var(--c-action);
-  }
-
-  .unix-icon-btn:focus-visible,
-  .unix-lang__btn:focus-visible { outline-color: currentColor; }
+  .unix-lang__btn:not(.is-active) { color: inherit; }
+  .unix-header__logo:has(.unix-header__logo-img--inverse) .unix-header__logo-img { display: none; }
+  .unix-header__logo-img--inverse { display: block; }
+  .s-cart-summary-count { background: var(--c-text-inverse); color: var(--c-action); }
 }
 
 @media (prefers-reduced-motion: reduce) {

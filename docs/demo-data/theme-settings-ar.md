@@ -31,11 +31,20 @@
 | هيدر شفاف فوق صورة الرئيسية (`unix_header_transparent_home`) | مفعّل |
 | لوجو فاتح للهيدر الشفاف (`unix_header_logo_inverse`) | فاضي (مافيش ملف لوجو فاتح في unix.sa؛ لو صاحبة المتجر عندها نسخة بيضا PNG/SVG ترفعها) |
 | قائمة «المزيد» (`enable_more_menu`) | مفعّل |
+| زر AR / EN (`unix_header_show_lang`) | مفعّل |
+| زر البحث (`unix_header_show_search`) | مفعّل |
+| زر الحساب (`unix_header_show_account`) | مفعّل |
+| الخط قبل السلة (`unix_header_show_divider`) | مفعّل |
+| زر العملة (`unix_header_show_currency`) | **معطّل** (unix.sa مافيهوش عملة) |
+| شعار وأيقونات فاتحة فوق الهيرو (`unix_header_overlay_light`) | معطّل (زي unix.sa). فعّليه بس لو فيديو الهيرو غامق والأيقونات مش باينة |
 
 ### الفوتر وشريط الثقة (من فوتر unix.sa)
 | الإعداد | القيمة |
 |---|---|
 | عنوان النشرة البريدية (`unix_footer_newsletter_title`) | لا يفوتكِ جديدنا · EN: Don't miss what's new |
+| عنوان القائمة الأولى (`unix_footer_menu1_title`) | سياسات · EN: Policies (اللينكات نفسها من **قائمة الفوتر** في لوحة سلة: سياسة الخصوصية، سياسة الاسترداد، سياسة الشحن، شروط الخدمة) |
+| عنوان القائمة الثانية (`unix_footer_menu2_title`) | القائمة · EN: Menu |
+| روابط القائمة الثانية (`unix_footer_menu2_links`) | سطر لكل لينك «النص \| الرابط»، زي «القائمة» في فوتر unix.sa. العربي:<br>`طلب الإرجاع أو الاستبدال \| /<رابط صفحة الإرجاع>`<br>`بطاقة هدية \| /<رابط منتج بطاقة الهدية>`<br>`تواصلي معنا \| /contact`<br>`من نحن \| /<رابط صفحة من نحن>`<br>`المدونات \| /blog`<br>`الأسئلة الشائعة \| /<رابط صفحة الأسئلة>`<br>الإنجليزي: نفس الروابط بالنصوص Return or exchange · Gift card · Contact us · About us · Blog · FAQ. **الروابط اللي بين `< >` تتبدّل** بروابط صفحات المتجر الحقيقية (مسار يبدأ بـ `/`، أو رابط https كامل). |
 | رقم الهاتف (`unix_contact_phone`) | +966573616566 (مكتوب افتراضيًا، اتأكدي بس) |
 | رقم واتساب (`unix_contact_whatsapp`) | 966573616566 |
 | إنستجرام (`unix_social_instagram`) | https://www.instagram.com/unix_theclub |

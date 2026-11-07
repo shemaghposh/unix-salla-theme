@@ -41,16 +41,17 @@
         "login": "Sign in"
       },
       "footer": {
-        "shop": "Shop",
-        "help": "Help",
-        "contact": "Contact us",
         "call": "Call us",
         "whatsapp": "Message us on WhatsApp",
         "instagram": "Follow us on Instagram",
         "tiktok": "Follow us on TikTok",
         "cr": "Commercial registration",
         "cr_badge": "Saudi Business Center",
-        "tm": "Trademark"
+        "tm": "Trademark",
+        "newsletter": "Never miss what’s new:",
+        "menu1": "Policies",
+        "menu2": "Menu",
+        "download_apps": "Download the app"
       },
       "products_tabs": {
         "default_title": "Always favourites",
@@ -235,7 +236,8 @@
         "sale_price": "Sale price",
         "regular_price": "Regular price",
         "description": "Description",
-        "sticky_label": "Add this product to your cart"
+        "sticky_label": "Add this product to your cart",
+        "sold_out_option": "Sold out"
       },
       "gallery": {
         "label": "Product images",

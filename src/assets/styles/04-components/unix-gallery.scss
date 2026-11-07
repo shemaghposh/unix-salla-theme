@@ -1,6 +1,6 @@
 /*
  * UNIX product gallery (ROADMAP 3.1 · DS §8.20 · SPEC §5.1) for components/product/unix-gallery.twig.
- * Mobile: full-bleed salla-slider + segmented progress line. ≥768: main slider with a thumbnail
+ * Mobile: full-bleed salla-slider + one thin progress line (6.4). ≥768: main slider with a thumbnail
  * column on the inline-start side (unix.sa `slider_previews`). Zoom: native <dialog>.
  * Every image box is a reserved --ratio-pdp (4:5), so nothing shifts while images load.
  */
@@ -233,11 +233,13 @@
   }
 }
 
-/* ── Mobile progress line (Swiper bullets as flex segments) ── */
+/* ── Mobile progress line: Swiper bullets as touching flex segments, so it reads as ONE thin line with the
+      active part darker (unix.sa .swiper-pagination-bullet: flex-grow 1, gap 0) (6.4; was spaced segments) ── */
 .unix-gallery__slider .swiper-pagination.swiper-pagination-bullets {
   position: static;
   display: flex;
-  gap: var(--s-1);
+  gap: 0;
+  --swiper-pagination-bullet-horizontal-gap: 0; // Swiper's own bullet margin
   inline-size: auto;
   padding-inline: var(--page-margin);
   transform: none;

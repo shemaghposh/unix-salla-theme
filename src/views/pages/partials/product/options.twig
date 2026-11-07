@@ -30,9 +30,14 @@
 #}
 {% if product.options|length %}
     {# UNIX 3.2: the product page passes unix_option_buttons so single/multiple options render as buttons
-       (unix.sa picker_type: button, DS §8.21); the cart keeps Salla's default controls. #}
+       (unix.sa picker_type: button, DS §8.21); the cart keeps Salla's default controls.
+       6.4: hide-out-label="true" (a String prop in Salla, so a bare attribute would be "" = off) drops Salla's
+       visible « - نفدت الكمية» suffix; the sold-out box gets unix.sa's diagonal strike instead (unix-pdp-info.scss).
+       The words stay for assistive tech: --unix-out-label feeds a visually hidden ::after on every sold-out box,
+       because with notify_options_availability on Salla keeps sold-out options enabled (WCAG 1.3.1). #}
+    {% set unix_out_label = '"' ~ trans('blocks.unix.pdp_info.sold_out_option')|replace({'"': ''}) ~ '"' %}
     <salla-product-options data-testid="store-product-options" options="{{ product.options }}" product-id="{{ product.id }}"
-        {% if unix_option_buttons is defined and unix_option_buttons %}config='{"single-option":{"type":"button"},"multiple-option":{"type":"button"}}'{% endif %}></salla-product-options>
+        {% if unix_option_buttons is defined and unix_option_buttons %}config='{"single-option":{"type":"button"},"multiple-option":{"type":"button"}}' hide-out-label="true" style="--unix-out-label: {{ unix_out_label|e('html_attr') }}"{% endif %}></salla-product-options>
 {% endif %}
 
 {% if product.has_bundle_products %}

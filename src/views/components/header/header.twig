@@ -9,14 +9,32 @@ UNIX header (ROADMAP 1.2 · DS §8.7 · SPEC §2).
 RTL order: menu on the start side (hamburger at every width + inline links from lg, like unix.sa), logo
 centred (100px < 576, 120px from 576), then AR/EN, search, account (md+), a divider (lg+) and the cart.
 Sticky behaviour (hide on scroll down, show on scroll up, --e-1) lives in src/assets/js/partials/unix-header.js.
-Transparent variant: enabled by the `unix_header_transparent_home` setting on the home page, and only
-switched on by JS when the page contains a hero marked [data-header-overlay] (Phase 2).
+Transparent variant (6.4, D113, like unix.sa): home page only, on by default, over a first hero with an image
+or a video ([data-header-overlay], unix-hero.twig). Dark logo and icons on a clear bar, like unix.sa.
+Icons are unix.sa's own artwork, inline (live markup of unix.sa: icon-hamburger / -account / -cart in a
+44 × 44 viewBox that fills the --tap button, icon-search 20 × 20).
+Optional pieces are theme settings (6.4, D112) whose never-saved default is unix.sa's: AR/EN, search,
+account and the cart divider on; currency off.
 #}
-{% set header_overlay = is_page('index') and theme.settings.get('unix_header_transparent_home', true) %}
-{% set inverse_logo = theme.settings.get('unix_header_logo_inverse') %}
+{# Never-saved settings come back null: null → unix.sa's default; false / 0 / '' → off #}
+{% set v_overlay = theme.settings.get('unix_header_transparent_home') %}
+{% set v_lang = theme.settings.get('unix_header_show_lang') %}
+{% set v_search = theme.settings.get('unix_header_show_search') %}
+{% set v_account = theme.settings.get('unix_header_show_account') %}
+{% set v_divider = theme.settings.get('unix_header_show_divider') %}
+{% set header_overlay = is_page('index') and (v_overlay is null or v_overlay) %}
+{% set show_lang = store.settings.is_multilingual and (v_lang is null or v_lang) %}
+{% set show_search = v_search is null or v_search %}
+{% set show_account = v_account is null or v_account %}
+{% set show_divider = v_divider is null or v_divider %}
+{% set show_currency = store.settings.currencies_enabled and theme.settings.get('unix_header_show_currency') %}
+{# D113: unix.sa keeps the dark logo + icons over its (light) hero video; a merchant with dark hero media can
+   switch to light ones (off by default). The optional light logo is used only in that mode. #}
+{% set overlay_light = header_overlay and theme.settings.get('unix_header_overlay_light') %}
+{% set inverse_logo = overlay_light ? theme.settings.get('unix_header_logo_inverse') : null %}
 {# ROADMAP 4.3 (D85): the cart drawer is the cart everywhere except the cart page itself #}
 {% set cart_drawer_on = theme.settings.get('unix_cart_drawer_enabled', true) and not is_page('cart') %}
-<header data-testid="store-header" class="store-header unix-header" data-unix-header{{ header_overlay ? ' data-overlay-capable' }}>
+<header data-testid="store-header" class="store-header unix-header{{ overlay_light ? ' unix-header--overlay-light' }}" data-unix-header{{ header_overlay ? ' data-overlay-capable' }}>
   {% include 'components.header.announcement-bar' %}
 
   {# Bullet Delivery tag — mobile: own full-width row above the nav. Self-gates on the backend flag. #}
@@ -34,9 +52,9 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
           <button type="button" data-testid="store-header-mobile-toggle" class="unix-icon-btn unix-header__menu-toggle"
                   aria-controls="mobile-menu" aria-expanded="false" aria-haspopup="dialog"
                   aria-label="{{ trans('blocks.unix.header.open_menu') }}">
-            {# unix.sa two-line burger, stroke 1.5 #}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false">
-              <path d="M3 9h18M9 15h12"/>
+            <svg class="unix-hicon unix-hicon--box" viewBox="0 0 44 44" fill="none" aria-hidden="true" focusable="false">
+              <rect x="13" y="18" width="18" height="2" fill="currentColor"/>
+              <rect x="13" y="24" width="14" height="2" fill="currentColor"/>
             </svg>
           </button>
           <custom-main-menu
@@ -53,7 +71,8 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
           {% set logo_high = not header_overlay and not (is_page('product.single') or is_page('blog.single') or is_page('blog.index') or is_page('cart') or is_page('product.index')) %}
           <img class="unix-header__logo-img" loading="eager" width="120" height="48"
                src="{{ store.logo|cdn(240) }}" alt="{{ store.name }}"{{ logo_high ? ' fetchpriority="high"' : '' }}>
-          {% if inverse_logo and header_overlay %}
+          {# 6.4 (D113): unix.sa keeps its regular dark logo over the hero; the light logo only in the light-overlay mode #}
+          {% if inverse_logo %}
             <img class="unix-header__logo-img unix-header__logo-img--inverse" loading="eager" width="120" height="48"
                  src="{{ inverse_logo }}" alt="" aria-hidden="true">
           {% endif %}
@@ -81,38 +100,46 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
           </div>
 
           {# 6.4: AR/EN at every width, like unix.sa (was md+ only) #}
-          {% if store.settings.is_multilingual %}
+          {% if show_lang %}
             {% include 'components.header.lang-toggle' %}
           {% endif %}
 
-          <button type="button" class="unix-icon-btn" data-unix-search-open data-testid="store-header-search"
-                  aria-label="{{ trans('blocks.unix.header.search') }}" aria-haspopup="dialog">
-            <i class="sicon-search" aria-hidden="true"></i>
-          </button>
+          {% if show_search %}
+            <button type="button" class="unix-icon-btn" data-unix-search-open data-testid="store-header-search"
+                    aria-label="{{ trans('blocks.unix.header.search') }}" aria-haspopup="dialog">
+              <svg class="unix-hicon" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M18.6704 20L12.9395 14.2657C12.279 14.8183 11.5172 15.2446 10.6539 15.5445C9.79063 15.8444 8.90682 15.9943 8.00247 15.9943C5.76131 15.9943 3.86727 15.2206 2.32036 13.6731C0.773455 12.1255 0 10.2347 0 8.00049C0 5.76634 0.772596 3.87438 2.31779 2.32461C3.86296 0.774871 5.7538 0 7.99032 0C10.2268 0 12.12 0.774505 13.6697 2.32351C15.2195 3.8725 15.9943 5.76514 15.9943 8.00143C15.9943 8.93651 15.8373 9.83739 15.5233 10.7041C15.2092 11.5708 14.79 12.3213 14.2657 12.9555L20 18.6704L18.6704 20ZM7.99718 14.1215C9.71084 14.1215 11.16 13.5301 12.3446 12.3471C13.5292 11.1641 14.1215 9.71387 14.1215 7.99641C14.1215 6.27896 13.5292 4.82899 12.3446 3.64651C11.16 2.46403 9.70977 1.87278 7.99397 1.87278C6.27816 1.87278 4.82902 2.46428 3.64654 3.64728C2.46406 4.83027 1.87282 6.28049 1.87282 7.99792C1.87282 9.71537 2.46424 11.1653 3.64708 12.3478C4.82992 13.5303 6.27995 14.1215 7.99718 14.1215Z"/>
+              </svg>
+            </button>
+          {% endif %}
 
+          {% if show_account %}
           <div class="unix-header__account unix-header__wide-only">
             <salla-user-menu data-testid="store-header-user-menu" avatar-only show-header show-trigger>
-              {# 6.4: guests get unix.sa's plain outline person (Salla's documented `login-btn` slot; Salla's
+              {# 6.4: guests get unix.sa's own person icon (Salla's documented `login-btn` slot; Salla's
                  own button is a person in a bordered circle). Opens Salla's login modal (unix-header.js). #}
               <button slot="login-btn" type="button" class="unix-icon-btn" data-unix-login-open aria-haspopup="dialog"
                       aria-label="{{ trans('blocks.unix.menu.login') }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                  <circle cx="12" cy="7.5" r="3.5"/>
-                  <path d="M5 20.5V19a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1.5z"/>
+                <svg class="unix-hicon unix-hicon--box" viewBox="0 0 44 44" fill="none" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" d="M22.1924 11C23.3524 11 24.3411 11.4087 25.1586 12.2262C25.976 13.0436 26.3847 14.0324 26.3847 15.1924C26.3847 16.3524 25.976 17.3411 25.1586 18.1586C24.3411 18.976 23.3524 19.3847 22.1924 19.3847C21.0323 19.3847 20.0436 18.976 19.2262 18.1586C18.4087 17.3411 18 16.3524 18 15.1924C18 14.0324 18.4087 13.0436 19.2262 12.2262C20.0436 11.4087 21.0323 11 22.1924 11ZM22.1928 17.7159C22.8868 17.7159 23.4809 17.4687 23.9749 16.9745C24.4689 16.4802 24.7159 15.886 24.7159 15.192C24.7159 14.4979 24.4687 13.9039 23.9745 13.4099C23.4802 12.9159 22.886 12.6689 22.192 12.6689C21.4979 12.6689 20.9039 12.916 20.4099 13.4103C19.9159 13.9045 19.6689 14.4987 19.6689 15.1928C19.6689 15.8868 19.916 16.4809 20.4103 16.9749C20.9045 17.4689 21.4987 17.7159 22.1928 17.7159Z"/>
+                  <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M21.8919 30.7465C20.384 30.7465 18.8366 30.8818 17.2499 31.1525C15.6632 31.4232 14.2466 31.7991 13.0002 32.2801L13.0002 21.6735C14.1366 21.1755 15.5171 20.7721 17.1416 20.4633C18.7661 20.1544 20.3496 20 21.8919 20C23.4343 20 25.0177 20.1544 26.6422 20.4633C28.2667 20.7721 29.6472 21.1755 30.7837 21.6735L30.7837 32.2801C29.5373 31.7991 28.1207 31.4232 26.5339 31.1525C24.9472 30.8818 23.3999 30.7465 21.8919 30.7465ZM14.669 29.9941L14.669 22.9034C15.5898 22.5484 16.7273 22.2539 18.0813 22.0199C19.4353 21.7859 20.7056 21.6689 21.8919 21.6689C23.0783 21.6689 24.3485 21.7859 25.7025 22.0199C27.0566 22.2539 28.194 22.5498 29.1148 22.9077L29.1148 29.9941C28.1597 29.7157 27.006 29.4934 25.6537 29.3271C24.3014 29.1608 23.0474 29.0776 21.8919 29.0776C20.7364 29.0776 19.4825 29.1608 18.1302 29.3271C16.7779 29.4934 15.6242 29.7157 14.669 29.9941Z"/>
                 </svg>
               </button>
             </salla-user-menu>
           </div>
+          {% endif %}
 
-          {# Currency picker trigger (desktop). The drawer footer has the mobile one. #}
-          {% if store.settings.currencies_enabled %}
+          {# Currency picker trigger (desktop; the drawer footer has the mobile one). Off by default: unix.sa has none (D112). #}
+          {% if show_currency %}
             <button type="button" class="unix-text-btn unix-header__desktop-only" data-unix-localization-open aria-haspopup="dialog">
               {{ trans('blocks.unix.header.currency') }}
             </button>
           {% endif %}
 
           {# 6.4: unix.sa thin divider before the cart (lg+) #}
-          <span class="unix-header__divider" aria-hidden="true"></span>
+          {% if show_divider %}
+            <span class="unix-header__divider" aria-hidden="true"></span>
+          {% endif %}
 
           {#
             ROADMAP 4.3: opens the cart drawer when it is on (D85); the link to /cart is the no-JS fallback.
@@ -120,7 +147,9 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
             unix-header.js keeps it in step with salla.cart.
           #}
           <salla-cart-summary data-testid="store-header-cart" class="unix-header__cart" data-count="{{ cart.items_count|default(0) }}"{{ cart_drawer_on ? ' data-unix-cart-open' : '' }}>
-            <i slot="icon" class="header-btn__icon icon sicon-shopping-bag" aria-hidden="true"></i>
+            <svg slot="icon" class="unix-hicon unix-hicon--box" viewBox="0 0 44 44" fill="none" aria-hidden="true" focusable="false">
+              <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M25.2 17V16C25.2 14.2327 23.7673 12.8 22 12.8C20.2327 12.8 18.8 14.2327 18.8 16V17H25.2ZM27 17V16C27 13.2386 24.7614 11 22 11C19.2386 11 17 13.2386 17 16V17H12.5L11.1688 31.2L11 33H12.8079H31.1921H33L32.8312 31.2L31.5 17H27ZM25.2 18.8V21H27V18.8H29.8609L31.0234 31.2H12.9766L14.1391 18.8H17V21H18.8V18.8H25.2Z"/>
+            </svg>
           </salla-cart-summary>
         </div>
 
@@ -132,7 +161,7 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
     One Salla localization modal for the whole page, outside any hidden wrapper so it can open on every
     breakpoint. Opened by [data-unix-localization-open] (currency) and as the AR/EN fallback (unix-header.js).
   #}
-  {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
+  {% if show_lang or show_currency %}
     <salla-localization-modal data-testid="store-header-localization"></salla-localization-modal>
   {% endif %}
 
@@ -145,12 +174,17 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
        aria-labelledby="mobile-menu-title" data-unix-drawer hidden>
     <div class="unix-drawer__backdrop" data-drawer-close></div>
     <div class="unix-drawer__panel">
-      <div class="unix-drawer__header">
-        <h2 id="mobile-menu-title" class="unix-drawer__title">{{ trans('blocks.unix.menu.title') }}</h2>
+      {# 6.4 (DS §8.9): unix.sa menu-drawer header: close at the start, logo in the middle. The heading stays
+         for the dialog's name, visually hidden. #}
+      <div class="unix-drawer__header unix-drawer__header--menu">
         <button type="button" class="unix-icon-btn unix-drawer__close" data-drawer-close
                 aria-label="{{ trans('blocks.unix.menu.close') }}">
           <i class="sicon-cancel" aria-hidden="true"></i>
         </button>
+        <h2 id="mobile-menu-title" class="sr-only">{{ trans('blocks.unix.menu.title') }}</h2>
+        <a class="unix-drawer__logo" href="{{ store.url }}">
+          <img src="{{ store.logo|cdn(240) }}" alt="{{ store.name }}" width="120" height="48" loading="lazy">
+        </a>
       </div>
 
       <nav class="unix-drawer__body" aria-label="{{ trans('blocks.unix.menu.main') }}">
@@ -164,23 +198,28 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
       </nav>
 
       <div class="unix-drawer__footer">
-        {% if user.type == 'user' %}
-          <a class="unix-drawer__account" href="{{ link('profile') }}">
-            <i class="sicon-user" aria-hidden="true"></i>
-            <span>{{ trans('blocks.unix.menu.my_account') }}</span>
-          </a>
-        {% else %}
-          <button type="button" class="unix-drawer__account" data-unix-login-open aria-haspopup="dialog">
-            <i class="sicon-user" aria-hidden="true"></i>
-            <span>{{ trans('blocks.unix.menu.login') }}</span>
-          </button>
+        {% if show_account %}
+          {% if user.type == 'user' %}
+            <a class="unix-drawer__account" href="{{ link('profile') }}">
+              <svg class="unix-hicon unix-hicon--box" viewBox="0 0 44 44" fill="none" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M22.1924 11C23.3524 11 24.3411 11.4087 25.1586 12.2262C25.976 13.0436 26.3847 14.0324 26.3847 15.1924C26.3847 16.3524 25.976 17.3411 25.1586 18.1586C24.3411 18.976 23.3524 19.3847 22.1924 19.3847C21.0323 19.3847 20.0436 18.976 19.2262 18.1586C18.4087 17.3411 18 16.3524 18 15.1924C18 14.0324 18.4087 13.0436 19.2262 12.2262C20.0436 11.4087 21.0323 11 22.1924 11ZM22.1928 17.7159C22.8868 17.7159 23.4809 17.4687 23.9749 16.9745C24.4689 16.4802 24.7159 15.886 24.7159 15.192C24.7159 14.4979 24.4687 13.9039 23.9745 13.4099C23.4802 12.9159 22.886 12.6689 22.192 12.6689C21.4979 12.6689 20.9039 12.916 20.4099 13.4103C19.9159 13.9045 19.6689 14.4987 19.6689 15.1928C19.6689 15.8868 19.916 16.4809 20.4103 16.9749C20.9045 17.4689 21.4987 17.7159 22.1928 17.7159Z"/>
+                <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M21.8919 30.7465C20.384 30.7465 18.8366 30.8818 17.2499 31.1525C15.6632 31.4232 14.2466 31.7991 13.0002 32.2801L13.0002 21.6735C14.1366 21.1755 15.5171 20.7721 17.1416 20.4633C18.7661 20.1544 20.3496 20 21.8919 20C23.4343 20 25.0177 20.1544 26.6422 20.4633C28.2667 20.7721 29.6472 21.1755 30.7837 21.6735L30.7837 32.2801C29.5373 31.7991 28.1207 31.4232 26.5339 31.1525C24.9472 30.8818 23.3999 30.7465 21.8919 30.7465ZM14.669 29.9941L14.669 22.9034C15.5898 22.5484 16.7273 22.2539 18.0813 22.0199C19.4353 21.7859 20.7056 21.6689 21.8919 21.6689C23.0783 21.6689 24.3485 21.7859 25.7025 22.0199C27.0566 22.2539 28.194 22.5498 29.1148 22.9077L29.1148 29.9941C28.1597 29.7157 27.006 29.4934 25.6537 29.3271C24.3014 29.1608 23.0474 29.0776 21.8919 29.0776C20.7364 29.0776 19.4825 29.1608 18.1302 29.3271C16.7779 29.4934 15.6242 29.7157 14.669 29.9941Z"/>
+              </svg>
+              <span>{{ trans('blocks.unix.menu.my_account') }}</span>
+            </a>
+          {% else %}
+            {# unix.sa menu-drawer__account-login: a primary button, full width below 576 #}
+            <button type="button" class="unix-btn unix-drawer__login" data-unix-login-open aria-haspopup="dialog">
+              {{ trans('blocks.unix.menu.login') }}
+            </button>
+          {% endif %}
         {% endif %}
-        {% if store.settings.currencies_enabled %}
+        {% if show_currency %}
           <button type="button" class="unix-drawer__account" data-unix-localization-open aria-haspopup="dialog">
             <span>{{ trans('blocks.unix.header.currency') }}</span>
           </button>
         {% endif %}
-        {% if store.settings.is_multilingual %}
+        {% if show_lang %}
           {% include 'components.header.lang-toggle' %}
         {% endif %}
       </div>

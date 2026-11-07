@@ -244,17 +244,26 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
         {% if picks_url is iterable %}{% set picks_url = picks_url.url|default('') %}{% endif %}
         {% set picks_url = picks_url|default('')|trim ?: link('products') %}
 
-        {# Salla may hand the picker back as objects, {value,label} rows or bare ids #}
+        {#
+            Salla may hand the picker back as objects, {value,label} rows or bare ids.
+            6.4: only numeric ids count. A never-saved picker comes back as its field definition, whose
+            `source: "products"` used to be read as an id: the slider asked for source=selected with
+            source_value=["products"], the API answered 422 and no card was drawn.
+        #}
+        {% set picks_raw = theme.settings.get('unix_cart_picks_products') %}
         {% set picks_ids = [] %}
-        {% for p in theme.settings.get('unix_cart_picks_products')|default([]) %}
-            {% set pid = p.id is defined ? p.id : (p.value is defined ? p.value : p) %}
-            {% if pid and pid is not iterable %}{% set picks_ids = picks_ids|merge([pid]) %}{% endif %}
-        {% endfor %}
+        {% if picks_raw is iterable and (picks_raw.source is not defined) %}
+            {% for p in picks_raw %}
+                {% set pid = p.id is defined ? p.id : (p.value is defined ? p.value : p) %}
+                {% if pid is not iterable and (pid ~ '') matches '/^[0-9]+$/' %}{% set picks_ids = picks_ids|merge([pid]) %}{% endif %}
+            {% endfor %}
+        {% endif %}
 
-        {# Swiper needs px numbers: these MIRROR --gutter (DS §3.3), same config as 2.3 #}
-        {% set picks_config = '{"slidesPerView":2,"spaceBetween":12,"breakpoints":{"576":{"slidesPerView":2,"spaceBetween":16},"768":{"slidesPerView":3,"spaceBetween":20},"1024":{"slidesPerView":4,"spaceBetween":24},"1440":{"slidesPerView":4,"spaceBetween":32}}}' %}
+        {# Swiper needs px numbers: these MIRROR --slider-gap (6.4), same config as 2.3 #}
+        {% set picks_config = '{"slidesPerView":2,"spaceBetween":8,"breakpoints":{"768":{"slidesPerView":3,"spaceBetween":8},"1024":{"slidesPerView":4,"spaceBetween":24}}}' %}
 
-        <section class="unix-ptabs unix-products unix-cart-picks" data-unix-ptabs data-testid="store-cart-picks" aria-labelledby="unix-cart-picks-title">
+        {# data-unix-ptabs-hide-empty: unix-products-tabs.js hides the whole section (and its arrows) when the slider loads no products (6.4) #}
+        <section class="unix-ptabs unix-products unix-cart-picks" data-unix-ptabs data-unix-ptabs-hide-empty data-testid="store-cart-picks" aria-labelledby="unix-cart-picks-title">
             <div class="unix-container unix-ptabs__inner">
                 <h2 id="unix-cart-picks-title" class="unix-ptabs__title unix-cart-picks__title">{{ picks_title|trim }}</h2>
 
@@ -275,9 +284,9 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
                             {% for n in 1..4 %}
                                 <div class="unix-products__skel-card">
                                     <span class="unix-products__skel-media"></span>
-                                    <span class="unix-products__skel-line"></span>
-                                    <span class="unix-products__skel-line"></span>
-                                    <span class="unix-products__skel-line unix-products__skel-line--short"></span>
+                                    <span class="unix-products__skel-line unix-products__skel-line--short"></span>{# vendor #}
+                                    <span class="unix-products__skel-line"></span>{# title #}
+                                    <span class="unix-products__skel-line unix-products__skel-line--short"></span>{# price #}
                                 </div>
                             {% endfor %}
                         </div>
@@ -293,6 +302,8 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
                             slider-config='{{ picks_config|raw }}'></salla-products-slider>
                     </div>
                 </div>
+
+                <div class="unix-ptabs__progress" data-unix-ptabs-progress aria-hidden="true" hidden></div>
 
                 <div class="unix-ptabs__cta">
                     <a class="unix-btn" data-unix-ptabs-cta href="{{ picks_url }}">{{ picks_label|trim }}</a>

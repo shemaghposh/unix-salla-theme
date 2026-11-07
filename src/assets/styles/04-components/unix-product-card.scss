@@ -4,8 +4,8 @@
  * scoped to `.unix-products` (home 2.3 today; Phase 4 grids can opt in by adding the class),
  * plus the carousel arrows used by 2.3 (.unix-carousel-arrow) and 2.6 (salla-slider arrows).
  *
- * Layout contract (no CLS): image 2:3 (--ratio-product) → title (two reserved lines) → price (one
- * line). The quick-add button sits OVER the image bottom, outside the flow, so every card has the
+ * Layout contract: image 2:3 (--ratio-product) → vendor (one line) → title (up to two lines; 6.4: no
+ * reserved second line, like unix.sa) → price (one line). The quick-add button sits OVER the image bottom, outside the flow, so every card has the
  * same height as the skeleton in unix-products-tabs.scss.
  */
 
@@ -100,16 +100,31 @@
   .s-product-card-content salla-free-shipping-tag { display: none; }
 
   // ── Text ──────────────────────────────────────
+  // 6.4 (DS §8.3): unix.sa card type: vendor, title and price all ~12 → 14px (--t-card)
   .s-product-card-entry .s-product-card-content {
     position: relative;
     display: flex;
     flex-direction: column;
+    gap: var(--s-1);
     padding: var(--s-3) 0 0;
-    font-size: var(--t-body);
-    line-height: 1.7; // DS §2.2 --t-body line-height; `lh` below depends on it
+    font-size: var(--t-card);
+    line-height: 1.4; // DS §2.2 --t-card line-height; `lh` below depends on it
   }
 
   .s-product-card-content-main { margin: 0; }
+
+  // unix.sa .card__vendor: secondary colour, card weight
+  .s-product-card-vendor {
+    max-inline-size: none;
+    margin: 0 0 var(--s-1);
+    color: var(--c-text-muted);
+    font-size: inherit;
+    font-weight: var(--fw-medium);
+    line-height: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   .s-product-card-entry .s-product-card-content-title {
     margin: 0;
@@ -121,10 +136,9 @@
     a {
       display: -webkit-box;
       overflow: hidden;
-      min-block-size: 2lh;
       color: var(--c-text);
       font-size: inherit;
-      font-weight: var(--fw-medium);
+      font-weight: var(--fw-semibold);
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       line-clamp: 2;
@@ -148,7 +162,7 @@
       color: var(--c-text);
       font-family: var(--f-body);
       font-size: inherit;
-      font-weight: var(--fw-medium);
+      font-weight: var(--fw-semibold);
       line-height: inherit;
       letter-spacing: 0;
       font-variant-numeric: tabular-nums;
@@ -200,16 +214,22 @@
 
   // Desktop with a real pointer: revealed on hover / keyboard focus (DS §8.3)
   @media (hover: hover) and (min-width: 1024px) {
+    // 6.4: also visibility hidden at rest (its change waits for the fade), so no faint «أضيفي إلى السلة»
+    // shows over the photo. Keyboard: focus enters the card through its links first, which reveals it.
     .s-product-card-entry .s-product-card-content-footer {
       opacity: 0;
+      visibility: hidden;
       transform: translateY(var(--s-2));
-      transition: opacity var(--d-base) var(--ease-out), transform var(--d-base) var(--ease-out);
+      transition: opacity var(--d-base) var(--ease-out), transform var(--d-base) var(--ease-out),
+                  visibility 0s linear var(--d-base);
     }
 
     .s-product-card-entry:hover .s-product-card-content-footer,
     .s-product-card-entry:focus-within .s-product-card-content-footer {
       opacity: 1;
+      visibility: visible;
       transform: none;
+      transition-delay: 0s;
     }
   }
 

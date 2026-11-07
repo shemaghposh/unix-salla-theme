@@ -69,6 +69,17 @@ class ProductCard extends HTMLElement {
     return '';
   }
 
+  /**
+   * 6.4 (DS §8.3, amends D20): unix.sa's vendor line above the title (show_vendor: true → «Unix»).
+   * Salla's brand when the product has one, else the store name. Only on the theme's own card rows
+   * (`.unix-products`, same gate as the secondary image), never on minimal / full-image / horizontal cards.
+   */
+  getVendor() {
+    if (this.minimal || this.fullImage || this.horizontal || !this.closest('.unix-products')) return '';
+    const vendor = this.product?.brand?.name || salla.config.get('store.name') || '';
+    return vendor ? `<p class="s-product-card-vendor">${this.escapeHTML(vendor)}</p>` : '';
+  }
+
   getPriceFormat(price) {
     if (!price || price == 0) {
       return salla.config.get('store.settings.product.show_price_as_dash')?'-':'';
@@ -291,6 +302,7 @@ class ProductCard extends HTMLElement {
             : ``}
 
           <div class="s-product-card-content-main ${this.isSpecial ? 's-product-card-content-extra-padding' : ''}">
+            ${this.getVendor()}
             <h3 class="s-product-card-content-title">
               <a href="${this.product?.url}">${this.product?.name}</a>
             </h3>

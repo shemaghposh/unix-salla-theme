@@ -16,7 +16,7 @@
     image_alt                         string (multilanguage); empty → decorative (alt="")
     video_desktop, video_mobile       string   direct MP4 URLs; loaded by unix-hero.js after load
     full_height                       boolean  100svh instead of the media ratio
-    header_overlay                    boolean  transparent header over the hero (first hero with an image only)
+    header_overlay                    boolean  transparent header over the hero (first hero with an image or a video; on by default)
   No image → .unix-hero--no-media: ink text on sand, no scrim, until a video is actually playing.
   Images/videos switch at 750px like unix.sa; the ratio switches at 576px (DS §8.1).
     show_scroll_indicator             boolean  chevron button to the next section
@@ -50,14 +50,18 @@
 {% set is_first = position is defined and position == 0 %}
 {% set has_image = img_desktop or img_mobile %}
 {#
-  Transparent header (DS §8.1): rendered server-side so nothing shifts. Only for the first
-  component, with the field on, the theme's transparent-home setting on, and an image (cream
-  header icons on bare sand would fail contrast). The hero CSS pulls itself under the header.
+  Transparent header (DS §8.1, §8.7; 6.4 D113): rendered server-side so nothing shifts. For the first
+  component with any media (image, or video only like unix.sa), with the field and the theme's
+  transparent-home setting on (both default on: null = never saved). The header keeps its dark logo and
+  icons over the hero, like unix.sa, so sand behind a not-yet-playing video still passes contrast.
+  The hero CSS pulls itself under the header.
 #}
+{% set has_media = has_image or video_desktop or video_mobile %}
+{% set overlay_setting = theme.settings.get('unix_header_transparent_home') %}
 {% set header_overlay = is_first
   and (component.header_overlay is null or component.header_overlay)
-  and theme.settings.get('unix_header_transparent_home', true)
-  and has_image %}
+  and (overlay_setting is null or overlay_setting)
+  and has_media %}
 {% set show_scroll = component.show_scroll_indicator is null or component.show_scroll_indicator %}
 {#
   One <h1> per page (ROADMAP 3.11 · DS §14): the first hero with a title on the page takes the h1 and

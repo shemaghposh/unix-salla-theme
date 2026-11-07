@@ -1,16 +1,51 @@
 {#
-  UNIX footer + trust strip (ROADMAP 1.4 · DS §8.8 · SPEC §3).
-  Desktop: 4 columns — brand & newsletter · shop · help · contact. Mobile: the link columns are
-  accordions (src/assets/js/partials/unix-footer.js opens them from lg up).
-  Trust strip: phone, WhatsApp, Instagram, TikTok tiles · commercial registration, trademark and VAT ·
-  Salla trust badges · grayscale payment marks (salla-payments) · copyright hook.
-  Merchant settings (twilight.json): unix_footer_newsletter_title, unix_contact_phone, unix_contact_whatsapp,
-  unix_social_instagram, unix_social_tiktok, unix_cr_number, unix_cr_badge, unix_tm_number.
+  UNIX footer + trust strip (ROADMAP 1.4, rebuilt in 6.4 · DS §8.8 · SPEC §3 · D111).
+  Same structure as unix.sa (reference/shopify-theme/sections/footer-group.json, assets/section-footer.css):
+    1. Three blocks in a row from lg: «سياسات» (Salla footer menu) · «القائمة» (second menu, from the
+       unix_footer_menu2_links setting, one "label | url" per line; Salla has only a header and a footer
+       menu) · newsletter «لا يفوتك جديدنا :» (title setting + the footer:newsletter hook slot, D7).
+       Below lg: newsletter first, then the two menus as accordions (src/assets/js/partials/unix-footer.js
+       opens them from lg up).
+    2. A divider, then the logo and the copyright hook (and Salla's app badges).
+    3. Trust strip (SPEC §3.3): phone, WhatsApp, Instagram, TikTok tiles · CR, trademark and VAT ·
+       Salla trust badges · a narrower divider · payment marks in full colour on white tiles.
+  Merchant settings (twilight.json): unix_footer_menu1_title, unix_footer_menu2_title, unix_footer_menu2_links,
+  unix_footer_newsletter_title, unix_contact_phone, unix_contact_whatsapp, unix_social_instagram,
+  unix_social_tiktok, unix_cr_number, unix_cr_badge, unix_tm_number.
 #}
+{% set lang = language.code %}
+
+{# Multilanguage text settings: null = never saved → translated default; '' = cleared on purpose → hidden #}
 {% set newsletter_title = theme.settings.get('unix_footer_newsletter_title') %}
-{% if newsletter_title is iterable %}
-  {% set newsletter_title = newsletter_title[language.code]|default('') %}
-{% endif %}
+{% if newsletter_title is iterable %}{% set newsletter_title = newsletter_title[lang] is defined ? newsletter_title[lang] : null %}{% endif %}
+{% if newsletter_title is null %}{% set newsletter_title = trans('blocks.unix.footer.newsletter') %}{% endif %}
+
+{% set menu1_title = theme.settings.get('unix_footer_menu1_title') %}
+{% if menu1_title is iterable %}{% set menu1_title = menu1_title[lang] is defined ? menu1_title[lang] : null %}{% endif %}
+{% if not menu1_title|trim %}{% set menu1_title = trans('blocks.unix.footer.menu1') %}{% endif %}
+
+{% set menu2_title = theme.settings.get('unix_footer_menu2_title') %}
+{% if menu2_title is iterable %}{% set menu2_title = menu2_title[lang] is defined ? menu2_title[lang] : null %}{% endif %}
+{% if not menu2_title|trim %}{% set menu2_title = trans('blocks.unix.footer.menu2') %}{% endif %}
+
+{# Second menu: "label | url" per line. Lines without a label or a url are skipped, and so is any url that is
+   not a site path (/…, through link() so /en stays), http(s), mailto: or tel: (no javascript: etc.). #}
+{% set menu2_raw = theme.settings.get('unix_footer_menu2_links') %}
+{% if menu2_raw is iterable %}{% set menu2_raw = menu2_raw[lang] is defined ? menu2_raw[lang] : '' %}{% endif %}
+{% set menu2_links = [] %}
+{% for line in (menu2_raw|default(''))|replace({"\r": ''})|split("\n") %}
+  {% set parts = line|split('|', 2) %}
+  {% set m2_url = parts|length == 2 ? parts[1]|trim : '' %}
+  {% set m2_low = m2_url|lower %}
+  {% if m2_url starts with '/' and not (m2_url starts with '//') %}
+    {% set m2_url = link(m2_url) %}
+  {% elseif not (m2_low starts with 'https://' or m2_low starts with 'http://' or m2_low starts with 'mailto:' or m2_low starts with 'tel:') %}
+    {% set m2_url = '' %}
+  {% endif %}
+  {% if parts[0]|trim and m2_url %}
+    {% set menu2_links = menu2_links|merge([{ label: parts[0]|trim, url: m2_url }]) %}
+  {% endif %}
+{% endfor %}
 
 {# Contact & social: settings first, then the store's own contact details from the dashboard. #}
 {% set phone = theme.settings.get('unix_contact_phone')|default(store.contacts.phone|default(store.contacts.mobile))|trim %}
@@ -28,20 +63,41 @@
 {% set tm_number = theme.settings.get('unix_tm_number')|trim %}
 
 <footer data-testid="store-footer" class="store-footer unix-footer">
-  <div class="store-footer__inner unix-container unix-footer__grid">
+  <div class="store-footer__inner unix-container">
 
-    {# 1. Brand & newsletter #}
-    <div class="unix-footer__brand">
-      <a href="{{ link('/') }}" class="unix-footer__logo">
-        <img src="{{ store.logo|cdn(240) }}" alt="{{ store.name }}" width="120" height="48" loading="lazy">
-      </a>
-      {% if store.description %}
-        <div class="unix-footer__about">{{ store.description|raw }}</div>
+    <div class="unix-footer__blocks">
+      {# 1. «سياسات»: the store's footer menu (policies, pages) #}
+      <details class="unix-footer__col" data-footer-accordion>
+        <summary class="unix-footer__title">
+          <span>{{ menu1_title|trim }}</span>
+          <span class="unix-footer__icon" aria-hidden="true"></span>
+        </summary>
+        <div class="unix-footer__content">
+          <salla-menu data-testid="store-footer-menu" source="footer" with-cookie-preferences></salla-menu>
+        </div>
+      </details>
+
+      {# 2. «القائمة»: second menu from the theme setting (hidden while it has no links) #}
+      {% if menu2_links|length %}
+        <details class="unix-footer__col" data-footer-accordion>
+          <summary class="unix-footer__title">
+            <span>{{ menu2_title|trim }}</span>
+            <span class="unix-footer__icon" aria-hidden="true"></span>
+          </summary>
+          <div class="unix-footer__content">
+            <ul class="unix-footer__links">
+              {% for item in menu2_links %}
+                <li><a class="unix-footer__link" href="{{ item.url }}">{{ item.label }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </details>
       {% endif %}
 
+      {# 3. Newsletter (first below lg, last from lg, like unix.sa footer-block--subscribe) #}
       <div class="unix-footer__newsletter">
         {% if newsletter_title|trim %}
-          <h2 class="unix-footer__newsletter-title">{{ newsletter_title }}</h2>
+          <h2 class="unix-footer__newsletter-title">{{ newsletter_title|trim }}</h2>
         {% endif %}
         {# Salla has no built-in newsletter web component. Custom hook slot for a newsletter app; the provider
            is open decision D7 (docs/ROADMAP.md). Renders nothing until something is registered on it. #}
@@ -49,44 +105,22 @@
       </div>
     </div>
 
-    {# 2. Shop: the store's main menu (root links) #}
-    <details class="unix-footer__col" data-footer-accordion>
-      <summary class="unix-footer__title">
-        <span>{{ trans('blocks.unix.footer.shop') }}</span>
-        <span class="unix-footer__icon" aria-hidden="true"></span>
-      </summary>
-      <div class="unix-footer__content">
-        <salla-menu data-testid="store-footer-shop-menu" source="header"></salla-menu>
+    {# Logo + copyright row, under a divider (unix.sa footer__content-bottom) #}
+    <div class="unix-footer__bottom">
+      <div class="unix-footer__brand">
+        <a href="{{ link('/') }}" class="unix-footer__logo">
+          <img src="{{ store.logo|cdn(240) }}" alt="{{ store.name }}" width="120" height="48" loading="lazy">
+        </a>
+        <span class="unix-footer__rights copyright-text">{% hook copyright %}</span>
       </div>
-    </details>
-
-    {# 3. Help: the footer menu (policies, pages) #}
-    <details class="unix-footer__col" data-footer-accordion>
-      <summary class="unix-footer__title">
-        <span>{{ trans('blocks.unix.footer.help') }}</span>
-        <span class="unix-footer__icon" aria-hidden="true"></span>
-      </summary>
-      <div class="unix-footer__content">
-        <salla-menu data-testid="store-footer-menu" source="footer" with-cookie-preferences></salla-menu>
-      </div>
-    </details>
-
-    {# 4. Contact #}
-    <details class="unix-footer__col" data-footer-accordion>
-      <summary class="unix-footer__title">
-        <span>{{ trans('blocks.unix.footer.contact') }}</span>
-        <span class="unix-footer__icon" aria-hidden="true"></span>
-      </summary>
-      <div class="unix-footer__content">
-        {# Social links live once, in the trust strip tiles below. #}
-        <salla-contacts data-testid="store-footer-contacts"></salla-contacts>
-      </div>
-    </details>
+      <salla-apps-icons data-testid="store-footer-apps" class="unix-footer__apps"
+                        apps-title="{{ trans('blocks.unix.footer.download_apps') }}"></salla-apps-icons>
+    </div>
   </div>
 
-  {# Trust strip (SPEC §3.3) #}
+  {# Trust strip (SPEC §3.3), as before #}
   <div class="unix-trust">
-    <div class="unix-container unix-trust__inner">
+    <div class="unix-trust__inner">
 
       {% if phone or whatsapp or instagram or tiktok %}
         <ul class="unix-trust__icons">
@@ -172,11 +206,6 @@
 
       <div class="unix-trust__payments">
         <salla-payments data-testid="store-footer-payments"></salla-payments>
-      </div>
-
-      <div class="unix-trust__bottom">
-        <span class="unix-trust__rights copyright-text">{% hook copyright %}</span>
-        <salla-apps-icons data-testid="store-footer-apps" class="unix-trust__apps"></salla-apps-icons>
       </div>
     </div>
   </div>

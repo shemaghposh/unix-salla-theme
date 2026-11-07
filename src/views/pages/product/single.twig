@@ -163,8 +163,10 @@
     <div class="s-blocks-wrapper s-before-product-info !mt-0">{% hook 'product.single.before_product_info' %}</div>
 
     <div class="container container--product-details">
-        <div class="flex flex-col items-start md:flex-row" id="product-{{ product.id }}">
-            <div class="sidebar unix-pdp-media md:sticky top-24 w-full md:!w-2/4 rtl:ml-8 ltr:mr-8 mb-5 md:mb-0 shrink-0">
+        {# 6.4 (DS §8.20): unix.sa split. Stacked below md, gallery | info halves on md, and from lg the gallery
+           takes --pdp-media-share with the info centred in the rest at --pdp-info-max (unix-pdp-info.scss). #}
+        <div class="unix-pdp" id="product-{{ product.id }}">
+            <div class="sidebar unix-pdp-media">
                 {# ROADMAP 3.1 · DS §8.20: UNIX gallery (replaces Raed's thumbs slider) #}
                 {% include 'components.product.unix-gallery' %}
             </div>
@@ -180,10 +182,10 @@
             {% set unix_atc_plain = product.status == 'sale' and product.type not in ['booking', 'donating'] and not product.has_preorder_campaign %}
             {% set unix_atc_label = unix_atc_plain ? trans('blocks.unix.pdp_info.add_to_cart') : product.add_to_cart_label %}
 
-            <div class="main-content unix-pdp-info md:sticky md:overflow-hidden top-24 w-full md:w-2/4">
+            <div class="main-content unix-pdp-info">
                 {% hook 'product:single.description.start' %}
 
-                {# 1 · Title: h1 tag at product-title size (--t-h3), centred like unix.sa #}
+                {# 1 · Title: h1 at unix.sa's .h2 size (--t-page-title, 6.4); start-aligned below md, centred from md like unix.sa #}
                 <div class="unix-pdp-info__head">
                     <h1 data-testid="store-product-title" class="unix-pdp-info__title">{{ product.name }}</h1>
 
@@ -454,9 +456,9 @@
                         {% for n in 1..2 %}
                             <div class="unix-products__skel-card">
                                 <span class="unix-products__skel-media"></span>
-                                <span class="unix-products__skel-line"></span>
-                                <span class="unix-products__skel-line"></span>
-                                <span class="unix-products__skel-line unix-products__skel-line--short"></span>
+                                <span class="unix-products__skel-line unix-products__skel-line--short"></span>{# vendor #}
+                                <span class="unix-products__skel-line"></span>{# title #}
+                                <span class="unix-products__skel-line unix-products__skel-line--short"></span>{# price #}
                                 <span class="unix-pdp-skel-btn"></span>
                             </div>
                         {% endfor %}
@@ -530,9 +532,9 @@
                         {% for n in 1..4 %}
                             <div class="unix-products__skel-card">
                                 <span class="unix-products__skel-media"></span>
-                                <span class="unix-products__skel-line"></span>
-                                <span class="unix-products__skel-line"></span>
-                                <span class="unix-products__skel-line unix-products__skel-line--short"></span>
+                                <span class="unix-products__skel-line unix-products__skel-line--short"></span>{# vendor #}
+                                <span class="unix-products__skel-line"></span>{# title #}
+                                <span class="unix-products__skel-line unix-products__skel-line--short"></span>{# price #}
                             </div>
                         {% endfor %}
                     </div>

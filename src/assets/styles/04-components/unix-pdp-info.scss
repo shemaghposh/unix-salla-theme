@@ -10,7 +10,7 @@
   flex-direction: column;
   gap: var(--s-4);
 
-  // the column is overflow-hidden from md (sticky); keep focus rings (ring + offset) inside it
+  // the column clips from md (sticky, see .unix-pdp-info below); keep focus rings (ring + offset) inside it
   @media (min-width: 768px) { padding-inline: calc(var(--ring-w) * 2); }
 
   // Salla components that render nothing when their feature is off would still take a flex gap
@@ -27,7 +27,58 @@
 // none below md (the gallery sits right under the header, like unix.sa) and --pdp-top from md.
 // With the breadcrumb on, the breadcrumb row is the space.
 .theme-unix .container--product-details {
+  // 6.4: the page edge is --page-margin at every width, like the rest of the theme (Tailwind's
+  // .container padding left the info column 10px from the edge below 768).
+  max-inline-size: calc(var(--content-max) + 2 * var(--page-margin));
+  padding-inline: var(--page-margin);
+
   @media (min-width: 768px) { padding-block-start: var(--pdp-top); }
+}
+
+// ── Page split (6.4, DS §8.20): stacked → halves (md) → unix.sa 62 / 38 with a 335px info column (lg) ──
+.unix-pdp {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+
+  @media (min-width: 768px) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--s-6);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: minmax(0, var(--pdp-media-share)) minmax(0, var(--pdp-info-share));
+    gap: 0;
+  }
+}
+
+.unix-pdp-media,
+.unix-pdp-info {
+  min-inline-size: 0;
+
+  @media (min-width: 768px) {
+    position: sticky;
+    inset-block-start: calc(var(--header-h) + var(--s-6));
+  }
+}
+
+// The info column: centred in its track at --pdp-info-max from lg (unix.sa .product__info-container)
+.unix-pdp-info {
+  // clip (not hidden) with a ring-sized margin, so the focus rings of the edge option boxes stay visible
+  @media (min-width: 768px) {
+    overflow: clip;
+    overflow-clip-margin: calc(var(--ring-w) * 2);
+  }
+
+  @media (min-width: 1024px) {
+    inline-size: 100%;
+    // + the column's own focus-ring padding on both sides (padding-inline: 2 × --ring-w, top of this file),
+    // so the content box is exactly --pdp-info-max
+    max-inline-size: calc(var(--pdp-info-max) + 4 * var(--ring-w));
+    margin-inline: auto;
+  }
 }
 
 .theme-unix .container--breadcrumbs ~ .container--product-details { padding-block-start: 0; }
@@ -44,20 +95,27 @@
 }
 
 // ── 1 · Title + price head (centred like unix.sa) ──
+// 6.4: start-aligned below md (as unix.sa shows on phones), centred from md like .product__title
 .unix-pdp-info__head {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--s-2);
-  text-align: center;
+  text-align: start;
+
+  @media (min-width: 768px) {
+    align-items: center;
+    text-align: center;
+  }
 }
 
+// unix.sa h1.product__title.h2: --t-page-title (22.4 → 31 at 1366 → 33px) (6.4; was --t-h3)
 .theme-unix .unix-pdp-info__title {
   margin: 0;
   font-family: var(--f-heading);
-  font-size: var(--t-h3);
+  font-size: var(--t-page-title);
   font-weight: var(--fw-bold);
-  line-height: 1.35;
+  line-height: 1.3;
   color: var(--c-text);
   overflow-wrap: break-word;
 }
@@ -89,8 +147,10 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--s-2);
+
+  @media (min-width: 768px) { justify-content: center; }
 }
 
 .unix-pdp-price__now {
@@ -160,8 +220,9 @@
     font-weight: var(--fw-medium);
     line-height: 1.6;
 
-    b span { color: var(--c-price-sale); }
-    small { color: var(--c-text-muted); }
+    // 6.4: no red required star and no «اختر» hint under the label, like unix.sa
+    b span,
+    small { display: none; }
   }
 
   .s-product-options-option-error .s-product-options-option-label { color: var(--c-price-sale); }
@@ -172,59 +233,101 @@
     overflow: visible;
   }
 
-  // button mode
+  // Button mode, 6.4 like unix.sa variant-radios: square, equal-width boxes filling the row (4 columns,
+  // or 3 / 2 when there are fewer values) with collapsed hairline borders.
   .s-product-options-grid-mode {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    justify-items: stretch; // Salla centres the items
+    gap: 0;
     margin: 0;
-    gap: var(--s-2);
+    padding-block-start: var(--line-w);
+    padding-inline-start: var(--line-w);
+
+    &:has(> label:nth-child(3):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    &:has(> label:nth-child(2):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    &:has(> label:only-child) { grid-template-columns: minmax(0, 1fr); }
 
     > label {
       position: relative;
-      opacity: 1; // Salla dims the label AND the chip; the chip alone carries the state
+      display: flex; // every box in a row takes the row's height
+      margin: 0;
+      padding: 0;
+      opacity: 1; // Salla dims the label AND the box; the box alone carries the state
+      min-inline-size: 0;
     }
   }
 
   .s-product-options-grid-mode-span {
     box-sizing: border-box;
+    flex: 1 1 auto;
+    inline-size: 100%;
     min-block-size: var(--tap);
-    min-inline-size: var(--tap);
-    padding-inline: var(--s-4);
+    min-inline-size: 0;
+    margin-block-start: calc(var(--line-w) * -1);
+    margin-inline-start: calc(var(--line-w) * -1);
+    padding: var(--s-2);
     border: var(--line-w) solid var(--c-border);
-    border-radius: var(--r-sm);
-    background: var(--c-surface);
+    border-radius: 0;
+    background: var(--c-bg);
     color: var(--c-text);
     font-size: var(--t-small);
-    font-weight: var(--fw-medium);
+    font-weight: var(--fw-regular);
     line-height: 1.3;
     transition: border-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out),
                 transform var(--d-fast) var(--ease-out);
 
+    @media (min-width: 768px) { font-size: var(--t-body); }
+
     &:hover {
+      z-index: 1;
       border-color: var(--c-text-muted);
-      background: var(--c-surface);
+      background: var(--c-bg);
     }
   }
 
+  // selected: a dark 2px frame (border + inset ring), above its neighbours' hairlines
   .s-product-options-grid-mode input:checked + div {
+    z-index: 2;
     border-color: var(--c-text);
     box-shadow: inset 0 0 0 var(--line-w) var(--c-text);
-    background: var(--c-surface);
+    background: var(--c-bg);
     color: var(--c-text);
   }
 
   .s-product-options-grid-mode input:focus-visible + div {
+    z-index: 3;
     outline: var(--ring-w) solid var(--c-accent);
     outline-offset: var(--ring-w);
   }
 
   .s-product-options-grid-mode label:active > div { transform: translateY(var(--press-y)); }
 
+  // sold out: dimmed with a corner-to-corner strike (unix.sa clip-path line in --color-border)
   .s-product-options-option-stock-out > .s-product-options-grid-mode-span,
   .s-product-options-grid-mode-span.s-product-options-disabled {
     opacity: var(--o-disabled);
-    text-decoration: line-through;
+    text-decoration: none;
+    background-image: linear-gradient(to top left,
+      transparent calc(50% - var(--line-w)),
+      var(--c-text-muted) calc(50% - var(--line-w)),
+      var(--c-text-muted) calc(50% + var(--line-w)),
+      transparent calc(50% + var(--line-w)));
   }
 
   .s-product-options-grid-mode-span.s-product-options-disabled { cursor: not-allowed; }
+
+  // «نفدت الكمية» for screen readers (the visible suffix is off: hide-out-label). The text comes from
+  // trans() through --unix-out-label on the host (options.twig); generated content joins the label's name.
+  .s-product-options-option-stock-out > .s-product-options-grid-mode-span::after {
+    content: " " var(--unix-out-label, "");
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 
   // Size finder «مقترح» mark (DS §8.11) sits under the label inside the same box: lift the text
   label:has(> .unix-sf-mark) > .s-product-options-grid-mode-span { padding-block-end: var(--s-3); }

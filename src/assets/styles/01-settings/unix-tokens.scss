@@ -69,6 +69,9 @@
   /* Hover / press tints that follow the current text colour (solid bar and transparent hero bar alike) */
   --c-hover-tint: color-mix(in srgb, currentColor 8%, transparent);
   --c-press-tint: color-mix(in srgb, currentColor 14%, transparent);
+  /* Transparent header over the home hero, like unix.sa section-media-banner.css (6.4, D113) */
+  --c-border-overlay: color-mix(in srgb, var(--unix-ink-700) 18%, transparent);
+  --c-field-overlay: color-mix(in srgb, var(--unix-white) 20%, transparent);
 
   /* ── 2 Typography ───────────────────────────── */
   --f-body: var(--font-main);
@@ -84,6 +87,10 @@
   --t-micro: 12px;
   /* page title of the collection banner and cart (unix.sa `title--page h2`: 22.4 → 26 → 30.7 → 33px) (6.4) */
   --t-page-title: clamp(22px, .875vw + 19px, 33px);
+  /* home section titles + cart picks (unix.sa custom-arabic-headings.css clamp(2.4rem, 1.55rem + 3.9vw, 4.6rem)) (6.4) */
+  --t-section: clamp(24px, 3.9vw + 15.5px, 46px);
+  /* product card vendor / title / price (unix.sa .card__title, .price: 11.7px < 750, 13.8px from 750) (6.4) */
+  --t-card: clamp(12px, .5vw + 10px, 14px);
 
   /* ── 3 Spacing ──────────────────────────────── */
   --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 24px;
@@ -94,6 +101,7 @@
   --content-max: 1440px;
   --gutter: 8px;        /* < 576: unix.sa grid and carousel gap (6.4, measured) */
   --page-margin: 20px;  /* < 576: unix.sa page edge (6.4, measured) */
+  --slider-gap: 8px;    /* product carousels («المفضلة دائما», cart picks): unix.sa spaceBetween 8, 24 from lg (6.4) */
 
   /* ── 4 Shape & depth ────────────────────────── */
   --r-xs: 2px;  /* product-card overlay chips: badge, quick add, wishlist (DS §8.3/§8.4, 6.4) */
@@ -119,7 +127,7 @@
 
   /* ── 4.1 Component tokens (DS §4.1) ─────────── */
   --announce-h: 40px;
-  --header-h: 60px;
+  --header-h: 60px;   /* every width, like unix.sa .header min-height 6rem (6.4; was 72px from lg) */
   --logo-w: 100px;  /* < 576: unix.sa .header__heading-logo max-width 10rem (6.4); 120px from 576 */
   --tap: 44px;
   --icon-sm: 20px;
@@ -136,12 +144,22 @@
   --blur-ghost: 6px;
   --o-muted: .7;
   --o-disabled: .5;
+  --o-hover: .6;        /* header icons / bare links on hover (unix.sa .header__icon:hover) (6.4) */
+  /* AR/EN pill (unix.sa custom-language-mobile.css) (6.4) */
+  --lang-pad: 3px;
+  --lang-gap: 2px;
+  --lang-btn-pad-block: 5px;
+  --lang-btn-pad-inline: 7px; /* 9px from 576 */
+  --drawer-menu-w: min(600px, 100vw); /* menu drawer (unix.sa .menu-drawer max-width 600px) (6.4) */
   --z-header: 40;
   --z-dropdown: 45;
   --z-drawer: 60;
   --mega-col-min: 192px;
   --mega-media-max: 640px;
   --dropdown-min: 256px;
+  --footer-col-max: 240px;      /* footer menu block from lg (unix.sa .footer-block--menu max-width 24rem) (6.4) */
+  --footer-news-max: 352px;     /* footer newsletter block from lg (unix.sa .footer-block--subscribe 35.2rem) (6.4) */
+  --trust-max: 740px;   /* trust strip content width: its payments divider is narrower (unix.sa .unix-trust__inner 74rem) (6.4) */
 
   /* Salla base theme radius follows ours */
   --s-radius: var(--r-md);
@@ -161,9 +179,9 @@
 }
 
 /* Grid gutters/margins per breakpoint (DS §3.3) */
-@media (min-width: 576px)  { :root { --gutter: 16px; --page-margin: 24px; --logo-w: 120px; } }
+@media (min-width: 576px)  { :root { --gutter: 16px; --page-margin: 24px; --logo-w: 120px; --lang-btn-pad-inline: 9px; } }
 @media (min-width: 768px)  { :root { --gutter: 20px; --page-margin: 32px; } }
-@media (min-width: 1024px) { :root { --gutter: 24px; --page-margin: 40px; --header-h: 72px; } }
+@media (min-width: 1024px) { :root { --gutter: 24px; --page-margin: 40px; --slider-gap: 24px; } }
 @media (min-width: 1440px) { :root { --gutter: 32px; --page-margin: 64px; } }
 
 @media (prefers-reduced-motion: reduce) {
@@ -230,7 +248,7 @@
   --zoom-scale: 2;                     /* image magnification inside the zoom dialog */
 }
 
-@media (min-width: 1280px) { :root { --gallery-thumb-w: 96px; } }
+@media (min-width: 1280px) { :root { --gallery-thumb-w: 144px; } } /* unix.sa 14.7rem at 1366 (6.4; was 96px) */
 
 /* ── Phase 3 · 3.2 additions (DS §13.1, §8.21 product info) ── */
 :root {
@@ -256,6 +274,9 @@
   --plp-banner-text-max: 460px;               /* banner text column (unix.sa max-width 46rem) */
   --plp-bar-h: 48px;                          /* sort / filters bar height from 576px (unix.sa 4.9rem, on the 4px grid) (6.4) */
   --pdp-top: 40px;                            /* space between header and the product page from md (unix.sa ~41px measured) (6.4) */
+  --pdp-info-max: 335px;                      /* product info column from lg (unix.sa .product__info-container 33.5rem) (6.4) */
+  --pdp-media-share: 62fr;                    /* product page split from lg: gallery … (unix.sa 753 / 461px at 1366) (6.4) */
+  --pdp-info-share: 38fr;                     /* … and the info column, the info centred in it at --pdp-info-max (6.4) */
 }
 
 /* ── Base ─────────────────────────────────────── */

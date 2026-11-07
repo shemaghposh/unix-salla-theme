@@ -1,67 +1,46 @@
 /*
- * UNIX footer + trust strip (ROADMAP 1.4 · DS §8.8 · SPEC §3)
- * --c-bg background with a top border. 4 columns from lg: brand & newsletter · shop · help · contact.
- * Trust strip: contact tiles, credentials, grayscale payment marks (grayscale 100%, opacity .7).
+ * UNIX footer + trust strip (ROADMAP 1.4, rebuilt in 6.4 · DS §8.8 · D111)
+ * unix.sa section-footer.css: --c-bg-cream, no top border / margin. Below lg: newsletter, then the two
+ * menus as accordions, then logo + copyright. From lg: «سياسات» · «القائمة» · newsletter in one row
+ * (space-between), then a divider and the logo + copyright row. Trust strip below (unix-trust.css).
  */
 .unix-footer {
-  margin-block-start: var(--section-sm);
   background: var(--c-bg-cream); // unix.sa footer: «Cream» scheme (D109)
   color: var(--c-text);
-  border-block-start: var(--line-w) solid var(--c-border);
   font-size: var(--t-small);
 
   a { transition: color var(--d-fast) var(--ease-out), opacity var(--d-fast) var(--ease-out); }
   a:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); border-radius: var(--r-sm); }
 
-  &__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-    padding-block: var(--section-sm) var(--s-6);
-
-    @screen md {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--s-6) var(--s-7);
-    }
-
-    @screen lg {
-      grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
-      gap: var(--s-7);
-    }
-  }
-
-  // ── Brand & newsletter ─────────────────────────
-  &__brand {
+  // ── Blocks row (unix.sa footer__blocks-wrapper) ─
+  &__blocks {
     display: flex;
     flex-direction: column;
-    gap: var(--s-4);
-    padding-block-end: var(--s-6);
+    padding-block: var(--panel-pad-lg) var(--s-5); // unix.sa 4rem / 2.4rem
 
-    @screen md { grid-column: 1 / -1; }
-    @screen lg { grid-column: auto; padding-block-end: 0; }
-  }
-
-  &__logo {
-    display: inline-flex;
-    align-self: flex-start;
-
-    img {
-      inline-size: var(--logo-w);
-      block-size: auto;
-      object-fit: contain;
+    @screen lg {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: var(--panel-pad-lg);
+      padding-block-end: var(--s-6);
     }
   }
 
-  &__about {
-    max-inline-size: 65ch;
-    color: var(--c-text-muted);
-    line-height: 1.6;
-  }
-
+  // ── Newsletter: first below lg (unix.sa order: -2), last from lg ─
   &__newsletter {
+    order: -1;
     display: flex;
     flex-direction: column;
     gap: var(--s-3);
+    margin-block-end: var(--s-5);
+
+    @screen lg {
+      order: 0;
+      inline-size: 100%;
+      max-inline-size: var(--footer-news-max);
+      margin-block-end: 0;
+    }
 
     &:not(:has(*)) { display: none; } // no title and nothing from the newsletter hook
   }
@@ -74,16 +53,22 @@
     line-height: 1.4;
   }
 
-  // ── Link columns (accordion < lg) ──────────────
+  // ── Menu blocks (accordion < lg) ───────────────
   &__col {
     border-block-start: var(--line-w) solid var(--c-border);
 
-    &:last-child { border-block-end: var(--line-w) solid var(--c-border); }
+    // a Salla footer menu with no links: no empty heading (the demo store's footer menu is empty)
+    &:has(.s-menu-footer-list:empty) { display: none; }
+
+    // the last menu block (the newsletter follows it in the DOM) closes the accordion stack
+    &:has(+ .unix-footer__newsletter) { border-block-end: var(--line-w) solid var(--c-border); }
 
     // Borders go away where the columns stop being accordions (unix-footer.js opens them from lg).
     @screen lg {
+      flex: none;
+      max-inline-size: var(--footer-col-max);
       border: 0;
-      &:last-child { border: 0; }
+      &:has(+ .unix-footer__newsletter) { border: 0; }
     }
   }
 
@@ -138,53 +123,111 @@
   &__col[open] &__icon { transform: rotate(45deg); }
 
   &__content {
-    padding-block-end: var(--s-5);
+    padding-block-end: var(--s-4);
 
     @screen lg { padding-block-end: 0; }
   }
 
-  // Salla menus / contacts inside the columns
+  // Links stacked, full text colour (unix.sa .list-menu__item--link: foreground, .8rem block padding)
+  &__links {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
   salla-menu {
     display: block;
 
-    ul { margin: 0; padding: 0; list-style: none; }
-    ul ul { display: none; } // header menu: root links only
-    li { margin: 0; }
-
-    a,
-    button {
-      display: inline-flex;
-      align-items: center;
-      min-block-size: var(--tap);
-      color: var(--c-text-muted);
-      font-size: var(--t-small);
-      background: none;
-
-      &:hover { color: var(--c-text); }
-      &:active { opacity: var(--o-muted); }
+    // source="footer" renders <div><div class="s-menu-footer-list"><a class="s-menu-footer-item">…
+    .s-menu-footer-list {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 
-  salla-contacts {
-    display: block;
+  &__link,
+  salla-menu :is(a, button) {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tap);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--c-text);
+    font-size: var(--t-small);
+    line-height: 1.4;
+    background: none;
+    cursor: pointer;
 
-    ul { margin: 0; padding: 0; list-style: none; }
-    h3, .s-contacts-title { display: none; } // the column already has a title
-
-    a,
-    .s-contacts-item {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--s-2);
-      min-block-size: var(--tap);
-      color: var(--c-text-muted);
-      font-size: var(--t-small);
-    }
-
-    a:hover { color: var(--c-text); }
-    i, .s-contacts-icon { font-size: var(--icon-sm); color: var(--c-action); }
+    @media (hover: hover) { &:hover { opacity: var(--o-hover); } }
+    &:active { opacity: var(--o-muted); }
   }
 
+  // ── Logo + copyright (unix.sa footer__content-bottom) ─
+  &__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    padding-block: var(--s-5) var(--panel-pad-lg);
+
+    @screen md {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @screen lg {
+      padding-block: var(--s-6) var(--panel-pad-lg);
+      border-block-start: var(--line-w) solid var(--c-border);
+    }
+  }
+
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+
+    @screen md {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--s-4);
+    }
+  }
+
+  &__logo {
+    display: inline-flex;
+    align-self: flex-start;
+
+    @screen md { align-self: center; }
+
+    img {
+      inline-size: var(--logo-w);
+      block-size: auto;
+      object-fit: contain;
+    }
+  }
+
+  &__rights {
+    color: var(--c-text);
+    font-size: var(--t-micro);
+
+    p { margin: 0; color: inherit; }
+  }
+
+  // salla-apps-icons: title (feminine «حمّلي التطبيق», passed from Twig) + store badges
+  &__apps {
+    h3 {
+      margin: 0 0 var(--s-2);
+      font-family: var(--f-body);
+      font-size: var(--t-small);
+      font-weight: var(--fw-medium);
+      line-height: 1.4;
+    }
+  }
 }
 
 // ── Trust strip ──────────────────────────────────
@@ -192,12 +235,16 @@
   background: var(--c-bg-cream); // footer group, Cream like the footer (D109)
   color: var(--c-text);
 
+  // unix.sa .unix-trust__inner max-width 74rem: the payments divider is narrower than the footer one
   &__inner {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--s-5);
-    padding-block: var(--s-5) var(--s-7);
+    inline-size: 100%;
+    max-inline-size: calc(var(--trust-max) + 2 * var(--page-margin));
+    margin-inline: auto;
+    padding: var(--s-3) var(--page-margin) var(--s-7);
     text-align: center;
   }
 
@@ -281,39 +328,33 @@
     font-variant-numeric: tabular-nums;
   }
 
-  // Payment marks: grayscale, opacity .7 (DS §8.8)
+  // Payment marks in full colour on white tiles with a hairline (unix.sa .unix-trust__pay-img: 4.8 × 3.1rem,
+  // #fff, 1px ring) (6.4, DS §8.8; was grayscale + opacity .7)
   &__payments {
     inline-size: 100%;
     padding-block-start: var(--s-5);
     border-block-start: var(--line-w) solid var(--c-border);
 
-    ul { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+    .s-payments-list { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+
+    .s-payments-list-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      inline-size: var(--s-7);
+      block-size: var(--s-6);
+      padding: var(--s-1);
+      border: var(--line-w) solid var(--c-border);
+      border-radius: var(--r-xs);
+      background: var(--c-bg);
+    }
 
     img,
     svg {
-      block-size: var(--s-6);
+      max-block-size: 100%;
       inline-size: auto;
-      filter: grayscale(100%);
-      opacity: var(--o-muted);
-      transition: filter var(--d-fast) var(--ease-out), opacity var(--d-fast) var(--ease-out);
+      object-fit: contain;
     }
-  }
-
-  &__bottom {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--s-3);
-    color: var(--c-text-muted);
-    font-size: var(--t-micro);
-
-    @screen md {
-      flex-direction: row;
-      justify-content: space-between;
-      inline-size: 100%;
-    }
-
-    p { margin: 0; color: inherit; }
   }
 }
 

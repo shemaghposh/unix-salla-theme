@@ -8,15 +8,31 @@
  * - Once a slider has loaded (componentOnReady resolves after its products fetch), the panel gets
  *   data-loaded and the skeleton hides, also when the source came back empty.
  * - The bottom button follows the active tab (label + link), like unix.sa.
+ * - 6.4: a thin progress line under the slider, one segment per Swiper snap point, the current one dark
+ *   (unix.sa's custom pagination); hidden while everything fits.
+ * - 6.4: a section marked [data-unix-ptabs-hide-empty] (cart «اختيارات تناسبك») hides itself, arrows and
+ *   all, when its slider loads no products.
  */
 const KEYS = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
 const SWIPER_WAIT_MS = 300;
 const SWIPER_WAIT_TRIES = 20;
 
+function hideIfEmpty(panel) {
+  const section = panel.closest('[data-unix-ptabs-hide-empty]');
+  if (!section) return;
+  // salla-products-slider renders its cards right after componentOnReady; give it a frame
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (!panel.querySelector('.s-products-slider-card, .s-product-card-entry')) section.hidden = true;
+  }));
+}
+
 function watchLoaded(panel) {
   const slider = panel.querySelector('salla-products-slider');
   if (!slider || panel.hasAttribute('data-loaded')) return;
-  const done = () => panel.setAttribute('data-loaded', '');
+  const done = () => {
+    panel.setAttribute('data-loaded', '');
+    hideIfEmpty(panel);
+  };
   if (typeof slider.componentOnReady === 'function') {
     slider.componentOnReady().then(done, done);
   } else {
@@ -57,11 +73,29 @@ function setupNav(section) {
     return panel?.querySelector('.swiper')?.swiper || null;
   };
 
+  const progress = section.querySelector('[data-unix-ptabs-progress]');
+
+  const drawProgress = swiper => {
+    if (!progress) return;
+    const pages = swiper && !swiper.isLocked ? swiper.snapGrid.length : 0;
+    if (pages < 2) {
+      progress.hidden = true;
+      return;
+    }
+    if (progress.childElementCount !== pages) {
+      progress.replaceChildren(...Array.from({ length: pages }, () => document.createElement('span')));
+    }
+    const current = Math.min(swiper.snapIndex, pages - 1);
+    Array.from(progress.children).forEach((bar, index) => bar.classList.toggle('is-active', index === current));
+    progress.hidden = false;
+  };
+
   const sync = () => {
     const swiper = activeSwiper();
     const locked = !swiper || swiper.isLocked;
     prev.disabled = locked || swiper.isBeginning;
     next.disabled = locked || swiper.isEnd;
+    drawProgress(swiper);
   };
 
   // Swiper appears after the slider fetches; bind its events once it exists.
@@ -70,7 +104,7 @@ function setupNav(section) {
     const swiper = activeSwiper();
     if (swiper) {
       if (!swiper.unixPtabsBound) {
-        swiper.on('slideChange reachBeginning reachEnd resize lock unlock', sync);
+        swiper.on('slideChange snapIndexChange reachBeginning reachEnd resize snapGridLengthChange lock unlock', sync);
         swiper.unixPtabsBound = true;
       }
       sync();

@@ -24,12 +24,16 @@
     align-items: flex-start;
   }
 
+  // 6.4: unix.sa .featured-collections__heading = --t-section (custom-arabic-headings.css), was --t-h2
   &__title {
     margin: 0;
     max-inline-size: 65ch;
-    font-size: var(--t-h2);
+    font-size: var(--t-section);
     line-height: 1.3;
   }
+
+  // (0,2,0) so the size beats the global `.theme-unix h2` (0,1,1)
+  .theme-unix &__title { font-size: var(--t-section); }
 
   /* `.theme-unix h2/p` set --c-text; this band uses --c-text-brand */
   .theme-unix &__title,
