@@ -14,7 +14,7 @@
 // Shared button look, used by .unix-btn and salla-button's .s-button-btn.
 @mixin unix-button-base {
   --_bg: var(--c-action);
-  --_fg: var(--c-text-inverse);
+  --_fg: var(--c-on-action);
   --_fill: var(--c-action-hover);
   --_fill-fg: var(--_fg);
   --_ring: none;
@@ -79,7 +79,7 @@
   --_bg: transparent;
   --_fg: var(--c-action);
   --_fill: var(--c-action);
-  --_fill-fg: var(--c-text-inverse);
+  --_fill-fg: var(--c-on-action);
   --_ring: inset 0 0 0 var(--line-w-strong) var(--c-action);
 }
 

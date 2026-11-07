@@ -23,6 +23,9 @@
   --unix-ink-900: #241e1a;
   --unix-ink-700: #373542;
   --unix-ink-600: #4b4960;
+  --unix-navy-900: #1c313d;  /* primary button on white, unix.sa background-1 solid button (6.4, D116) */
+  --unix-navy-700: #395361;  /* its hover (6.4, D116) */
+  --unix-cream-200: #f2eccd; /* its label (6.4, D116) */
   --unix-stone-600: #736a63;
   --unix-stone-700: #6b625b;
   --unix-taupe-700: #6f5c44;
@@ -52,8 +55,9 @@
   --c-text: var(--unix-ink-900);
   --c-text-muted: var(--unix-stone-600);
   --c-text-inverse: var(--unix-cream-50);
-  --c-action: var(--unix-ink-700);
-  --c-action-hover: var(--unix-ink-600);
+  --c-action: var(--unix-navy-900);       /* unix.sa root scheme solid button (D116); Cream/Sand sections reset it below */
+  --c-action-hover: var(--unix-navy-700);
+  --c-on-action: var(--unix-cream-200);   /* label / icon on --c-action (D116) */
   --c-accent: var(--unix-taupe-500);
   --c-accent-text: var(--unix-taupe-700);
   --c-border: var(--unix-line);
@@ -175,7 +179,30 @@
   --color-primary: var(--c-action);
   --color-primary-dark: var(--c-action-hover);
   --color-primary-light: var(--c-surface-muted);
-  --color-primary-reverse: var(--c-text-inverse);
+  --color-primary-reverse: var(--c-on-action);
+}
+
+/* Color schemes (DS §1.4, D116): unix.sa's «Cream» and «Sand» schemes draw the solid button in ink-700
+ * with a cream-50 label, the root (white) scheme in navy. Each Cream/Sand section root resets the action
+ * family, and Salla's --color-primary family with it (it is resolved on <html>, so it must be re-declared). */
+.unix-hero,
+.unix-offer,
+.unix-ptabs,
+.unix-collection-overlay,
+.unix-collections-grid,
+.unix-fprods,
+.unix-video-tiles,
+.unix-blog,
+.unix-faq,
+.unix-footer,
+.unix-trust,
+.unix-recs {
+  --c-action: var(--unix-ink-700);
+  --c-action-hover: var(--unix-ink-600);
+  --c-on-action: var(--unix-cream-50);
+  --color-primary: var(--c-action);
+  --color-primary-dark: var(--c-action-hover);
+  --color-primary-reverse: var(--c-on-action);
 }
 
 /* Grid gutters/margins per breakpoint (DS §3.3) */

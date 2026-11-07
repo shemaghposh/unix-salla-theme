@@ -22,15 +22,15 @@
 #}
 {% set title = component.title %}
 {% if title is iterable %}{% set title = title[language.code] is defined ? title[language.code] : null %}{% endif %}
-{% if not title|default('')|trim %}{% set title = trans('blocks.unix.collections_grid.default_title') %}{% endif %}
+{% set title = title|default('')|trim ?: trans('blocks.unix.collections_grid.default_title') %}
 
 {% set text = component.text %}
 {% if text is iterable %}{% set text = text[language.code] is defined ? text[language.code] : null %}{% endif %}
-{% if not text|default('')|trim %}{% set text = trans('blocks.unix.collections_grid.default_text') %}{% endif %}
+{% set text = text|default('')|trim ?: trans('blocks.unix.collections_grid.default_text') %}
 
 {% set button_label = component.button_label %}
 {% if button_label is iterable %}{% set button_label = button_label[language.code] is defined ? button_label[language.code] : null %}{% endif %}
-{% if not button_label|default('')|trim %}{% set button_label = trans('blocks.unix.collections_grid.default_button') %}{% endif %}
+{% set button_label = button_label|default('')|trim ?: trans('blocks.unix.collections_grid.default_button') %}
 
 {% set button_url = component.button_url %}
 {% if button_url is iterable %}{% set button_url = button_url.url|default('') %}{% endif %}
@@ -44,17 +44,14 @@
 <section class="unix-collections-grid"
          component-id="{{ componentId }}"
          data-testid="unix-collections-grid"
-         {% if title|trim %}aria-labelledby="{{ heading_id }}"{% endif %}>
+         aria-labelledby="{{ heading_id }}">
   <div class="unix-container unix-collections-grid__inner">
-    {% if title|trim %}
-      <h2 id="{{ heading_id }}" class="unix-collections-grid__title">{{ title|trim }}</h2>
-    {% endif %}
-    {% if text|trim %}
-      <p class="unix-collections-grid__text">{{ text|trim }}</p>
-    {% endif %}
-    {% if button_url and button_url != '#' and button_label|trim %}
+    {# title, text and button label are never empty (empty → translated default, DS §9) #}
+    <h2 id="{{ heading_id }}" class="unix-collections-grid__title">{{ title }}</h2>
+    <p class="unix-collections-grid__text">{{ text }}</p>
+    {% if button_url and button_url != '#' %}
       {# 6.4 · DS §8.2 (amends D106): outline like unix.sa (featured_collections button_style: outline) #}
-      <a class="unix-btn unix-btn--outline unix-collections-grid__cta" href="{{ button_url }}">{{ button_label|trim }}</a>
+      <a class="unix-btn unix-btn--outline unix-collections-grid__cta" href="{{ button_url }}">{{ button_label }}</a>
     {% endif %}
 
     {% if cards|length %}
@@ -75,7 +72,9 @@
           {% for card in cards %}
             {% set card_title = card.title %}
             {% if card_title is iterable %}{% set card_title = card_title[language.code] is defined ? card_title[language.code] : null %}{% endif %}
-            {% if not card_title|default('')|trim and loop.index <= 3 %}
+            {# cards 1–3 fall back to the unix.sa names; 4–6 have no default, so spaces-only renders empty #}
+            {% set card_title = card_title|default('')|trim %}
+            {% if not card_title and loop.index <= 3 %}
               {% set card_title = trans('blocks.unix.collections_grid.default_card_' ~ loop.index) %}
             {% endif %}
             {% set card_url = card.url is iterable ? card.url.url|default('') : card.url|default('') %}

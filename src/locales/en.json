@@ -55,7 +55,6 @@
       },
       "products_tabs": {
         "default_title": "Always favourites",
-        "tabs_label": "Browse products by collection",
         "browse_tab": "Browse :name",
         "browse_all": "Browse all",
         "prev": "Previous products",
@@ -232,6 +231,7 @@
       },
       "pdp_info": {
         "add_to_cart": "Add to cart",
+        "buy_now": "Buy now",
         "on_sale": "Sale",
         "sale_price": "Sale price",
         "regular_price": "Regular price",

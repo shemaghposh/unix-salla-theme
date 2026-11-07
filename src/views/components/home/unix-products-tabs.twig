@@ -31,7 +31,7 @@
 
 {% set title = component.title %}
 {% if title is iterable %}{% set title = title[lang]|default('') %}{% endif %}
-{% if not title|default('')|trim %}{% set title = trans('blocks.unix.products_tabs.default_title') %}{% endif %}
+{% set title = title|default('')|trim ?: trans('blocks.unix.products_tabs.default_title') %}
 
 {% set fallback_url = component.button_url %}
 {% if fallback_url is iterable %}{% set fallback_url = fallback_url.url|default('') %}{% endif %}
@@ -61,15 +61,15 @@
   {% set cat = tab.category %}
   {% if cat is iterable and cat[0] is defined %}{% set cat = cat[0] %}{% endif %}
   {% set cat_id = cat.id is defined ? cat.id : (cat.value is defined ? cat.value : (cat is iterable ? null : cat)) %}
-  {# 6.4: only numeric ids count (same guard as the collection overlay and the cart picks) #}
-  {% set cat_id = cat_id is not iterable and (cat_id|default('') ~ '')|trim matches '/^[0-9]+$/' ? (cat_id ~ '')|trim : null %}
+  {# 6.4: only positive integer ids count (same guard as the collection overlay); `true` would print as "1" #}
+  {% set cat_id = cat_id is not iterable and cat_id is not same as(true) and (cat_id|default('') ~ '')|trim matches '/^[1-9][0-9]*$/' ? (cat_id ~ '')|trim : null %}
   {% set cat_url = cat.url is defined ? cat.url : '' %}
 
   {# source order matches unix.sa (products-with-tabs.liquid: collection first, then product_list) #}
   {% set limit = tab.limit|default(8) %}
   {% if cat_id %}
     {% set source = 'categories' %}
-    {% set source_value = [cat_id]|json_encode %}
+    {% set source_value = [cat_id + 0]|json_encode %}
   {% elseif product_ids|length %}
     {% set source = 'selected' %}
     {% set source_value = product_ids|json_encode %}
@@ -116,11 +116,9 @@
 <section component-id="{{ componentId }}"
          class="s-block unix-ptabs unix-products"
          data-unix-ptabs
-         {% if title|trim %}aria-labelledby="{{ uid }}-title"{% endif %}>
+         aria-labelledby="{{ uid }}-title">
   <div class="unix-container unix-ptabs__inner">
-    {% if title|trim %}
-      <h2 id="{{ uid }}-title" class="unix-ptabs__title">{{ title|trim }}</h2>
-    {% endif %}
+    <h2 id="{{ uid }}-title" class="unix-ptabs__title">{{ title }}</h2>
 
     {# prev/next for the active panel's slider (salla-slider's own arrows are hidden in CSS) #}
     <div class="unix-ptabs__nav">
@@ -136,7 +134,7 @@
 
     {% if has_tabs %}
       <div class="unix-ptabs__tablist" role="tablist"
-           {% if title|trim %}aria-labelledby="{{ uid }}-title"{% else %}aria-label="{{ trans('blocks.unix.products_tabs.tabs_label') }}"{% endif %}>
+           aria-labelledby="{{ uid }}-title">
         {% for tab in tabs %}
           <button type="button"
                   class="unix-ptabs__tab"

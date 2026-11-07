@@ -208,7 +208,7 @@
     --_fg: var(--c-text);
     --_ring: none;
     --_fill: var(--c-action);
-    --_fill-fg: var(--c-text-inverse);
+    --_fill-fg: var(--c-on-action);
     min-block-size: var(--btn-h-sm);
   }
 

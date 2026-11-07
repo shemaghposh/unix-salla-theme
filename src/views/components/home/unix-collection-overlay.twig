@@ -16,35 +16,54 @@
 |
 | Text defaults: empty (null, '' or spaces; Salla saves an untouched field as '') falls back to
 | trans('blocks.unix.collection_overlay.default_*').
-| 6.4: the category used to be read only as {id} / [{id}]; Salla hands it back in another shape, so
-| category_id stayed null and the slider never rendered. It is now normalised like products-tabs
-| (+ a never-saved field definition, which carries `source`, is ignored; only numeric ids count).
+| 6.4: the category used to be read only by `is defined` / `is iterable` checks, which Salla's list
+| object defeats, so category_id stayed null and the slider never rendered. Live shape and reader
+| below; a never-saved field definition (carries `source`) is dropped, only positive integer ids count.
 #}
 {% set subtitle = component.subtitle %}
 {% if subtitle is iterable %}{% set subtitle = subtitle[language.code] is defined ? subtitle[language.code] : null %}{% endif %}
-{% if not subtitle|default('')|trim %}{% set subtitle = trans('blocks.unix.collection_overlay.default_subtitle') %}{% endif %}
+{% set subtitle = subtitle|default('')|trim ?: trans('blocks.unix.collection_overlay.default_subtitle') %}
 
 {% set title = component.title %}
 {% if title is iterable %}{% set title = title[language.code] is defined ? title[language.code] : null %}{% endif %}
-{% if not title|default('')|trim %}{% set title = trans('blocks.unix.collection_overlay.default_title') %}{% endif %}
+{% set title = title|default('')|trim ?: trans('blocks.unix.collection_overlay.default_title') %}
 
 {% set category = component.category %}
-{# never-saved picker → its field definition ({source: "categories", …}): no category #}
-{% if category is iterable and category.source is defined and category.id is not defined %}{% set category = null %}{% endif %}
-{# a list of picks → the first one #}
-{% if category is iterable and category.id is not defined and category.value is not defined %}{% set category = category|first %}{% endif %}
-{% set category_id = category is iterable
-  ? (category.id is defined ? category.id : (category.value is defined ? category.value : null))
-  : category %}
+{# Seen on the live preview: a list [{id: 2011795657, name, image, …}]. Salla's list object reports
+   `.id` / `.source` as "defined" (null) on the list itself, and `|first` returns an object that is
+   not `iterable`, so the first pick is read by its id, never by `is defined` / `is iterable`. #}
+{% set first_pick = category is iterable ? category|first : null %}
+{% set first_id = null %}
+{% if first_pick is not null and first_pick is not same as(false) and first_pick is not same as(true) %}
+  {# an object pick (the live shape) or a {value} row → its id; a bare scalar pick ([12]) → itself #}
+  {% set first_id = first_pick is iterable or first_pick.id is defined
+    ? first_pick.id|default(first_pick.value|default(null))
+    : first_pick %}
+{% endif %}
+{# only a positive integer counts here; anything else (e.g. the first property of a single object) falls through #}
+{% if first_id is not iterable and first_id and (first_id ~ '') matches '/^[1-9][0-9]*$/' %}
+  {% set category = first_pick %}
+  {% set category_id = first_id %}
+{% else %}
+  {# object {id} or picker row {value}, or a bare id; a never-saved field definition
+     ({source: "categories", …}) yields a non-numeric value and is dropped below #}
+  {% set category_id = category is iterable
+    ? category.id|default(category.value|default(null))
+    : category %}
+{% endif %}
 {% if category_id is iterable %}{% set category_id = category_id|first %}{% endif %}
 {# a bare id may come as a string, also JSON-ish ("[12]", "\"12\"") #}
+{% if category_id is same as(true) or category_id is same as(false) %}{% set category_id = null %}{% endif %}
 {% if category_id is not iterable %}
   {% set category_id = (category_id|default('') ~ '')|replace({'[': '', ']': '', '"': ''})|trim %}
 {% endif %}
-{% set category_id = category_id is not iterable and category_id matches '/^[0-9]+$/' ? category_id : null %}
+{% set category_id = category_id is not iterable and category_id matches '/^[1-9][0-9]*$/' ? category_id : null %}
 
-{# the category image is only known when Salla sends the category as an object #}
-{% set image = component.image ?: (category is iterable and category.image is defined ? category.image : null) %}
+{# the category image is only known when Salla sends the category as an object; Salla's pick object is
+   not `iterable`, so test `.image is defined` too (a scalar id has none) #}
+{% set category_image = category and category is not same as(true) and (category is iterable or category.image is defined)
+  ? category.image|default(null) : null %}
+{% set image = component.image ?: (category_image is iterable ? null : category_image) %}
 {% set image_mobile = component.image_mobile %}
 
 {% set overlay = component.overlay is null ? 30 : component.overlay %}
@@ -55,7 +74,7 @@
 <section class="unix-collection-overlay"
          component-id="{{ componentId }}"
          data-testid="unix-collection-overlay"
-         {% if title|trim %}aria-labelledby="{{ heading_id }}"{% endif %}>
+         aria-labelledby="{{ heading_id }}">
   <div class="unix-collection-overlay__frame">
     <div class="unix-collection-overlay__inner">
       {% if image %}
@@ -71,16 +90,11 @@
       <div class="unix-collection-overlay__content">
         {# unix.sa grid "info info buttons": heading block, arrows at the end of the same row #}
         <div class="unix-collection-overlay__head">
-          {% if subtitle|trim or title|trim %}
-            <header class="unix-collection-overlay__header">
-              {% if subtitle|trim %}
-                <p class="unix-collection-overlay__eyebrow">{{ subtitle|trim }}</p>
-              {% endif %}
-              {% if title|trim %}
-                <h2 id="{{ heading_id }}" class="unix-collection-overlay__title">{{ title|trim }}</h2>
-              {% endif %}
-            </header>
-          {% endif %}
+          {# subtitle and title are never empty (empty → translated default, DS §9) #}
+          <header class="unix-collection-overlay__header">
+            <p class="unix-collection-overlay__eyebrow">{{ subtitle }}</p>
+            <h2 id="{{ heading_id }}" class="unix-collection-overlay__title">{{ title }}</h2>
+          </header>
           {% if category_id %}
             {# shown from lg once the slider is ready (partials/unix-collection-overlay.js) #}
             <div class="unix-collection-overlay__arrows">

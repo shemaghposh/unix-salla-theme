@@ -6,6 +6,7 @@ import initStickyAtc from './partials/unix-sticky-atc'; // ROADMAP 3.2 (DS §8.2
 import initSizeCharts from './partials/unix-size-charts'; // ROADMAP 3.4 (DS §8.23)
 import initDeliveryEstimate from './partials/unix-delivery-estimate'; // ROADMAP 3.6 (DS §8.24)
 import initPdpRelated from './partials/unix-pdp-related'; // ROADMAP 3.9 (DS §8.27)
+import initBuyNow from './partials/unix-buy-now'; // ROADMAP 6.4 (D117, DS §8.21)
 
 class Product extends BasePage {
     onReady() {
@@ -117,6 +118,9 @@ const loadVideoLightbox = () => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadVideoLightbox);
 else loadVideoLightbox();
+
+// 6.4 (D117): feminine «اشتري الآن» on Salla's buy-now button, as soon as salla.lang has loaded
+initBuyNow();
 
 // ROADMAP 3.3 Size Finder: boot at page start so a manual size pick is seen before any auto-select.
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initSizeFinder);

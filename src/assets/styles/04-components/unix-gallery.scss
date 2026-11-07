@@ -409,7 +409,7 @@ html:has(.unix-gallery-dialog[open]) { overflow: hidden; }
 
   &[aria-pressed="true"] {
     background: var(--c-action);
-    color: var(--c-text-inverse);
+    color: var(--c-on-action);
   }
 }
 

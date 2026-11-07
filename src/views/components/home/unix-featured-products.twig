@@ -24,7 +24,7 @@
 
 {% set title = component.title %}
 {% if title is iterable %}{% set title = title[lang]|default('') %}{% endif %}
-{% if not title|default('')|trim %}{% set title = trans('blocks.unix.featured_products.default_title') %}{% endif %}
+{% set title = title|default('')|trim ?: trans('blocks.unix.featured_products.default_title') %}
 
 {# Swiper config (salla-slider): per-view 1 / 2 / 3. The spaceBetween numbers MIRROR --gutter
    (DS §3.3: 12 / 16 @576 / 20 @768 / 24 @1024 / 32 @1440); Swiper needs px numbers, not CSS vars.
@@ -62,11 +62,9 @@
          class="s-block unix-fprods"
          data-unix-fprods
          {% if use_latest %}data-unix-fprods-latest="{{ slides|length }}"{% endif %}
-         {% if title|trim %}aria-labelledby="{{ uid }}-title"{% endif %}>
+         aria-labelledby="{{ uid }}-title">
   <div class="unix-container">
-    {% if title|trim %}
-      <h2 id="{{ uid }}-title" class="unix-fprods__title">{{ title|trim }}</h2>
-    {% endif %}
+    <h2 id="{{ uid }}-title" class="unix-fprods__title">{{ title }}</h2>
 
     <salla-slider id="{{ uid }}-slider"
                   class="unix-fprods__slider"

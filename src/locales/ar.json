@@ -55,7 +55,6 @@
       },
       "products_tabs": {
         "default_title": "المفضلة دائما",
-        "tabs_label": "تصفّحي المنتجات حسب المجموعة",
         "browse_tab": "تصفحي :name",
         "browse_all": "تصفحي الجميع",
         "prev": "المنتجات السابقة",
@@ -232,6 +231,7 @@
       },
       "pdp_info": {
         "add_to_cart": "أضيفي إلى السلة",
+        "buy_now": "اشتري الآن",
         "on_sale": "تخفيض",
         "sale_price": "سعر التخفيض",
         "regular_price": "السعر الأصلي",

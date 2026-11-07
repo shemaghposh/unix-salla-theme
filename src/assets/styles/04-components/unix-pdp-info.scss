@@ -446,6 +446,57 @@
 // Salla's notify / disabled states keep the pill (unix-controls); the row just spans the width
 .unix-pdp-buy salla-add-product-button .s-button-btn { inline-size: 100%; }
 
+// ── 7b · Quick buy (6.4, D117, DS §8.21): unix.sa .product-form__buttons ──
+// Salla renders the buy-now button and the Apple Pay salla-quick-buy inside the add-to-cart host. The host and
+// its .s-add-product-button-main wrapper drop their boxes, so the add-to-cart button stays in the quantity row
+// (full flex share, label never squeezed) and the buy-now / Apple Pay buttons wrap onto full-width rows below it.
+// No `order`: the visual order is the DOM order (DS §0 P7, WCAG 2.4.3), so from 640px the wishlist button comes
+// last, on the row after buy-now / Apple Pay (unix.sa has no wishlist there). The row gap --s-2 is unix.sa's .8rem.
+.unix-pdp-buy__btn.s-add-product-button-with-quick-buy,
+.unix-pdp-buy__btn.s-add-product-button-with-quick-buy .s-add-product-button-main { display: contents; }
+
+.unix-pdp-buy__btn.s-add-product-button-with-quick-buy {
+  .s-add-product-button-main > salla-button {
+    flex: 1 1 0; // a set flex-basis wins over Salla's `width: 50% !important`
+    min-inline-size: 0;
+  }
+
+  .s-add-product-button-mini-checkout,
+  salla-quick-buy {
+    flex: 1 0 100%;
+    min-inline-size: 0;
+  }
+
+  // Shadow-DOM mini-checkout widget: only its documented size variables can be set (Salla draws it outline)
+  .s-add-product-button-mini-checkout {
+    --salla-fast-checkout-button-height: var(--btn-h);
+    --salla-fast-checkout-button-border-radius: var(--r-pill);
+  }
+
+  // Apple Pay: the row gap already spaces it
+  &.s-add-product-button-with-apple-pay:not(.s-add-product-button-with-sticky-bar) salla-quick-buy apple-pay-button {
+    margin-block-start: 0;
+  }
+
+  // Buy-now redirect button (light DOM): unix.sa .shopify-payment-button__button = the primary button (DS §8.2)
+  .s-add-product-button-buy-now :is(.s-fast-checkout-button, .s-fast-checkout-button.outline) {
+    @include unix-button-base;
+    inline-size: 100%;
+    block-size: var(--btn-h);
+    text-transform: none;
+
+    svg { display: none; } // unix.sa's button is text only
+  }
+}
+
+// With the solid buy-now button showing, add to cart becomes unix.sa's `button--secondary` on white
+// (#e9e9e9, navy label, hover fill #dfdfdf). With Salla's outline widget it stays primary.
+body.theme-unix .unix-pdp-buy__btn:has(.s-add-product-button-buy-now) .s-add-product-button-main > salla-button .s-button-btn {
+  --_bg: var(--c-panel);
+  --_fg: var(--c-action);
+  --_fill: var(--c-panel-hover);
+}
+
 // ── Branch availability (Salla, render only when on) ──
 .unix-pdp-info__branches {
   display: flex;

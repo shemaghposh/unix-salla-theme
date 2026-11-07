@@ -208,7 +208,7 @@ html[lang="en"] .unix-sf__step { letter-spacing: .04em; }
   &.is-on {
     background: var(--c-action);
     border-color: var(--c-action);
-    color: var(--c-text-inverse);
+    color: var(--c-on-action);
   }
 
   &.is-size { font-weight: var(--fw-semibold); }

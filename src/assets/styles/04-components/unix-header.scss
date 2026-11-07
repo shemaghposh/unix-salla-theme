@@ -250,7 +250,7 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
       padding: 0 var(--s-1);
       border-radius: var(--r-pill);
       background: var(--c-action);
-      color: var(--c-text-inverse);
+      color: var(--c-on-action);
       font-size: var(--t-micro);
       line-height: 1;
       font-variant-numeric: tabular-nums;
@@ -326,7 +326,7 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
   padding: var(--lang-pad);
   border-radius: var(--r-pill);
   background: var(--c-panel);
-  color: var(--c-action); // inactive label: ink-700 on --c-panel ≈ 10:1 (--c-text-muted was 4.36:1 at 12px, DS §1.3)
+  color: var(--c-action); // inactive label: navy on --c-panel 11.1:1 (--c-text-muted was 4.36:1 at 12px, DS §1.3, D116)
 
   &__btn {
     position: relative;
@@ -372,6 +372,12 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
 // Clear bar, a faint ink hairline, the regular dark logo and icons; the AR/EN pill on white 20%.
 #{$overlay-active} {
   .unix-header__bar {
+    // unix.sa forces ink 55,53,66 icons, links and cart bubble over the hero (white label), navy once solid (D116)
+    --c-action: var(--c-text-brand);
+    --c-on-action: var(--c-text-inverse);
+    --color-primary: var(--c-action); // Salla's family is resolved on <html>: re-declare it here too
+    --color-primary-dark: var(--c-action-hover);
+    --color-primary-reverse: var(--c-on-action);
     background: transparent;
     border-block-end-color: var(--c-border-overlay);
   }

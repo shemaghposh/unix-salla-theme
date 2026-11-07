@@ -293,13 +293,16 @@
                         {% endif %}
 
                         {#
-                            6.4 · D108: no `quick-buy` attribute. unix.sa has no buy-now button, and Salla's
-                            «اشترِ الآن» (plus the Apple Pay salla-quick-buy it gates) shared this row with the
-                            quantity input and truncated the add-to-cart label at mobile widths.
+                            6.4 · D117 (reverses D108): Salla's quick buy, like unix.sa's «Buy it now» (product.json
+                            show_dynamic_checkout). Its buy-now button and the Apple Pay salla-quick-buy render inside
+                            this host; unix-pdp-info.scss lays them out on full-width rows under quantity + add to
+                            cart (DS §8.21), so the add-to-cart label is never squeezed. The feminine label
+                            «اشتري الآن» comes from our locale (partials/unix-buy-now.js → salla.lang).
                         #}
                         <salla-add-product-button
                                 data-testid="store-product-add-to-cart"
                                 data-unix-atc
+                                {{ product.can_quick_buy ? 'quick-buy' : '' }}
                                 {{ product.is_require_shipping ? 'required-shipping' : '' }}
                                 {{ product.has_preorder_campaign ? 'has-pre-order' : '' }}
                                 amount="{{ product.base_currency_price }}"

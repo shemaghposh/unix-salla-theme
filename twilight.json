@@ -93,7 +93,7 @@
             "type": "string",
             "icon": "sicon-format-text-alt",
             "label": "الرسالة الأولى",
-            "description": "سطر واحد في المنتصف. إذا لم تُحفظ الإعدادات بعد يظهر النص الافتراضي (المجموعة الجديدة) بالعربية والإنجليزية. امسحيه لإخفاء الرسالة",
+            "description": "سطر واحد في المنتصف. إذا تُرك فارغًا يظهر النص الافتراضي (المجموعة الجديدة) بالعربية والإنجليزية. لإخفاء الشريط أوقفي «شريط الإعلانات»",
             "id": "unix_announcement_1_text",
             "format": "text",
             "multilanguage": true,
@@ -441,7 +441,7 @@
             "type": "string",
             "icon": "sicon-format-text-alt",
             "label": "عنوان النشرة البريدية",
-            "description": "يظهر فوق نموذج النشرة البريدية في الفوتر. اتركيه بدون حفظ ليظهر «لا يفوتكِ جديدنا»، أو امسحيه لإخفائه (Newsletter heading)",
+            "description": "يظهر فوق نموذج النشرة البريدية في الفوتر. إذا تُرك فارغًا يظهر «لا يفوتكِ جديدنا» (Newsletter heading)",
             "id": "unix_footer_newsletter_title",
             "format": "text",
             "value": null,
@@ -1730,7 +1730,7 @@
                     "value": "المفضلة دائما",
                     "required": false,
                     "format": "text",
-                    "description": "اتركيه فارغاً لإخفاء العنوان",
+                    "description": "إذا تُرك فارغًا يظهر «المفضلة دائما» (كما في unix.sa)",
                     "placeholder": "أدخلي العنوان هنا...",
                     "minLength": 0,
                     "maxLength": 80
@@ -1998,7 +1998,7 @@
                     "type": "static",
                     "format": "description",
                     "id": "static-desc",
-                    "value": "<div>منتجات تصنيف مختار في شريط متحرك فوق صورة كبيرة، مثل قسم «جديد من يونكس» في unix.sa. إذا تُرك العنوان فارغًا ولم تُحفظ الإعدادات يظهر النص الافتراضي</div>"
+                    "value": "<div>منتجات تصنيف مختار في شريط متحرك فوق صورة كبيرة، مثل قسم «جديد من يونكس» في unix.sa. إذا تُرك العنوان فارغًا يظهر النص الافتراضي</div>"
                 },
                 {
                     "type": "string",
@@ -2113,7 +2113,7 @@
                     "type": "static",
                     "format": "description",
                     "id": "static-desc",
-                    "value": "<div>عنوان ووصف وزر، وتحتها بطاقات تصنيفات بنسبة 3:4، مثل قسم «حركة. رياضة. استرخاء.» في unix.sa. إذا تُركت النصوص فارغة ولم تُحفظ الإعدادات يظهر النص الافتراضي</div>"
+                    "value": "<div>عنوان ووصف وزر، وتحتها بطاقات تصنيفات بنسبة 3:4، مثل قسم «حركة. رياضة. استرخاء.» في unix.sa. إذا تُركت النصوص فارغة يظهر النص الافتراضي</div>"
                 },
                 {
                     "type": "string",
@@ -2331,7 +2331,7 @@
                     "value": "اختاري قطعتك المفضلة لوقت الاسترخاء",
                     "required": false,
                     "format": "text",
-                    "description": "اتركيه فارغاً لإخفاء العنوان",
+                    "description": "إذا تُرك فارغًا يظهر «اختاري قطعتك المفضلة لوقت الاسترخاء» (كما في unix.sa)",
                     "placeholder": "أدخلي العنوان هنا...",
                     "minLength": 0,
                     "maxLength": 80
@@ -2572,7 +2572,7 @@
                     "value": null,
                     "required": false,
                     "format": "text",
-                    "description": "يظهر «من عالم UNIX» إذا لم يُحفظ عنوان. إذا مسحتِ العنوان وحفظتِ، يُخفى.",
+                    "description": "إذا تُرك فارغًا يظهر «من عالم UNIX»",
                     "placeholder": "من عالم UNIX",
                     "minLength": 0,
                     "maxLength": 100
@@ -2726,7 +2726,7 @@
                     "type": "static",
                     "format": "description",
                     "id": "unix-faq-desc",
-                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>أسئلة وأجوبة بعنوان في المنتصف، وإجابة واحدة مفتوحة في كل مرة. اتركي الأسئلة فارغة لعرض أسئلة يونكس الافتراضية (7 أسئلة باللغتين). (صورة المعاينة مؤقتة)</small></div>"
+                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>أسئلة وأجوبة بعنوان في المنتصف، وإجابة واحدة مفتوحة في كل مرة. اتركي الأسئلة فارغة لعرض أسئلة يونكس الافتراضية (7 أسئلة باللغتين). العنوان والنص الفارغان يظهر مكانهما النص الافتراضي، وكل لغة على حدة: إذا كتبتِ العربية فقط تظهر الإنجليزية الافتراضية. (صورة المعاينة مؤقتة)</small></div>"
                 },
                 {
                     "type": "string",

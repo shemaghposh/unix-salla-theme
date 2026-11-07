@@ -87,7 +87,7 @@ body.theme-unix .unix-ctl.unix-products .s-product-card-content-footer .s-button
   --_bg: transparent;
   --_fg: var(--c-action);
   --_fill: var(--c-action);
-  --_fill-fg: var(--c-text-inverse);
+  --_fill-fg: var(--c-on-action);
   --_ring: inset 0 0 0 var(--line-w-strong) var(--c-action);
 
   inline-size: 100%;
