@@ -7,10 +7,11 @@
   the 4th is a faded teaser and the rest are hidden until «عرض المزيد». FAQPage JSON-LD.
 
   Fields (twilight.json → components → home.unix-faq):
-    title, text            string (multilanguage). null = not saved yet → translated default
-                           (blocks.unix.faq.default_title / default_text); '' = cleared on purpose.
+    title, text            string (multilanguage). Empty (null, '' or spaces) → translated default
+                           (blocks.unix.faq.default_title / default_text).
     items                  collection: items.question, items.answer (multilanguage), items.opened.
-                           Empty (never saved) → the 7 unix.sa questions from the locale files
+                           No row with a question (never saved, or saved with empty rows) → the 7
+                           unix.sa questions from the locale files
                            (blocks.unix.faq.default_q1…q7 / default_a1…a7); answer 2 takes the
                            free-shipping threshold setting (unix_free_shipping_threshold, D1).
     show_more              boolean  «عرض المزيد» collapse (unix.sa buttons_show), on until saved
@@ -27,10 +28,10 @@
   {% if value is iterable %}
     {% set value = value[language.code] is defined ? value[language.code] : null %}
   {% endif %}
-  {% if value is null %}
+  {% if not value|default('')|trim %}
     {% set value = trans('blocks.unix.faq.default_' ~ key) %}
   {% endif %}
-  {% set faq = faq|merge({ (key): value|default('')|trim }) %}
+  {% set faq = faq|merge({ (key): value|trim }) %}
 {% endfor %}
 
 {% set items = [] %}
@@ -48,7 +49,9 @@
       {% set items = items|merge([row|merge({ 'opened': item.opened ? true : false, 'html': false })]) %}
     {% endif %}
   {% endfor %}
-{% else %}
+{% endif %}
+{# merchant rows without a question are skipped; none left → the unix.sa questions (same as never saved) #}
+{% if not items|length %}
   {% set threshold = theme.settings.get('unix_free_shipping_threshold', 500)|default(500) %}
   {% for i in 1..7 %}
     {% set items = items|merge([{

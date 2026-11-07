@@ -11,11 +11,12 @@
     unix_free_shipping_threshold       number   feeds the default second message (D1 = 500), shown
                                                 without decimals like unix.sa ("500 ر.س")
   Defaults: Salla applies twilight.json `value`s only after the merchant saves, so a message
-  that is null (never saved, or missing for this language) falls back to the translated default:
+  that is empty (null, '' or spaces: never saved, saved untouched, or missing for this language)
+  falls back to the translated default:
     1 → blocks.unix.announcement.default_1
     2 → blocks.unix.announcement.default_2 (with the threshold as :amount)
-  An empty message 1 ('') was cleared on purpose and is skipped; an empty message 2 falls back to
-  the shipping template (as its field description says). With no message left, nothing renders.
+  (6.4: message 1 used to be skipped on '', but Salla saves untouched fields as '', so it fell
+  silent. To hide the bar use unix_announcement_enabled.)
 #}
 {% set announcement_items = [] %}
 {% if theme.settings.get('unix_announcement_enabled', true) %}
@@ -30,7 +31,7 @@
     {% if text is iterable %}
       {% set text = text[language.code] is defined ? text[language.code] : null %}
     {% endif %}
-    {% if text is null or (i == 2 and not text|trim) %}
+    {% if not text|default('')|trim %}
       {% set text = announcement_defaults[i - 1] %}
     {% endif %}
     {# link picker (variable-list) returns an object with .url; tolerate a plain string too #}

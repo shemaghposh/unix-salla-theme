@@ -10,31 +10,31 @@
 | component.button_url     | ?string   | CTA link; empty = no button                                  |
 | component.cards          | object[]  | collection cards                                             |
 | component.cards[].title  | ?string   | category name, multilanguage; null on cards 1–3 falls back   |
-|                          |           | to trans('…default_card_N') (AR + EN)                         |
+|                          |           | to trans('…default_card_N') (AR + EN) when empty              |
 | component.cards[].image  | ?string   | 3:4 image                                                    |
 | component.cards[].url    | ?string   | category link; empty = card is not a link                    |
 | component.cards[].overlay| ?int      | overlay opacity in % (0–60)                                  |
 | position                 | int       | sorting number, starts from zero                             |
 |
-| Text defaults: null falls back to trans('blocks.unix.collections_grid.default_*');
-| '' means the merchant cleared it on purpose.
+| Text defaults: empty (null, '' or spaces; Salla saves an untouched field as '') falls back to
+| trans('blocks.unix.collections_grid.default_*'). Card titles 4–6 have no default.
 | Arrows (only with more than 3 cards, like unix.sa): partials/unix-collections-grid.js
 #}
 {% set title = component.title %}
 {% if title is iterable %}{% set title = title[language.code] is defined ? title[language.code] : null %}{% endif %}
-{% if title is null %}{% set title = trans('blocks.unix.collections_grid.default_title') %}{% endif %}
+{% if not title|default('')|trim %}{% set title = trans('blocks.unix.collections_grid.default_title') %}{% endif %}
 
 {% set text = component.text %}
 {% if text is iterable %}{% set text = text[language.code] is defined ? text[language.code] : null %}{% endif %}
-{% if text is null %}{% set text = trans('blocks.unix.collections_grid.default_text') %}{% endif %}
+{% if not text|default('')|trim %}{% set text = trans('blocks.unix.collections_grid.default_text') %}{% endif %}
 
 {% set button_label = component.button_label %}
 {% if button_label is iterable %}{% set button_label = button_label[language.code] is defined ? button_label[language.code] : null %}{% endif %}
-{% if button_label is null %}{% set button_label = trans('blocks.unix.collections_grid.default_button') %}{% endif %}
+{% if not button_label|default('')|trim %}{% set button_label = trans('blocks.unix.collections_grid.default_button') %}{% endif %}
 
 {% set button_url = component.button_url %}
 {% if button_url is iterable %}{% set button_url = button_url.url|default('') %}{% endif %}
-{% set button_url = button_url|trim %}
+{% set button_url = button_url|default('')|trim %}
 
 {% set heading_id = 'unix-collections-grid-' ~ position %}
 {% set list_id = 'unix-collections-grid-list-' ~ position %}
@@ -75,7 +75,7 @@
           {% for card in cards %}
             {% set card_title = card.title %}
             {% if card_title is iterable %}{% set card_title = card_title[language.code] is defined ? card_title[language.code] : null %}{% endif %}
-            {% if card_title is null and loop.index <= 3 %}
+            {% if not card_title|default('')|trim and loop.index <= 3 %}
               {% set card_title = trans('blocks.unix.collections_grid.default_card_' ~ loop.index) %}
             {% endif %}
             {% set card_url = card.url is iterable ? card.url.url|default('') : card.url|default('') %}

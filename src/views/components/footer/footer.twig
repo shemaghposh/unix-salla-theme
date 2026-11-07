@@ -15,10 +15,10 @@
 #}
 {% set lang = language.code %}
 
-{# Multilanguage text settings: null = never saved → translated default; '' = cleared on purpose → hidden #}
+{# Multilanguage text settings: empty (null, '' or spaces) → translated default #}
 {% set newsletter_title = theme.settings.get('unix_footer_newsletter_title') %}
 {% if newsletter_title is iterable %}{% set newsletter_title = newsletter_title[lang] is defined ? newsletter_title[lang] : null %}{% endif %}
-{% if newsletter_title is null %}{% set newsletter_title = trans('blocks.unix.footer.newsletter') %}{% endif %}
+{% if not newsletter_title|default('')|trim %}{% set newsletter_title = trans('blocks.unix.footer.newsletter') %}{% endif %}
 
 {% set menu1_title = theme.settings.get('unix_footer_menu1_title') %}
 {% if menu1_title is iterable %}{% set menu1_title = menu1_title[lang] is defined ? menu1_title[lang] : null %}{% endif %}

@@ -8,8 +8,9 @@
   so there is no layout shift while media loads.
 
   Fields (twilight.json → components → home.unix-hero):
-    eyebrow, title, text, cta_label   string (multilanguage). null = not saved yet → translated
-                                      default (blocks.unix.hero.default_*); '' = cleared on purpose.
+    eyebrow, title, text, cta_label   string (multilanguage). Empty (null, '' or spaces: Salla saves an
+                                      untouched field as '') → translated unix.sa default
+                                      (blocks.unix.hero.default_*), as docs/demo-data/theme-settings-ar.md says.
     cta_link                          link picker; empty → no CTA (no dead links)
     cta_ghost                         boolean  ghost pill instead of the underline CTA
     image_desktop, image_mobile       image    poster/fallback; first hero image is the LCP image
@@ -29,10 +30,11 @@
   {% if value is iterable %}
     {% set value = value[language.code] is defined ? value[language.code] : null %}
   {% endif %}
-  {% if value is null and key != 'image_alt' %}
+  {% set value = value is iterable ? '' : value|default('')|trim %}
+  {% if not value and key != 'image_alt' %}
     {% set value = trans('blocks.unix.hero.default_' ~ key) %}
   {% endif %}
-  {% set hero = hero|merge({ (key): value|default('')|trim }) %}
+  {% set hero = hero|merge({ (key): value|trim }) %}
 {% endfor %}
 
 {# link picker (variable-list) returns an object with .url; tolerate a plain string too #}

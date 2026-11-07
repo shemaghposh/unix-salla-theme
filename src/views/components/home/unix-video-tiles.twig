@@ -20,13 +20,13 @@
       tiles.link_label    string (multilanguage)  link name for screen readers when there is no caption;
                           null/empty → blocks.unix.video_tiles.default_link_label
     label                 string (multilanguage)  section name for screen readers;
-                          null → blocks.unix.video_tiles.default_label
+                          empty → blocks.unix.video_tiles.default_label
 #}
 {% set section_label = component.label %}
 {% if section_label is iterable %}
   {% set section_label = section_label[language.code] is defined ? section_label[language.code] : null %}
 {% endif %}
-{% set section_label = section_label|default(trans('blocks.unix.video_tiles.default_label'))|trim %}
+{% set section_label = section_label|default('')|trim ?: trans('blocks.unix.video_tiles.default_label') %}
 
 {% set tiles = [] %}
 {% for tile in component.tiles|default([]) %}

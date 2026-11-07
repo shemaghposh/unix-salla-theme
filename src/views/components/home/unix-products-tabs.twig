@@ -31,7 +31,7 @@
 
 {% set title = component.title %}
 {% if title is iterable %}{% set title = title[lang]|default('') %}{% endif %}
-{% if title is null %}{% set title = trans('blocks.unix.products_tabs.default_title') %}{% endif %}
+{% if not title|default('')|trim %}{% set title = trans('blocks.unix.products_tabs.default_title') %}{% endif %}
 
 {% set fallback_url = component.button_url %}
 {% if fallback_url is iterable %}{% set fallback_url = fallback_url.url|default('') %}{% endif %}
@@ -61,6 +61,8 @@
   {% set cat = tab.category %}
   {% if cat is iterable and cat[0] is defined %}{% set cat = cat[0] %}{% endif %}
   {% set cat_id = cat.id is defined ? cat.id : (cat.value is defined ? cat.value : (cat is iterable ? null : cat)) %}
+  {# 6.4: only numeric ids count (same guard as the collection overlay and the cart picks) #}
+  {% set cat_id = cat_id is not iterable and (cat_id|default('') ~ '')|trim matches '/^[0-9]+$/' ? (cat_id ~ '')|trim : null %}
   {% set cat_url = cat.url is defined ? cat.url : '' %}
 
   {# source order matches unix.sa (products-with-tabs.liquid: collection first, then product_list) #}

@@ -6,29 +6,45 @@
 |----------------------------|-----------|---------------------------------------------------------------|
 | component.subtitle         | ?string   | eyebrow, multilanguage (default «NEW COLLECTION»)             |
 | component.title            | ?string   | section heading, multilanguage (default «جديد من يونكس»)       |
-| component.category         | object[]  | dropdown-list (source categories), first item is used         |
+| component.category         | mixed     | dropdown-list (source categories, single): object {id}, picker |
+|                            |           | row {value}, a list of those, or a bare / JSON-string id       |
 | component.limit            | ?int      | products in the carousel (default 8)                          |
 | component.image            | ?string   | background image, desktop (falls back to the category image)  |
 | component.image_mobile     | ?string   | background image below 576px (optional, unix.sa switch point) |
 | component.overlay          | ?int      | overlay opacity in % (20–60, default 30 like unix.sa)         |
 | position                   | int       | sorting number, starts from zero                              |
 |
-| Text defaults: null (never saved / empty for this language) falls back to
-| trans('blocks.unix.collection_overlay.default_*'); '' means cleared on purpose.
+| Text defaults: empty (null, '' or spaces; Salla saves an untouched field as '') falls back to
+| trans('blocks.unix.collection_overlay.default_*').
+| 6.4: the category used to be read only as {id} / [{id}]; Salla hands it back in another shape, so
+| category_id stayed null and the slider never rendered. It is now normalised like products-tabs
+| (+ a never-saved field definition, which carries `source`, is ignored; only numeric ids count).
 #}
 {% set subtitle = component.subtitle %}
 {% if subtitle is iterable %}{% set subtitle = subtitle[language.code] is defined ? subtitle[language.code] : null %}{% endif %}
-{% if subtitle is null %}{% set subtitle = trans('blocks.unix.collection_overlay.default_subtitle') %}{% endif %}
+{% if not subtitle|default('')|trim %}{% set subtitle = trans('blocks.unix.collection_overlay.default_subtitle') %}{% endif %}
 
 {% set title = component.title %}
 {% if title is iterable %}{% set title = title[language.code] is defined ? title[language.code] : null %}{% endif %}
-{% if title is null %}{% set title = trans('blocks.unix.collection_overlay.default_title') %}{% endif %}
+{% if not title|default('')|trim %}{% set title = trans('blocks.unix.collection_overlay.default_title') %}{% endif %}
 
 {% set category = component.category %}
-{% if category is iterable and category.id is not defined %}{% set category = category|first %}{% endif %}
-{% set category_id = category and category.id is defined ? category.id : null %}
+{# never-saved picker → its field definition ({source: "categories", …}): no category #}
+{% if category is iterable and category.source is defined and category.id is not defined %}{% set category = null %}{% endif %}
+{# a list of picks → the first one #}
+{% if category is iterable and category.id is not defined and category.value is not defined %}{% set category = category|first %}{% endif %}
+{% set category_id = category is iterable
+  ? (category.id is defined ? category.id : (category.value is defined ? category.value : null))
+  : category %}
+{% if category_id is iterable %}{% set category_id = category_id|first %}{% endif %}
+{# a bare id may come as a string, also JSON-ish ("[12]", "\"12\"") #}
+{% if category_id is not iterable %}
+  {% set category_id = (category_id|default('') ~ '')|replace({'[': '', ']': '', '"': ''})|trim %}
+{% endif %}
+{% set category_id = category_id is not iterable and category_id matches '/^[0-9]+$/' ? category_id : null %}
 
-{% set image = component.image ?: (category and category.image is defined ? category.image : null) %}
+{# the category image is only known when Salla sends the category as an object #}
+{% set image = component.image ?: (category is iterable and category.image is defined ? category.image : null) %}
 {% set image_mobile = component.image_mobile %}
 
 {% set overlay = component.overlay is null ? 30 : component.overlay %}

@@ -21,12 +21,12 @@
 #}
 {% set uid = 'unix-blog-' ~ position %}
 
-{# Title: null = never saved → translated default; '' = cleared on purpose → no heading #}
+{# Title: empty (null, '' or spaces; Salla saves an untouched field as '') → translated default #}
 {% set title = component.title %}
 {% if title is iterable %}
   {% set title = title[language.code] is defined ? title[language.code] : null %}
 {% endif %}
-{% if title is null %}
+{% if not title|default('')|trim %}
   {% set title = trans('blocks.unix.blog.title') %}
 {% endif %}
 {% set title = title|trim %}
