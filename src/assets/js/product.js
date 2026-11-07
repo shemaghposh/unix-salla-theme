@@ -69,19 +69,27 @@ class Product extends BasePage {
         app.element('.out-of-stock').classList.add('hidden')
         app.element('.price-wrapper').classList.remove('hidden')
 
+        // 6.4: same rule as single.twig (unix_on_sale): a real, lower, non-zero price; never show a 0
         let data = res.data,
-            is_on_sale = data.has_sale_price && data.regular_price > data.price;
+            amount = (v) => Number(v && typeof v === 'object' ? v.amount : v), // number or {amount, currency}
+            price = amount(data.price),
+            regularPrice = amount(data.regular_price),
+            is_on_sale = Boolean(data.has_sale_price) && price > 0 && price < regularPrice;
 
-        app.startingPriceTitle?.classList.add('hidden');
+        // «يبدأ من» goes only once a real variant price replaces the server's starting price
+        price > 0 && app.startingPriceTitle?.classList.add('hidden');
 
         app.productWeight.forEach((el) => {el.innerHTML = data.weight || ''});
-        app.totalPrice.forEach((el) => {el.innerHTML = salla.money(data.price)});
-        app.beforePrice.forEach((el) => {el.innerHTML = salla.money(data.regular_price)});
+        // a missing / 0 price keeps the server-rendered amount instead of printing «0 ﷼»
+        // (by design: a truly free variant also keeps the previous price on screen)
+        price > 0 && app.totalPrice.forEach((el) => {el.innerHTML = salla.money(data.price)});
+        regularPrice > 0 && app.beforePrice.forEach((el) => {el.innerHTML = salla.money(data.regular_price)});
         this.updateIdentifier(app.productSku, '.product-sku-wrapper', data.sku);
         this.updateIdentifier(app.productBarcode, '.product-barcode-wrapper', data.barcode);
 
-        app.toggleClassIf('.price_is_on_sale','showed','hidden', ()=> is_on_sale)
-        app.toggleClassIf('.starting-or-normal-price','hidden','showed', ()=> is_on_sale)
+        // exactly one row visible: the sale row only on sale, the normal row otherwise
+        document.querySelectorAll('.price_is_on_sale').forEach((el) => el.classList.toggle('hidden', !is_on_sale));
+        document.querySelectorAll('.starting-or-normal-price').forEach((el) => el.classList.toggle('hidden', is_on_sale));
 
         document.querySelectorAll('.total-price, .product-weight').forEach(el => {
           el.classList.remove('scale-pulse');

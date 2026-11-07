@@ -193,22 +193,34 @@
 
                     {#
                         2 · Price. One block only: product.js updates .total-price / .before-price
-                        and toggles .price_is_on_sale / .starting-or-normal-price with the `hidden`
-                        utility, so those wrappers get their display only via :not(.hidden) in SCSS.
+                        and toggles the `hidden` utility on .price_is_on_sale / .starting-or-normal-price.
+                        6.4: those toggled wrappers carry NO display rule of their own; the flex layout
+                        sits on the inner .unix-pdp-price__row. A `:not(.hidden)` selector must never be
+                        used: Tailwind's `@apply hidden` (common.scss .s-app-install-banner) clones every
+                        rule containing `.hidden`, turning it into `:not(.s-app-install-banner)`, which
+                        always matched and beat `.hidden`, so both rows showed at once.
+                        Sale only when the sale price is a real, lower, non-zero price (never show a 0);
+                        product.js uses the same condition (has_sale_price, 0 < price < regular_price).
                     #}
+                    {% set unix_sale_price = product.sale_price|default(0) %}
+                    {% set unix_on_sale = product.is_on_sale and unix_sale_price > 0 and unix_sale_price < product.regular_price %}
                     <div data-testid="store-product-price" class="price-wrapper unix-pdp-price">
-                        <div class="price_is_on_sale unix-pdp-price__row {{ product.is_on_sale ? '' : 'hidden' }}">
-                            <span class="sr-only">{{ trans('blocks.unix.pdp_info.sale_price') }}</span>
-                            <span class="total-price unix-pdp-price__now is-sale">{{ product.sale_price|money }}</span>
-                            <span class="sr-only">{{ trans('blocks.unix.pdp_info.regular_price') }}</span>
-                            <s class="before-price unix-pdp-price__old">{{ product.regular_price|money }}</s>
-                            <span class="unix-pdp-price__badge" aria-hidden="true">{{ trans('blocks.unix.pdp_info.on_sale') }}</span>
+                        <div class="price_is_on_sale {{ unix_on_sale ? '' : 'hidden' }}">
+                            <div class="unix-pdp-price__row">
+                                <span class="sr-only">{{ trans('blocks.unix.pdp_info.sale_price') }}</span>
+                                <span class="total-price unix-pdp-price__now is-sale">{{ (unix_on_sale ? unix_sale_price : product.price)|money }}</span>
+                                <span class="sr-only">{{ trans('blocks.unix.pdp_info.regular_price') }}</span>
+                                <s class="before-price unix-pdp-price__old">{{ product.regular_price|money }}</s>
+                                <span class="unix-pdp-price__badge" aria-hidden="true">{{ trans('blocks.unix.pdp_info.on_sale') }}</span>
+                            </div>
                         </div>
-                        <div class="starting-or-normal-price unix-pdp-price__row {{ product.is_on_sale ? 'hidden' : '' }}">
-                            {% if product.starting_price %}
-                                <span class="starting-price-title unix-pdp-price__from">{{ trans('pages.products.starting_price') }}</span>
-                            {% endif %}
-                            <span class="total-price unix-pdp-price__now">{{ product.starting_price ? product.starting_price|money : product.price|money }}</span>
+                        <div class="starting-or-normal-price {{ unix_on_sale ? 'hidden' : '' }}">
+                            <div class="unix-pdp-price__row">
+                                {% if product.starting_price %}
+                                    <span class="starting-price-title unix-pdp-price__from">{{ trans('pages.products.starting_price') }}</span>
+                                {% endif %}
+                                <span class="total-price unix-pdp-price__now">{{ product.starting_price ? product.starting_price|money : product.price|money }}</span>
+                            </div>
                         </div>
                     </div>
                     <p data-testid="store-product-out-of-stock" class="out-of-stock unix-pdp-price__out hidden" role="status">{{ trans('pages.products.out_of_stock') }}</p>
@@ -278,10 +290,14 @@
                                                   aria-label="{{ trans('pages.products.quantity') }}"></salla-quantity-input>
                         {% endif %}
 
+                        {#
+                            6.4 · D108: no `quick-buy` attribute. unix.sa has no buy-now button, and Salla's
+                            «اشترِ الآن» (plus the Apple Pay salla-quick-buy it gates) shared this row with the
+                            quantity input and truncated the add-to-cart label at mobile widths.
+                        #}
                         <salla-add-product-button
                                 data-testid="store-product-add-to-cart"
                                 data-unix-atc
-                                {{ product.can_quick_buy ? 'quick-buy' : '' }}
                                 {{ product.is_require_shipping ? 'required-shipping' : '' }}
                                 {{ product.has_preorder_campaign ? 'has-pre-order' : '' }}
                                 amount="{{ product.base_currency_price }}"

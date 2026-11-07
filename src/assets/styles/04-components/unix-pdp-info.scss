@@ -15,6 +15,12 @@
 
   // Salla components that render nothing when their feature is off would still take a flex gap
   > :is(salla-installment, salla-quick-order, salla-metadata, digital-files-settings):empty { display: none; }
+
+  // 6.4: salla-quick-order renders its whole box (Salla's light-gray panel, near-invisible on cream:
+  // margins + padding + an empty title row ≈ 100px, plus two flex gaps) whenever the store has a
+  // `quick_order` settings object, even with no text. Hidden only when both the title and the
+  // sub-title are empty; a merchant who fills in either still gets Salla's widget.
+  > salla-quick-order:has(.s-quick-order-button-cont h3:empty):has(.s-quick-order-button-cont p:empty) { display: none; }
 }
 
 // Option extras panel (weight / Raed size-guide row / note + file attachments; partials/product/options.twig,
@@ -66,8 +72,11 @@
   font-variant-numeric: tabular-nums;
 }
 
-// product.js toggles the `hidden` utility on these rows: display only when not hidden
-.unix-pdp-price__row:not(.hidden) {
+// 6.4: product.js toggles `hidden` on the outer .price_is_on_sale / .starting-or-normal-price
+// wrappers, which have no display rule; the layout lives on this inner row. Never write
+// `:not(.hidden)`: Tailwind's `@apply hidden` (common.scss) clones any rule naming `.hidden`
+// into `:not(.s-app-install-banner)`, which always matches and overrides the utility.
+.unix-pdp-price__row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -110,7 +119,8 @@
   line-height: 1.5;
 }
 
-.theme-unix .unix-pdp-price__out:not(.hidden) {
+// display comes from the `hidden` utility alone (see the price row note above)
+.theme-unix .unix-pdp-price__out {
   margin: 0;
   color: var(--c-price-sale);
   font-size: var(--t-body);

@@ -5,7 +5,8 @@
    ============================================================ */
 
 .unix-ship {
-  margin-block: var(--s-4) var(--s-2);
+  // 6.4: no own margin; the info column's flex gap (--s-4) spaces it like every other block
+  margin: 0;
   padding: var(--s-3) var(--s-4);
   border: var(--line-w) solid var(--c-border);
   border-radius: var(--r-md);
