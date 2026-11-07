@@ -78,7 +78,9 @@ custom-main-menu {
   &:active { opacity: var(--o-muted); }
   &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); }
 
-  .has-children > & > span::after {
+  // 6.4: unix.sa's inline links have no chevrons; only our own «المزيد» overflow button keeps one
+  // (it is a <button> with no page of its own, so the chevron is its only affordance).
+  .unix-nav__more > & > span::after {
     content: "\e96e"; // sallaicons chevron-down
     display: inline-block;
     margin-inline-start: var(--s-1);
@@ -88,7 +90,7 @@ custom-main-menu {
     transition: transform var(--d-base) var(--ease-out);
   }
 
-  .has-children > &[aria-expanded="true"] > span::after { transform: scaleY(-1); }
+  .unix-nav__more > &[aria-expanded="true"] > span::after { transform: scaleY(-1); }
 }
 
 // ── Panels (mega + "More" dropdown): fade in --d-base ─

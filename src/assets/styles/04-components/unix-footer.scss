@@ -5,7 +5,7 @@
  */
 .unix-footer {
   margin-block-start: var(--section-sm);
-  background: var(--c-bg);
+  background: var(--c-bg-cream); // unix.sa footer: «Cream» scheme (D109)
   color: var(--c-text);
   border-block-start: var(--line-w) solid var(--c-border);
   font-size: var(--t-small);
@@ -189,7 +189,7 @@
 
 // ── Trust strip ──────────────────────────────────
 .unix-trust {
-  background: var(--c-bg);
+  background: var(--c-bg-cream); // footer group, Cream like the footer (D109)
   color: var(--c-text);
 
   &__inner {

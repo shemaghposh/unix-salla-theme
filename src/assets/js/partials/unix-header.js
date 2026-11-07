@@ -149,6 +149,25 @@ function initLanguageToggle() {
   });
 }
 
+/**
+ * 6.4: the cart count bubble is hidden while the cart is empty, like unix.sa (.cart-count-bubble:empty).
+ * Twig prints the first value (data-count = cart.items_count); this keeps it in step with the cart.
+ */
+function initCartCount(header) {
+  const hosts = header.querySelectorAll('salla-cart-summary[data-count]');
+  if (!hosts.length || !window.salla?.cart?.event) return;
+  const set = count => {
+    const value = String(Number(count) || 0);
+    hosts.forEach(host => host.setAttribute('data-count', value));
+  };
+  // Seed once: a cached page may carry a stale Twig count; Salla's own summary reads the same storage key.
+  const stored = salla.storage?.get?.('cart.summary.count');
+  set(stored ?? hosts[0].dataset.count);
+  salla.cart.event.onUpdated?.(summary => {
+    if (summary?.count != null) set(summary.count);
+  });
+}
+
 export default function initHeader({ sticky = true } = {}) {
   const header = document.querySelector('[data-unix-header]');
   if (!header) return;
@@ -156,5 +175,6 @@ export default function initHeader({ sticky = true } = {}) {
   initSearch(header);
   initLanguageToggle();
   initModalTriggers();
+  initCartCount(header);
   if (sticky) initSticky(header);
 }

@@ -6,13 +6,71 @@
  * Raed's JS hooks (.item-*, .free-ribbon, .old-offers, .hidden toggles) are kept as is.
  */
 
+// ── Page header (6.4, unix.sa .main-cart .page-header): visible h1 + «مواصلة التسوق» ──
+.unix-cart__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4) var(--s-5);
+  margin-block: var(--s-5) var(--s-4); // unix.sa 2.4rem / 1.6rem below 576
+
+  @media (min-width: 576px) { margin-block-end: var(--s-5); } // 2.4rem / 2.4rem from 576
+}
+
+// .theme-unix prefix: beats the base `.theme-unix h1` margins (unix-tokens.scss)
+.theme-unix .unix-cart__title {
+  margin: 0;
+  text-align: start;
+}
+
+.unix-cart__continue {
+  @media (max-width: 575px) { display: none; }
+}
+
+.unix-cart__continue-foot {
+  inline-size: 100%;
+
+  @media (min-width: 576px) { display: none; }
+}
+
+// ── Empty cart (6.4, unix.sa .is-empty .cart__warnings): grey panel, start-aligned ──
+.unix-cart-empty {
+  max-inline-size: var(--cart-empty-max);
+  padding: var(--s-5);
+  border-radius: var(--r-md);
+  background: var(--c-panel);
+  color: var(--c-text);
+  text-align: start;
+
+  @media (min-width: 576px) { padding: var(--panel-pad-lg); }
+}
+
+.theme-unix .unix-cart-empty__title {
+  margin: 0 0 var(--s-1);
+  font-size: var(--t-h4);
+  line-height: 1.4;
+}
+
+.theme-unix .unix-cart-empty__text {
+  margin: 0 0 var(--s-4);
+  color: var(--c-text-on-panel);
+  font-size: var(--t-small);
+}
+
+.unix-cart-empty__btn {
+  inline-size: 100%;
+
+  @media (min-width: 576px) { inline-size: auto; }
+}
+
 // ── Layout: lines | summary column (lg) ─────────
 .unix-cart__layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--s-5);
   align-items: start;
-  padding-block: var(--s-5) var(--section-sm);
+  padding-block: 0 var(--section-sm);
 
   @media (min-width: 1024px) {
     grid-template-columns: minmax(0, 1fr) var(--cart-aside-w);
@@ -351,6 +409,7 @@
 .theme-unix .unix-cart-picks__title {
   font-size: var(--t-h3);
   line-height: 1.35;
+  text-align: start; // 6.4: start-aligned at every width, like unix.sa
 }
 
 @media (prefers-reduced-motion: reduce) {

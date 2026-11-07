@@ -141,6 +141,12 @@
   &--outline { @include unix-button-outline; }
   &--ghost { @include unix-button-ghost; }
   &--link { @include unix-button-link; }
+  // 6.4: unix.sa `button--secondary` on the white scheme (#e9e9e9, hover fill #dfdfdf), e.g. «مواصلة التسوق»
+  &--panel {
+    --_bg: var(--c-panel);
+    --_fg: var(--c-text);
+    --_fill: var(--c-panel-hover);
+  }
 
   &.is-loading,
   &[aria-busy="true"] { @include unix-button-loading; }

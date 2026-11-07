@@ -21,19 +21,34 @@
   @media (min-width: 1024px) { --cols: 4; }
 }
 
-// ── Toolbar: filters button at the start, sort at the end ──
+// ── Toolbar (6.4 parity, unix.sa facets `horizontal_united`) ──
+// < 576: a full-bleed bar with hairlines above and below (unix.sa .facets-container: border-top/bottom,
+//        padding .8rem 0, margin-inline -page edge); «الفلاتر» and the sort each take half, a divider between.
+// ≥ 576: no hairlines; «الفلاتر» at the start with a divider after it, the sort at the end with a divider
+//        before it (unix.sa .facets__horizontal-group::after and .select::before, 4.9rem high).
 .unix-plp__toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--s-4);
-  padding-block: var(--s-4);
-  border-block-end: var(--line-w) solid var(--c-border);
+  margin-inline: calc(var(--page-margin) * -1);
+  padding: var(--s-2); // unix.sa .8rem block (.facets-container) and inline (.facets__horizontal-top)
+  border-block: var(--line-w) solid var(--c-border);
+
+  @media (min-width: 576px) {
+    margin-inline: 0;
+    padding: 0;
+    border-block: 0;
+  }
+
+  @media (min-width: 1200px) { gap: var(--s-8); }
 }
 
 .unix-plp__filter-btn {
   display: inline-flex;
+  flex: 1 1 0;
   align-items: center;
+  justify-content: center;
   gap: var(--s-2);
   min-block-size: var(--tap);
   padding: 0;
@@ -42,14 +57,21 @@
   color: var(--c-text);
   font-family: var(--f-body);
   font-size: var(--t-body);
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-regular);
   line-height: 1.7;
   cursor: pointer;
   transition: opacity var(--d-fast) var(--ease-out);
 
+  @media (min-width: 576px) {
+    flex: none;
+    min-block-size: var(--plp-bar-h);
+    padding-inline-end: var(--s-4);
+    border-inline-end: var(--line-w) solid var(--c-border);
+  }
+
   &[hidden] { display: none; }
   &:active { transform: translateY(var(--press-y)); }
-  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); border-radius: var(--r-sm); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); border-radius: var(--r-sm); }
   &:disabled { opacity: var(--o-disabled); cursor: default; }
 }
 
@@ -69,11 +91,28 @@
   &[hidden] { display: none; }
 }
 
-// Sort select, the compact select of DS §8.24
+// Sort: plain text with a ↓ arrow at the end (unix.sa .facets-sorting__field: transparent select, no box).
 .unix-plp__sort {
   position: relative;
+  display: flex;
+  flex: 1 1 0;
+  justify-content: center;
   min-inline-size: 0;
   margin-inline-start: auto; // stays at the end when the filters button is hidden
+
+  // < 576: the divider between the two halves
+  // (a filters button hidden by unix-plp.js on filters::hidden counts as absent)
+  .unix-plp__filter-btn:not([hidden]) + & { border-inline-start: var(--line-w) solid var(--c-border); }
+
+  // No filters (store or category has none): the sort keeps to the end, like unix.sa _no-filter
+  &:only-child,
+  .unix-plp__filter-btn[hidden] + & { justify-content: flex-end; }
+
+  @media (min-width: 576px) {
+    flex: none;
+    padding-inline-start: var(--s-4);
+    border-inline-start: var(--line-w) solid var(--c-border);
+  }
 }
 
 .unix-plp__select {
@@ -83,35 +122,48 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   min-block-size: var(--tap);
-  padding-block: var(--s-2);
-  padding-inline: var(--s-3) calc(var(--s-3) + var(--icon-sm) + var(--s-1));
-  border: var(--line-w) solid var(--c-border);
-  border-radius: var(--r-sm);
-  background: var(--c-surface);
+  padding-block: 0;
+  padding-inline: 0 calc(var(--icon-sm) + var(--s-3));
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   color: var(--c-text);
   font-family: var(--f-body);
   font-size: var(--t-small);
   line-height: 1.6;
   appearance: none;
   cursor: pointer;
-  transition: border-color var(--d-fast) var(--ease-out);
+  transition: opacity var(--d-fast) var(--ease-out);
 
-  &:active { border-color: var(--c-text); }
-  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
+  @media (min-width: 576px) { min-block-size: var(--plp-bar-h); }
+  @media (min-width: 768px) { font-size: var(--t-body); }
+
+  option { background: var(--c-bg); color: var(--c-text); }
+
+  &:active { opacity: var(--o-muted); }
+  &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: calc(var(--ring-w) * -1); border-radius: var(--r-sm); }
   &:disabled { opacity: var(--o-disabled); cursor: not-allowed; }
 }
 
 @media (hover: hover) {
-  .unix-plp__select:hover { border-color: var(--c-text-muted); }
+  .unix-plp__select:hover { opacity: var(--o-muted); }
+}
+
+// The arrow sits at the end of the select text (RTL: left), inside the select's end padding.
+.unix-plp__sort-field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-inline-size: 100%;
 }
 
 .unix-plp__chev {
   position: absolute;
   inset-block-start: 50%;
-  inset-inline-end: var(--s-3);
+  inset-inline-end: 0;
   inline-size: var(--icon-sm);
   block-size: var(--icon-sm);
-  color: var(--c-text-muted);
+  color: var(--c-text);
   transform: translateY(-50%);
   pointer-events: none;
 }
@@ -193,7 +245,9 @@
 .unix-plp__body {
   position: relative;
   min-inline-size: 0;
-  margin-block-start: var(--s-5);
+  margin-block-start: var(--s-7); // unix.sa .products-grid margin-top 4rem under the mobile bar
+
+  @media (min-width: 576px) { margin-block-start: var(--s-5); }
 }
 
 .unix-plp__list { display: block; }

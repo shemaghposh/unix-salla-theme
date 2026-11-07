@@ -6,7 +6,8 @@
 | cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
 
 UNIX header (ROADMAP 1.2 · DS §8.7 · SPEC §2).
-RTL order: menu on the start side, logo centred (120px), then search, account, AR/EN and cart on the end side.
+RTL order: menu on the start side (hamburger at every width + inline links from lg, like unix.sa), logo
+centred (100px < 576, 120px from 576), then AR/EN, search, account (md+), a divider (lg+) and the cart.
 Sticky behaviour (hide on scroll down, show on scroll up, --e-1) lives in src/assets/js/partials/unix-header.js.
 Transparent variant: enabled by the `unix_header_transparent_home` setting on the home page, and only
 switched on by JS when the page contains a hero marked [data-header-overlay] (Phase 2).
@@ -28,12 +29,15 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
     <div class="inner unix-header__bar">
       <div class="unix-container unix-header__inner">
 
-        {# Start side: drawer trigger (< lg) + inline menu with mega menu (≥ lg) #}
+        {# Start side: drawer trigger (every width, 6.4: unix.sa shows its burger on desktop too) + inline menu with mega menu (≥ lg) #}
         <div class="unix-header__start">
           <button type="button" data-testid="store-header-mobile-toggle" class="unix-icon-btn unix-header__menu-toggle"
                   aria-controls="mobile-menu" aria-expanded="false" aria-haspopup="dialog"
                   aria-label="{{ trans('blocks.unix.header.open_menu') }}">
-            <i class="sicon-menu" aria-hidden="true"></i>
+            {# unix.sa two-line burger, stroke 1.5 #}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false">
+              <path d="M3 9h18M9 15h12"/>
+            </svg>
           </button>
           <custom-main-menu
             data-display-all="{{ trans('blocks.unix.menu.display_all') }}"
@@ -60,7 +64,7 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
           #}
         </a>
 
-        {# End side: search, account, AR/EN, cart #}
+        {# End side: AR/EN, search, account, divider, cart (unix.sa order) #}
         <div class="unix-header__end">
           {# Scopes | Branches #}
           {% if store.scope %}
@@ -76,20 +80,29 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
             <salla-bullet-delivery-tag></salla-bullet-delivery-tag>
           </div>
 
+          {# 6.4: AR/EN at every width, like unix.sa (was md+ only) #}
+          {% if store.settings.is_multilingual %}
+            {% include 'components.header.lang-toggle' %}
+          {% endif %}
+
           <button type="button" class="unix-icon-btn" data-unix-search-open data-testid="store-header-search"
                   aria-label="{{ trans('blocks.unix.header.search') }}" aria-haspopup="dialog">
             <i class="sicon-search" aria-hidden="true"></i>
           </button>
 
           <div class="unix-header__account unix-header__wide-only">
-            <salla-user-menu data-testid="store-header-user-menu" avatar-only show-header show-trigger></salla-user-menu>
+            <salla-user-menu data-testid="store-header-user-menu" avatar-only show-header show-trigger>
+              {# 6.4: guests get unix.sa's plain outline person (Salla's documented `login-btn` slot; Salla's
+                 own button is a person in a bordered circle). Opens Salla's login modal (unix-header.js). #}
+              <button slot="login-btn" type="button" class="unix-icon-btn" data-unix-login-open aria-haspopup="dialog"
+                      aria-label="{{ trans('blocks.unix.menu.login') }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <circle cx="12" cy="7.5" r="3.5"/>
+                  <path d="M5 20.5V19a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1.5z"/>
+                </svg>
+              </button>
+            </salla-user-menu>
           </div>
-
-          {% if store.settings.is_multilingual %}
-            <div class="unix-header__wide-only">
-              {% include 'components.header.lang-toggle' %}
-            </div>
-          {% endif %}
 
           {# Currency picker trigger (desktop). The drawer footer has the mobile one. #}
           {% if store.settings.currencies_enabled %}
@@ -98,8 +111,15 @@ switched on by JS when the page contains a hero marked [data-header-overlay] (Ph
             </button>
           {% endif %}
 
-          {# ROADMAP 4.3: opens the cart drawer when it is on (D85); the link to /cart is the no-JS fallback #}
-          <salla-cart-summary data-testid="store-header-cart" class="unix-header__cart"{{ cart_drawer_on ? ' data-unix-cart-open' : '' }}>
+          {# 6.4: unix.sa thin divider before the cart (lg+) #}
+          <span class="unix-header__divider" aria-hidden="true"></span>
+
+          {#
+            ROADMAP 4.3: opens the cart drawer when it is on (D85); the link to /cart is the no-JS fallback.
+            6.4: data-count drives the count bubble, hidden at 0 like unix.sa (.cart-count-bubble:empty);
+            unix-header.js keeps it in step with salla.cart.
+          #}
+          <salla-cart-summary data-testid="store-header-cart" class="unix-header__cart" data-count="{{ cart.items_count|default(0) }}"{{ cart_drawer_on ? ' data-unix-cart-open' : '' }}>
             <i slot="icon" class="header-btn__icon icon sicon-shopping-bag" aria-hidden="true"></i>
           </salla-cart-summary>
         </div>

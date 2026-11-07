@@ -23,6 +23,15 @@
   > salla-quick-order:has(.s-quick-order-button-cont h3:empty):has(.s-quick-order-button-cont p:empty) { display: none; }
 }
 
+// 6.4: breadcrumbs are off by default (unix.sa has none), so the page keeps its own top space:
+// none below md (the gallery sits right under the header, like unix.sa) and --pdp-top from md.
+// With the breadcrumb on, the breadcrumb row is the space.
+.theme-unix .container--product-details {
+  @media (min-width: 768px) { padding-block-start: var(--pdp-top); }
+}
+
+.theme-unix .container--breadcrumbs ~ .container--product-details { padding-block-start: 0; }
+
 // Option extras panel (weight / Raed size-guide row / note + file attachments; partials/product/options.twig,
 // product page and cart). ROADMAP 6.1: replaces Raed's `bg-white p-5 rounded-md mb-5` card.
 .unix-option-panel {

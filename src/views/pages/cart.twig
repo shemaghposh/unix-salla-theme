@@ -58,11 +58,15 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
 {% block content %}
     {% set lang = language.code|default('ar') %}
     <div class="unix-container unix-cart">
-        {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
-        <nav class="breadcrumbs w-full py-5">
-            <salla-breadcrumb></salla-breadcrumb>
-        </nav>
-        <h1 class="sr-only">{{ trans('blocks.header.cart') }}</h1>
+        {#
+          6.4 (D110, reverses D91's hidden h1): unix.sa main-cart-items page header, no breadcrumb.
+          Visible h1 «سلة التسوق» at the page-title size, and «مواصلة التسوق» at the end of the row from 576px
+          (below 576 the same link sits under the cart, like unix.sa .cart__footer-continue).
+        #}
+        <div class="unix-cart__head">
+            <h1 class="unix-cart__title unix-size-page-title">{{ trans('blocks.unix.cart.title') }}</h1>
+            <a class="unix-btn unix-btn--panel unix-cart__continue" href="{{ link('products') }}">{{ trans('blocks.unix.cart.continue') }}</a>
+        </div>
         <salla-conditional-offer data-testid="store-cart-conditional-offer"></salla-conditional-offer>
         <div class="unix-cart__layout">
             <div class="main-content unix-cart__main">
@@ -149,11 +153,11 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
                     {% set empty_text = theme.settings.get('unix_cart_empty_text') %}
                     {% if empty_text is iterable %}{% set empty_text = empty_text[lang] is defined ? empty_text[lang] : null %}{% endif %}
                     {% if empty_text is null or not empty_text|trim %}{% set empty_text = trans('blocks.unix.cart_drawer.empty_text') %}{% endif %}
-                    {# DS §8.47 shared empty state #}
-                    <div data-testid="store-cart-empty" class="unix-empty">
-                        <h2 class="unix-empty__title">{{ trans('blocks.unix.cart.empty') }}</h2>
-                        <p class="unix-empty__text">{{ empty_text|trim }}</p>
-                        <a data-testid="store-cart-back-home" href="{{ link('products') }}" class="unix-btn">{{ trans('blocks.unix.cart_drawer.shop_now') }}</a>
+                    {# 6.4: unix.sa .is-empty .cart__warnings, a grey start-aligned panel (DS §8.35) #}
+                    <div data-testid="store-cart-empty" class="unix-cart-empty">
+                        <h2 class="unix-cart-empty__title">{{ trans('blocks.unix.cart.empty') }}</h2>
+                        <p class="unix-cart-empty__text">{{ empty_text|trim }}</p>
+                        <a data-testid="store-cart-back-home" href="{{ link('products') }}" class="unix-btn unix-cart-empty__btn">{{ trans('blocks.unix.cart_drawer.shop_now') }}</a>
                     </div>
                 {% endfor %}
 
@@ -172,6 +176,9 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
                 <salla-offer data-testid="store-cart-offer"></salla-offer>
 
                 {% hook 'cart:items.end' %}
+
+                {# < 576: «مواصلة التسوق» under the cart, full width (unix.sa .cart__footer-continue). Only one of the two links is displayed at a time. #}
+                <a class="unix-btn unix-btn--panel unix-cart__continue-foot" href="{{ link('products') }}">{{ trans('blocks.unix.cart.continue') }}</a>
             </div>
 
             {% hook 'cart:summary.start' %}
@@ -254,11 +261,11 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
                 <div class="unix-ptabs__nav">
                     <button type="button" class="unix-carousel-arrow" data-unix-ptabs-prev
                             aria-controls="unix-cart-picks-panels" aria-label="{{ trans('blocks.unix.products_tabs.prev') }}">
-                        <svg class="icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <svg class="icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </button>
                     <button type="button" class="unix-carousel-arrow" data-unix-ptabs-next
                             aria-controls="unix-cart-picks-panels" aria-label="{{ trans('blocks.unix.products_tabs.next') }}">
-                        <svg class="icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <svg class="icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </button>
                 </div>
 

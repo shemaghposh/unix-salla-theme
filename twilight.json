@@ -442,8 +442,8 @@
             "id": "product_show_breadcrumbs",
             "format": "switch",
             "required": false,
-            "value": true,
-            "selected": true
+            "value": false,
+            "selected": false
         },
         {
             "type": "boolean",
@@ -453,8 +453,8 @@
             "id": "product_index_show_breadcrumbs",
             "format": "switch",
             "required": false,
-            "value": true,
-            "selected": true
+            "value": false,
+            "selected": false
         },
         {
             "type": "boolean",

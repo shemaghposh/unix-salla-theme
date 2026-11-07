@@ -274,7 +274,7 @@
   margin-block-start: var(--s-4);
   padding: var(--s-4);
   border-radius: var(--r-sm);
-  background: var(--c-bg);
+  background: var(--c-surface-muted); // tint for the store reply on the white page (6.4)
 }
 
 .theme-unix .s-comments-item-admin-wrapper {

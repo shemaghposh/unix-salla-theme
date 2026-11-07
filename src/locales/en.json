@@ -325,7 +325,9 @@
         "remove": "Remove :name",
         "quantity": "Quantity for :name",
         "picks_title": "Picked for you",
-        "picks_button": "Shop now"
+        "picks_button": "Shop now",
+        "title": "Shopping cart",
+        "continue": "Continue shopping"
       },
       "thank_you": {
         "title": "Thank you",

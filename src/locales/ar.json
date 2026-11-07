@@ -325,7 +325,9 @@
         "remove": "إزالة :name",
         "quantity": "الكمية لمنتج :name",
         "picks_title": "اختيارات تناسبك",
-        "picks_button": "تسوقي الآن"
+        "picks_button": "تسوقي الآن",
+        "title": "سلة التسوق",
+        "continue": "مواصلة التسوق"
       },
       "thank_you": {
         "title": "شكرًا لكِ",

@@ -84,7 +84,7 @@
     padding-inline: var(--s-3);
     overflow: hidden;
     border-radius: var(--r-xs);
-    background: var(--c-bg);
+    background: var(--c-bg-cream); // unix.sa badge--custom: «Cream» scheme (D109)
     color: var(--c-text);
     font-size: var(--t-micro);
     font-weight: var(--fw-regular);
@@ -190,7 +190,7 @@
   }
 
   body.theme-unix & .s-product-card-content-footer .s-button-btn {
-    --_bg: var(--c-bg);
+    --_bg: var(--c-bg-cream); // Cream pill like unix.sa (D109)
     --_fg: var(--c-text);
     --_ring: none;
     --_fill: var(--c-action);
@@ -351,12 +351,11 @@ body.theme-unix salla-button.s-product-card-wishlist-btn {
   block-size: var(--tap);
   border: 0;
   border-radius: var(--r-pill);
-  background: var(--c-surface);
+  // 6.4: bare arrows like unix.sa (swiper-button: no circle, no border)
+  background: transparent;
   color: var(--c-text);
-  box-shadow: inset 0 0 0 var(--line-w) var(--c-border);
-  transition: background-color var(--d-fast) var(--ease-out);
+  transition: opacity var(--d-fast) var(--ease-out);
 
-  &:hover { background: var(--c-surface-muted); }
   &:active { transform: translateY(var(--press-y)); }
   &:focus-visible { outline: var(--ring-w) solid var(--c-accent); outline-offset: var(--ring-w); }
   &:disabled,
@@ -366,6 +365,10 @@ body.theme-unix salla-button.s-product-card-wishlist-btn {
 }
 
 .unix-fprods .s-slider-nav-arrow svg { fill: currentColor; }
+
+@media (hover: hover) {
+  :is(.unix-carousel-arrow, .unix-fprods .s-slider-nav-arrow):not(:disabled):not(.swiper-button-disabled):hover { opacity: var(--o-muted); }
+}
 
 @media (max-width: 575px) {
   .unix-carousel-arrow,

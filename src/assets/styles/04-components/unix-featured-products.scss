@@ -9,6 +9,7 @@
 
   padding-block: var(--section-sm);
   overflow-x: clip;
+  background: var(--c-bg-cream); // unix.sa featured-products: «Cream» (D109)
 
   @media (min-width: 768px) { --per-view: 2; }
   @media (min-width: 1024px) { --per-view: 3; }
@@ -73,7 +74,7 @@
   inline-size: min(calc(100% - 2 * var(--s-4)), var(--overlay-card-max));
   padding: var(--s-3);
   border-radius: var(--r-md);
-  background: var(--c-bg);
+  background: var(--c-bg-cream); // unix.sa card_color_scheme: «Cream» (D109)
   color: var(--c-text);
   text-decoration: none;
   transition: background-color var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out);

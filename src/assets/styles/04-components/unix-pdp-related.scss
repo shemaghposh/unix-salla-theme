@@ -10,9 +10,11 @@
 .unix-recs {
   --cols: 2;
 
-  background: var(--c-bg);
   color: var(--c-text);
 }
+
+.unix-ctl { background: var(--c-bg); }        // «أكملي الإطلالة»: white like unix.sa complete-the-look
+.unix-recs { background: var(--c-bg-cream); } // «قد يعجبك أيضًا»: unix.sa product-recommendations «Cream» (D109)
 
 .unix-ctl[hidden],
 .unix-recs[hidden] { display: none; }

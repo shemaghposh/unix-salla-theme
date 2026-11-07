@@ -9,6 +9,7 @@
 
   padding-block: var(--section-sm);
   overflow-x: clip;
+  background: var(--c-bg-cream); // unix.sa products-with-tabs / cart popular-products: «Cream» (D109)
 
   @media (min-width: 768px) { --per-view: 3; }
   @media (min-width: 1024px) { --per-view: 4; }

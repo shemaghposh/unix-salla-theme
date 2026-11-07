@@ -147,25 +147,12 @@ export class Drawer {
 }
 
 /**
- * Mobile menu drawer. Closes itself when the viewport reaches the desktop layout (lg = 1024px),
- * where the inline mega menu takes over.
+ * Menu drawer. 6.4: opens at every width (unix.sa shows its burger on desktop too, next to the
+ * inline links), so it no longer closes itself when the viewport reaches lg.
  */
 export default function initMenuDrawer() {
   const el = document.getElementById('mobile-menu');
   if (!el || !el.hasAttribute('data-unix-drawer')) return null;
 
-  const drawer = new Drawer(el);
-  const desktop = window.matchMedia('(min-width: 1024px)');
-  // The hamburger is hidden from lg up, so focus goes to the first inline menu link, or the page.
-  const onChange = event => {
-    if (!event.matches || !drawer.isOpen) return;
-    const inlineLink = document.querySelector('.unix-nav__link');
-    const main = document.getElementById('main-content');
-    if (!inlineLink && main && !main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
-    drawer.close({ focusTarget: inlineLink || main || document.body });
-  };
-  if (desktop.addEventListener) desktop.addEventListener('change', onChange);
-  else desktop.addListener(onChange);
-
-  return drawer;
+  return new Drawer(el);
 }

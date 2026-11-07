@@ -87,10 +87,14 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
 
   &__inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    // < 768 (6.4): burger · logo (centred in the space left) · AR/EN + search + cart, like unix.sa,
+    // whose end group is wider than the burger so the logo sits off-centre. From md: true centre.
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--s-2);
     block-size: var(--header-h);
+
+    @screen md { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
   }
 
   &__start {
@@ -109,13 +113,26 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--s-1);
+    gap: 0; // unix.sa .header__icons: 0 below 750, .4rem from 750
     justify-self: end;
+
+    @screen md { gap: var(--s-1); }
   }
 
-  // `.unix-header` prefix: .unix-icon-btn (declared later, same specificity) would set it back to inline-flex.
-  .unix-header &__menu-toggle {
-    @screen lg { display: none; }
+  // 6.4: the burger shows at every width (unix.sa); from lg it sits before the inline links.
+
+  // unix.sa divider between the account group and the cart (≥ 990: 1px × 3.2rem, --color-border)
+  &__divider {
+    display: none;
+
+    @screen lg {
+      display: block;
+      flex: none;
+      inline-size: var(--line-w);
+      block-size: var(--s-6);
+      margin-inline: var(--s-2);
+      background: var(--c-border);
+    }
   }
 
   &__wide-only {
@@ -133,12 +150,15 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     display: flex;
     align-items: center;
     justify-content: center;
+    justify-self: center;
+    min-inline-size: 0;
     min-block-size: var(--tap);
     border-radius: var(--r-sm);
   }
 
   &__logo-img {
     inline-size: var(--logo-w);
+    max-inline-size: 100%;
     block-size: auto;
     max-block-size: calc(var(--header-h) - var(--s-5));
     object-fit: contain;
@@ -151,6 +171,7 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     salla-user-menu { display: flex; align-items: center; }
 
     :is(.s-user-menu-trigger, .s-user-menu-login-btn, button) {
+      border: 0; // 6.4: plain outline icon, no bordered circle (unix.sa)
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -172,6 +193,9 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     }
 
     i { font-size: var(--icon-sm); }
+    svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
+    // Salla's own fallback login icon (a person in a circle) is filled; only shown if the slot is ignored
+    .s-user-menu-login-btn svg { fill: currentColor; }
   }
 
   // ── Cart (salla-cart-summary) ─────────────────
@@ -205,17 +229,20 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
       color: inherit;
     }
 
+    // 6.4: unix.sa .cart-count-bubble: 2rem circle in the button colours at the top corner of the
+    // 4.4rem icon box, and not shown at all while the cart is empty (data-count from Twig + unix-header.js).
     .s-cart-summary-count {
       position: absolute;
-      inset-block-start: var(--s-1);
-      inset-inline-end: var(--s-1);
+      inset-block-start: 0;
+      inset-inline-end: 0;
       inset-inline-start: auto;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-inline-size: var(--s-4);
-      block-size: var(--s-4);
-      padding-inline: var(--s-1);
+      inline-size: auto;
+      min-inline-size: var(--icon-sm);
+      block-size: var(--icon-sm);
+      padding: 0 var(--s-1);
       border-radius: var(--r-pill);
       background: var(--c-action);
       color: var(--c-text-inverse);
@@ -223,6 +250,8 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
       line-height: 1;
       font-variant-numeric: tabular-nums;
     }
+
+    &:is([data-count="0"], [data-count=""], :not([data-count])) .s-cart-summary-count { display: none; }
   }
 }
 
@@ -338,6 +367,7 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
   .unix-header__logo:not(:has(.unix-header__logo-img--inverse)) .unix-header__logo-img { display: block; }
 
   .unix-lang { background: var(--c-press-tint); color: inherit; }
+  .unix-header__divider { background: var(--c-press-tint); }
   .unix-lang__btn.is-active { color: var(--c-text); }
 
   .s-cart-summary-count {
