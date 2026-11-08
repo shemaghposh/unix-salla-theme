@@ -2,7 +2,7 @@
  * UNIX product gallery (ROADMAP 3.1 · DS §8.20 · SPEC §5.1) for components/product/unix-gallery.twig.
  * Mobile: full-bleed salla-slider + one thin progress line (6.4). ≥768: main slider with a thumbnail
  * column on the inline-start side (unix.sa `slider_previews`). Zoom: native <dialog>.
- * Every image box is a reserved --ratio-pdp (4:5), so nothing shifts while images load.
+ * Every image box is a reserved --ratio-pdp (2:3), so nothing shifts while images load.
  */
 
 .unix-gallery {
@@ -54,7 +54,7 @@
     @media (min-width: 768px) { border-radius: var(--r-md); }
   }
 
-  // Swiper forces height: 100% on slides; the 4:5 box needs its own height
+  // Swiper forces height: 100% on slides; the 2:3 box needs its own height
   .swiper-slide { block-size: auto; }
 }
 
@@ -101,7 +101,7 @@
   }
 }
 
-/* ── Zoom trigger: transparent button over the image + lens chip at the top end ── */
+/* ── Zoom trigger: transparent button over the whole image, no lens chip (unix.sa modal-opener; D123) ── */
 .unix-gallery__zoom {
   position: absolute;
   inset: 0;
@@ -120,33 +120,13 @@
   }
 }
 
-.unix-gallery__zoom-icon {
-  position: absolute;
-  inset-block-start: var(--s-3);
-  inset-inline-end: var(--s-3);
-  display: grid;
-  place-items: center;
-  inline-size: var(--tap);
-  block-size: var(--tap);
-  border: var(--line-w) solid var(--c-border);
-  border-radius: var(--r-pill);
-  background: var(--c-bg);
-  color: var(--c-text);
-  transition: transform var(--d-fast) var(--ease-out);
-
-  svg { inline-size: var(--icon-sm); block-size: var(--icon-sm); }
-
-  .unix-gallery__zoom:hover & { transform: scale(var(--zoom-hover)); }
-  .unix-gallery__zoom:active & { transform: translateY(var(--press-y)); }
-}
-
-/* ── Overlays: badge (top start), calories (bottom end), wishlist (mobile, bottom start) ── */
+/* ── Overlays: badge (top start), calories (bottom end). No wishlist heart on the image (unix.sa has none; D123) ── */
 .unix-gallery__badge {
   position: absolute;
   z-index: 2;
   inset-block-start: var(--s-3);
   inset-inline-start: var(--s-3);
-  max-inline-size: calc(100% - 2 * var(--s-3) - var(--tap) - var(--s-2));
+  max-inline-size: calc(100% - 2 * var(--s-3));
   min-block-size: var(--s-5);
   padding-inline: var(--s-3);
   overflow: hidden;
@@ -179,16 +159,6 @@
   pointer-events: none;
 
   strong { font-size: var(--t-body); font-weight: var(--fw-bold); }
-}
-
-.unix-gallery__wishlist {
-  position: absolute;
-  z-index: 2;
-  inset-block-end: calc(var(--pager) + var(--s-3));
-  inset-inline-start: var(--s-3);
-
-  // ≥640 (Raed `sm`) the info column shows its own wishlist button
-  @media (min-width: 640px) { display: none; }
 }
 
 /* ── Prev / next arrows over the image (≥768) ── */

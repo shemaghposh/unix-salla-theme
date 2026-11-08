@@ -369,7 +369,8 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
 }
 
 // ── Transparent variant over the hero (DS §8.1, §8.7, 6.4 D113: like unix.sa section-media-banner.css) ─
-// Clear bar, a faint ink hairline, the regular dark logo and icons; the AR/EN pill on white 20%.
+// Clear bar, a faint ink hairline, the regular dark logo and icons. The AR/EN pill keeps its --c-panel grey
+// track, like unix.sa over the hero (6.4 batch 3, D127; was white 20%, --c-field-overlay).
 #{$overlay-active} {
   .unix-header__bar {
     // unix.sa forces ink 55,53,66 icons, links and cart bubble over the hero (white label), navy once solid (D116)
@@ -383,7 +384,6 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
   }
 
   .unix-header__divider { background: var(--c-border-overlay); }
-  .unix-lang { background: var(--c-field-overlay); }
 
   // The taupe ring is 2.69:1 on sand / unknown on media: currentColor in both modes (DS §8.7). The bar stays
   // clear while it has focus (no :focus-within switch, like unix.sa), so this is the ring keyboard users see.
@@ -399,7 +399,8 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
 body:has(.unix-hero[data-header-overlay]:is(:not(.unix-hero--no-media), .is-video-playing)) #{$overlay-active}.unix-header--overlay-light {
   .unix-header__bar { color: var(--c-text-inverse); }
   .unix-header__divider { background: var(--c-press-tint); }
-  .unix-lang__btn:not(.is-active) { color: inherit; }
+  // the AR/EN pill keeps its grey track and --c-action labels (ink here; cream on --c-panel would fail contrast, D127)
+  .unix-lang { color: var(--c-action); }
   .unix-header__logo:has(.unix-header__logo-img--inverse) .unix-header__logo-img { display: none; }
   .unix-header__logo-img--inverse { display: block; }
   .s-cart-summary-count { background: var(--c-text-inverse); color: var(--c-action); }

@@ -1,11 +1,13 @@
 /*
  * UNIX featured products «اختاري قطعتك المفضلة لوقت الاسترخاء» (ROADMAP 2.6 · DS §8.16).
- * Lifestyle image (4:5, cover) with a small horizontal product card over its bottom-start corner.
- * Carousel arrows come from unix-product-card.scss (shared).
+ * Lifestyle image (2:3, cover) with a small horizontal product card over its bottom-start corner.
+ * Heading-row arrows: .unix-carousel-arrow (unix-product-card.scss); progress line: .unix-carousel-progress
+ * (unix-products-tabs.scss). Both driven by js/partials/unix-carousel-nav.js (6.4 batch 3, D120).
  */
 
 .unix-fprods {
   --per-view: 1;
+  --fprods-gap: var(--s-2); // unix.sa spaceBetween 8 below 750, 24 from 750 (featured-products.js)
 
   margin-block: 0; // unix.sa no-indent: cancels Raed's .s-block mt-8 / sm:mt-16 (the white band under the hero, 6.4)
 
@@ -13,28 +15,68 @@
   overflow-x: clip;
   background: var(--c-bg-cream); // unix.sa featured-products: «Cream» (D109)
 
-  @media (min-width: 768px) { --per-view: 2; }
-  @media (min-width: 1024px) { --per-view: 3; }
+  // 6.4 batch 3 (D120): unix.sa data-columns 3 → 1 per view below 750, 2 from 750, 3 from 1200
+  @media (min-width: 750px) { --per-view: 2; --fprods-gap: var(--s-5); }
+  @media (min-width: 1200px) { --per-view: 3; }
 }
 
-.unix-fprods__title {
-  margin: 0 0 var(--s-5);
-  text-align: center;
+// Heading row (unix.sa .section-top): title at the start, ← → at the end from 990 (swipe only below)
+.unix-fprods__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-block-end: var(--s-5);
+}
 
-  @media (min-width: 768px) { text-align: start; }
+// unix.sa `h3.h2.featured-products__title`: plain .h2 size (--t-h2-shop, D119), start-aligned at every width.
+// `.theme-unix` (0,2,0) beats the global `.theme-unix h2` size.
+.theme-unix .unix-fprods__title {
+  margin: 0;
+  font-size: var(--t-h2-shop);
+  line-height: 1.32;
+  text-align: start;
+}
+
+.unix-fprods__nav {
+  display: none;
+  flex: none;
+  gap: var(--s-2);
+
+  @media (min-width: 990px) { display: flex; }
+
+  // the shared rule hides .unix-carousel-arrow below 576 only; here the row itself decides
+  .unix-carousel-arrow { display: inline-flex; }
+}
+
+// salla-slider's own arrow bar is not used: the heading-row arrows drive the same Swiper
+.unix-fprods .s-slider-block__title { display: none; }
+
+// Below 990 unix.sa runs the slider edge to edge with square tiles (.featured-products__slider_mobile:
+// -2rem margins, border-radius 0); the progress line stays inside the page margin.
+.unix-fprods__slider {
+  display: block;
+
+  @media (max-width: 989px) { margin-inline: calc(-1 * var(--page-margin)); }
+}
+
+.unix-fprods__progress { margin-block-start: var(--s-4); }
+
+@media (min-width: 576px) {
+  .unix-fprods__progress { margin-block-start: var(--s-5); }
 }
 
 // Before salla-slider / Swiper initialise, lay the slides out at their final width (no CLS)
 .unix-fprods salla-slider:not(.hydrated) [slot="items"],
 .unix-fprods .swiper:not(.swiper-initialized) .swiper-wrapper {
   display: flex;
-  gap: var(--gutter);
+  gap: var(--fprods-gap);
   overflow: hidden;
 }
 
 .unix-fprods salla-slider:not(.hydrated) .swiper-slide,
 .unix-fprods .swiper:not(.swiper-initialized) .swiper-slide {
-  flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gutter)) / var(--per-view));
+  flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--fprods-gap)) / var(--per-view));
 }
 
 .unix-fprods__slide { block-size: auto; }
@@ -42,9 +84,11 @@
 .unix-fprods__item {
   position: relative;
   overflow: hidden;
-  aspect-ratio: var(--ratio-card);
-  border-radius: var(--r-md);
+  aspect-ratio: var(--ratio-product); // unix.sa tile 418 × 627 at 1366 (--padding_bottom_bg 150%)
+  border-radius: 0;
   background: var(--c-surface-muted);
+
+  @media (min-width: 990px) { border-radius: var(--r-md); } // unix.sa --border-radius-main 16px
 }
 
 .unix-fprods__media {

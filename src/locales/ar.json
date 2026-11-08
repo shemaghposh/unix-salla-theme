@@ -61,7 +61,9 @@
         "next": "المنتجات التالية"
       },
       "featured_products": {
-        "default_title": "اختاري قطعتك المفضلة لوقت الاسترخاء"
+        "default_title": "اختاري قطعتك المفضلة لوقت الاسترخاء",
+        "prev": "القطع السابقة",
+        "next": "القطع التالية"
       },
       "hero": {
         "default_eyebrow": "UNIX NEW COLLECTION",
@@ -230,6 +232,8 @@
         "table": "جدول، اسحبي للعرض"
       },
       "pdp_info": {
+        "shipping_note": "الشحن يُحسب عند إتمام الطلب.",
+        "tax_shipping_note": "شامل الضريبة. الشحن يُحسب عند إتمام الطلب.",
         "add_to_cart": "أضيفي إلى السلة",
         "buy_now": "اشتري الآن",
         "on_sale": "تخفيض",

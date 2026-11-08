@@ -1,8 +1,9 @@
 /* ── «جديد من يونكس» collection overlay (ROADMAP 2.4 · DS §8.13 · SPEC §4.4) ──
  * Background image + overlay + scrims; heading row on top (arrows at its end,
  * unix.sa "info info buttons"); a salla-products-slider of the chosen category
- * at the bottom. The box reserves a minimum ratio (4:5, then 16:9 from 576px like
- * unix.sa) so nothing shifts while the image loads (CLS); it grows with content. */
+ * at the bottom. The box reserves a minimum ratio of 4:5 at every width, like unix.sa
+ * (--mobile-/--desktop-padding-bottom 125%; 6.4 batch 3, D122: was 16:9 from 576px, half as tall),
+ * so nothing shifts while the image loads (CLS); it grows with content. */
 .unix-collection-overlay {
   margin-block: 0; /* unix.sa: no-indent */
 
@@ -19,14 +20,13 @@
     position: relative;
     isolation: isolate;
     display: flex;
-    aspect-ratio: var(--banner-ratio); /* 4:5 minimum, then 16:9 from 576px (DS §6) */
+    aspect-ratio: var(--banner-ratio); /* 4:5 minimum at every width, like unix.sa (DS §6, D122) */
     /* clip, not hidden: a scroll container loses the aspect-ratio
        content-based minimum and would cut the carousel off */
     overflow: clip;
     background-color: var(--c-surface-sand);
     color: var(--c-text-inverse);
 
-    @media (min-width: 576px) { aspect-ratio: var(--banner-ratio-wide); }
     @screen md { border-radius: var(--r-md); }
   }
 
@@ -43,12 +43,13 @@
     }
   }
 
-  /* Merchant overlay (opacity from the field) under both DS scrims (§13.2) */
+  /* Merchant overlay only: --c-overlay (ink-900, unix.sa --color-overlay 36 30 26) at the field's opacity
+     (default 30%, unix.sa opacity .3). 6.4 batch 3 (D122): the two DS scrims on top of it made the photo
+     dark brown; unix.sa has a flat wash only, which reads light grey on its light photos. */
   &__overlay {
     position: absolute;
     inset: 0;
     z-index: -1;
-    background-image: var(--c-scrim-top), var(--c-scrim);
 
     &::before {
       content: "";

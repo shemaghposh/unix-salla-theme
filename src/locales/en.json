@@ -61,7 +61,9 @@
         "next": "Next products"
       },
       "featured_products": {
-        "default_title": "Choose your favourite piece for lounging"
+        "default_title": "Choose your favourite piece for lounging",
+        "prev": "Previous pieces",
+        "next": "Next pieces"
       },
       "hero": {
         "default_eyebrow": "UNIX NEW COLLECTION",
@@ -230,6 +232,8 @@
         "table": "Table, scroll to view"
       },
       "pdp_info": {
+        "shipping_note": "Shipping calculated at checkout.",
+        "tax_shipping_note": "Tax included. Shipping calculated at checkout.",
         "add_to_cart": "Add to cart",
         "buy_now": "Buy now",
         "on_sale": "Sale",

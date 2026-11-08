@@ -14,13 +14,36 @@
   @media (min-width: 768px) { padding-inline: calc(var(--ring-w) * 2); }
 
   // Salla components that render nothing when their feature is off would still take a flex gap
-  > :is(salla-installment, salla-quick-order, salla-metadata, digital-files-settings):empty { display: none; }
+  > :is(salla-installment, salla-quick-order, salla-metadata, digital-files-settings,
+         salla-cashback-banner, salla-bought-together, salla-verified-review):empty { display: none; }
+
+  // 6.4 batch 3: Salla's app blocks land here as <section class="s-block"> holding an app element that is
+  // display:none until it has something to show (out-of-stock alternatives…). The section kept Raed's
+  // .s-block margin (64px) plus two flex gaps, the dead space between «متى يصلك» and «الوصف». As
+  // `contents` the section has no box: a hidden app element takes nothing, a rendered one is the flex item.
+  > .s-block { display: contents; }
 
   // 6.4: salla-quick-order renders its whole box (Salla's light-gray panel, near-invisible on cream:
   // margins + padding + an empty title row ≈ 100px, plus two flex gaps) whenever the store has a
   // `quick_order` settings object, even with no text. Hidden only when both the title and the
   // sub-title are empty; a merchant who fills in either still gets Salla's widget.
   > salla-quick-order:has(.s-quick-order-button-cont h3:empty):has(.s-quick-order-button-cont p:empty) { display: none; }
+}
+
+// 6.4 batch 3: product page block spacing as a flex row-gap (was Tailwind space-y-8 / sm:space-y-16 on
+// <main>, master.twig), so blocks that render nothing take no space: the hook wrappers (.s-blocks-wrapper)
+// and their app sections become `contents` (an app element hidden until it has data leaves no box), and
+// «قد يعجبك أيضًا» is display:none when Salla returns no related products. Nothing then sits between the
+// product details and the footer.
+.theme-unix .unix-main--product {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--s-6);
+
+  @media (min-width: 576px) { row-gap: var(--s-8); }
+
+  > .s-blocks-wrapper,
+  > .s-blocks-wrapper > .s-block { display: contents; }
 }
 
 // 6.4: breadcrumbs are off by default (unix.sa has none), so the page keeps its own top space:
@@ -51,6 +74,9 @@
   @media (min-width: 1024px) {
     grid-template-columns: minmax(0, var(--pdp-media-share)) minmax(0, var(--pdp-info-share));
     gap: 0;
+    // 6.4 batch 3 (D123): unix.sa caps the split at 1215px, centred; the main image is ~600 × 900 at 1366
+    max-inline-size: var(--pdp-max);
+    margin-inline: auto;
   }
 }
 
@@ -200,6 +226,9 @@
 .unix-pdp-info salla-product-options {
   display: block;
 
+  // 6.4 batch 3: the host itself carries .s-product-options-wrapper (Salla's 20px padding-block and
+  // margin-bottom); with the flex gap that put ~56px between the price and the options (unix.sa 16px).
+  &.s-product-options-wrapper,
   .s-product-options-wrapper {
     margin: 0;
     padding: 0;

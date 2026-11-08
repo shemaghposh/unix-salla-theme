@@ -27,10 +27,12 @@
   text-align: center;
 }
 
+// 6.4 batch 3 (D119): unix.sa `h2.h2.collapsible-content__title` is a plain .h2 (--t-h2-shop: 22.4 → 33px),
+// not the --t-section clamp (that one targets .collapsible-content__heading, a class the FAQ doesn't use).
 .theme-unix .unix-faq__title {
   margin: 0;
-  font-size: var(--t-h2);
-  line-height: 1.3;
+  font-size: var(--t-h2-shop);
+  line-height: 1.32;
 }
 
 .theme-unix .unix-faq__text {

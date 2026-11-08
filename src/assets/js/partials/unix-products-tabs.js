@@ -13,9 +13,9 @@
  * - 6.4: a section marked [data-unix-ptabs-hide-empty] (cart «اختيارات تناسبك») hides itself, arrows and
  *   all, when its slider loads no products.
  */
+import bindCarouselNav from './unix-carousel-nav';
+
 const KEYS = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
-const SWIPER_WAIT_MS = 300;
-const SWIPER_WAIT_TRIES = 20;
 
 function hideIfEmpty(panel) {
   const section = panel.closest('[data-unix-ptabs-hide-empty]');
@@ -66,58 +66,12 @@ function setupNav(section) {
   const prev = section.querySelector('[data-unix-ptabs-prev]');
   const next = section.querySelector('[data-unix-ptabs-next]');
   if (!prev || !next) return () => {};
-  let timer = null;
-
-  const activeSwiper = () => {
-    const panel = section.querySelector('.unix-ptabs__panel:not([hidden])');
-    return panel?.querySelector('.swiper')?.swiper || null;
-  };
-
-  const progress = section.querySelector('[data-unix-ptabs-progress]');
-
-  const drawProgress = swiper => {
-    if (!progress) return;
-    const pages = swiper && !swiper.isLocked ? swiper.snapGrid.length : 0;
-    if (pages < 2) {
-      progress.hidden = true;
-      return;
-    }
-    if (progress.childElementCount !== pages) {
-      progress.replaceChildren(...Array.from({ length: pages }, () => document.createElement('span')));
-    }
-    const current = Math.min(swiper.snapIndex, pages - 1);
-    Array.from(progress.children).forEach((bar, index) => bar.classList.toggle('is-active', index === current));
-    progress.hidden = false;
-  };
-
-  const sync = () => {
-    const swiper = activeSwiper();
-    const locked = !swiper || swiper.isLocked;
-    prev.disabled = locked || swiper.isBeginning;
-    next.disabled = locked || swiper.isEnd;
-    drawProgress(swiper);
-  };
-
-  // Swiper appears after the slider fetches; bind its events once it exists.
-  const bind = (tries = 0) => {
-    clearTimeout(timer);
-    const swiper = activeSwiper();
-    if (swiper) {
-      if (!swiper.unixPtabsBound) {
-        swiper.on('slideChange snapIndexChange reachBeginning reachEnd resize snapGridLengthChange lock unlock', sync);
-        swiper.unixPtabsBound = true;
-      }
-      sync();
-      return;
-    }
-    sync();
-    if (tries < SWIPER_WAIT_TRIES) timer = setTimeout(() => bind(tries + 1), SWIPER_WAIT_MS);
-  };
-
-  prev.addEventListener('click', () => { activeSwiper()?.slidePrev(); sync(); });
-  next.addEventListener('click', () => { activeSwiper()?.slideNext(); sync(); });
-  bind();
-  return bind;
+  return bindCarouselNav({
+    getSwiper: () => section.querySelector('.unix-ptabs__panel:not([hidden]) .swiper')?.swiper || null,
+    prev,
+    next,
+    progress: section.querySelector('[data-unix-ptabs-progress]'),
+  });
 }
 
 function setup(section) {

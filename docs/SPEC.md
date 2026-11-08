@@ -614,7 +614,7 @@ Custom section, §5.3.
 ---
 
 ## 12. SEO in the Shopify theme (reference for ROADMAP 3.11)
-- **Structured data:** `sections/main-product.liquid` prints `{{ product | structured_data }}` (Shopify's Product JSON-LD); `sections/header.liquid` prints `Organization` (name, logo, sameAs, url) on every page and `WebSite` with a `SearchAction` on the home page; the FAQ section prints `FAQPage`.
+- **Structured data:** `sections/main-product.liquid` prints `{{ product | structured_data }}` (Shopify's Product JSON-LD); `sections/header.liquid` prints `Organization` (name, logo, sameAs, url) on every page and `WebSite` with a `SearchAction` on the home page; the FAQ section prints `FAQPage`. **Salla mapping (6.4, D129):** Salla's head prints `Organization`, `WebPage` and the `Product`; the theme adds only what Salla doesn't print: `WebSite` + `SearchAction` (home), `FAQPage`, `BlogPosting`, and `BreadcrumbList` when the breadcrumbs are hidden (DS §14).
 - **Head:** `layout/theme.liquid` prints the title, meta description and `<link rel="canonical">`; OG/Twitter come from the `meta-tags` snippet; hreflang comes from Shopify's `content_for_header`.
 - **Colours:** each colour is a separate product with its own URL, title and SEO description («اسم الموديل | اللون»); the G: Combined Listings app links them as swatches (verified on the live store, 2026-11-02). Owner decision: keep colours as separate indexable products in Salla.
 - **Headings:** the product title block uses an `h1` tag at h2 size.

@@ -6,8 +6,11 @@
  * - data-unix-fprods-latest: nothing picked yet → the pending slides take the latest products.
  * - A product the API no longer returns (deleted/hidden) loses its slide and the slider updates;
  *   with no slide left, or if the request fails, the whole section hides.
+ * - 6.4 batch 3 (D120): heading-row ← → and the progress line drive the section's Swiper (unix-carousel-nav.js).
  * Nothing here touches cart or product logic.
  */
+import bindCarouselNav from './unix-carousel-nav';
+
 function priceHTML(product) {
   const money = value => (value ? salla.money(value) : '');
   if (product.is_on_sale) {
@@ -99,6 +102,20 @@ function hydrateSection(section) {
     });
 }
 
+function setupNav(section) {
+  if (section.dataset.unixFprodsNav) return;
+  section.dataset.unixFprodsNav = '1';
+  bindCarouselNav({
+    getSwiper: () => section.querySelector('.swiper')?.swiper || null,
+    prev: section.querySelector('[data-unix-fprods-prev]'),
+    next: section.querySelector('[data-unix-fprods-next]'),
+    progress: section.querySelector('[data-unix-fprods-progress]'),
+  });
+}
+
 export default function initFeaturedProducts(root = document) {
-  root.querySelectorAll('[data-unix-fprods]').forEach(hydrateSection);
+  root.querySelectorAll('[data-unix-fprods]').forEach(section => {
+    hydrateSection(section);
+    setupNav(section);
+  });
 }

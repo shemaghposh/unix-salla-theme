@@ -2,8 +2,7 @@
  * Full-bleed media with the mandatory scrim; content sits at the bottom inline-start.
  * Height = media ratio like unix.sa (2:3 → 16:9 from 576px), clamped to the DS limits,
  * or 100svh with .unix-hero--full. The ratio is reserved before media loads (no CLS).
- * Inside the hero, focus rings and controls use currentColor (cream): taupe is too weak on media.
- * `--_dir` flips the X axis for RTL (transforms have no logical form). */
+ * Inside the hero, focus rings and controls use currentColor (cream): taupe is too weak on media. */
 @keyframes unix-hero-rise {
   from { opacity: 0; transform: translateY(var(--s-4)); }
   to { opacity: 1; transform: none; }
@@ -15,8 +14,6 @@
 }
 
 .unix-hero {
-  --_dir: 1;
-
   position: relative;
   isolation: isolate;
   display: flex;
@@ -53,8 +50,6 @@
     outline-offset: var(--ring-w);
   }
 }
-
-[dir="rtl"] .unix-hero { --_dir: -1; }
 
 /* ── Media ─────────────────────────────────────── */
 .unix-hero__media {
@@ -170,7 +165,7 @@
 
   &:hover .unix-hero__cta-icon,
   &:focus-visible .unix-hero__cta-icon,
-  &:active .unix-hero__cta-icon { translate: calc(var(--s-1) * var(--_dir)) 0; }
+  &:active .unix-hero__cta-icon { translate: var(--s-1) 0; } // the arrow always points → (D128), so it nudges →
 }
 
 .unix-hero__cta-icon {

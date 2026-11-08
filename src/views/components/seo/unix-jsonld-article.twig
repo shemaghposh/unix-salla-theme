@@ -7,8 +7,9 @@
   BlogPosting: @id (article url + #article), mainEntityOfPage, url, headline (≤ 110 chars), description (the
   summary, else the first 300 characters of the body as plain text), image (when there is a real one),
   datePublished / dateModified (ISO 8601), author (Person with the author's name, else the store Organization),
-  publisher (the site Organization @id when unix_seo_jsonld_site is on, else name + logo), keywords (tags),
-  inLanguage. Same patterns as unix-jsonld-site / unix-jsonld-product (3.11).
+  publisher (Organization name + url + logo, written out: no @id reference since D129), keywords (tags),
+  inLanguage. Salla's head prints no Article/BlogPosting on the other pages we could measure; the preview
+  answers 403 on /blog, so the article page itself is still to be checked live (D129).
   Server-rendered; |json_encode escapes "/" so no value can close the <script>.
 #}
 {% if theme.settings.get('unix_seo_jsonld_article', true) and article is defined and article.url|default('') %}
@@ -18,13 +19,11 @@
     '&lt;': '<', '&gt;': '>', '&hellip;': '…', '&rlm;': '', '&lrm;': '', '&ndash;': '–', '&mdash;': '—'
   } %}
 
-  {% if theme.settings.get('unix_seo_jsonld_site', true) %}
-    {% set seo_publisher = { '@id': seo_home ~ '/#organization' } %}
-  {% else %}
-    {% set seo_publisher = { '@type': 'Organization', 'name': store.name, 'url': store.url|default('') } %}
-    {% if store.logo %}
-      {% set seo_publisher = seo_publisher|merge({ 'logo': store.logo }) %}
-    {% endif %}
+  {# D129: the theme's Organization @id is gone (Salla prints its own Organization, without an @id), so the
+     publisher is written out: name + url + logo, the same values as Salla's Organization #}
+  {% set seo_publisher = { '@type': 'Organization', 'name': store.name, 'url': store.url|default('') } %}
+  {% if store.logo %}
+    {% set seo_publisher = seo_publisher|merge({ 'logo': store.logo }) %}
   {% endif %}
 
   {% set seo_headline = article.title|default('')|striptags|replace(seo_entities)|trim %}
@@ -76,8 +75,6 @@
     {% if article.author.url|default('') starts with 'http' %}
       {% set seo_author = seo_author|merge({ 'url': article.author.url }) %}
     {% endif %}
-  {% elseif theme.settings.get('unix_seo_jsonld_site', true) %}
-    {% set seo_author = { '@id': seo_home ~ '/#organization' } %}
   {% else %}
     {% set seo_author = { '@type': 'Organization', 'name': store.name } %}
   {% endif %}

@@ -92,9 +92,8 @@
         Each colour is its own product. Siblings come from the theme setting unix_colour_links
         (multilanguage textarea), one line per colour product: «group key | product URL | colour name | #hex».
         The hex is optional (no hex → text chip). The current product is the line whose URL ends in
-        /p{product.id}. Parsed here, not in the include, so the JSON-LD (3.11) can reuse the group key and
-        colour name (D72). Twig can't query other products, so the links come from the setting and
-        render server-side as real <a href> (crawlable).
+        /p{product.id}. Parsed here (D72; the JSON-LD that also used it is gone since D129).
+        Twig can't query other products, so the links come from the setting and render server-side as real <a href> (crawlable).
         unix_colours = { group: key of the current product's group, name: its colour, items: rows of that group (≥ 2, else []) }
     #}
     {% set unix_colours = { group: '', name: '', items: [] } %}
@@ -227,9 +226,10 @@
                     </div>
                     <p data-testid="store-product-out-of-stock" class="out-of-stock unix-pdp-price__out hidden" role="status">{{ trans('pages.products.out_of_stock') }}</p>
 
-                    {% if product.is_taxable %}
-                        <p class="unix-pdp-info__note">{{ trans('pages.products.tax_included') }}</p>
-                    {% endif %}
+                    {# 6.4 batch 3 (D124): always under the price, like unix.sa .product__tax («الشحن يُحسب عند إتمام
+                       الطلب.», shown whenever the store has a shipping policy, i.e. always); with Salla's taxable flag
+                       it leads with the tax line, like unix.sa taxes_included_and_shipping_policy. #}
+                    <p class="unix-pdp-info__note">{{ trans(product.is_taxable ? 'blocks.unix.pdp_info.tax_shipping_note' : 'blocks.unix.pdp_info.shipping_note') }}</p>
 
                     {# Salla merchant toggles (sold / remaining counters): render only when switched on (D54) #}
                     {% if product.sold_quantity or product.can_show_remained_quantity %}
@@ -321,7 +321,7 @@
                                     {{ product.notify_availability.options ? 'notify-options-availability' : '' }}
                                 {% endif %}>{{ unix_atc_label }}</salla-add-product-button>
 
-                        {# below 640px the wishlist button sits on the gallery (DS §8.20) #}
+                        {# from 640px only; unix.sa's PDP has no wishlist, and the heart on the gallery is gone (D123) #}
                         <salla-button
                                 data-testid="store-product-wishlist-btn"
                                 class="btn--wishlist unix-pdp-buy__wish hidden sm:inline-flex"
@@ -558,8 +558,8 @@
     #}
     <div class="s-blocks-wrapper s-after-related">{% hook 'product.single.after_product_recommendations' %}</div>
 
-    {# ROADMAP 3.11 · DS §14: Product JSON-LD (+ ProductGroup for colour pages, 3.10), server-rendered (D74) #}
-    {% include 'components.seo.unix-jsonld-product' %}
+    {# D129 (6.4 batch 3): no theme Product / ProductGroup JSON-LD. Salla's head prints the Product; the colour
+       ProductGroup could not list complete hasVariant Products (no sibling offers in Twig), so it is gone too. #}
 {% endblock %}
 
 {% block scripts %}

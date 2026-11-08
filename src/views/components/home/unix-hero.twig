@@ -130,7 +130,8 @@
           {% else %}
             <a class="unix-hero__cta unix-hero__cta--underline" href="{{ cta_url }}">
               <span class="unix-hero__cta-label">{{ hero.cta_label }}</span>
-              <svg class="unix-hero__cta-icon icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+              {# 6.4 batch 3 (D128): → in both languages, like unix.sa's Arabic hero (not mirrored: no icon-dir) #}
+              <svg class="unix-hero__cta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
                    fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5 12h14M13 6l6 6-6 6"/>
               </svg>

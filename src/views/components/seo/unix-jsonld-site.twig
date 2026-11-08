@@ -1,53 +1,30 @@
 {#
-  Site-wide structured data (ROADMAP 3.11 · DS §14 · D74), included once from layouts/master.twig <head>.
-  unix.sa: sections/header.liquid → Organization (every page) + WebSite (home only).
-    Organization: store name, url, logo, sameAs = unix_social_* settings (else Salla's social links) +
-                  any other Salla social links that are full URLs.
-    WebSite:      home only, name + url + language. No SearchAction (Google retired the sitelinks
-                  search box in 2024, and Salla's search URL format is unverified).
+  WebSite structured data, home page only (ROADMAP 3.11 / 5.4 · DS §14 · D74, amended by D129).
+  6.4 batch 3 (D129): Salla's own head output is the source of truth for structured data. On every page it
+  already prints Organization and WebPage (measured on the preview), so the theme no longer prints its own
+  Organization (or the unix_seo_jsonld_site toggle). Salla prints no WebSite, so this one stays:
+    WebSite: name + url + language + SearchAction on Salla's search page (/search?q=…). No publisher reference:
+             the theme's Organization @id is gone, and Salla's Organization has no @id to point at.
   Server-rendered; |json_encode escapes "/" so no value can close the <script>.
-  Setting: unix_seo_jsonld_site (default on). Title/meta/canonical/hreflang/OG stay with Salla's {% hook head %}.
+  Title/meta/canonical/hreflang/OG stay with Salla's {% hook head %}.
 #}
-{% if theme.settings.get('unix_seo_jsonld_site', true) %}
+{% if is_page('index') %}
   {% set seo_home = store.url|default('')|trim %}
-  {% set seo_org_id = seo_home|trim('/', 'right') ~ '/#organization' %}
-
-  {% set seo_same = [] %}
-  {% set seo_ig = theme.settings.get('unix_social_instagram')|default(store.social.instagram|default(''))|trim %}
-  {% if seo_ig %}
-    {% set seo_same = seo_same|merge([seo_ig starts with 'http' ? seo_ig : 'https://www.instagram.com/' ~ seo_ig|trim('@', 'left')]) %}
-  {% endif %}
-  {% set seo_tt = theme.settings.get('unix_social_tiktok')|default(store.social.tiktok|default(''))|trim %}
-  {% if seo_tt %}
-    {% set seo_same = seo_same|merge([seo_tt starts with 'http' ? seo_tt : 'https://www.tiktok.com/@' ~ seo_tt|trim('@', 'left')]) %}
-  {% endif %}
-  {% if store.social is defined and store.social %}
-    {% for seo_net in ['snapchat', 'twitter', 'youtube', 'facebook', 'pinterest'] %}
-      {% set seo_link = attribute(store.social, seo_net)|default('')|trim %}
-      {% if seo_link starts with 'http' and seo_link not in seo_same %}
-        {% set seo_same = seo_same|merge([seo_link]) %}
-      {% endif %}
-    {% endfor %}
-  {% endif %}
-
-  {% set seo_org = { '@type': 'Organization', '@id': seo_org_id, 'name': store.name, 'url': seo_home } %}
-  {% if store.logo %}
-    {% set seo_org = seo_org|merge({ 'logo': store.logo }) %}
-  {% endif %}
-  {% if seo_same|length %}
-    {% set seo_org = seo_org|merge({ 'sameAs': seo_same }) %}
-  {% endif %}
-
-  {% set seo_graph = [seo_org] %}
-  {% if is_page('index') %}
-    {% set seo_graph = seo_graph|merge([{
-      '@type': 'WebSite',
-      '@id': seo_home|trim('/', 'right') ~ '/#website',
-      'name': store.name,
-      'url': seo_home,
-      'inLanguage': language.code,
-      'publisher': { '@id': seo_org_id }
-    }]) %}
-  {% endif %}
-  <script type="application/ld+json">{{ { '@context': 'https://schema.org', '@graph': seo_graph }|json_encode|raw }}</script>
+  {% set seo_site = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': seo_home|trim('/', 'right') ~ '/#website',
+    'name': store.name,
+    'url': seo_home,
+    'inLanguage': language.code,
+    'potentialAction': {
+      '@type': 'SearchAction',
+      'target': {
+        '@type': 'EntryPoint',
+        'urlTemplate': seo_home|trim('/', 'right') ~ '/search?q={search_term_string}'
+      },
+      'query-input': 'required name=search_term_string'
+    }
+  } %}
+  <script type="application/ld+json">{{ seo_site|json_encode|raw }}</script>
 {% endif %}

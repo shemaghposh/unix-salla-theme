@@ -2,7 +2,8 @@
   UNIX featured products, «اختاري قطعتك المفضلة لوقت الاسترخاء» (ROADMAP 2.6 · DS §8.16 · SPEC §4.7).
   Matches unix.sa: reference/shopify-theme/sections/featured-products.liquid
   + snippets/product-card-horizontal.liquid + templates/index.json → featured-products.
-  Each slide = a merchant lifestyle image with a small horizontal product card over its bottom.
+  Each slide = a merchant lifestyle image (2:3) with a small horizontal product card over its bottom.
+  Heading-row arrows + progress line drive the same Swiper (js/partials/unix-carousel-nav.js).
 
   | Variable                 | Type      | Description                                                   |
   |--------------------------|-----------|---------------------------------------------------------------|
@@ -26,10 +27,10 @@
 {% if title is iterable %}{% set title = title[lang]|default('') %}{% endif %}
 {% set title = title|default('')|trim ?: trans('blocks.unix.featured_products.default_title') %}
 
-{# Swiper config (salla-slider): per-view 1 / 2 / 3. The spaceBetween numbers MIRROR --gutter
-   (DS §3.3: 12 / 16 @576 / 20 @768 / 24 @1024 / 32 @1440); Swiper needs px numbers, not CSS vars.
-   Keep them in sync with unix-tokens.scss. #}
-{% set slider_config = '{"slidesPerView":1,"spaceBetween":12,"breakpoints":{"576":{"slidesPerView":1,"spaceBetween":16},"768":{"slidesPerView":2,"spaceBetween":20},"1024":{"slidesPerView":3,"spaceBetween":24},"1440":{"slidesPerView":3,"spaceBetween":32}}}' %}
+{# Swiper config (salla-slider), unix.sa featured-products.js with data-columns 3: 1 per view / 8px gap below
+   750, 2 / 24px from 750, 3 / 24px from 1200 (6.4 batch 3, D120). Swiper needs px numbers, not CSS vars:
+   24 = --slider-gap from lg, 8 = --gutter below 576 (DS §3.3). #}
+{% set slider_config = '{"slidesPerView":1,"spaceBetween":8,"breakpoints":{"750":{"slidesPerView":2,"spaceBetween":24},"1200":{"slidesPerView":3,"spaceBetween":24}}}' %}
 
 {% set slides = [] %}
 {% for item in component.items|default([]) %}
@@ -64,7 +65,20 @@
          {% if use_latest %}data-unix-fprods-latest="{{ slides|length }}"{% endif %}
          aria-labelledby="{{ uid }}-title">
   <div class="unix-container">
-    <h2 id="{{ uid }}-title" class="unix-fprods__title">{{ title }}</h2>
+    {# 6.4 batch 3 (D120): heading row like unix.sa .section-top: title, then ← → from 990 (swipe below) #}
+    <div class="unix-fprods__head">
+      <h2 id="{{ uid }}-title" class="unix-fprods__title">{{ title }}</h2>
+      <div class="unix-fprods__nav">
+        <button type="button" class="unix-carousel-arrow" data-unix-fprods-prev
+                aria-controls="{{ uid }}-slider" aria-label="{{ trans('blocks.unix.featured_products.prev') }}" disabled>
+          <svg class="icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" class="unix-carousel-arrow" data-unix-fprods-next
+                aria-controls="{{ uid }}-slider" aria-label="{{ trans('blocks.unix.featured_products.next') }}" disabled>
+          <svg class="icon-dir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
 
     <salla-slider id="{{ uid }}-slider"
                   class="unix-fprods__slider"
@@ -81,11 +95,11 @@
                      {% if not slide.resolved %}data-unix-fprod-pending{% endif %}
                      {% if not slide.image %}data-unix-fprod-use-thumb{% endif %}>
               <div class="unix-fprods__media">
-                {# 4:5 box is reserved by CSS (--ratio-card); width/height give the same ratio #}
+                {# 2:3 box is reserved by CSS (--ratio-product, unix.sa 418 × 627); width/height give the same ratio #}
                 <img class="unix-fprods__img"
                      {% if media %}src="{{ media }}"{% else %}hidden{% endif %}
                      alt="{{ p ? p.name|e('html_attr') : '' }}"
-                     width="800" height="1000"
+                     width="800" height="1200"
                      loading="lazy" decoding="async">
               </div>
 
@@ -115,6 +129,8 @@
         {% endfor %}
       </div>
     </salla-slider>
+    {# unix.sa's thin progress line (custom swiper pagination); js/partials/unix-carousel-nav.js fills it; decorative #}
+    <div class="unix-fprods__progress unix-carousel-progress" data-unix-fprods-progress aria-hidden="true" hidden></div>
   </div>
 </section>
 {% endif %}

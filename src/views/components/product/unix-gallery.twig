@@ -2,11 +2,12 @@
   UNIX product gallery (ROADMAP 3.1 · DS §8.20 · SPEC §5.1).
   Mirrors unix.sa main-product `slider_previews` (desktop: main slider + thumbnail column on the
   start side) and `slider` (mobile: full-bleed slider + segmented progress line), with a zoom
-  dialog on both. Styles: 04-components/unix-gallery.scss. Behaviour: js/partials/unix-gallery.js.
+  dialog on both, opened by clicking the image (no lens chip and no wishlist heart on the image,
+  like unix.sa; 6.4 batch 3, D123). Styles: 04-components/unix-gallery.scss. Behaviour: js/partials/unix-gallery.js.
 
   - The slider is Salla's `salla-slider` (Swiper, RTL from `dir`). `listen-to-thumbnails-option`
     keeps colour/thumbnail options jumping to their image (needs data-img-id + data-slid-index).
-  - Every slide is a reserved 4:5 box (--ratio-pdp); image 1 is the LCP (eager + high priority).
+  - Every slide is a reserved 2:3 box (--ratio-pdp); image 1 is the LCP (eager + high priority).
   - Video slides keep Raed's fslightbox wiring; 3D slides keep model-viewer. Neither zooms.
   - The main slider is first in the DOM so `#product-{id} img` (add-to-cart fly animation in
     app.js) still finds the first product image, not a thumbnail.
@@ -16,8 +17,9 @@
 {% set fit_cover = theme.settings.get('slider_background_size') == 'cover' %}
 {% set dialog_id = 'unix-gallery-dialog-' ~ product.id %}
 
-{% set icon_chevron %}<svg class="icon-dir" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6"/></svg>{% endset %}
-{% set icon_chevron_next %}<svg class="icon-dir" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6"/></svg>{% endset %}
+{# 6.4 batch 3 (D123): ← → line arrows like unix.sa's swiper-button (icon-caret-left/right), not chevrons #}
+{% set icon_chevron %}<svg class="icon-dir" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>{% endset %}
+{% set icon_chevron_next %}<svg class="icon-dir" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>{% endset %}
 {% set icon_zoom %}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2M11 8.5v5M8.5 11h5"/></svg>{% endset %}
 
 <section class="unix-gallery{{ total > 1 ? ' unix-gallery--many' : '' }}{{ fit_cover ? ' unix-gallery--cover' : '' }}"
@@ -36,17 +38,6 @@
         <span>{{ trans('pages.products.calories') }}</span>
       </span>
     {% endif %}
-
-    <salla-button
-        class="unix-gallery__wishlist btn--wishlist animated sws"
-        data-id="{{ product.id }}"
-        onclick="salla.wishlist.toggle('{{ product.id }}')"
-        shape="icon"
-        fill="outline"
-        color="light"
-        aria-label="{{ trans('blocks.unix.gallery.wishlist') }}">
-      <i class="sicon-heart" aria-hidden="true"></i>
-    </salla-button>
 
     <salla-slider
         data-testid="store-product-image-slider"
@@ -84,7 +75,7 @@
                href="{{ image.video_url is iterable ? image.video_url|first : image.video_url }}"
                aria-label="{{ trans('blocks.unix.gallery.play_video') }}">
               <img class="unix-gallery__img" src="{{ image.url }}" alt="{{ alt }}"
-                   width="800" height="1000" decoding="async"
+                   width="800" height="1200" decoding="async"
                    {% if loop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
             </a>
           {% else %}
@@ -92,15 +83,15 @@
                  data-img-id="{{ image.id }}"
                  data-slid-index="{{ loop.index0 }}">
               <img class="unix-gallery__img" src="{{ image.url }}" alt="{{ alt }}"
-                   width="800" height="1000" decoding="async"
+                   width="800" height="1200" decoding="async"
                    {% if loop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+              {# 6.4 batch 3 (D123): no lens chip, like unix.sa; the whole image stays the zoom trigger
+                 (unix.sa wraps it in modal-opener → product-media-modal with swiper-zoom) #}
               <button type="button" class="unix-gallery__zoom"
                       data-unix-gallery-zoom="{{ loop.index0 }}"
                       aria-haspopup="dialog"
                       aria-controls="{{ dialog_id }}"
-                      aria-label="{{ trans('blocks.unix.gallery.zoom_image', {'index': loop.index, 'total': total}) }}">
-                <span class="unix-gallery__zoom-icon">{{ icon_zoom|raw }}</span>
-              </button>
+                      aria-label="{{ trans('blocks.unix.gallery.zoom_image', {'index': loop.index, 'total': total}) }}"></button>
             </div>
           {% endif %}
         {% endfor %}
@@ -130,7 +121,7 @@
                     aria-controls="details-slider-{{ product.id }}"
                     aria-label="{{ trans('blocks.unix.gallery.show_image', {'index': loop.index, 'total': total}) }}"
                     {% if loop.first %}aria-current="true"{% endif %}>
-              <img src="{{ image.url }}" alt="" width="96" height="120" loading="lazy" decoding="async">
+              <img src="{{ image.url }}" alt="" width="96" height="144" loading="lazy" decoding="async">
             </button>
           </li>
         {% endfor %}
@@ -162,7 +153,7 @@
           <li class="unix-gallery-dialog__item" data-unix-gallery-slide="{{ loop.index0 }}">
             <div class="unix-gallery-dialog__pan" dir="ltr">
               <img class="unix-gallery-dialog__img" src="{{ image.url }}" alt="{{ image.alt|default(product.name) }}"
-                   width="800" height="1000" loading="lazy" decoding="async">
+                   width="800" height="1200" loading="lazy" decoding="async">
             </div>
           </li>
         {% endif %}

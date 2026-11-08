@@ -10,7 +10,7 @@
 | الفئة | أزياء |
 | نوع التثبيت | ثيم خاص (متجر UNIX بس) |
 | الفرع | `main` |
-| الأيقونة | لوجو UNIX مربع، PNG خلفية شفافة أو بيضا، 512×512 (من صاحب البراند) |
+| الأيقونة | `docs/publish/icon-512.png` (لوجو unix.sa على خلفية بيضا، 512×512) |
 
 ## 2) تفاصيل الثيم (خانة «تفاصيل الثيم»)
 
@@ -23,7 +23,7 @@
 
 **التصنيفات والسلة:** فلاتر وترتيب، بانر للتصنيف، درج سلة جانبي، وشريط الشحن المجاني.
 
-**محركات البحث:** بيانات منظمة Product و ProductGroup و Organization و BreadcrumbList و BlogPosting و FAQPage من السيرفر، وعنوان h1 واحد لكل صفحة.
+**محركات البحث:** العناوين والوصف والروابط الأساسية و hreflang ومشاركة السوشيال والبيانات المنظمة الأساسية (Organization و WebPage و Product) من سلة نفسها بدون تكرار، والثيم بيضيف بس اللي سلة ما بتطلّعهوش (زي FAQPage للأسئلة الشائعة)، وعنوان h1 واحد لكل صفحة.
 
 **الأداء وسهولة الوصول:** JavaScript خفيف، ومكتبات تتحمّل وقت الحاجة بس، وخصائص CSS منطقية لدعم RTL كامل، ورابط تخطي، وتباين AA.
 
@@ -36,7 +36,7 @@ A custom theme for UNIX, a Saudi women's activewear brand: quiet, refined, produ
 
 **Category and cart:** filters and sorting, category banner, side cart drawer and free-shipping progress.
 
-**SEO:** server-rendered Product, ProductGroup, Organization, BreadcrumbList, BlogPosting and FAQPage structured data, one h1 per page.
+**SEO:** titles, descriptions, canonical, hreflang, social tags and the core structured data (Organization, WebPage, Product) come from Salla itself with no duplicates; the theme only adds what Salla does not output (such as FAQPage for the FAQ), and one h1 per page.
 
 **Performance and accessibility:** lightweight JavaScript, libraries loaded on demand, logical CSS for full RTL, skip link and AA contrast.
 

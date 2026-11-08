@@ -6,7 +6,7 @@
        menu) · newsletter «لا يفوتك جديدنا :» (title setting + the footer:newsletter hook slot, D7).
        Below lg: newsletter first, then the two menus as accordions (src/assets/js/partials/unix-footer.js
        opens them from lg up).
-    2. A divider, then the logo and the copyright hook (and Salla's app badges).
+    2. A divider, then the logo and the copyright hook (and Salla's app badges when unix_footer_show_apps is on).
     3. Trust strip (SPEC §3.3): phone, WhatsApp, Instagram, TikTok tiles · CR, trademark and VAT ·
        Salla trust badges · a narrower divider · payment marks in full colour on white tiles.
   Merchant settings (twilight.json): unix_footer_menu1_title, unix_footer_menu2_title, unix_footer_menu2_links,
@@ -111,8 +111,12 @@
         </a>
         <span class="unix-footer__rights copyright-text">{% hook copyright %}</span>
       </div>
-      <salla-apps-icons data-testid="store-footer-apps" class="unix-footer__apps"
-                        apps-title="{{ trans('blocks.unix.footer.download_apps') }}"></salla-apps-icons>
+      {# 6.4 batch 3 (D125): unix.sa has no app badges, so the block is off unless the merchant switches
+         unix_footer_show_apps on (default false; Salla rendered the «حمّلي التطبيق» title even with no badges) #}
+      {% if theme.settings.get('unix_footer_show_apps', false) %}
+        <salla-apps-icons data-testid="store-footer-apps" class="unix-footer__apps"
+                          apps-title="{{ trans('blocks.unix.footer.download_apps') }}"></salla-apps-icons>
+      {% endif %}
     </div>
   </div>
 

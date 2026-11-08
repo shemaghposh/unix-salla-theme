@@ -75,7 +75,6 @@
   --c-press-tint: color-mix(in srgb, currentColor 14%, transparent);
   /* Transparent header over the home hero, like unix.sa section-media-banner.css (6.4, D113) */
   --c-border-overlay: color-mix(in srgb, var(--unix-ink-700) 18%, transparent);
-  --c-field-overlay: color-mix(in srgb, var(--unix-white) 20%, transparent);
 
   /* ── 2 Typography ───────────────────────────── */
   --f-body: var(--font-main);
@@ -93,6 +92,10 @@
   --t-page-title: clamp(22px, .875vw + 19px, 33px);
   /* home section titles + cart picks (unix.sa custom-arabic-headings.css clamp(2.4rem, 1.55rem + 3.9vw, 4.6rem)) (6.4) */
   --t-section: clamp(24px, 3.9vw + 15.5px, 46px);
+  /* section titles unix.sa draws with plain .h2 (FAQ, featured products): base.css 1.18 × 1.9/2.2/2.6/2.8rem, stepped below (6.4, D119) */
+  --t-h2-shop: 22.4px;
+  /* «المفضلة دائما» title below 750 (unix.sa inline section CSS: 21px, centred) (6.4, D119) */
+  --t-section-sm: 21px;
   /* product card vendor / title / price (unix.sa .card__title, .price: 11.7px < 750, 13.8px from 750) (6.4) */
   --t-card: clamp(12px, .5vw + 10px, 14px);
 
@@ -206,10 +209,17 @@
 }
 
 /* Grid gutters/margins per breakpoint (DS §3.3) */
-@media (min-width: 576px)  { :root { --gutter: 16px; --page-margin: 24px; --logo-w: 120px; --lang-btn-pad-inline: 9px; } }
-@media (min-width: 768px)  { :root { --gutter: 20px; --page-margin: 32px; } }
-@media (min-width: 1024px) { :root { --gutter: 24px; --page-margin: 40px; --slider-gap: 24px; } }
-@media (min-width: 1440px) { :root { --gutter: 32px; --page-margin: 64px; } }
+/* --page-margin = unix.sa .container padding: 20px, 32px from 1200 (6.4, D118) */
+@media (min-width: 576px)  { :root { --gutter: 16px; --logo-w: 120px; --lang-btn-pad-inline: 9px; } }
+@media (min-width: 768px)  { :root { --gutter: 20px; } }
+@media (min-width: 1024px) { :root { --gutter: 24px; --slider-gap: 24px; } }
+@media (min-width: 1200px) { :root { --page-margin: 32px; } }
+@media (min-width: 1440px) { :root { --gutter: 32px; } }
+
+/* --t-h2-shop steps: unix.sa .h2 breakpoints (6.4, D119) */
+@media (min-width: 750px)  { :root { --t-h2-shop: 26px; } }
+@media (min-width: 1360px) { :root { --t-h2-shop: 30.7px; } }
+@media (min-width: 1600px) { :root { --t-h2-shop: 33px; } }
 
 @media (prefers-reduced-motion: reduce) {
   :root { --d-fast: 0ms; --d-base: 0ms; --d-slow: 0ms; --d-reveal: 0ms; --d-announce-slide: 0ms; }
@@ -302,6 +312,7 @@
   --plp-bar-h: 48px;                          /* sort / filters bar height from 576px (unix.sa 4.9rem, on the 4px grid) (6.4) */
   --pdp-top: 40px;                            /* space between header and the product page from md (unix.sa ~41px measured) (6.4) */
   --pdp-info-max: 335px;                      /* product info column from lg (unix.sa .product__info-container 33.5rem) (6.4) */
+  --pdp-max: 1215px;                          /* product page split max width from lg, centred (unix.sa .product__outer 121.5rem) (6.4, D123) */
   --pdp-media-share: 62fr;                    /* product page split from lg: gallery … (unix.sa 753 / 461px at 1366) (6.4) */
   --pdp-info-share: 38fr;                     /* … and the info column, the info centred in it at --pdp-info-max (6.4) */
 }

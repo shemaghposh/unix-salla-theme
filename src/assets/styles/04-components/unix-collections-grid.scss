@@ -39,8 +39,11 @@
   .theme-unix &__title,
   .theme-unix &__text { color: inherit; }
 
+  // 6.4 batch 3 (D121): unix.sa .featured-collections__wrapper is a flex column with gap .4rem and no
+  // margins on its children, so heading → text → button → cards sit --s-1 apart (the visible space is
+  // mostly line-height). Ours had 32 / 24 / 24px.
   &__text {
-    margin-block: var(--s-6) 0;
+    margin-block: var(--s-1) 0;
     margin-inline: 0;
     font-size: var(--t-body);
     line-height: 1.7;
@@ -48,7 +51,7 @@
   }
 
   &__cta {
-    margin-block-start: var(--s-5);
+    margin-block-start: var(--s-1);
 
     /* ROADMAP 6.3 · DS §1.3: the global taupe ring is 2.69:1 on sand-300 ❌, so the ring here is --c-text-brand */
     &:focus-visible { outline-color: var(--c-text-brand); }
@@ -59,7 +62,7 @@
     position: relative;
     inline-size: 100%;
     max-inline-size: none;
-    margin-block-start: var(--s-5);
+    margin-block-start: var(--s-1);
 
     @screen lg { max-inline-size: var(--collections-max); }
   }

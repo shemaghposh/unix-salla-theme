@@ -17,9 +17,10 @@
   inline-size: 100%;
   min-block-size: var(--btn-h);
   padding: var(--s-3) var(--s-4);
-  background: var(--c-surface);
+  // 6.4 batch 3 (D123): unix.sa --sf-paper #F8F6F2 (nearest system colour: cream-50) and square corners
+  background: var(--c-bg-cream);
   border: var(--line-w) solid var(--c-border);
-  border-radius: var(--r-sm);
+  border-radius: 0;
   color: var(--c-text);
   text-align: start;
   cursor: pointer;
