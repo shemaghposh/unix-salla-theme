@@ -1273,14 +1273,14 @@
             },
             "icon": "sicon-image",
             "path": "home.unix-hero",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
+            "image": "https://cdn.jsdelivr.net/gh/shemaghposh/unix-salla-theme@main/public/images/previews/unix-hero.jpg",
             "is_default": true,
             "fields": [
                 {
                     "type": "static",
                     "format": "description",
                     "id": "unix-hero-desc",
-                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>واجهة بعرض الشاشة: فيديو أو صورة، وتدرّج غامق تحت النص، وعنوان وزر. ضعيها أول عنصر في الصفحة الرئيسية. تظهر نصوص يونكس الافتراضية بالعربية والإنجليزية إلى أن تكتبي نصكِ في الحقول.</small></div>"
+                    "value": "<div><img class='w-full' src='https://cdn.jsdelivr.net/gh/shemaghposh/unix-salla-theme@main/public/images/previews/unix-hero.jpg'><small>واجهة بعرض الشاشة: فيديو أو صورة، وتدرّج غامق تحت النص، وعنوان وزر. ضعيها أول عنصر في الصفحة الرئيسية. تظهر نصوص يونكس الافتراضية بالعربية والإنجليزية إلى أن تكتبي نصكِ في الحقول.</small></div>"
                 },
                 {
                     "type": "string",
@@ -1688,7 +1688,7 @@
             },
             "icon": "sicon-list-play",
             "path": "home.unix-products-tabs",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/slider-products-with-bg.png?v=1.1",
+            "image": "https://cdn.jsdelivr.net/gh/shemaghposh/unix-salla-theme@main/public/images/previews/unix-products-tabs.jpg",
             "is_default": true,
             "fields": [
                 {
@@ -1967,7 +1967,7 @@
             },
             "icon": "sicon-image",
             "path": "home.unix-collection-overlay",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/slider-products-with-bg.png?v=1.1",
+            "image": "https://cdn.jsdelivr.net/gh/shemaghposh/unix-salla-theme@main/public/images/previews/unix-collection-overlay.jpg",
             "is_default": true,
             "fields": [
                 {
@@ -2082,7 +2082,7 @@
             },
             "icon": "sicon-layout-grid-rearrange",
             "path": "home.unix-collections-grid",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
+            "image": "https://cdn.jsdelivr.net/gh/shemaghposh/unix-salla-theme@main/public/images/previews/unix-collections-grid.jpg",
             "is_default": true,
             "fields": [
                 {
@@ -2289,7 +2289,7 @@
             },
             "icon": "sicon-image",
             "path": "home.unix-featured-products",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
+            "image": "https://cdn.jsdelivr.net/gh/shemaghposh/unix-salla-theme@main/public/images/previews/unix-featured-products.jpg",
             "is_default": true,
             "fields": [
                 {
@@ -2363,14 +2363,14 @@
             },
             "icon": "sicon-camera",
             "path": "home.unix-video-tiles",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
+            "image": "https://cdn.jsdelivr.net/gh/shemaghposh/unix-salla-theme@main/public/images/previews/unix-video-tiles.jpg",
             "is_default": true,
             "fields": [
                 {
                     "type": "static",
                     "format": "description",
                     "id": "unix-video-tiles-desc",
-                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>فيديوهات قصيرة بنسبة 3:4، بدون صوت وتتكرر، عمودين على الشاشات الكبيرة وسحب أفقي على الجوال. تبدأ عند ظهورها فقط، وتتوقف عند تفعيل تقليل الحركة. (صورة المعاينة مؤقتة)</small></div>"
+                    "value": "<div><img class='w-full' src='https://cdn.jsdelivr.net/gh/shemaghposh/unix-salla-theme@main/public/images/previews/unix-video-tiles.jpg'><small>فيديوهات قصيرة بنسبة 3:4، بدون صوت وتتكرر، عمودين على الشاشات الكبيرة وسحب أفقي على الجوال. تبدأ عند ظهورها فقط، وتتوقف عند تفعيل تقليل الحركة.</small></div>"
                 },
                 {
                     "id": "tiles",
@@ -2530,14 +2530,14 @@
             },
             "icon": "sicon-list-play",
             "path": "home.unix-blog",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/main-links.png?v=1.1",
+            "image": "https://cdn.jsdelivr.net/gh/shemaghposh/unix-salla-theme@main/public/images/previews/unix-blog.jpg",
             "is_default": true,
             "fields": [
                 {
                     "type": "static",
                     "format": "description",
                     "id": "unix-blog-preview",
-                    "value": "<div><h6>معاينة العنصر</h6><p>يعرض المقالات المختارة كبطاقات نصية (التاريخ والعنوان والمقتطف) في شريط متحرك، مع أسهم وزر «تصفّحي المقالات» بجانب العنوان. (صورة المعاينة مؤقتة.)</p></div>"
+                    "value": "<div><h6>معاينة العنصر</h6><p>يعرض المقالات المختارة كبطاقات نصية (التاريخ والعنوان والمقتطف) في شريط متحرك، مع أسهم وزر «تصفّحي المقالات» بجانب العنوان.</p></div>"
                 },
                 {
                     "type": "string",
@@ -2695,14 +2695,14 @@
             },
             "icon": "sicon-chat-conversation-alt",
             "path": "home.unix-faq",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
+            "image": "https://cdn.jsdelivr.net/gh/shemaghposh/unix-salla-theme@main/public/images/previews/unix-faq.jpg",
             "is_default": true,
             "fields": [
                 {
                     "type": "static",
                     "format": "description",
                     "id": "unix-faq-desc",
-                    "value": "<div><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1'><small>أسئلة وأجوبة بعنوان في المنتصف، وإجابة واحدة مفتوحة في كل مرة. اتركي الأسئلة فارغة لعرض أسئلة يونكس الافتراضية (7 أسئلة باللغتين). العنوان والنص الفارغان يظهر مكانهما النص الافتراضي، وكل لغة على حدة: إذا كتبتِ العربية فقط تظهر الإنجليزية الافتراضية. (صورة المعاينة مؤقتة)</small></div>"
+                    "value": "<div><img class='w-full' src='https://cdn.jsdelivr.net/gh/shemaghposh/unix-salla-theme@main/public/images/previews/unix-faq.jpg'><small>أسئلة وأجوبة بعنوان في المنتصف، وإجابة واحدة مفتوحة في كل مرة. اتركي الأسئلة فارغة لعرض أسئلة يونكس الافتراضية (7 أسئلة باللغتين). العنوان والنص الفارغان يظهر مكانهما النص الافتراضي، وكل لغة على حدة: إذا كتبتِ العربية فقط تظهر الإنجليزية الافتراضية.</small></div>"
                 },
                 {
                     "type": "string",
@@ -2809,7 +2809,7 @@
             ]
         }
     ],
-    "support_url": "https://salla.com/",
+    "support_url": "https://unix.sa",
     "description": {
         "ar": "ثيم مخصص لمتجر يونكس (unix.sa) مبني على Twilight",
         "en": "Custom Twilight theme for UNIX (unix.sa)"
