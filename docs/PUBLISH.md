@@ -41,7 +41,7 @@ A custom theme for UNIX, a Saudi women's activewear brand: quiet, refined, produ
 **Performance and accessibility:** lightweight JavaScript, libraries loaded on demand, logical CSS for full RTL, skip link and AA contrast.
 
 ## 3) صور العرض (Screenshots)
-- المقاس: **1366×768**، PNG أو JPG.
+- المقاس: **1600×1200**، 4 بالقليل (شرط البوابة، اتأكد 2026-11-08)، PNG أو JPG.
 - 3 بالقليل، بالترتيب: الهوم (أول شاشة بالهيرو)، صفحة منتج (الليقنز فانيليا)، التصنيف (ملابس رياضية).
 - اختياري: درج السلة مفتوح، وصفحة المنتج على الجوال.
 - **جاهزة (2026-11-08):** `docs/publish/screenshots/01-home.png` و `02-product.png` و `03-category.png`، 1366×768 بالعربي، من unix.sa نفسه (قرار المالك، لأن المعاينة محتاجة تسجيل دخول). الثيم مطابق لـ unix.sa (6.4)، والصور ممكن تتبدّل بصور من المتجر على سلة بعد التركيب.
