@@ -2,9 +2,10 @@
    UNIX — Size finder v2, UI (ROADMAP 3.3 · DS §8.11)
 
    Port of the PAGE INTEGRATION + UI parts of unix.sa
-   assets/unix-size-finder.js, inside a native <dialog>. Imported
-   statically by product.js (no lazy chunk: avoids depending on Salla's
-   CDN serving webpack chunks). The step DOM is only built on open.
+   assets/unix-size-finder.js, inside a native <dialog>. Its own chunk
+   since ROADMAP 6.2: product.js import()s it only when [data-unix-sf]
+   is on the page, and records a hand-picked size until this module's
+   listener is up (PERFORMANCE.md §4). The step DOM is only built on open.
 
    Salla integration: the size option(s) come from the twig include
    (`data-sf-options`: id, name, details[id,name,out]). A recommendation
@@ -558,7 +559,7 @@ function exposeModel(model) {
   window.UnixFit = { recommend: model.recommend, estimateBody: model.estimateBody, SIZES, CATS: model.CATS };
 }
 
-/** Boot every [data-unix-sf] root on the page (called once from product.js). */
+/** Boot every [data-unix-sf] root on the page (called once from product.js, after its dynamic import). */
 export default function initSizeFinder() {
   exposeModel(createModel());
   document.querySelectorAll('[data-unix-sf]').forEach((root) => {

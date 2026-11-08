@@ -1,7 +1,7 @@
 import BasePage from './base-page';
 // ROADMAP 6.2: no <lite-youtube> on the product page (videos are gallery slides), so that import is gone.
 import initGallery from './partials/unix-gallery';
-import initSizeFinder from './partials/unix-size-finder'; // ROADMAP 3.3 (DS §8.11)
+// ROADMAP 3.3 Size Finder (DS §8.11): its own chunk since 6.2, see bootSizeFinder() at the end
 import initStickyAtc from './partials/unix-sticky-atc'; // ROADMAP 3.2 (DS §8.21)
 import initSizeCharts from './partials/unix-size-charts'; // ROADMAP 3.4 (DS §8.23)
 import initDeliveryEstimate from './partials/unix-delivery-estimate'; // ROADMAP 3.6 (DS §8.24)
@@ -122,6 +122,39 @@ else loadVideoLightbox();
 // 6.4 (D117): feminine «اشتري الآن» on Salla's buy-now button, as soon as salla.lang has loaded
 initBuyNow();
 
-// ROADMAP 3.3 Size Finder: boot at page start so a manual size pick is seen before any auto-select.
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initSizeFinder);
-else initSizeFinder();
+/**
+ * ROADMAP 3.3 Size Finder, loaded on demand (6.2, PERFORMANCE.md §4): the chunk is fetched only when the
+ * product has its markup ([data-unix-sf], rendered for products with a size option), so listings and
+ * products without sizes never download it.
+ *
+ * Boot order. The only automatic size pick in the theme is the Size Finder's own autoSelect(), and it
+ * already waits for <salla-product-options> and window `load` (+400ms), then skips any size that has a
+ * value. What the static import also guaranteed is that her own tap on a size is noticed from page
+ * start (`data-touched`, which stops autoSelect for good). A tap can now land before the chunk arrives,
+ * so this guard records it on the same attribute until the module's own listener takes over.
+ * If the chunk fails, the trigger is hidden (same as a browser without <dialog>), never a dead button.
+ */
+const bootSizeFinder = () => {
+  const roots = document.querySelectorAll('[data-unix-sf]');
+  if (!roots.length) return;
+
+  const sizeNames = (root) => {
+    try { return JSON.parse(root.dataset.sfOptions || '[]').map(option => `options[${option.id}]`); } catch (e) { return []; }
+  };
+  const markTouched = (event) => {
+    if (!event.isTrusted || !event.target?.name) return;
+    roots.forEach((root) => { if (sizeNames(root).includes(event.target.name)) root.dataset.touched = '1'; });
+  };
+  document.addEventListener('change', markTouched, true);
+
+  import(/* webpackChunkName: "size-finder" */ './partials/unix-size-finder')
+    .then(({ default: initSizeFinder }) => initSizeFinder()) // registers its own listener, synchronously
+    .catch((error) => {
+      roots.forEach((root) => { root.hidden = true; });
+      salla.log('Size Finder failed to load', error);
+    })
+    .finally(() => document.removeEventListener('change', markTouched, true));
+};
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootSizeFinder);
+else bootSizeFinder();

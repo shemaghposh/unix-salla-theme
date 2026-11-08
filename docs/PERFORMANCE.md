@@ -145,6 +145,24 @@ the three, and no `@apply` depends on them.
 | fslightbox import removed | `home.js` | `[data-fslightbox]` only exists in `product/unix-gallery.twig`, and no Salla component reads `window.fslightbox`. |
 | fslightbox loads through `import()` only when `[data-fslightbox]` exists | `product.js` | On import, fslightbox scans the page itself, the same as the static import did. |
 | `lite-youtube-embed` import removed | `product.js` | No `<lite-youtube>` in product views. The YouTube home block keeps it in `home.js`. |
+| Size Finder (`unix-size-finder.js` + `-model.js`) loads through `import()` only when `[data-unix-sf]` exists (follow-up, after §6) | `product.js` | See "Size Finder boot order" below. |
+
+**Size Finder boot order (6.2 follow-up).** The markup is server-rendered only for products with a size
+option and `unix_size_finder_enabled` on, so listings and products without sizes never fetch the chunk.
+The risk with the static import gone was the automatic size pick:
+- The only automatic size pick in the theme is the Size Finder's own `autoSelect()`. Nothing else
+  selects an option (grep for `checked = true` and synthetic `change` events: only this module).
+- `autoSelect()` waits for `customElements.whenDefined('salla-product-options')` and window `load`
+  (+400ms), and checks `readyState`, so it runs correctly whether the chunk lands before or after
+  `load`. It never overwrites a size that already has a value.
+- What the static import also gave was a capture `change` listener from page start that marks
+  `data-touched` when she picks a size herself, which stops `autoSelect()` for good (a select she
+  later empties again must not be re-filled). A tap can now come before the chunk. `product.js`
+  therefore registers a small guard at boot that sets the same `data-touched` from the same test
+  (`options[<id>]` from `data-sf-options`), and removes it once the module's own listener is up
+  (`initSizeFinder()` registers it synchronously inside `.then`, before `.finally`).
+- If the chunk fails, the roots are hidden (like a browser without `<dialog>`), so there is no dead
+  trigger. Until the chunk arrives, a tap on the trigger does nothing.
 
 These are the first async chunks in the theme. webpack writes them as `[name].[contenthash].js` next to
 the entries in `public/`, and `publicPath: 'auto'` loads them from the same CDN folder as the script that
@@ -155,8 +173,8 @@ asked for them.
   every page. They are small and needed by the header and cards.
 - `wishlist.js` and `blog.js` are bundled into `app` on every page. Both are small and gate themselves
   by page.
-- `unix-size-finder.js` (24KB source) and its model are bundled into `product.js`, which also serves
-  product listings. It could become a chunk once the measured `product.js` size is known.
+- ~~`unix-size-finder.js` and its model are bundled into `product.js`.~~ Done: a `size-finder` chunk
+  (see the table above).
 
 ## 5. Loading audit (commit `perf(6.2): one Google Fonts family per language…`)
 
@@ -202,11 +220,16 @@ All sizes are minified. "Measured" is the main session's `pnpm prod` after mergi
   - The Size Finder (`unix-size-finder.js` is about 24KB of source, plus about 12KB for
     `unix-size-finder-model.js`) is bundled into `product.js`.
   - That entry also serves product listings, which never use the Size Finder.
-  - Candidate follow-up: load the Size Finder with `import()` only when its markup is on the page. Not
-    done here, because the Size Finder boots before any automatic size pick (`product.js`), so this needs
-    its own test.
+  - Follow-up done after this measurement: the Size Finder is now a `size-finder.[hash].js` chunk that
+    `product.js` loads only when its markup is on the page (§4, "Size Finder boot order"). Expected:
+    `product.js` drops by roughly the Size Finder's minified share, ⏳ until the next `pnpm prod`.
 
 ## 7. Check in `salla theme preview`
+
+0. **Size Finder chunk:** on a product with sizes, `size-finder.[hash].js` loads from the theme's CDN
+   folder and «اعرفي مقاسك» opens; on a listing and on a product without sizes it does not load. With a
+   saved profile, the size is still picked automatically after load; pick a size by hand on a slow
+   connection (DevTools throttling) before the chunk lands, and the auto-pick must not override it.
 
 1. **RTL sides (most important):**
    - the menu drawer opens from the right in Arabic and from the left in English;
@@ -233,6 +256,6 @@ All sizes are minified. "Measured" is the main session's `pnpm prod` after mergi
 8. **Lighthouse mobile** on home, a PDP, a PLP and the cart: record the results in §6 and the ROADMAP
    6.2 row.
 9. **Every build commit must `git add` the new `public/*.[hash].js` chunks.** Today these are
-   `sweetalert2`, `fslightbox` and `animejs`. Salla serves only what is committed in `public/`, and the
+   `sweetalert2`, `fslightbox`, `animejs` and `size-finder`. Salla serves only what is committed in `public/`, and the
    hashed names change whenever the content changes (`output.clean` deletes the old ones), so also stage
    the deletions (`git add -A public`).
