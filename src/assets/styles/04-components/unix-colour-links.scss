@@ -1,8 +1,10 @@
 // ─────────────────────────────────────────────────────────────
-// Colour links (ROADMAP 3.10 · DS §8.28)
+// Colour links (ROADMAP 3.10, 6.4 · DS §8.28)
 // unix.sa: G: Combined Listings swatches, one product per colour, each swatch → the sibling's page.
-// Markup: components/product/unix-colour-links.twig. Matches the colour options in DS §8.21
-// (--s-6 square, --r-sm, double ring when selected) and the size buttons for text chips.
+// Markup: components/product/unix-colour-links.twig. Circles like unix.sa's mpg-swatch (D133):
+// a --swatch-dot circle (hex, optional fabric photo on top) in a --swatch-size circular target with a
+// transparent --line-w border that turns --c-swatch-ring on the current colour. Text chips (D73) are
+// pills of the same height so they sit on the same line.
 // ─────────────────────────────────────────────────────────────
 
 .unix-colours {
@@ -24,7 +26,7 @@
 .unix-colours__list {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-2);
+  gap: var(--s-3);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -35,13 +37,16 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  min-block-size: var(--tap);
-  min-inline-size: var(--tap);
+  min-block-size: var(--swatch-size);
+  min-inline-size: var(--swatch-size);
+  border: var(--line-w) solid transparent;
+  border-radius: var(--r-pill);
   color: var(--c-text);
   text-decoration: none;
   transition: border-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out),
               transform var(--d-fast) var(--ease-out);
 
+  // wider and in another colour than the 1px slate "current" ring, outside the circle (DS §1.3: 4.49:1 on white, ≥ 3:1)
   &:focus-visible {
     outline: var(--ring-w) solid var(--c-accent);
     outline-offset: var(--ring-w);
@@ -53,12 +58,11 @@
   &[aria-current="page"]:active { transform: none; }
 }
 
-// text chip (no hex): same as the size buttons (DS §8.21)
+// text chip (no hex, no image): a pill as tall as the circles (D73, restyled 6.4)
 .unix-colours__link--text {
   padding-inline: var(--s-4);
-  border: var(--line-w) solid var(--c-border);
-  border-radius: var(--r-sm);
-  background: var(--c-surface);
+  border-color: var(--c-border);
+  background: var(--c-bg);
   font-size: var(--t-small);
   font-weight: var(--fw-medium);
   line-height: 1.3;
@@ -71,29 +75,47 @@
   }
 }
 
-// colour square centred in the 44px target
+// circle: --swatch-size target, --swatch-dot colour inside, ring on the border (unix.sa mpg-swatch)
 .unix-colours__link--swatch {
-  border-radius: var(--r-sm);
+  inline-size: var(--swatch-size);
+  block-size: var(--swatch-size);
 
-  &:hover .unix-colours__swatch { border-color: var(--c-text-muted); }
+  &:hover { border-color: var(--c-border); }
 
-  &[aria-current="page"] .unix-colours__swatch {
-    border-color: var(--c-border);
-    box-shadow: 0 0 0 var(--ring-w) var(--c-bg), 0 0 0 calc(var(--ring-w) * 2) var(--c-text);
-  }
+  &[aria-current="page"],
+  &[aria-current="page"]:hover { border-color: var(--c-swatch-ring); }
 }
 
 .unix-colours__swatch {
+  position: relative;
   display: block;
-  inline-size: var(--s-6);
-  block-size: var(--s-6);
-  border: var(--line-w) solid var(--c-border);
-  border-radius: var(--r-sm);
-  transition: border-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out);
+  flex: none;
+  inline-size: var(--swatch-dot);
+  block-size: var(--swatch-dot);
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  background-color: var(--c-surface-muted); // no hex: neutral until the image loads
+
+  // faint hairline on top of colour and photo, like unix.sa. On white it is only ~1.4:1, so a white
+  // swatch barely shows; the colour name is in the link's aria-label/title and the «اللون:» label (DS §1.3, D133)
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 var(--line-w) var(--c-border-overlay);
+    pointer-events: none;
+  }
+}
+
+.unix-colours__img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .unix-colours__link,
-  .unix-colours__swatch { transition: none; }
+  .unix-colours__link { transition: none; }
   .unix-colours__link:active { transform: none; }
 }

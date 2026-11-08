@@ -90,8 +90,8 @@
     {#
         ROADMAP 3.10 · DS §8.28 · SPEC §5.2 item 7, §9: colour links (unix.sa's G: Combined Listings).
         Each colour is its own product. Siblings come from the theme setting unix_colour_links
-        (multilanguage textarea), one line per colour product: «group key | product URL | colour name | #hex».
-        The hex is optional (no hex → text chip). The current product is the line whose URL ends in
+        (multilanguage textarea), one line per colour product: «group key | product URL | colour name | #hex | image URL».
+        The hex and the fabric image are optional (D133; 3- and 4-field lines still work). No hex and no image → text chip (D73). The current product is the line whose URL ends in
         /p{product.id}. Parsed here (D72; the JSON-LD that also used it is gone since D129).
         Twig can't query other products, so the links come from the setting and render server-side as real <a href> (crawlable).
         unix_colours = { group: key of the current product's group, name: its colour, items: rows of that group (≥ 2, else []) }
@@ -108,7 +108,11 @@
             {% set cl_cells = cl_line|split('|') %}
             {% if cl_cells|length >= 3 %}
                 {% set cl_url = cl_cells[1]|trim %}
-                {% set cl_hex = cl_cells|length > 3 ? cl_cells[3]|trim|lower : '' %}
+                {% set cl_c4 = cl_cells|length > 3 ? cl_cells[3]|trim : '' %}
+                {# 5th field (D133): fabric photo; only absolute https URLs, anything else is dropped.
+                   A 4-field line whose 4th cell starts with http is read as «… | name | image» (no hex). #}
+                {% set cl_img = cl_cells|length > 4 ? cl_cells[4]|trim : ((cl_c4 starts with 'http') ? cl_c4 : '') %}
+                {% set cl_hex = (cl_cells|length == 4 and cl_c4 starts with 'http') ? '' : cl_c4|lower %}
                 {% set cl_path_end = cl_url|split('#')|first|split('?')|first|trim('/', 'right')|split('/')|last %}
                 {# a path like /slug/p123 becomes absolute (links + JSON-LD hasVariant need full URLs) #}
                 {% set cl_abs = (cl_url starts with '/' and not (cl_url starts with '//')) ? store.url|default('')|trim('/', 'right') ~ cl_url : cl_url %}
@@ -117,6 +121,7 @@
                     url: cl_abs,
                     name: cl_cells[2]|trim,
                     hex: (cl_hex matches '/^#([0-9a-f]{3}|[0-9a-f]{6})$/') ? cl_hex : '',
+                    image: (cl_img matches '/^https:\\/\\/[^\\s"<>]+$/') ? cl_img : '',
                     current: cl_path_end == ('p' ~ product.id)
                 } %}
                 {% if cl_row.key and cl_row.name and (cl_abs starts with 'https://' or cl_abs starts with 'http://') %}

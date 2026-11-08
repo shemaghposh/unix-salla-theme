@@ -1,13 +1,15 @@
 {#
-  Colour links (ROADMAP 3.10 · DS §8.28 · SPEC §5.2 item 7, §9 «G: Combined Listings»).
+  Colour links (ROADMAP 3.10, 6.4 · DS §8.28 · SPEC §5.2 item 7, §9 «G: Combined Listings»).
   On unix.sa every colour is a separate product, and the Combined Listings app shows the sibling
   colours as swatches; each swatch opens the sibling's own page. Same here, server-rendered so the
   links are crawlable internal links (SEO, 3.11).
 
   Expects `unix_colours` from pages/product/single.twig (parsed from the unix_colour_links setting, D72):
     unix_colours.name    colour name of this product (shown after «اللون:»)
-    unix_colours.items[] { url, name, hex, current } in the merchant's order; only when the group has 2+ products
-  hex → colour square (--s-6) in a 44px target; no hex → text chip like the size buttons (D73).
+    unix_colours.items[] { url, name, hex, image, current } in the merchant's order; only when the group has 2+ products
+  hex and/or image → circle (--swatch-dot) in a circular --swatch-size target, like unix.sa's mpg-swatch (D133);
+  the image sits on top of the hex, so the hex shows while it loads or if it fails.
+  Neither → text chip (D73).
   The current product is a link to itself with aria-current="page" (not clickable-looking).
 #}
 {% if unix_colours is defined and unix_colours.items|length > 1 %}
@@ -18,13 +20,19 @@
     </p>
     <ul class="unix-colours__list" role="list" aria-label="{{ cl_label|e('html_attr') }}">
       {% for item in unix_colours.items %}
+        {% set cl_is_swatch = item.hex or item.image %}
         <li class="unix-colours__item">
-          <a class="unix-colours__link {{ item.hex ? 'unix-colours__link--swatch' : 'unix-colours__link--text' }}"
+          <a class="unix-colours__link {{ cl_is_swatch ? 'unix-colours__link--swatch' : 'unix-colours__link--text' }}"
              href="{{ item.current ? product.url : item.url }}"
              {% if item.current %}aria-current="page"{% endif %}
-             {% if item.hex %}aria-label="{{ item.name|e('html_attr') }}" title="{{ item.name|e('html_attr') }}"{% endif %}>
-            {%- if item.hex -%}
-              <span class="unix-colours__swatch" style="background-color: {{ item.hex }}" aria-hidden="true"></span>
+             {% if cl_is_swatch %}aria-label="{{ item.name|e('html_attr') }}" title="{{ item.name|e('html_attr') }}"{% endif %}>
+            {%- if cl_is_swatch -%}
+              <span class="unix-colours__swatch"{% if item.hex %} style="background-color: {{ item.hex }}"{% endif %} aria-hidden="true">
+                {%- if item.image -%}
+                  {# 42 = --swatch-dot; CSS sizes it, the attributes only reserve the box #}
+                  <img class="unix-colours__img" src="{{ item.image|e('html_attr') }}" alt="" width="42" height="42" loading="lazy" decoding="async">
+                {%- endif -%}
+              </span>
             {%- else -%}
               {{ item.name }}
             {%- endif -%}
