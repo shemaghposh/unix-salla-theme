@@ -65,9 +65,11 @@ function updateCta(cta, tab) {
 function setupNav(section) {
   const prev = section.querySelector('[data-unix-ptabs-prev]');
   const next = section.querySelector('[data-unix-ptabs-next]');
-  if (!prev || !next) return () => {};
+  if (!prev || !next) return { rebind() {}, destroy() {} };
+  const panel = () => section.querySelector('.unix-ptabs__panel:not([hidden])');
   return bindCarouselNav({
-    getSwiper: () => section.querySelector('.unix-ptabs__panel:not([hidden]) .swiper')?.swiper || null,
+    getSwiper: () => panel()?.querySelector('.swiper')?.swiper || null,
+    getSlider: () => panel()?.querySelector('salla-products-slider, salla-slider') || null,
     prev,
     next,
     progress: section.querySelector('[data-unix-ptabs-progress]'),
@@ -80,7 +82,7 @@ function setup(section) {
 
   const firstPanel = section.querySelector('.unix-ptabs__panel:not([hidden])');
   if (firstPanel) watchLoaded(firstPanel);
-  const rebindNav = setupNav(section);
+  const nav = setupNav(section);
 
   const tabs = Array.from(section.querySelectorAll('[role="tab"]'));
   if (tabs.length < 2) return;
@@ -97,7 +99,7 @@ function setup(section) {
       if (selected) mountPanel(panel);
     });
     updateCta(cta, tab);
-    rebindNav();
+    nav.rebind();
   };
 
   tabs.forEach((tab, index) => {

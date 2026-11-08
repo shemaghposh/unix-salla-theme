@@ -453,7 +453,7 @@
             "type": "boolean",
             "icon": "sicon-toggle-off",
             "label": "إظهار «حمّلي التطبيق» في الفوتر",
-            "description": "شارات تطبيقات المتجر (App Store / Google Play) تحت اللوجو، لو للمتجر تطبيقات (Show the app badges). مقفول في unix.sa",
+            "description": "شارات تطبيقات المتجر (App Store / Google Play) تحت الشعار، إذا كان للمتجر تطبيقات. معطَّل افتراضيًا كما في unix.sa (Show the store app badges; off by default, like unix.sa)",
             "id": "unix_footer_show_apps",
             "format": "switch",
             "required": false,
@@ -2068,9 +2068,9 @@
                     "id": "overlay",
                     "value": 30,
                     "required": false,
-                    "minimum": 20,
+                    "minimum": 30,
                     "maximum": 60,
-                    "description": "من 20 إلى 60. أقل من 20 قد لا يظهر النص الفاتح بوضوح على الصور الفاتحة، ويوجد تدرّج غامق ثابت تحت العنوان والبطاقات"
+                    "description": "من 30 إلى 60. لا يوجد تدرّج غامق إضافي (كما في unix.sa)، فاختاري صورة غامقة كفاية أو زيدي التعتيم حتى يظهر النص الفاتح بوضوح"
                 }
             ]
         },

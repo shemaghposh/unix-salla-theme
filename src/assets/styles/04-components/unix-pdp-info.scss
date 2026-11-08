@@ -21,6 +21,7 @@
   // display:none until it has something to show (out-of-stock alternatives…). The section kept Raed's
   // .s-block margin (64px) plus two flex gaps, the dead space between «متى يصلك» and «الوصف». As
   // `contents` the section has no box: a hidden app element takes nothing, a rendered one is the flex item.
+  // `display: contents` also drops the section's own box from the a11y tree: don't put aria-label/role on it.
   > .s-block { display: contents; }
 
   // 6.4: salla-quick-order renders its whole box (Salla's light-gray panel, near-invisible on cream:
@@ -42,6 +43,7 @@
 
   @media (min-width: 576px) { row-gap: var(--s-8); }
 
+  // `display: contents` drops these wrappers' boxes from the a11y tree: don't add aria-label/role to them.
   > .s-blocks-wrapper,
   > .s-blocks-wrapper > .s-block { display: contents; }
 }

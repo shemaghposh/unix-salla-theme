@@ -11,6 +11,15 @@
  */
 import bindCarouselNav from './unix-carousel-nav';
 
+const navs = new WeakMap();
+
+// The section hides itself (no slide left / request failed): stop driving its Swiper too
+function hideSection(section) {
+  section.hidden = true;
+  navs.get(section)?.destroy();
+  navs.delete(section);
+}
+
 function priceHTML(product) {
   const money = value => (value ? salla.money(value) : '');
   if (product.is_on_sale) {
@@ -53,7 +62,7 @@ function fill(item, product) {
 function removeSlides(section, items) {
   items.forEach(item => item.closest('.unix-fprods__slide')?.remove());
   if (!section.querySelector('.unix-fprods__slide')) {
-    section.hidden = true;
+    hideSection(section);
     return;
   }
   section.querySelector('.swiper')?.swiper?.update();
@@ -63,7 +72,7 @@ function hydrateSection(section) {
   const pending = Array.from(section.querySelectorAll('[data-unix-fprod-pending]'));
   if (!pending.length) return;
   if (!window.salla?.product?.api?.fetch) {
-    section.hidden = true;
+    hideSection(section);
     return;
   }
 
@@ -97,7 +106,7 @@ function hydrateSection(section) {
       if (gone.length) removeSlides(section, gone);
     })
     .catch(error => {
-      section.hidden = true;
+      hideSection(section);
       salla.logger?.warn('unix-featured-products: could not load products', error);
     });
 }
@@ -105,17 +114,18 @@ function hydrateSection(section) {
 function setupNav(section) {
   if (section.dataset.unixFprodsNav) return;
   section.dataset.unixFprodsNav = '1';
-  bindCarouselNav({
+  navs.set(section, bindCarouselNav({
     getSwiper: () => section.querySelector('.swiper')?.swiper || null,
+    getSlider: () => section.querySelector('salla-slider'),
     prev: section.querySelector('[data-unix-fprods-prev]'),
     next: section.querySelector('[data-unix-fprods-next]'),
     progress: section.querySelector('[data-unix-fprods-progress]'),
-  });
+  }));
 }
 
 export default function initFeaturedProducts(root = document) {
   root.querySelectorAll('[data-unix-fprods]').forEach(section => {
-    hydrateSection(section);
     setupNav(section);
+    hydrateSection(section);
   });
 }

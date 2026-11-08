@@ -11,7 +11,7 @@
 | component.limit            | ?int      | products in the carousel (default 8)                          |
 | component.image            | ?string   | background image, desktop (falls back to the category image)  |
 | component.image_mobile     | ?string   | background image below 576px (optional, unix.sa switch point) |
-| component.overlay          | ?int      | overlay opacity in % (20–60, default 30 like unix.sa)         |
+| component.overlay          | ?int      | overlay opacity in % (30–60, default 30 like unix.sa; D122)         |
 | position                   | int       | sorting number, starts from zero                              |
 |
 | Text defaults: empty (null, '' or spaces; Salla saves an untouched field as '') falls back to
@@ -67,7 +67,7 @@
 {% set image_mobile = component.image_mobile %}
 
 {% set overlay = component.overlay is null ? 30 : component.overlay %}
-{% set overlay = overlay < 20 ? 20 : (overlay > 60 ? 60 : overlay) %}
+{% set overlay = overlay < 30 ? 30 : (overlay > 60 ? 60 : overlay) %}
 {% set limit = component.limit ?: 8 %}
 {% set heading_id = 'unix-collection-overlay-' ~ position %}
 

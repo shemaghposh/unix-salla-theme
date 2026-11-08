@@ -29,7 +29,7 @@ Run it after every change to `src/views/**`, `twilight.json` or the locales, and
 
 These pass any parser and still crash a page in PHP Twig 3:
 
-1. **`|date` only on values known to be dates.** It throws on a string it can't parse. Proven safe: `article.created_at`, `order.created_at`, `item.availability_date`, `reservation.day` (Raed uses them). Anything else needs a guard: `x.timestamp is defined` (a date object) or `(x ~ '') matches '/^[0-9]{4}-[0-9]{2}-[0-9]{2}/'` (see `unix-jsonld-product.twig`, `unix-jsonld-article.twig`).
+1. **`|date` only on values known to be dates.** It throws on a string it can't parse. Proven safe: `article.created_at`, `order.created_at`, `item.availability_date`, `reservation.day` (Raed uses them). Anything else needs a guard: `x.timestamp is defined` (a date object) or `(x ~ '') matches '/^[0-9]{4}-[0-9]{2}-[0-9]{2}/'` (see `unix-jsonld-article.twig`).
 2. **Arithmetic only on numbers.** `'abc' - 1` is a PHP 8 TypeError. Settings used in maths must be `"type": "number"` in `twilight.json` (`unix_free_shipping_threshold`, `unix_cashback_percent`, overlay / limit fields), and Salla prices that are `Money` objects (`cart.items[].price`, `.total`) go through `|money` or `.getMoney().amount`, never `+ - * /`.
 3. **`|merge` needs arrays on both sides.** It throws on `null`. Start every accumulator with `[]` or `{}` before the loop.
 4. **Never `{#` inside a comment.** Write usage examples as plain text inside doc blocks.
