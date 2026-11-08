@@ -19,7 +19,8 @@ const EVENTS = 'slideChange snapIndexChange reachBeginning reachEnd resize snapG
 export default function bindCarouselNav({ getSwiper, prev, next, progress, getSlider }) {
   let timer = null;
   let destroyed = false;
-  let fallbackArmed = false;
+  let loadArmed = false;
+  const armedSliders = new WeakSet();
   const bound = new Set();
 
   const drawProgress = swiper => {
@@ -50,12 +51,18 @@ export default function bindCarouselNav({ getSwiper, prev, next, progress, getSl
     if (!destroyed) bind(WAIT_TRIES);
   };
 
+  // window load: one-shot for the whole nav. componentOnReady: once per slider, so each slow tab
+  // (products tabs) gets its own retry when its slider is ready.
   const armFallback = () => {
-    if (fallbackArmed) return;
-    fallbackArmed = true;
-    if (document.readyState !== 'complete') window.addEventListener('load', retry, { once: true });
+    if (destroyed) return;
+    if (!loadArmed && document.readyState !== 'complete') {
+      loadArmed = true;
+      window.addEventListener('load', retry, { once: true });
+    }
     const slider = getSlider?.();
-    if (typeof slider?.componentOnReady === 'function') slider.componentOnReady().then(retry, () => {});
+    if (!slider || armedSliders.has(slider) || typeof slider.componentOnReady !== 'function') return;
+    armedSliders.add(slider);
+    slider.componentOnReady().then(retry, () => {});
   };
 
   function bind(tries = 0) {
