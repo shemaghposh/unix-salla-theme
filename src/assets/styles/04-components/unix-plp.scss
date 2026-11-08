@@ -42,6 +42,22 @@
   }
 
   @media (min-width: 1200px) { gap: var(--s-8); }
+
+  // 6.4 (D132): sticky below 576 like unix.sa (.facets-container: sticky, top 0, transition: top). While the
+  // hide-on-scroll header is stuck and showing, the bar sits under it (unix.sa .shopify-section-header-sticky:
+  // not(.shopify-section-header-hidden) ~ main .facets-container {top: header-height - 1px}), so the two never
+  // overlap, and it follows the header's --d-fast slide. Without :has() it stays at 0 (under a showing header).
+  @media (max-width: 575.98px) {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--z-plp-bar);
+    background: var(--c-bg);
+    transition: inset-block-start var(--d-fast) var(--ease-out);
+
+    body:has(.unix-header.is-stuck:not(.is-hidden)) & { inset-block-start: calc(var(--header-h) - var(--line-w)); }
+
+    @media (prefers-reduced-motion: reduce) { transition: none; }
+  }
 }
 
 .unix-plp__filter-btn {

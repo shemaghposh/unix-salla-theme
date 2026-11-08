@@ -157,6 +157,9 @@
   --lang-gap: 2px;
   --lang-btn-pad-block: 5px;
   --lang-btn-pad-inline: 7px; /* 9px from 576 */
+  --lang-chip-w: 30px;        /* min width of each AR/EN chip = its natural width (34px from 576) (6.4, D114) */
+  /* how far each AR/EN hit area reaches past the pill, so each one is --tap wide (6.4, D114) */
+  --lang-hit-out: calc(var(--tap) - var(--lang-chip-w) - var(--lang-pad) - var(--lang-gap) / 2);
   --drawer-menu-w: min(600px, 100vw); /* menu drawer (unix.sa .menu-drawer max-width 600px) (6.4) */
   --z-header: 40;
   --z-dropdown: 45;
@@ -210,7 +213,7 @@
 
 /* Grid gutters/margins per breakpoint (DS §3.3) */
 /* --page-margin = unix.sa .container padding: 20px, 32px from 1200 (6.4, D118) */
-@media (min-width: 576px)  { :root { --gutter: 16px; --logo-w: 120px; --lang-btn-pad-inline: 9px; } }
+@media (min-width: 576px)  { :root { --gutter: 16px; --logo-w: 120px; --lang-btn-pad-inline: 9px; --lang-chip-w: 34px; } }
 @media (min-width: 768px)  { :root { --gutter: 20px; } }
 @media (min-width: 1024px) { :root { --gutter: 24px; --slider-gap: 24px; } }
 @media (min-width: 1200px) { :root { --page-margin: 32px; } }
@@ -290,6 +293,7 @@
 :root {
   --qty-w: 112px;                      /* quantity stepper (unix.sa .quantity 11.2rem) */
   --z-sticky-atc: 30;                  /* mobile sticky add-to-cart: under the header (40) and drawers (60) */
+  --z-plp-bar: 30;                     /* collection sort / filters bar, sticky below 576: under the header (40) and drawers (60) (6.4, D132) */
 }
 
 /* ── Phase 3 · 3.8 additions (DS §13.1, §8.26 reviews) ── */

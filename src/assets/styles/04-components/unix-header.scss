@@ -316,8 +316,10 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
 
 // ── AR/EN pill (DS §8.7, SPEC §2 header-lang-toggle) ─
 // 6.4: unix.sa custom-language-mobile.css: a ~74 × 28 grey pill, 3px padding, 2px gap, 12px labels in
-// 5 × 9px buttons (7px below 576); the active one is a white chip with a soft shadow. Each button keeps
-// a --tap tall hit area (the visible chip sits in its middle); its width is the chip's (~34px, see DS §8.7).
+// 5 × 9px buttons (7px below 576); the active one is a white chip with a soft shadow.
+// Hit areas (6.4, D114 resolved): each button has a transparent --tap × --tap area. The two meet in the
+// middle of the gap and reach --lang-hit-out past the pill on the outside; in the header the pill's margin
+// makes room for that reach so it never covers the neighbouring icon. The visible pill stays ~74 × 28.
 .unix-lang {
   display: inline-flex;
   align-items: center;
@@ -333,6 +335,7 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-inline-size: var(--lang-chip-w); // = the chip's natural width, so the hit area maths holds
     padding: var(--lang-btn-pad-block) var(--lang-btn-pad-inline);
     border: 0;
     border-radius: var(--r-pill);
@@ -346,13 +349,16 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
 
     html[lang="en"] & { letter-spacing: .04em; } // DS §2.2: +0.04em for English micro only
 
-    // --tap tall hit area around the small chip
+    // --tap × --tap hit area around the small chip: from the middle of the gap outwards
     &::before {
       content: "";
       position: absolute;
-      inset-inline: 0;
       inset-block: calc((var(--tap) - 100%) / -2);
+      inline-size: var(--tap);
     }
+
+    &:first-child::before { inset-inline-end: calc(var(--lang-gap) / -2); }
+    &:last-child::before { inset-inline-start: calc(var(--lang-gap) / -2); }
 
     &:hover { color: var(--c-text); }
     &:active { opacity: var(--o-muted); }
@@ -366,6 +372,15 @@ $overlay-active: ':is(.unix-header.is-overlay, body:has([data-header-overlay]) .
       cursor: default;
     }
   }
+}
+
+// Header: room for the hit areas' outer reach. Below lg nothing visible comes before the pill in the end
+// group (the scope button is lg+, the delivery tag lg:block), so on the start side the reach may use the
+// grid gap (--s-2) and only the rest needs margin. The drawer footer keeps --s-1: free space around it.
+.unix-header__end > .unix-lang {
+  margin-inline: max(0px, calc(var(--lang-hit-out) - var(--s-2))) var(--lang-hit-out);
+
+  @screen lg { margin-inline: var(--lang-hit-out); }
 }
 
 // ── Transparent variant over the hero (DS §8.1, §8.7, 6.4 D113: like unix.sa section-media-banner.css) ─
