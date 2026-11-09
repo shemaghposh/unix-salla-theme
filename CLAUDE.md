@@ -11,6 +11,14 @@ This is a custom **Salla Twilight** theme for UNIX (unix.sa), a Saudi activewear
 - **`unix-theme-architect`** builds. Use it for any change to views, styles, JS or `twilight.json`, in every phase.
 - **`unix-design-reviewer`** is the gate. Run it after every change and before closing a phase. A FAIL verdict blocks merge.
 
+Specialist reviewers. All are read-only, and they don't replace the design gate:
+- **`unix-code-reviewer`**: bugs, XSS, `salla.*` events and Twig runtime errors. Run it with the design reviewer after JS, Twig logic or `twilight.json` changes.
+- **`unix-a11y-auditor`**: WCAG 2.2 AA, AR and EN (6.3).
+- **`unix-perf-auditor`**: build sizes and the 6.2 budgets.
+- **`unix-seo-specialist`**: headings, JSON-LD and D129.
+- **`unix-shopper-walkthrough`**: a persona-based look at conversion on a page or flow.
+- **`unix-launch-gatekeeper`**: the final skeptical gate before 6.6 (publish request) and 6.7 (live store). It defaults to NEEDS WORK.
+
 ## Hard rules
 - Use semantic tokens only (`--c-*`, `--t-*`, `--s-*`, `--r-*`, `--e-*`, `--d-*`, `--ease-*`). Primitives (`--unix-*`) live only in `src/assets/styles/01-settings/unix-tokens.scss`.
 - A value that isn't in the design system gets added to `DESIGN-SYSTEM.md` first.

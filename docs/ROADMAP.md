@@ -16,7 +16,7 @@
 | 0.2 | `docs/SPEC.md`: مواصفات ثيم شوبيفاي | ✅ |
 | 0.3 | `docs/DESIGN-SYSTEM.md` v1.0 | ✅ |
 | 0.4 | `unix-tokens.scss` مطابق للـ Design System (primitives و semantic). لون سلة الأساسي متقفل على الـ tokens (قرار D6) | ✅ |
-| 0.5 | الـ agents: `unix-theme-architect` و `unix-design-reviewer` | ✅ |
+| 0.5 | الـ agents: `unix-theme-architect` و `unix-design-reviewer`، ومعاهم 6 مراجعين متخصصين متكيّفين من agency-agents (MIT): `unix-code-reviewer` و `unix-a11y-auditor` و `unix-perf-auditor` و `unix-seo-specialist` و `unix-shopper-walkthrough` و `unix-launch-gatekeeper` (2026-11-09) | ✅ |
 | 0.6 | أول build ينجح (`pnpm prod`) و `salla theme preview` على المتجر التجريبي. الثيم رقم 705562203 على UNIX Demo، واتأكدنا من الخلفية الكريمي وخط IBM Plex Sans Arabic والـ RTL والأزرار الكحلي (2026-11-01) | ✅ |
 | 0.7 | ملف خط `Somar-Bold.woff2`: اتاخد من ثيم unix.sa الأصلي (`reference/shopify-theme/assets`) واتحط في `src/assets/fonts/` | ✅ |
 
