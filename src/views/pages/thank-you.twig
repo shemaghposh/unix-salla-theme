@@ -61,7 +61,7 @@ never lets it be empty (fallback «شكرًا لكِ»). A «تابعي التس
                 store-logo="{{ store.logo ? store.logo|cdn(48, 48) : '' }}" store-name="{{ store.name }}"
                 reference-id="{{ order.reference_id }}" created-at="{{ order.created_at|date('c') }}">
                 {% if order.instructions %}
-                    <article class="article article--main article--small text-center">{{ order.instructions|raw }}</article>
+                    <article class="article article--main article--small text-center">{{ order.instructions|default('')|replace({'<h1': '<h2', '<H1': '<h2', '</h1>': '</h2>', '</H1>': '</h2>'})|raw }}</article>
                 {% endif %}
                 {% for message in messages %}
                     <span class="font-bold">{{ message }}</span>

@@ -106,7 +106,8 @@
               {% if row.answer %}
                 <div class="unix-faq__answer">
                   <div class="unix-faq__answer-inner">
-                    {% if row.html %}{{ row.answer|raw }}{% else %}<p>{{ row.answer|nl2br }}</p>{% endif %}
+                    {# 6.3: a merchant h1 in an answer becomes h2 (single h1, LESSONS 32) #}
+                    {% if row.html %}{{ row.answer|replace({'<h1': '<h2', '<H1': '<h2', '</h1>': '</h2>', '</H1>': '</h2>'})|raw }}{% else %}<p>{{ row.answer|nl2br }}</p>{% endif %}
                   </div>
                 </div>
               {% endif %}

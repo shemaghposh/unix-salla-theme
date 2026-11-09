@@ -5,7 +5,7 @@
  * bar-height below, the active one at 0, the leaving one one bar-height above. The track clips
  * them; all stay in the a11y tree (the JS brings a focused link's message into view).
  * The pause/play toggle (WCAG 2.2.2) sits at the inline end; its hit area is --tap × --tap (D114),
- * reaching below the 40px bar, so the bar itself doesn't clip (the track does).
+ * centred on the 40px bar (2px past each edge), so the bar itself doesn't clip (the track does).
  */
 .unix-announcement {
   block-size: var(--announce-h);
@@ -42,12 +42,13 @@
     cursor: pointer;
     transition: opacity var(--d-fast) var(--ease-out);
 
-    // 44 × 44 hit area (D114): the bar is 40px, so the target reaches down past it.
+    // 44 × 44 hit area (D114): the bar is 40px, so the target is centred on the button and reaches
+    // 2px past each edge (not 4px into the header, where it covered the header icons' edge).
     &::before {
       content: "";
       position: absolute;
       inset-inline: 0;
-      inset-block: 0 calc(var(--announce-h) - var(--tap));
+      inset-block: calc((var(--announce-h) - var(--tap)) / 2);
     }
 
     &[hidden] { display: none; }

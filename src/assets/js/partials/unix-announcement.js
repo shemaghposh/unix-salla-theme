@@ -59,6 +59,8 @@ export default function initAnnouncement(root = document.querySelector('[data-un
   root.addEventListener('mouseenter', () => { hovered = true; stop(); });
   root.addEventListener('mouseleave', () => { hovered = false; schedule(); });
   root.addEventListener('focusin', event => {
+    // Focus on the pause/play button itself isn't a pause: pressing play must resume at once.
+    if (event.target.closest('[data-unix-announcement-toggle]')) return;
     focused = true;
     stop();
     // a link inside a waiting message got keyboard focus: bring that message in
@@ -66,7 +68,9 @@ export default function initAnnouncement(root = document.querySelector('[data-un
     if (item) show(items.indexOf(item));
   });
   root.addEventListener('focusout', event => {
-    if (root.contains(event.relatedTarget)) return;
+    // moving from a link to the toggle still leaves the messages: resume (unless paused)
+    const next = event.relatedTarget;
+    if (next && root.contains(next) && !next.closest('[data-unix-announcement-toggle]')) return;
     focused = false;
     schedule();
   });
@@ -78,7 +82,9 @@ export default function initAnnouncement(root = document.querySelector('[data-un
     toggle.addEventListener('click', () => {
       paused = !paused;
       toggle.setAttribute('aria-pressed', String(paused));
-      schedule(); // stops when paused; resumes after a full dwell otherwise (focus still pauses it)
+      // pressing play is an explicit "go": don't let the pointer resting on the bar hold it
+      if (!paused) hovered = false;
+      schedule(); // stops when paused; resumes after a full dwell otherwise
     });
   }
 
