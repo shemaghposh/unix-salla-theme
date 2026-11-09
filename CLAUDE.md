@@ -7,6 +7,16 @@ This is a custom **Salla Twilight** theme for UNIX (unix.sa), a Saudi activewear
 2. `docs/DESIGN-SYSTEM.md`: binding values and component specs. It wins all conflicts.
 3. `docs/SPEC.md`: the Shopify reference for content, section order and feature logic.
 
+## What we compare against (the baseline)
+The goal is to **match the client's live unix.sa (Shopify) first**. Merchant flexibility comes after. Every parity check, review and "done" claim is measured against these, in this order:
+1. **`reference/shopify-theme/`**: a verbatim, read-only export of the live unix.sa theme (`unix-20-offer-removed`, Shopify theme 157938581671, exported 2026-11-01, based on Strive). It is the ground truth for content, section order and behaviour. Entry points: `templates/*.json` (index, product, collection, cart, blog, article, page.*), `sections/header-group.json`, `sections/footer-group.json`, `config/settings_data.json`, `assets/*.css|js`. Never edit, build or deploy from here. See `reference/README.md`.
+2. **`docs/SPEC.md`**: the written blueprint of that theme (tokens, colour schemes, sections, feature logic). Use it for *what*, not for *how it looks*.
+3. **Live https://unix.sa** (AR) and **https://unix.sa/en**: the visual check when the export is unclear.
+4. **`docs/DESIGN-SYSTEM.md`**: how the Salla version looks. It wins conflicts. **§12 lists the intended differences from unix.sa**; keep them and don't "fix" them back.
+5. Every deliberate difference gets a D-number in `docs/ROADMAP.md`. ⏳ means provisional (built, waiting for client review); ✅ means confirmed.
+
+Where the Salla build is checked: the demo store **UNIX Demo**, theme **705562203** in the Salla Partners portal, linked to branch `main` (`salla theme preview`; checklist in `docs/PREVIEW.md`). Publishing steps are in `docs/PUBLISH.md` and `docs/LAUNCH.md`.
+
 ## Agents
 - **`unix-theme-architect`** builds. Use it for any change to views, styles, JS or `twilight.json`, in every phase.
 - **`unix-design-reviewer`** is the gate. Run it after every change and before closing a phase. A FAIL verdict blocks merge.
