@@ -334,10 +334,9 @@
 
   .s-product-options-grid-mode label:active > div { transform: translateY(var(--press-y)); }
 
-  // sold out: dimmed with a corner-to-corner strike (unix.sa clip-path line in --color-border)
+  // sold out: muted with a corner-to-corner strike (unix.sa clip-path line in --color-border)
   .s-product-options-option-stock-out > .s-product-options-grid-mode-span,
   .s-product-options-grid-mode-span.s-product-options-disabled {
-    opacity: var(--o-disabled);
     text-decoration: none;
     background-image: linear-gradient(to top left,
       transparent calc(50% - var(--line-w)),
@@ -346,7 +345,14 @@
       transparent calc(50% + var(--line-w)));
   }
 
-  .s-product-options-grid-mode-span.s-product-options-disabled { cursor: not-allowed; }
+  // 6.3: a sold-out size that stays selectable is still content: --c-text-muted at full opacity (AA,
+  // DS §1.3), not opacity .5 (3.23:1). Only a truly disabled size is dimmed (WCAG 1.4.3 exempts it).
+  .s-product-options-option-stock-out > .s-product-options-grid-mode-span { color: var(--c-text-muted); }
+
+  .s-product-options-grid-mode-span.s-product-options-disabled {
+    opacity: var(--o-disabled);
+    cursor: not-allowed;
+  }
 
   // «نفدت الكمية» for screen readers (the visible suffix is off: hide-out-label). The text comes from
   // trans() through --unix-out-label on the host (options.twig); generated content joins the label's name.

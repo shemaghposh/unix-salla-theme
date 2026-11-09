@@ -145,8 +145,10 @@ account and the cart divider on; currency off.
             ROADMAP 4.3: opens the cart drawer when it is on (D85); the link to /cart is the no-JS fallback.
             6.4: data-count drives the count bubble, hidden at 0 like unix.sa (.cart-count-bubble:empty);
             unix-header.js keeps it in step with salla.cart.
+            6.3: Salla's label/total are hidden (unix-header.scss), so unix-header.js names the inner link
+            from data-cart-label (:count → the live count), with the drawer on or off.
           #}
-          <salla-cart-summary data-testid="store-header-cart" class="unix-header__cart" data-count="{{ cart.items_count|default(0) }}"{{ cart_drawer_on ? ' data-unix-cart-open' : '' }}>
+          <salla-cart-summary data-testid="store-header-cart" class="unix-header__cart" data-count="{{ cart.items_count|default(0) }}" data-cart-label="{{ trans('blocks.unix.header.cart_label', {'count': '__COUNT__'}) }}"{{ cart_drawer_on ? ' data-unix-cart-open' : '' }}>
             <svg slot="icon" class="unix-hicon unix-hicon--box" viewBox="0 0 44 44" fill="none" aria-hidden="true" focusable="false">
               <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M25.2 17V16C25.2 14.2327 23.7673 12.8 22 12.8C20.2327 12.8 18.8 14.2327 18.8 16V17H25.2ZM27 17V16C27 13.2386 24.7614 11 22 11C19.2386 11 17 13.2386 17 16V17H12.5L11.1688 31.2L11 33H12.8079H31.1921H33L32.8312 31.2L31.5 17H27ZM25.2 18.8V21H27V18.8H29.8609L31.0234 31.2H12.9766L14.1391 18.8H17V21H18.8V18.8H25.2Z"/>
             </svg>

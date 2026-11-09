@@ -29,7 +29,8 @@
         "lang_en": "English",
         "lang_ar_short": "AR",
         "lang_en_short": "EN",
-        "currency": "Currency"
+        "currency": "Currency",
+        "cart_label": "Cart, items: :count"
       },
       "menu": {
         "display_all": "View all",

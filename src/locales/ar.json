@@ -29,7 +29,8 @@
         "lang_en": "English",
         "lang_ar_short": "AR",
         "lang_en_short": "EN",
-        "currency": "العملة"
+        "currency": "العملة",
+        "cart_label": "السلة، عدد المنتجات: :count"
       },
       "menu": {
         "display_all": "عرض الكل",

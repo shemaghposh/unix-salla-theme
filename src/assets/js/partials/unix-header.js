@@ -155,10 +155,26 @@ function initLanguageToggle() {
  */
 function initCartCount(header) {
   const hosts = header.querySelectorAll('salla-cart-summary[data-count]');
-  if (!hosts.length || !window.salla?.cart?.event) return;
+  if (!hosts.length) return;
+  // 6.3: the visible summary text is hidden, so the inner link gets its accessible name from
+  // data-cart-label (Twig trans, '__COUNT__' placeholder). Salla renders the <a> after hydration.
+  const name = host => {
+    const link = host.querySelector('a.s-cart-summary-wrapper, a, button');
+    const template = host.dataset.cartLabel;
+    if (!link || !template) return;
+    link.setAttribute('aria-label', template.replace('__COUNT__', window.salla?.helpers?.number?.(host.dataset.count) ?? host.dataset.count));
+  };
+  hosts.forEach(host => {
+    if (window.customElements?.whenDefined) {
+      customElements.whenDefined('salla-cart-summary')
+        .then(() => host.componentOnReady?.())
+        .then(() => name(host), () => name(host));
+    }
+  });
+  if (!window.salla?.cart?.event) return;
   const set = count => {
     const value = String(Number(count) || 0);
-    hosts.forEach(host => host.setAttribute('data-count', value));
+    hosts.forEach(host => { host.setAttribute('data-count', value); name(host); });
   };
   // Seed once: a cached page may carry a stale Twig count; Salla's own summary reads the same storage key.
   const stored = salla.storage?.get?.('cart.summary.count');
