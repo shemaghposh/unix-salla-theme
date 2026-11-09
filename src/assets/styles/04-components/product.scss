@@ -135,23 +135,41 @@
   }
 }
 
-// Notify-me button — WCAG AA contrast fix (product card + product page)
-salla-add-product-button[product-status="out-and-notify"],
-.s-product-availability-wrap {
-  .s-button-solid.s-button-primary,
-  .s-button-primary {
-    @apply bg-gray-200 text-gray-800 border-gray-300 hover:bg-gray-300 hover:text-gray-900;
+// ── Notify-me state (product card + product page, ROADMAP 6.4 · DS §8.3 / §8.21) ──
+// For out-and-notify (or a sold-out option) salla-add-product-button renders <salla-product-availability>
+// and wraps our slotted label in <span class="s-hidden">. Salla's own `.s-hidden{display:none}` lives in
+// the component's injected style, which the store page does not get, and Tailwind never emits it (it does
+// not scan node_modules), so the label printed on top of Salla's «notify me» text (two labels). Scoped
+// here so only Salla's single label shows.
+salla-add-product-button .s-hidden,
+salla-product-availability .s-hidden { display: none; }
 
-    .s-button-text {
-      @apply text-gray-800;
-    }
-  }
+// The notify button itself is a normal salla-button: the theme's pill (unix-controls) in the
+// context's colours (primary on the PDP, the cream quick-add pill on the card). The «subscribed»
+// line after a request is one calm text row with Salla's bell.
+.s-product-availability-wrap {
+  display: block;
+  inline-size: 100%;
 
   .s-product-availability-subscribed {
-    @apply text-[0.7rem] px-[0.6rem];
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    min-block-size: var(--btn-h-sm);
+    padding-inline: var(--s-3);
+    color: var(--c-text);
+    font-size: var(--t-micro);
+  }
+
+  .s-product-availability-subs-icon {
+    display: inline-flex;
+    flex: none;
 
     svg {
-      @apply w-4 h-4;
+      inline-size: var(--icon-sm);
+      block-size: var(--icon-sm);
+      fill: currentColor;
     }
   }
 }

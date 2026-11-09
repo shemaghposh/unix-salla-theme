@@ -12,7 +12,8 @@
         "link": "How to turn on JavaScript"
       },
       "card": {
-        "wishlist": "Save :name"
+        "wishlist": "Save :name",
+        "sold_out": "Sold out"
       },
       "announcement": {
         "label": "Store announcements",

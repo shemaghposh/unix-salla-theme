@@ -212,6 +212,18 @@
     min-block-size: var(--btn-h-sm);
   }
 
+  // ── Sold out (6.4, DS §8.3, like unix.sa) ─────
+  // The «نفدت الكمية» chip (product-card.js) says it; unix.sa renders no quick add for a sold-out
+  // product, so the disabled «نفدت الكمية» pill is gone too. Only Salla's notify-me button stays
+  // (out-and-notify: salla-add-product-button renders salla-product-availability), in the same
+  // cream pill; after a request, its «subscribed» line sits on the same cream pill.
+  .s-product-card-out-of-stock .s-product-card-content-footer:not(:has(salla-product-availability)) { display: none; }
+
+  .s-product-card-content-footer .s-product-availability-subscribed {
+    border-radius: var(--r-pill);
+    background: var(--c-bg-cream);
+  }
+
   // Desktop with a real pointer: revealed on hover / keyboard focus (DS §8.3)
   @media (hover: hover) and (min-width: 1024px) {
     // 6.4: also visibility hidden at rest (its change waits for the fade), so no faint «أضيفي إلى السلة»

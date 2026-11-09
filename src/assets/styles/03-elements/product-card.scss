@@ -19,11 +19,8 @@
     }
   }
 
-  &-out-of-stock {
-    img.loaded {
-      @apply grayscale;
-    }
-  }
+  // 6.4: Raed greyed out the photo of a sold-out product (`img.loaded { grayscale }`). unix.sa keeps the
+  // photo in colour and says «نفدت الكمية» in the card badge (DS §8.3), so the filter is gone.
 
   &-overlay {
     @apply transition-opacity duration-700 opacity-50 hover:opacity-40 absolute top-0 bottom-0 left-0 right-0 bg-black;

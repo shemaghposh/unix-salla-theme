@@ -12,7 +12,8 @@
         "link": "طريقة تفعيل JavaScript"
       },
       "card": {
-        "wishlist": ":name في المفضلة"
+        "wishlist": ":name في المفضلة",
+        "sold_out": "نفدت الكمية"
       },
       "announcement": {
         "label": "إعلانات المتجر",

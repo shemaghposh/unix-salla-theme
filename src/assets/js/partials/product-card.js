@@ -52,6 +52,16 @@ class ProductCard extends HTMLElement {
   } 
 
   getProductBadge() {
+    // 6.4 (DS §8.3 / §8.4): like unix.sa's card (`badge--soldout` comes first), a sold-out product in a
+    // UNIX row shows one cream «نفدت الكمية» chip and no other badge; the photo stays in colour.
+    // Text from the bundled theme locale (salla.lang has no theme keys in the browser, see getWishlistLabel).
+    if (this.product?.is_out_of_stock && this.closest('.unix-products')) {
+      const isEn = (document.documentElement.lang || 'ar').toLowerCase().startsWith('en');
+      // Static member chains so webpack keeps only these two strings (same as getWishlistLabel).
+      const label = isEn ? enLocale.blocks.unix.card.sold_out : arLocale.blocks.unix.card.sold_out;
+      return `<div class="s-product-card-promotion-title s-product-card-sold-out">${this.escapeHTML(label)}</div>`
+    }
+
     if (this.product?.preorder?.label) {
       return `<div class="s-product-card-promotion-title">${this.product.preorder.label}</div>`
     }
