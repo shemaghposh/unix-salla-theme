@@ -273,8 +273,10 @@ Check: PSI → "Largest Contentful Paint element" diagnostic / DevTools Performa
 3. **A visible image underneath (or `poster`) is the LCP for a video hero.** If the video is the LCP,
    give it a poster and preload that poster with `fetchpriority="high"` (you can't set fetchpriority on
    `poster`). Never `loading="lazy"` an LCP video. · lazy-loading-video.
-   - **Fixed in 6.2 (2026-11-09):** the video gets the fallback image as `poster` (Twig for a single
-     image, `currentSrc` from `unix-hero.js` for separate desktop/mobile images). **Still open:** it had no `poster`, and the image only renders when `image_desktop` /
+   - **Fixed in 6.2 (30f2e9b, corrected in the review follow-up):** `unix-hero.js` sets `video.poster` to the
+     fallback image's `currentSrc` (the file the browser already chose), right before it attaches the
+     video. No `poster` attribute in the Twig: a fixed URL can differ from the srcset candidate and cost
+     a second download. **Still open:** with no fallback image there is still no poster, and the image only renders when `image_desktop` /
      `image_mobile` is set. A **video-only** hero (allowed by the schema; unix.sa itself has fallback
      images, SPEC §4.1) has no image LCP: LCP becomes the animated `<h1>` (§3.3 rule 7) or the first
      frame after `load`. Merchant rule: always upload the fallback images (§10). Theme option: warn in
@@ -514,7 +516,7 @@ grep -rn "'unload'\|no-store" src/assets/js                # bfcache blockers
 |---|---|---|---|---|
 | 1 | `src/views/components/home/unix-collection-overlay.twig:83-84` | §6.1.5 raw URL, no `cdn`, no `srcset` | full-size uploads on mobile (lazy, below fold: bytes, not LCP) | medium |
 | 2 | `src/views/components/home/unix-featured-products.twig:100` | §6.1.5 raw `media`, no `srcset` | same | medium |
-| 3 | `src/views/components/home/unix-hero.twig:105-110` | §7.3 no `poster`; image optional | video-only hero has no image LCP | medium (merchant rule mitigates) |
+| 3 | `src/views/components/home/unix-hero.twig:105-110` | §7.3 no `poster` (**poster from `currentSrc` in JS since 30f2e9b**); image optional | video-only hero has no image LCP | medium (merchant rule mitigates) |
 | 4 | `src/assets/styles/04-components/unix-hero.scss:106` (+ `unix-tokens.scss:129`) | §3.3.7 hero text fades from opacity 0 over 800ms | if the h1 is LCP (no image, or full-viewport image excluded) LCP waits for the fade | medium, verify LCP element in PSI |
 | 5 | `src/views/layouts/master.twig:93` | §8.9 unused render-blocking `theme.font.path` CSS | one blocking request | low–medium, pending 6.6 |
 | 6 | `src/views/layouts/master.twig:99,101` | §8.2 third-party render-blocking font CSS | 1 extra origin + blocking CSS | low–medium, A/B self-hosting |

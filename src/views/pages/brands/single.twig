@@ -34,11 +34,17 @@ is the page's single h1; its description is body text (Raed had it in an h2).
         {% hook 'brands:single.details.start' %}
    
         {# brand header #}
-        <header class="flex flex-col md:flex-row items-center md:items-start text-center rtl:md:text-right ltr:md:text-left mt-2 mb-12 md:mb-20">
+        <header class="flex flex-col md:flex-row items-center md:items-start text-center md:text-start mt-2 mb-12 md:mb-20">
             {# decorative next to the h1 brand name; it is the LCP image when there is no banner #}
-            <img class="unix-brands__logo w-40 h-24 object-contain p-4 shrink-0" src="{{ brand.logo }}" width="160" height="96"
-                 {% if brand.banner %}loading="lazy"{% else %}loading="eager"{% endif %} alt="">
-            <div class="px-5 pt-3 text-start">
+            {# 6.2 (PERF-PLAYBOOK §6.1 rule 5): 160px box → cdn(160) 1x / cdn(320) 2x, not the raw upload #}
+            {% set brand_logo = brand.logo is iterable ? '' : brand.logo|default('')|trim %}
+            {% if brand_logo %}
+                <img class="unix-brands__logo w-40 h-24 object-contain p-4 shrink-0"
+                     src="{{ brand_logo|cdn(320) }}" srcset="{{ brand_logo|cdn(160) }} 1x, {{ brand_logo|cdn(320) }} 2x"
+                     width="160" height="96"
+                     {% if brand.banner %}loading="lazy"{% else %}loading="eager"{% endif %} alt="">
+            {% endif %}
+            <div class="px-5 pt-3">
                 <h1 class="unix-brands__title">{{ brand.name }}</h1>
                 {# 6.3: an h1 in the merchant's brand description becomes h2 (single h1) #}
                 <div class="unix-brands__desc">{{ brand.description|default('')|replace({'<h1': '<h2', '<H1': '<h2', '</h1>': '</h2>', '</H1>': '</h2>'})|raw }}</div>

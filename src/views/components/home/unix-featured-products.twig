@@ -45,7 +45,7 @@
       'id': pid,
       'resolved': resolved,
       'product': resolved ? prod : null,
-      'image': image|default('')
+      'image': image is iterable ? '' : image|default('')|trim
     }]) %}
   {% endif %}
 {% endfor %}
@@ -88,8 +88,9 @@
         {% for slide in slides %}
           {% set p = slide.product %}
           {% set thumb = p and p.image.url is defined ? p.image.url|default('') : '' %}
-          {% set media = slide.image is iterable ? '' : slide.image|default('')|trim %}
-          {% set media = media ?: thumb %}
+          {# slide.image is normalised to a trimmed string when the slides are built; the same value
+             decides media and data-unix-fprod-use-thumb #}
+          {% set media = slide.image ?: thumb %}
           <div class="swiper-slide unix-fprods__slide">
             <article class="unix-fprods__item"
                      data-unix-fprod="{{ slide.id }}"

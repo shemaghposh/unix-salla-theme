@@ -36,11 +36,16 @@ function fill(item, product) {
   const thumb = item.querySelector('.unix-fprods__thumb img');
   const media = item.querySelector('.unix-fprods__img');
   const imageUrl = product.image?.url || product.thumbnail || '';
+  // 6.2: Twig sizes first-paint images with |cdn(width), but that filter's URL scheme is not
+  // documented (PERF-PLAYBOOK §6.1, UNVERIFIED), so JS can't rebuild it. Hydrated slides are the
+  // fallback path (product picked by id only); the 64px card thumb takes Salla's smaller
+  // `thumbnail` when the API sends one, and the large image stays the original.
+  const thumbUrl = product.thumbnail || imageUrl;
 
   if (name) name.textContent = product.name || '';
   if (price) price.innerHTML = priceHTML(product);
-  if (thumb && imageUrl) {
-    thumb.src = imageUrl;
+  if (thumb && thumbUrl) {
+    thumb.src = thumbUrl;
     thumb.hidden = false;
   }
   if (media) {
