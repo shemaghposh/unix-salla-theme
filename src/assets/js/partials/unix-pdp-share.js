@@ -13,7 +13,8 @@
  *   links then have no href: the native share sheet (only AbortError counts as a cancel), else copy
  *   the link, else an error message; the result is also announced in a role="status" span. The
  *   block is hidden only at load time when nothing could work. Salla's app webview always uses the
- *   component path (native share via mobile::share.open), never this fallback.
+ *   component path: host.open() shows the list, and each platform link there emits Salla's
+ *   `share-element` event for the app to handle; never this fallback.
  * No cart, auth or share logic of its own.
  */
 const LIST_ID = 'unix-pdp-share-list';
@@ -55,7 +56,8 @@ export default function initPdpShare(root = document.querySelector('[data-unix-p
     requestAnimationFrame(() => { status.textContent = msg; });
   };
 
-  // Salla's app webview shares natively through the component (mobile::share.open); our
+  // Salla's app webview shares through the component: with our slotted trigger the path is
+  // host.open(), and each platform link then emits `share-element` for the app to handle. Our
   // navigator.share / copy fallback must never run there.
   const isWebview = () => Boolean(window.salla?.mobile?.isSpaWebview?.());
 

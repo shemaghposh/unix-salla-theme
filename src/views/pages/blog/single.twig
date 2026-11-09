@@ -133,7 +133,7 @@ The like button keeps Raed's #blog-like contract (blog.js: an <i> icon + a <span
         {% hook 'blog:single.items.start' %}
         <div class="unix-article-related__grid">
           {% for item in unix_related|slice(0, 4) %}
-            {% include 'components.blog.unix-article-card' with { article: item, heading: 'h3', hide_excerpt: true } only %}
+            {% include 'components.blog.unix-article-card' with { article: item, heading: 'h3', hide_excerpt: true, sizes: '(min-width: 1024px) 25vw, (min-width: 576px) 50vw, 100vw' } only %}
           {% endfor %}
         </div>
         {% hook 'blog:single.items.end' %}
