@@ -228,7 +228,7 @@ Check: PSI → "Largest Contentful Paint element" diagnostic / DevTools Performa
    URL, so the CDN serves a resized copy. · *impact: a raw 3000px upload can be 1–3 MB on a phone* ·
    `grep -rnE 'src="\{\{ ?[a-z_.]+ ?\}\}"|srcset="\{\{ ?[a-z_.]+ ?\}\}"' src/views` → fixed in 6.2
    (2026-11-09): `home/unix-collection-overlay.twig` and `home/unix-featured-products.twig` now use
-   `|cdn(width)` + `srcset`/`sizes` (LESSONS 27). Zoom dialog `unix-gallery.twig:161` uses the
+   `|cdn(width)` + `srcset`/`sizes` (LESSONS 27). Second sweep (review follow-up): `unix-collections-grid.twig`, `unix-blog.twig`, `blog/unix-article-card.twig`, `pages/blog/single.twig` (article hero, LCP) and `cart.twig` (line image, 1x/2x). Still raw, lower priority: footer CR badge and tax certificate, header inverse logo, gallery 3D image, loyalty prize, brand banner and brands index logos, order carrier logo and attachment thumbs. Zoom dialog `unix-gallery.twig:161` uses the
    original on purpose (lazy, inside a closed dialog).
    - **`cdn(width)` is not documented.** Salla's docs describe `cdn` only as "links of pre-defined files
      such as font and saicon" with no width arguments (https://docs.salla.dev/421929m0). Raed itself

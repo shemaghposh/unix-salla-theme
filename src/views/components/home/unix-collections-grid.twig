@@ -81,9 +81,14 @@
             {% set card_url = card_url|trim == '#' ? '' : card_url|trim %}
             {% set card_overlay = card.overlay is null ? 20 : card.overlay %}
             {% set card_overlay = card_overlay < 0 ? 0 : (card_overlay > 60 ? 60 : card_overlay) %}
-            <li class="unix-collections-grid__item{{ card.image ? '' : ' is-empty' }}">
-              {% if card.image %}
-                <img class="unix-collections-grid__img" src="{{ card.image }}" alt="" width="600" height="800" loading="lazy" decoding="async">
+            {% set card_image = card.image is iterable ? (card.image.url is defined ? card.image.url : '') : card.image|default('')|trim %}
+            <li class="unix-collections-grid__item{{ card_image ? '' : ' is-empty' }}">
+              {% if card_image %}
+                {# 6.2 (PERF-PLAYBOOK §6.1 rule 5): 1.5 / 2.5 (576) / 3 (lg) cards per view #}
+                <img class="unix-collections-grid__img" src="{{ card_image|cdn(800) }}"
+                     srcset="{{ card_image|cdn(400) }} 400w, {{ card_image|cdn(600) }} 600w, {{ card_image|cdn(800) }} 800w, {{ card_image|cdn(1200) }} 1200w"
+                     sizes="(min-width: 1024px) 34vw, (min-width: 576px) 40vw, 67vw"
+                     alt="" width="600" height="800" loading="lazy" decoding="async">
                 <span class="unix-collections-grid__overlay" style="--overlay-opacity: {{ card_overlay / 100 }}" aria-hidden="true"></span>
               {% endif %}
               <h3 class="unix-collections-grid__name">

@@ -13,7 +13,7 @@
 #}
 {% set card_tag = heading|default('h2') == 'h3' ? 'h3' : 'h2' %}
 {% set card_title = article.title|default(article.name|default('')) %}
-{% set card_image = article.image.url is defined ? article.image.url : '' %}
+{% set card_image = article.image.url is defined ? article.image.url|default('') : '' %}
 {% set card_has_image = card_image and (article.has_image is not defined or article.has_image) and not (card_image|is_placeholder) %}
 {# first 150 characters, like the home blog card (DS §8.17); CSS also clamps to 3 lines #}
 {% set card_excerpt = article.summary|default('')|striptags|replace({'&nbsp;': ' '})|trim %}
@@ -26,10 +26,18 @@
   {% if card_has_image %}
     <div class="unix-article-card__media">
       {% if featured|default(false) %}
-        <img src="{{ card_image }}" alt="" width="1280" height="720"
+        {# 6.2 (PERF-PLAYBOOK §6.1 rule 5): featured card spans the content width #}
+        <img src="{{ card_image|cdn(1280) }}"
+             srcset="{{ card_image|cdn(640) }} 640w, {{ card_image|cdn(960) }} 960w, {{ card_image|cdn(1280) }} 1280w, {{ card_image|cdn(1920) }} 1920w"
+             sizes="(min-width: 1440px) 1440px, 100vw"
+             alt="" width="1280" height="720"
              {% if eager|default(false) %}loading="eager" fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}>
       {% else %}
-        <img src="{{ card_image }}" alt="" width="600" height="400"
+        {# 1 / 2 (768) / 3 (1024) per row #}
+        <img src="{{ card_image|cdn(800) }}"
+             srcset="{{ card_image|cdn(400) }} 400w, {{ card_image|cdn(600) }} 600w, {{ card_image|cdn(800) }} 800w"
+             sizes="(min-width: 1024px) 34vw, (min-width: 768px) 50vw, 100vw"
+             alt="" width="600" height="400"
              {% if eager|default(false) %}loading="eager" fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}>
       {% endif %}
     </div>

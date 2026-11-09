@@ -80,7 +80,11 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
                                 <div class="unix-cart-item__media">
                                     {# The name link below is the accessible link; the image repeats it for pointer users only #}
                                     <a href="{{ item.url }}" class="unix-cart-item__media-link" tabindex="-1" aria-hidden="true">
-                                        <img src="{{ item.product_image }}" alt="" width="120" height="160"
+                                        {# 6.2: 84px (< md) / 120px line image → cdn 1x/2x, not the full upload #}
+                                        {% set unix_item_img = item.product_image is iterable ? '' : item.product_image|default('')|trim %}
+                                        <img src="{{ unix_item_img ? unix_item_img|cdn(240) : '' }}"
+                                             {% if unix_item_img %}srcset="{{ unix_item_img|cdn(120) }} 1x, {{ unix_item_img|cdn(240) }} 2x"{% endif %}
+                                             alt="" width="120" height="160"
                                              {% if loop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}
                                              class="unix-cart-item__img">
                                     </a>

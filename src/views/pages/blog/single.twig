@@ -26,7 +26,7 @@ The like button keeps Raed's #blog-like contract (blog.js: an <i> icon + a <span
 {% extends "layouts.master" %}
 {% block content %}
   {% set unix_related = related is defined and related ? related : article.related|default([]) %}
-  {% set unix_image = article.image.url is defined ? article.image.url : '' %}
+  {% set unix_image = article.image.url is defined ? article.image.url|default('') : '' %}
   {% set unix_has_image = article.has_image and unix_image and not (unix_image|is_placeholder) %}
   {# Assumes Salla-editor HTML (lowercase tags, no loading attribute); pasted HTML may get a duplicate attribute (DS §8.43, D101) #}
   {% set unix_table_open = '<div class="unix-rte__table" role="region" tabindex="0" aria-label="' ~ trans('blocks.unix.blog.table')|e('html_attr') ~ '">' %}
@@ -73,7 +73,11 @@ The like button keeps Raed's #blog-like contract (blog.js: an <i> icon + a <span
 
       {% if unix_has_image %}
         <figure class="unix-article__hero">
-          <img src="{{ unix_image }}" alt="{{ article.image.alt|default('') }}" width="1600" height="900"
+          {# 6.2 (PERF-PLAYBOOK §6.1 rule 5): LCP image, wide hero #}
+          <img src="{{ unix_image|cdn(1280) }}"
+               srcset="{{ unix_image|cdn(640) }} 640w, {{ unix_image|cdn(960) }} 960w, {{ unix_image|cdn(1280) }} 1280w, {{ unix_image|cdn(1920) }} 1920w"
+               sizes="(min-width: 1600px) 1600px, 100vw"
+               alt="{{ article.image.alt|default('') }}" width="1600" height="900"
                loading="eager" fetchpriority="high">
         </figure>
       {% endif %}

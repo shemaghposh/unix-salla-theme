@@ -111,7 +111,11 @@
               {% if component.show_image and image is not iterable and image and not (image|is_placeholder) %}
                 {# decorative: the title link names the card, so the image stays silent #}
                 <div class="unix-blog-card__media">
-                  <img src="{{ image }}" alt="" width="400" height="500" loading="lazy" decoding="async">
+                  {# 6.2 (PERF-PLAYBOOK §6.1 rule 5): ~1 / 2 / 3 (750) / 4 (1200) cards per row #}
+                  <img src="{{ image|cdn(600) }}"
+                       srcset="{{ image|cdn(400) }} 400w, {{ image|cdn(600) }} 600w, {{ image|cdn(800) }} 800w"
+                       sizes="(min-width: 1200px) 25vw, (min-width: 750px) 34vw, 85vw"
+                       alt="" width="400" height="500" loading="lazy" decoding="async">
                 </div>
               {% endif %}
               {% if article.created_at is defined and article.created_at %}
