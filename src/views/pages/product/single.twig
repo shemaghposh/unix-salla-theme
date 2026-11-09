@@ -443,7 +443,9 @@
                          data-label-whatsapp="{{ trans('blocks.unix.pdp_info.share_whatsapp')|e('html_attr') }}"
                          data-label-twitter="{{ trans('blocks.unix.pdp_info.share_twitter')|e('html_attr') }}"
                          data-label-copy_link="{{ trans('blocks.unix.pdp_info.share_copy')|e('html_attr') }}"
-                         data-label-copied="{{ trans('blocks.unix.pdp_info.share_copied')|e('html_attr') }}">
+                         data-label-copied="{{ trans('blocks.unix.pdp_info.share_copied')|e('html_attr') }}"
+                         data-label-error="{{ trans('blocks.unix.pdp_info.share_error')|e('html_attr') }}">
+                        <span class="sr-only" role="status" data-unix-pdp-share-status></span>
                         <salla-social-share data-testid="store-product-social-share" class="unix-pdp-share__host"
                                             platforms="whatsapp,twitter,copy_link"
                                             url="{{ product.url|e('html_attr') }}"

@@ -10,7 +10,10 @@
  * - replaces Salla's English "Share Via <platform>" names with our feminine trans() labels, passed
  *   from the Twig as data-label-<platform> (salla.lang has no theme keys, LESSONS 2);
  * - falls back when AddToAny is missing (blocked by an ad blocker, or not loaded yet), because its
- *   links then have no href: the native share sheet, else copy the link, else hide the block.
+ *   links then have no href: the native share sheet (only AbortError counts as a cancel), else copy
+ *   the link, else an error message; the result is also announced in a role="status" span. The
+ *   block is hidden only at load time when nothing could work. Salla's app webview always uses the
+ *   component path (native share via mobile::share.open), never this fallback.
  * No cart, auth or share logic of its own.
  */
 const LIST_ID = 'unix-pdp-share-list';
@@ -43,46 +46,59 @@ export default function initPdpShare(root = document.querySelector('[data-unix-p
     });
   };
 
-  const hideBlock = () => { root.hidden = true; };
+  const status = root.querySelector('[data-unix-pdp-share-status]');
+  // Polite live region inside the block (DS §8.21): screen readers hear the result even when the
+  // salla.notify toast isn't announced. Cleared first so the same message is read again.
+  const announce = msg => {
+    if (!status || !msg) return;
+    status.textContent = '';
+    requestAnimationFrame(() => { status.textContent = msg; });
+  };
 
+  // Salla's app webview shares natively through the component (mobile::share.open); our
+  // navigator.share / copy fallback must never run there.
+  const isWebview = () => Boolean(window.salla?.mobile?.isSpaWebview?.());
+
+  // Runs inside the click gesture (no await before navigator.share / clipboard), so iOS allows it.
   const fallbackShare = async () => {
     if (typeof navigator.share === 'function') {
       try {
         await navigator.share({ url: shareUrl, title: shareTitle });
-      } catch { /* dismissed by the shopper: nothing to do */ }
-      return;
+        return;
+      } catch (error) {
+        if (error?.name === 'AbortError') return; // the shopper closed the share sheet
+        // any other failure (NotAllowedError, TypeError…) falls through to copying the link
+      }
     }
     if (navigator.clipboard?.writeText) {
       try {
         await navigator.clipboard.writeText(shareUrl);
         const msg = root.dataset.labelCopied;
         if (msg && window.salla?.notify?.success) salla.notify.success(msg);
+        announce(msg);
         return;
       } catch { /* clipboard denied: fall through */ }
     }
-    hideBlock();
+    // Never hide the block under the shopper's focus after a tap: say it didn't work instead.
+    const msg = root.dataset.labelError;
+    if (msg && window.salla?.notify?.error) salla.notify.error(msg);
+    announce(msg);
   };
 
-  const toggle = () => {
+  const whenReady = () => customElements.whenDefined('salla-social-share')
+    .then(() => (typeof host.componentOnReady === 'function' ? host.componentOnReady() : host));
+
+  btn.addEventListener('click', () => {
     if (isOpen()) {
       host.close().then(sync, sync);
       return;
     }
-    if (!hasA2a()) {
-      fallbackShare();
+    if (!isWebview() && !hasA2a()) {
+      fallbackShare().catch(() => {});
       return;
     }
-    host.open().then(sync, sync);
-  };
-
-  btn.addEventListener('click', () => {
-    if (typeof host.open === 'function') {
-      toggle();
-      return;
-    }
-    customElements.whenDefined('salla-social-share')
-      .then(() => (typeof host.componentOnReady === 'function' ? host.componentOnReady() : host))
-      .then(toggle, () => {});
+    // Component path (AddToAny loaded, or the app webview): wait for the upgrade only here.
+    whenReady().then(() => host.open()).then(sync, sync);
   });
 
   root.addEventListener('keydown', event => {
@@ -92,14 +108,22 @@ export default function initPdpShare(root = document.querySelector('[data-unix-p
     btn.focus();
   });
 
-  root.addEventListener('focusout', event => {
-    if (!isOpen() || (event.relatedTarget && root.contains(event.relatedTarget))) return;
-    host.close().then(sync, sync);
+  // Deferred re-check: Safari can report a null relatedTarget on mixed pointer/keyboard input.
+  root.addEventListener('focusout', () => {
+    if (!isOpen()) return;
+    requestAnimationFrame(() => {
+      if (isOpen() && !root.contains(document.activeElement)) host.close().then(sync, sync);
+    });
   });
 
-  // No AddToAny and nothing to fall back to: the block can't work, so don't show it.
+  // Load-time only: no AddToAny, no native share and no clipboard (and not the webview) means the
+  // block can never work, so it isn't shown. Never done in response to a tap.
+  const hideIfUnusable = () => {
+    if (!isWebview() && !hasA2a() && !canFallback()) root.hidden = true;
+  };
   if (!canFallback()) {
-    window.addEventListener('load', () => { if (!window.a2a) hideBlock(); }, { once: true });
+    if (document.readyState === 'complete') hideIfUnusable();
+    else window.addEventListener('load', hideIfUnusable, { once: true });
   }
 
   new MutationObserver(sync).observe(host, {
