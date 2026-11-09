@@ -9,6 +9,8 @@
     keeps colour/thumbnail options jumping to their image (needs data-img-id + data-slid-index).
   - Every slide is a reserved 2:3 box (--ratio-pdp); image 1 is the LCP (eager + high priority).
   - Video slides keep Raed's fslightbox wiring; 3D slides keep model-viewer. Neither zooms.
+  - 6.2: slides use Salla's |cdn(width) (src 800, srcset 480/800/1200), thumbnails cdn(192) (2× of 96);
+    the zoom dialog keeps the full-size image.url.
   - The main slider is first in the DOM so `#product-{id} img` (add-to-cart fly animation in
     app.js) still finds the first product image, not a thumbnail.
 #}
@@ -59,7 +61,7 @@
               <model-viewer class="unix-gallery__model model-entry"
                             loading="{{ loop.first ? 'eager' : 'lazy' }}" camera-controls
                             touch-action="pan-y" auto-rotate
-                            poster="{{ image.url }}"
+                            poster="{{ image.url|cdn(800) }}"
                             src="{{ image.three_d_image_url }}"
                             shadow-intensity="1" alt="{{ alt }}">
               </model-viewer>
@@ -74,7 +76,9 @@
                data-type="{{ image.video_type ?? 'video' }}"
                href="{{ image.video_url is iterable ? image.video_url|first : image.video_url }}"
                aria-label="{{ trans('blocks.unix.gallery.play_video') }}">
-              <img class="unix-gallery__img" src="{{ image.url }}" alt="{{ alt }}"
+              <img class="unix-gallery__img" src="{{ image.url|cdn(800) }}"
+                   srcset="{{ image.url|cdn(480) }} 480w, {{ image.url|cdn(800) }} 800w, {{ image.url|cdn(1200) }} 1200w"
+                   sizes="(min-width:768px) 50vw, 100vw" alt="{{ alt }}"
                    width="800" height="1200" decoding="async"
                    {% if loop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
             </a>
@@ -82,7 +86,9 @@
             <div class="unix-gallery__slide"
                  data-img-id="{{ image.id }}"
                  data-slid-index="{{ loop.index0 }}">
-              <img class="unix-gallery__img" src="{{ image.url }}" alt="{{ alt }}"
+              <img class="unix-gallery__img" src="{{ image.url|cdn(800) }}"
+                   srcset="{{ image.url|cdn(480) }} 480w, {{ image.url|cdn(800) }} 800w, {{ image.url|cdn(1200) }} 1200w"
+                   sizes="(min-width:768px) 50vw, 100vw" alt="{{ alt }}"
                    width="800" height="1200" decoding="async"
                    {% if loop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
               {# 6.4 batch 3 (D123): no lens chip, like unix.sa; the whole image stays the zoom trigger
@@ -121,7 +127,7 @@
                     aria-controls="details-slider-{{ product.id }}"
                     aria-label="{{ trans('blocks.unix.gallery.show_image', {'index': loop.index, 'total': total}) }}"
                     {% if loop.first %}aria-current="true"{% endif %}>
-              <img src="{{ image.url }}" alt="" width="96" height="144" loading="lazy" decoding="async">
+              <img src="{{ image.url|cdn(192) }}" alt="" width="96" height="144" loading="lazy" decoding="async">
             </button>
           </li>
         {% endfor %}

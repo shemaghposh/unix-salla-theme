@@ -78,6 +78,9 @@
         window.notify_when_available_in_card = "{{ theme.settings.get('notify_when_available_in_card', true) }}"
     </script>
     
+    {# ROADMAP 6.6: Google Fonts preconnects come before any stylesheet (ours and any a head hook injects), so the font CSS + files connect early #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     {% hook 'head:start' %}
     {# Salla's SEO head (title, meta description, canonical, hreflang, OG): platform-owned, never duplicated (DS §14) #}
     {% hook head %}
@@ -85,13 +88,13 @@
     {% include 'components.seo.unix-jsonld-site' %}
     {% block styles %}{% endblock %}
     <link rel="stylesheet" href="{{ 'app.css' | asset }}">
+    {# Salla's dashboard font CSS: --font-main below is overridden by the UNIX families (DS §2.1), but the link
+       stays because Salla's theme review may expect theme.font.path in the layout (ROADMAP 6.6) #}
     <link rel="stylesheet" href="{{ theme.font.path|cdn }}"/>
     <link rel="stylesheet" href="{{ 'fonts/sallaicons.css'|cdn }}"/>
     {# UNIX: IBM Plex Sans Arabic (body) — Somar (headings) is loaded from unix-tokens.scss.
        ROADMAP 6.2: only the current language's family is requested, since --font-main below uses just
        that one (Arabic: IBM Plex Sans Arabic, which has Latin glyphs; English: Open Sans). Weights follow DS §2.1. #}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     {% if language.code == 'en' %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"/>
     {% else %}

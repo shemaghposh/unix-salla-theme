@@ -71,7 +71,7 @@
             <div class="unix-video-tiles__media">
               {% if t.poster %}
                 <img class="unix-video-tiles__poster"
-                     src="{{ t.poster }}"
+                     src="{{ t.poster|cdn(720) }}"
                      alt=""
                      width="720" height="960"
                      loading="lazy" decoding="async">
