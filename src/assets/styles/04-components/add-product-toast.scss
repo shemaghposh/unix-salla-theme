@@ -14,7 +14,7 @@
   }
 
   @media (min-width: 768px) {
-    @apply w-[400px];
+    inline-size: var(--toast-w);
     border-radius: var(--r-sm);
     inset-block-start: var(--s-4);
     inset-inline-start: auto;

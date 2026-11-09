@@ -317,6 +317,7 @@
   --banner-ratio: 4 / 5;                      /* optional category image, below 576px (DS §6) */
   --banner-ratio-wide: 16 / 9;                /* same from 576px */
   --plp-banner-text-max: 460px;               /* banner text column (unix.sa max-width 46rem) */
+  --toast-w: 400px;                           /* add-to-cart toast width from md (DS §8.49, 6.1) */
   --plp-bar-h: 48px;                          /* sort / filters bar height from 576px (unix.sa 4.9rem, on the 4px grid) (6.4) */
   --pdp-top: 40px;                            /* space between header and the product page from md (unix.sa ~41px measured) (6.4) */
   --pdp-info-max: 335px;                      /* product info column from lg (unix.sa .product__info-container 33.5rem) (6.4) */

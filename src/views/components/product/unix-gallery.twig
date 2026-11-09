@@ -61,7 +61,7 @@
               <model-viewer class="unix-gallery__model model-entry"
                             loading="{{ loop.first ? 'eager' : 'lazy' }}" camera-controls
                             touch-action="pan-y" auto-rotate
-                            poster="{{ image.url|cdn(800) }}"
+                            poster="{{ image.url|default('')|cdn(800) }}"
                             src="{{ image.three_d_image_url }}"
                             shadow-intensity="1" alt="{{ alt }}">
               </model-viewer>
@@ -76,8 +76,8 @@
                data-type="{{ image.video_type ?? 'video' }}"
                href="{{ image.video_url is iterable ? image.video_url|first : image.video_url }}"
                aria-label="{{ trans('blocks.unix.gallery.play_video') }}">
-              <img class="unix-gallery__img" src="{{ image.url|cdn(800) }}"
-                   srcset="{{ image.url|cdn(480) }} 480w, {{ image.url|cdn(800) }} 800w, {{ image.url|cdn(1200) }} 1200w"
+              <img class="unix-gallery__img" src="{{ image.url|default('')|cdn(800) }}"
+                   srcset="{{ image.url|default('')|cdn(480) }} 480w, {{ image.url|default('')|cdn(800) }} 800w, {{ image.url|default('')|cdn(1200) }} 1200w"
                    sizes="(min-width:768px) 50vw, 100vw" alt="{{ alt }}"
                    width="800" height="1200" decoding="async"
                    {% if loop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
@@ -86,8 +86,8 @@
             <div class="unix-gallery__slide"
                  data-img-id="{{ image.id }}"
                  data-slid-index="{{ loop.index0 }}">
-              <img class="unix-gallery__img" src="{{ image.url|cdn(800) }}"
-                   srcset="{{ image.url|cdn(480) }} 480w, {{ image.url|cdn(800) }} 800w, {{ image.url|cdn(1200) }} 1200w"
+              <img class="unix-gallery__img" src="{{ image.url|default('')|cdn(800) }}"
+                   srcset="{{ image.url|default('')|cdn(480) }} 480w, {{ image.url|default('')|cdn(800) }} 800w, {{ image.url|default('')|cdn(1200) }} 1200w"
                    sizes="(min-width:768px) 50vw, 100vw" alt="{{ alt }}"
                    width="800" height="1200" decoding="async"
                    {% if loop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
@@ -127,7 +127,7 @@
                     aria-controls="details-slider-{{ product.id }}"
                     aria-label="{{ trans('blocks.unix.gallery.show_image', {'index': loop.index, 'total': total}) }}"
                     {% if loop.first %}aria-current="true"{% endif %}>
-              <img src="{{ image.url|cdn(192) }}" alt="" width="96" height="144" loading="lazy" decoding="async">
+              <img src="{{ image.url|default('')|cdn(192) }}" alt="" width="96" height="144" loading="lazy" decoding="async">
             </button>
           </li>
         {% endfor %}
@@ -158,7 +158,7 @@
         {% if not image.video_url and not image.three_d_image_url %}
           <li class="unix-gallery-dialog__item" data-unix-gallery-slide="{{ loop.index0 }}">
             <div class="unix-gallery-dialog__pan" dir="ltr">
-              <img class="unix-gallery-dialog__img" src="{{ image.url }}" alt="{{ image.alt|default(product.name) }}"
+              <img class="unix-gallery-dialog__img" src="{{ image.url|default('') }}" alt="{{ image.alt|default(product.name) }}"
                    width="800" height="1200" loading="lazy" decoding="async">
             </div>
           </li>

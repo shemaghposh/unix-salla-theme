@@ -289,7 +289,9 @@ salla-modal {
     @apply text-primary underline;
   }
   &-cancel-button {
-    @apply absolute top-2 end-3;
+    position: absolute;
+    inset-block-start: var(--s-2);
+    inset-inline-end: var(--s-3);
   }
 }
 

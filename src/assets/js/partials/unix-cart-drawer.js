@@ -366,6 +366,8 @@ class CartDrawer {
     };
     // Registered once, and only act while this button is loading (the cart page can submit too)
     window.salla?.event?.on?.('login::open', () => { if (loading()) release(); });
+    // Back from checkout restores this page from the bfcache with the spinner still on
+    window.addEventListener('pageshow', (event) => { if (event.persisted) release(); });
     window.salla?.event?.on?.('cart::submit.failed', (error) => {
       if (!loading()) return;
       release();

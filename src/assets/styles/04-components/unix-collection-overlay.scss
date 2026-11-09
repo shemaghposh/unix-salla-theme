@@ -98,7 +98,8 @@
 
     /* 6.6 (D122 amended): AA scrim behind the text block only. Solid --c-scrim-text under the text,
        feathered to transparent over --s-6 outside it, so the rest of the photo keeps unix.sa's flat
-       wash. The mask is symmetric (only its alpha counts), so it reads the same in RTL and LTR. */
+       wash. The mask is symmetric (only its alpha counts), so it reads the same in RTL and LTR.
+       `black` is the mask's fully opaque stop (alpha only, never painted), not a colour token. */
     &::before {
       content: "";
       position: absolute;
@@ -107,12 +108,12 @@
       background-color: var(--c-scrim-text);
       pointer-events: none;
       -webkit-mask-image:
-        linear-gradient(to right, transparent, var(--c-overlay) var(--s-6), var(--c-overlay) calc(100% - var(--s-6)), transparent),
-        linear-gradient(to bottom, transparent, var(--c-overlay) var(--s-6), var(--c-overlay) calc(100% - var(--s-6)), transparent);
+        linear-gradient(to right, transparent, black var(--s-6), black calc(100% - var(--s-6)), transparent),
+        linear-gradient(to bottom, transparent, black var(--s-6), black calc(100% - var(--s-6)), transparent);
       -webkit-mask-composite: source-in;
       mask-image:
-        linear-gradient(to right, transparent, var(--c-overlay) var(--s-6), var(--c-overlay) calc(100% - var(--s-6)), transparent),
-        linear-gradient(to bottom, transparent, var(--c-overlay) var(--s-6), var(--c-overlay) calc(100% - var(--s-6)), transparent);
+        linear-gradient(to right, transparent, black var(--s-6), black calc(100% - var(--s-6)), transparent),
+        linear-gradient(to bottom, transparent, black var(--s-6), black calc(100% - var(--s-6)), transparent);
       mask-composite: intersect;
     }
   }
