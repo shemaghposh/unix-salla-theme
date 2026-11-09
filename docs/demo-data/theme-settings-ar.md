@@ -58,7 +58,7 @@
 ### صفحة المنتج
 | الإعداد | القيمة |
 |---|---|
-| مسار التنقل (`product_show_breadcrumbs`، `product_index_show_breadcrumbs`) | مفعّل |
+| مسار التنقل (`product_show_breadcrumbs`، `product_index_show_breadcrumbs`) | **معطّل** (زي unix.sa: مافيش مسار تنقل في صفحة المنتج ولا التصنيف) |
 | إشعار الإضافة للسلة (`enable_add_product_toast`) | مفعّل |
 | زر «أعلميني عند التوفر» في الكارت (`notify_when_available_in_card`) | مفعّل (عشان المنتج النافد) |
 | تثبيت زر الإضافة على الجوال (`sticky_add_to_cart`) | مفعّل |
@@ -205,7 +205,7 @@
 
 > في unix.sa المنتجات هنا هي pearla-lounge-set-pants-pearl و curve-enhance-set-whip-pink و waist-tone-hoodie-off-white و bamboo-3-pieces-set-cold-blue بصورهم (website-interface-02/04/03 و IMG_8005). مش ضمن المعاينة، فحطينا منتجات المعاينة بصور لايف ستايل من جاليريهم.
 
-### 7) فيديوهين جنب بعض (`home.unix-video-tiles`)
+### 7) مقطعا فيديو متجاوران (`home.unix-video-tiles`)
 | # | رابط الفيديو (`tiles.video`) | صورة الغلاف (`tiles.poster`) — نزّلي وارفعي | نص (`tiles.caption`) | الرابط (`tiles.link`) | اسم الرابط |
 |---|---|---|---|---|---|
 | 1 | https://cdn.shopify.com/videos/c/vp/364de4a30bf946f291ccdfbda7fe05c9/364de4a30bf946f291ccdfbda7fe05c9.HD-720p-1.6Mbps-90511977.mp4 | https://cdn.shopify.com/s/files/1/0710/2791/6967/files/preview_images/364de4a30bf946f291ccdfbda7fe05c9.thumbnail.0000000000.jpg?v=1785591407 | فاضي | تصنيف ← كل المنتجات | فاضي |
