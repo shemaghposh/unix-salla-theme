@@ -155,7 +155,7 @@ Source keys used below:
     - Brands, blog and customer: as listed in HOOKS.
     - Every component automatically gets `component:{path}.start/.end`. Pages get `{page-slug}:start/end`.
     **Check:** `grep -rhoE "\{% hook '?[a-z:._-]+'? %\}" src/views | sort | uniq -c`.
-    - Gap: `cart:submit.start` and `cart:submit.end` are documented but **missing** in `src/views/pages/cart.twig`. Raed omits them too, so the risk is low, but it is cheap to add.
+    - **Resolved (6a527eb):** `cart:submit.start` and `cart:submit.end` now wrap `salla-cart-summary-card` in `src/views/pages/cart.twig` (Raed omits them).
     **Source:** HOOKS, PDP.
 23. **Rule:** Twilight web components read `--font-main`, `--color-primary`, `--color-primary-dark`, `--color-primary-light` and `--color-primary-reverse` on `:root`. The developer may bind them to `theme.color.*` and `theme.font.*` (merchant-editable) **or set fixed values**, which "would prevent the merchant from altering the theme's typeface or color scheme".
     **Why:** Our D6 locks brand colours. That is an explicitly allowed pattern.
@@ -276,7 +276,7 @@ Source keys used below:
     **Source:** PKG-WC.
 50. **Rule:** Escape every value you interpolate into `innerHTML` templates in JS.
     **Check:** `grep -rn 'innerHTML = `' src/assets/js`.
-    - Known gap inherited from Raed: `src/assets/js/partials/add-product-toast.js` (template around lines 180–200) interpolates `${opt.name}` and `${opt.value}` unescaped. Product text-input options carry shopper-entered values, so this is self-XSS. `product.url` and `product.image` are unescaped as well.
+    - **Resolved (b8cce00, cf59d23):** `add-product-toast.js` escapes option name/value, product URL/image, cart URL and icon URL; `product-card.js` escapes name, subtitle, badges, URLs and `add_to_cart_label`; `escapeHTML(null)` returns `''` (LESSONS 22). Was: Raed's toast interpolated `${opt.name}`/`${opt.value}` unescaped (self-XSS via text-input options).
     **Source:** general security (TECH 2.4).
 
 ## 11. Review checklist (what the Salla team checks)
@@ -292,7 +292,7 @@ Source keys used below:
       - variant select, and an add-to-cart that is disabled or changed when sold out;
       - the first available variant on load;
       - reviews, and dynamic checkout buttons on by default;
-      - **social sharing: direct link, Twitter and WhatsApp (4.1.12–13)**;
+      - **social sharing: direct link, Twitter and WhatsApp (4.1.12–13)**; Restored on the PDP (D135, 6a527eb).
       - rich media: YouTube, embedded video and 3D (4.1.15).
     - **Collection page:** title, description and image. Grid items need a linked, untruncated title, price, image and sale badge, and an empty-collection message.
     - **Cart:** per line, the title, unit price, image, final price and quantity controls; also the total, a tax indicator and a checkout button. Support notes, automatic discounts and dynamic checkout.
@@ -340,14 +340,14 @@ Ordered by likely impact. Each risk is something a Salla reviewer can point at.
 | # | Risk | Evidence (file:line) | Source | Suggested action |
 |---|---|---|---|---|
 | R1 | Twilight length validation (max 1000) exceeded | `twilight.json:606, 630, 680, 708, 736, 764, 816` (`maxLength` 2000–20000) | TECH 1.4 | Ask Salla whether 1.4 means `maxLength`; else split data or move it to JSON files or settings under 1000 |
-| R2 | Social sharing removed from the PDP | `src/views/pages/product/single.twig:183` comment (D54); no `salla-social-share` in `src/views` (Raed has one) | UX 4.1.12–13 | Record it as a deliberate D-number and be ready to restore `<salla-social-share>` if review insists |
-| R3 | Screenshots break metadata rules | `docs/PUBLISH.md` §3: 3 shots at 1366×768 taken from unix.sa (they contain logo and text) | META 4.7, 4.9, 4.10; PUB | Make 4+ shots at the portal size, desktop and mobile, without overlaid text or logos, with AR and EN titles |
+| R2 | ~~Social sharing removed from the PDP~~ **Resolved 6a527eb (D135):** `<salla-social-share>` back, setting `unix_pdp_share` on by default | `src/views/pages/product/single.twig:183` comment (D54); no `salla-social-share` in `src/views` (Raed has one) | UX 4.1.12–13 | Record it as a deliberate D-number and be ready to restore `<salla-social-share>` if review insists |
+| R3 | Screenshots break metadata rules (**rules fixed in `docs/PUBLISH.md` §3 by 6a527eb; the screenshots themselves still need redoing**) | `docs/PUBLISH.md` §3: 3 shots at 1366×768 taken from unix.sa (they contain logo and text) | META 4.7, 4.9, 4.10; PUB | Make 4+ shots at the portal size, desktop and mobile, without overlaid text or logos, with AR and EN titles |
 | R4 | Theme size measurement unclear | Built `public/` is 1076.5 KiB (under the 2MB private cap); the tracked repo is about 11.75 MiB with `reference/` | TECH 1.1, MAINREQ 3.8 | Confirm what is measured; consider moving `reference/` out of the synced repo |
 | R5 | `|raw` audit | 29 hits (`grep -rn '\|raw' src/views`); merchant settings go to `json_encode\|raw` at `unix-size-finder.twig:37` and `product/single.twig:459` | TECH 2.4 | Be ready to explain each hit; consider `json_encode(constant('JSON_HEX_TAG'))` or another escape-safe output (UNVERIFIED that Salla's Twig allows `constant`) |
-| R6 | Unescaped option text in the add-to-cart toast | `src/assets/js/partials/add-product-toast.js` (`${opt.name}`, `${opt.value}`) | TECH 2.4 | Escape it with the existing `escapeHTML` |
-| R7 | Missing documented hooks | `src/views/pages/cart.twig` has no `cart:submit.start/end` | HOOKS | Add both hooks around the checkout button |
+| R6 | ~~Unescaped option text in the add-to-cart toast~~ **Resolved b8cce00, cf59d23** | `src/assets/js/partials/add-product-toast.js` (`${opt.name}`, `${opt.value}`) | TECH 2.4 | Escape it with the existing `escapeHTML` |
+| R7 | ~~Missing documented hooks~~ **Resolved 6a527eb** | `src/views/pages/cart.twig` has no `cart:submit.start/end` | HOOKS | Add both hooks around the checkout button |
 | R8 | Uniqueness vs Raed | Reviewers diff our `views` against Raed | MAINREQ 3.1–3.7 | Low risk: our home components and PDP are custom |
-| R9 | Unknown attribute | `src/views/pages/customer/profile.twig:41` `dateFormat` (Raed-inherited) | PKG-WC | Change it to `date-format` |
+| R9 | ~~Unknown attribute~~ **Resolved 6a527eb** (`date-format`) | `src/views/pages/customer/profile.twig:41` `dateFormat` (Raed-inherited) | PKG-WC | Change it to `date-format` |
 | R10 | Lighthouse averages | Must be at least 60 for performance and 90 for accessibility, desktop and mobile, home + PDP + PLP | TECH 2.1 | Run on the demo store before 6.6 and record the numbers in `docs/PERFORMANCE.md` |
 | R11 | Theme name | "UNIX" is a widely used OS name, against "Not used on other platforms" | META 1.10 | Low risk for a private theme; keep the AR name «يونكس» ready |
 

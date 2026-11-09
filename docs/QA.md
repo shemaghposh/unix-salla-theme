@@ -35,6 +35,11 @@ These pass any parser and still crash a page in PHP Twig 3:
 4. **Never `{#` inside a comment.** Write usage examples as plain text inside doc blocks.
 5. **Includes with `only`** get no context: the included file may use filters/functions but not `theme`, `store`, `language` or `user` unless they are passed in `with { … }`.
 6. **Loops:** a variable first set inside `{% for %}` is gone after the loop; set the accumulator before it.
+7. **OPEN preview check (owner, 6.6): is `|e('html_attr')` inside a quoted attribute double-escaped on Salla?** If Salla autoescapes `{{ }}` output as well, `|e('html_attr')` would escape twice (`&amp;amp;`, `https&#x3A;//`). On the demo store PDP, View Source / DevTools on the share block (`product/single.twig`, D135) and confirm:
+   - `salla-social-share` `url="…"` reads `https://…` (not `https&#x3A;&#x2F;&#x2F;…` or `&amp;`);
+   - the WhatsApp link's `aria-label`, after opening the menu in AR, reads «شاركي المنتج عبر واتساب» (Arabic, not entity text and not "Share Via whatsapp");
+   - the same in EN ("Share on WhatsApp").
+   If it is double-escaped, drop `|e('html_attr')` where Salla already autoescapes and record the result here and in LESSONS. Not a code change until checked.
 
 ## 3. Twig constructs the theme uses that aren't plain Twig 3
 

@@ -1,21 +1,22 @@
 /*
  * UNIX PDP share (ROADMAP 6.6 · D135 · DS §8.21)
  * Salla's <salla-social-share> (no shadow DOM, so its .s-social-share-* classes are styled here).
- * Quiet: a text trigger «شاركي المنتج» with a line icon; the three platforms open inline next to it
- * as 44px icon buttons in the action colour. No brand colours, no bounce (Salla's 1.4s item
- * animation is switched off), no layout shift (the row height is the 44px tap target either way).
+ * Quiet: a text trigger «شاركي المنتج» with a line icon; the three platforms open in a small
+ * popover centred under it (44px icon buttons in the action colour), so the trigger never moves
+ * and nothing below shifts. No brand colours, no bounce (Salla's 1.4s item animation is off).
  */
 .unix-pdp-share {
   display: flex;
   justify-content: center;
   margin-block-start: var(--s-2);
 
+  // The wrapper is at least as wide as the open popover (3 × --tap + gaps, padding, border), so the
+  // popover centres on the trigger with logical insets only and never pokes past the column.
   .s-social-share-wrapper {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     justify-content: center;
-    gap: var(--s-1);
+    min-inline-size: calc(3 * var(--tap) + 4 * var(--s-1) + 2 * var(--line-w));
   }
 
   // Salla's fallback trigger (English "Share" icon button) in case the slot polyfill renders it too.
@@ -48,12 +49,23 @@
     &[aria-expanded="true"] { color: var(--c-action); }
   }
 
+  // Popover under the trigger, centred by auto margins (same in RTL and LTR).
   .s-social-share-list {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline: 0;
+    inline-size: max-content;
+    margin-inline: auto;
+    z-index: var(--z-dropdown);
     display: none;
     gap: var(--s-1);
-    margin: 0;
-    padding: 0;
+    margin-block: var(--s-1) 0;
+    padding: var(--s-1);
     list-style: none;
+    border: var(--line-w) solid var(--c-border);
+    border-radius: var(--r-md);
+    background: var(--c-bg);
+    box-shadow: var(--e-2);
 
     &.opened { display: flex; }
   }

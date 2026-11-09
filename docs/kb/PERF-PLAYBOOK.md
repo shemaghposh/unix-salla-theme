@@ -514,9 +514,9 @@ grep -rn "'unload'\|no-store" src/assets/js                # bfcache blockers
 
 | # | file:line | Rule | Effect | Severity |
 |---|---|---|---|---|
-| 1 | `src/views/components/home/unix-collection-overlay.twig:83-84` | §6.1.5 raw URL, no `cdn`, no `srcset` | full-size uploads on mobile (lazy, below fold: bytes, not LCP) | medium |
-| 2 | `src/views/components/home/unix-featured-products.twig:100` | §6.1.5 raw `media`, no `srcset` | same | medium |
-| 3 | `src/views/components/home/unix-hero.twig:105-110` | §7.3 no `poster` (**poster from `currentSrc` in JS since 30f2e9b**); image optional | video-only hero has no image LCP | medium (merchant rule mitigates) |
+| 1 | ~~`src/views/components/home/unix-collection-overlay.twig:83-84`~~ **resolved 30f2e9b** | §6.1.5 raw URL, no `cdn`, no `srcset` | full-size uploads on mobile (lazy, below fold: bytes, not LCP) | medium |
+| 2 | ~~`src/views/components/home/unix-featured-products.twig:100`~~ **resolved 30f2e9b, c8aac70** | §6.1.5 raw `media`, no `srcset` | same | medium |
+| 3 | `src/views/components/home/unix-hero.twig:105-110` | §7.3 no `poster` (**poster from `currentSrc` in JS since 30f2e9b / c8aac70**); image optional | video-only hero has no image LCP | medium (merchant rule mitigates) |
 | 4 | `src/assets/styles/04-components/unix-hero.scss:106` (+ `unix-tokens.scss:129`) | §3.3.7 hero text fades from opacity 0 over 800ms | if the h1 is LCP (no image, or full-viewport image excluded) LCP waits for the fade | medium, verify LCP element in PSI |
 | 5 | `src/views/layouts/master.twig:93` | §8.9 unused render-blocking `theme.font.path` CSS | one blocking request | low–medium, pending 6.6 |
 | 6 | `src/views/layouts/master.twig:99,101` | §8.2 third-party render-blocking font CSS | 1 extra origin + blocking CSS | low–medium, A/B self-hosting |
