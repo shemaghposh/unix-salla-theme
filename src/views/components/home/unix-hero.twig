@@ -106,6 +106,10 @@
              data-unix-hero-video
              data-src-desktop="{{ video_desktop ?: video_mobile }}"
              data-src-mobile="{{ video_mobile ?: video_desktop }}"
+             {# 6.2 (PERF-PLAYBOOK §7 rule 3): the fallback image doubles as the poster. With one image it is
+                the img's own src (cache hit); with separate desktop/mobile images unix-hero.js sets the
+                poster to the image the browser actually picked (currentSrc), so no extra download. #}
+             {% if has_image and not (img_desktop and img_mobile) %}poster="{{ (img_mobile ?: img_desktop)|cdn(1080) }}"{% endif %}
              muted playsinline loop preload="none"
              aria-hidden="true" tabindex="-1"></video>
     {% endif %}

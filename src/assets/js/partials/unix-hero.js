@@ -59,6 +59,9 @@ function initVideo(hero) {
   afterLoad(() => {
     const src = window.matchMedia(WIDE).matches ? video.dataset.srcDesktop : video.dataset.srcMobile;
     if (!src) return;
+    // Poster = the fallback image the browser already chose for this viewport (no extra request).
+    const image = hero.querySelector('.unix-hero__image');
+    if (image && image.currentSrc) video.poster = image.currentSrc;
     video.muted = true; // property, not just the attribute, so iOS allows inline autoplay
     video.src = src;
     play();

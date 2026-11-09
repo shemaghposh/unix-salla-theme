@@ -46,6 +46,7 @@ function fill(item, product) {
   if (media) {
     media.alt = product.name || '';
     if (item.hasAttribute('data-unix-fprod-use-thumb') && imageUrl) {
+      media.removeAttribute('srcset'); // a server srcset would win over the new src
       media.src = imageUrl;
       media.hidden = false;
     }

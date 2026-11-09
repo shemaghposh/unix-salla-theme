@@ -87,8 +87,9 @@
       <div slot="items">
         {% for slide in slides %}
           {% set p = slide.product %}
-          {% set thumb = p and p.image.url is defined ? p.image.url : '' %}
-          {% set media = slide.image ?: thumb %}
+          {% set thumb = p and p.image.url is defined ? p.image.url|default('') : '' %}
+          {% set media = slide.image is iterable ? '' : slide.image|default('')|trim %}
+          {% set media = media ?: thumb %}
           <div class="swiper-slide unix-fprods__slide">
             <article class="unix-fprods__item"
                      data-unix-fprod="{{ slide.id }}"
@@ -96,8 +97,11 @@
                      {% if not slide.image %}data-unix-fprod-use-thumb{% endif %}>
               <div class="unix-fprods__media">
                 {# 2:3 box is reserved by CSS (--ratio-product, unix.sa 418 × 627); width/height give the same ratio #}
+                {# 6.2 (PERF-PLAYBOOK §6.1 rule 5): |cdn(width) + srcset; 1 / 2 (750) / 3 (1200) slides per view (D120) #}
                 <img class="unix-fprods__img"
-                     {% if media %}src="{{ media }}"{% else %}hidden{% endif %}
+                     {% if media %}src="{{ media|cdn(800) }}"
+                       srcset="{{ media|cdn(480) }} 480w, {{ media|cdn(800) }} 800w, {{ media|cdn(1200) }} 1200w"
+                       sizes="(min-width: 1200px) 34vw, (min-width: 750px) 50vw, 100vw"{% else %}hidden{% endif %}
                      alt="{{ p ? p.name|e('html_attr') : '' }}"
                      width="800" height="1200"
                      loading="lazy" decoding="async">
@@ -105,7 +109,7 @@
 
               <a class="unix-fprods__card" href="{{ p ? p.url : '#' }}" {% if not p %}aria-busy="true" tabindex="-1"{% endif %}>
                 <span class="unix-fprods__thumb">
-                  <img {% if thumb %}src="{{ thumb }}"{% else %}hidden{% endif %} alt="" width="64" height="80" loading="lazy" decoding="async">
+                  <img {% if thumb %}src="{{ thumb|cdn(128) }}"{% else %}hidden{% endif %} alt="" width="64" height="80" loading="lazy" decoding="async">
                 </span>
                 <span class="unix-fprods__info">
                   <span class="unix-fprods__name" data-unix-fprod-name>{{ p ? p.name : '' }}</span>

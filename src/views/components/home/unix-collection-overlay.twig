@@ -77,12 +77,22 @@
          aria-labelledby="{{ heading_id }}">
   <div class="unix-collection-overlay__frame">
     <div class="unix-collection-overlay__inner">
+      {# 6.2 (PERF-PLAYBOOK §6.1 rule 5, LESSONS 18): sized copies through Salla's |cdn(width), with
+         srcset/sizes like the gallery. The frame is full width up to --content-max + 2 × --page-margin
+         (1504px); below 576 the optional mobile image (4:5) replaces it. #}
+      {% set image = image is iterable ? '' : image|default('')|trim %}
+      {% set image_mobile = image_mobile is iterable ? '' : image_mobile|default('')|trim %}
       {% if image %}
         <picture class="unix-collection-overlay__media">
           {% if image_mobile %}
-            <source media="(max-width: 575px)" srcset="{{ image_mobile }}" width="800" height="1000">
+            <source media="(max-width: 575px)"
+                    srcset="{{ image_mobile|cdn(480) }} 480w, {{ image_mobile|cdn(800) }} 800w, {{ image_mobile|cdn(1080) }} 1080w"
+                    sizes="100vw" width="800" height="1000">
           {% endif %}
-          <img src="{{ image }}" alt="" width="1200" height="1500" loading="lazy" decoding="async">
+          <img src="{{ image|cdn(1280) }}"
+               srcset="{{ image|cdn(480) }} 480w, {{ image|cdn(800) }} 800w, {{ image|cdn(1280) }} 1280w, {{ image|cdn(1920) }} 1920w"
+               sizes="(min-width: 1504px) 1504px, 100vw"
+               alt="" width="1200" height="1500" loading="lazy" decoding="async">
         </picture>
       {% endif %}
       <span class="unix-collection-overlay__overlay" style="--overlay-opacity: {{ overlay / 100 }}" aria-hidden="true"></span>

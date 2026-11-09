@@ -38,6 +38,8 @@ Format: what went wrong · the rule now · how to check · commit.
 
 ## Performance
 18. **The LCP image path pointed to a size Salla's CDN didn't serve well.** · Rule: images go through `|cdn(width)` with a real `srcset`; preconnects come before stylesheets in `master.twig`. · 27abcc0
+27. **Two home sections still printed raw merchant image URLs** (`unix-collection-overlay`, `unix-featured-products`), so phones downloaded the full upload. · Rule: no `src="{{ url }}"` for a merchant or product image; always `|cdn(width)` with `srcset`/`sizes` matching the CSS width, and guard empty or object values first (`|default('')|trim`, `is iterable`). When JS swaps `src` later, remove `srcset` first. · Check: `grep -rnE 'src="\{\{ ?[a-z_.]+ ?\}\}"' src/views`. · 6.2 KB audit (2026-11-09)
+28. **The hero `<video>` had no `poster`.** · Rule: a video gets the fallback image as `poster`, reusing a URL the page already downloads (the img `src`, or `currentSrc` in JS) so it costs no extra request. · Check: `grep -rn '<video' -A8 src/views | grep poster`. · 6.2 KB audit (2026-11-09)
 19. **Preview images hot-linked from places Salla's reviewers can't load.** · Rule: images in `twilight.json` previews use the jsDelivr `@main/public/images/previews/` path. · fc06a49
 
 ## Process

@@ -226,9 +226,9 @@ Check: PSI → "Largest Contentful Paint element" diagnostic / DevTools Performa
    https://developer.chrome.com/docs/lighthouse/performance/uses-responsive-images
 5. **Every merchant/product image goes through Salla's `|cdn(width)`** (or `cdn(w,h)`), never the raw
    URL, so the CDN serves a resized copy. · *impact: a raw 3000px upload can be 1–3 MB on a phone* ·
-   `grep -rnE 'src="\{\{ ?[a-z_.]+ ?\}\}"|srcset="\{\{ ?[a-z_.]+ ?\}\}"' src/views` → today:
-   `home/unix-collection-overlay.twig:83-84` (raw `image_mobile` / `image`) and
-   `home/unix-featured-products.twig:100` (raw `media`). Zoom dialog `unix-gallery.twig:161` uses the
+   `grep -rnE 'src="\{\{ ?[a-z_.]+ ?\}\}"|srcset="\{\{ ?[a-z_.]+ ?\}\}"' src/views` → fixed in 6.2
+   (2026-11-09): `home/unix-collection-overlay.twig` and `home/unix-featured-products.twig` now use
+   `|cdn(width)` + `srcset`/`sizes` (LESSONS 27). Zoom dialog `unix-gallery.twig:161` uses the
    original on purpose (lazy, inside a closed dialog).
    - **`cdn(width)` is not documented.** Salla's docs describe `cdn` only as "links of pre-defined files
      such as font and saicon" with no width arguments (https://docs.salla.dev/421929m0). Raed itself
@@ -273,7 +273,8 @@ Check: PSI → "Largest Contentful Paint element" diagnostic / DevTools Performa
 3. **A visible image underneath (or `poster`) is the LCP for a video hero.** If the video is the LCP,
    give it a poster and preload that poster with `fetchpriority="high"` (you can't set fetchpriority on
    `poster`). Never `loading="lazy"` an LCP video. · lazy-loading-video.
-   - **Gap:** `unix-hero.twig:105` has no `poster`, and the image only renders when `image_desktop` /
+   - **Fixed in 6.2 (2026-11-09):** the video gets the fallback image as `poster` (Twig for a single
+     image, `currentSrc` from `unix-hero.js` for separate desktop/mobile images). **Still open:** it had no `poster`, and the image only renders when `image_desktop` /
      `image_mobile` is set. A **video-only** hero (allowed by the schema; unix.sa itself has fallback
      images, SPEC §4.1) has no image LCP: LCP becomes the animated `<h1>` (§3.3 rule 7) or the first
      frame after `load`. Merchant rule: always upload the fallback images (§10). Theme option: warn in
