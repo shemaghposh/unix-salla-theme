@@ -157,7 +157,7 @@ class ProductCard extends HTMLElement {
     if (unixLabel && plainSale) {
       return this.escapeHTML(unixLabel);
     }
-    return this.product.add_to_cart_label ? this.product.add_to_cart_label : this.getAddButtonLabel();
+    return this.escapeHTML(this.product.add_to_cart_label || this.getAddButtonLabel());
   }
 
   /**
@@ -242,7 +242,7 @@ class ProductCard extends HTMLElement {
   }
 
   escapeHTML(str = '') {
-  return String(str)
+  return String(str ?? '')
     .replace(/&/g, "&amp;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;")
@@ -280,8 +280,8 @@ class ProductCard extends HTMLElement {
               loading="lazy"
             />
             ${this.getSecondaryImage()}
-            ${!this.fullImage && !this.minimal ? this.getProductBadge() : ''}
           </a>
+          ${!this.fullImage && !this.minimal ? this.getProductBadge() : ''}
           ${this.fullImage ? `<a href="${this.escapeHTML(this.product?.url)}" tabindex="-1" aria-hidden="true" class="s-product-card-overlay"></a>`:''}
           ${!this.horizontal && !this.fullImage ?
             `<salla-button
