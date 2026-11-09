@@ -15,7 +15,7 @@
    ============================================================ */
 
 import {
-  SIZES, buildConfig, createModel, productProfile, loadProfile, saveProfile, hasProfile,
+  SIZES, createSafeModel, createModel, productProfile, loadProfile, saveProfile, hasProfile,
 } from './unix-size-finder-model';
 import arLocale from '../../../locales/ar.json';
 import enLocale from '../../../locales/en.json';
@@ -85,8 +85,7 @@ class SizeFinder {
 
     let raw = '';
     try { raw = JSON.parse(root.querySelector('[data-sf-config]')?.textContent || '""'); } catch (e) { raw = ''; }
-    this.cfg = buildConfig(raw);
-    this.model = createModel(this.cfg);
+    ({ cfg: this.cfg, model: this.model } = createSafeModel(raw));
     const p = productProfile(this.cfg, root.dataset.productId, root.dataset.productName);
     this.baseCat = p.cat;
     this.comfy = p.comfy;

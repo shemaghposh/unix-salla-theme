@@ -103,9 +103,38 @@ export function buildConfig(override) {
   }
   const cfg = {};
   Object.keys(DEFAULTS).forEach((k) => {
-    cfg[k] = (o && o[k] != null && typeof o[k] === typeof DEFAULTS[k]) ? o[k] : DEFAULTS[k];
+    cfg[k] = (o && o[k] != null && sameShape(o[k], DEFAULTS[k])) ? o[k] : DEFAULTS[k];
   });
   return cfg;
+}
+
+/** An override key must be the same kind as its default: array for array, plain object for object. */
+function sameShape(value, base) {
+  if (Array.isArray(base)) return Array.isArray(value);
+  if (base !== null && typeof base === 'object') {
+    return value !== null && typeof value === 'object' && !Array.isArray(value);
+  }
+  return typeof value === typeof base;
+}
+
+/**
+ * Config + model from the merchant JSON, proven by one trial recommend() per category.
+ * A malformed override (wrong inner shape, missing table, bad category) never breaks the
+ * product page: it falls back to unix.sa's DEFAULTS.
+ */
+export function createSafeModel(override) {
+  try {
+    const cfg = buildConfig(override);
+    const model = createModel(cfg);
+    const trial = { usual: 2, height: Object.keys(cfg.HEIGHT_C)[0], weight: Object.keys(cfg.WEIGHT_C)[0] };
+    Object.keys(cfg.CATS).forEach((cat) => {
+      const result = model.recommend(trial, cat, 1, 0);
+      if (!SIZES[result.size]) throw new Error(`size finder: no size for ${cat}`);
+    });
+    return { cfg, model };
+  } catch (e) {
+    return { cfg: DEFAULTS, model: createModel(DEFAULTS) };
+  }
 }
 
 /* --------------------------------------------------------- HELPERS */

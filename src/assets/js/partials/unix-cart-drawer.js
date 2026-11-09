@@ -17,6 +17,7 @@ import initCashbackNote, { updateCashbackNote } from './unix-cashback-note';
 import initFreeShipping, { updateFreeShipping } from './unix-free-shipping';
 
 const REFRESH_DELAY = 120; // ms: coalesce Salla's burst of cart events into one details() call
+const CHECKOUT_TIMEOUT = 15000; // ms: release the checkout button if Salla never redirects or reports back
 
 function money(value) {
   return window.salla?.money ? window.salla.money(Number(value) || 0) : String(value);
@@ -355,23 +356,32 @@ class CartDrawer {
   bindCheckout() {
     const button = this.parts.checkout;
     if (!button) return;
+    let timer = null;
+    const loading = () => button.classList.contains('is-loading');
+    // Salla redirects to checkout, or opens its login modal for a guest, or fails: release the button
+    const release = () => {
+      clearTimeout(timer);
+      button.classList.remove('is-loading');
+      button.removeAttribute('aria-busy');
+    };
+    // Registered once, and only act while this button is loading (the cart page can submit too)
+    window.salla?.event?.on?.('login::open', () => { if (loading()) release(); });
+    window.salla?.event?.on?.('cart::submit.failed', (error) => {
+      if (!loading()) return;
+      release();
+      // Required cart-level options etc. are validated by Salla's server (D89): surface its message
+      const message = error?.response?.data?.error?.message || error?.message;
+      if (message && typeof message === 'string') window.salla?.notify?.error?.(message);
+    });
     button.addEventListener('click', () => {
-      if (button.classList.contains('is-loading')) return;
+      if (loading()) return;
       button.classList.add('is-loading');
       button.setAttribute('aria-busy', 'true');
-      // Salla redirects to checkout, or opens its login modal for a guest, or fails: release the button
-      const release = () => {
-        button.classList.remove('is-loading');
-        button.removeAttribute('aria-busy');
-      };
-      window.salla?.event?.once?.('login::open', release);
-      window.salla?.event?.once?.('cart::submit.failed', (error) => {
-        release();
-        // Required cart-level options etc. are validated by Salla's server (D89): surface its message
-        const message = error?.response?.data?.error?.message || error?.message;
-        if (message && typeof message === 'string') window.salla?.notify?.error?.(message);
-      });
-      window.salla.cart.submit();
+      // Never leave the spinner stuck if no redirect or event follows
+      timer = setTimeout(release, CHECKOUT_TIMEOUT);
+      Promise.resolve()
+        .then(() => window.salla.cart.submit())
+        .catch(release); // the failed event (emitted first) has already shown Salla's message
     });
   }
 }

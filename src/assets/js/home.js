@@ -1,4 +1,3 @@
-import "lite-youtube-embed"; // Salla's YouTube home block (components/home/youtube.twig)
 import BasePage from "./base-page";
 // ROADMAP 6.2: fslightbox is not imported here any more. No home block renders [data-fslightbox]
 // (only the product gallery's video slides do, and product.js loads it on demand).
