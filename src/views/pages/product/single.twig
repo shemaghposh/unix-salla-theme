@@ -179,8 +179,8 @@
                 ROADMAP 3.2 · DS §8.21 · SPEC §5.2: info column in unix.sa block order
                 (templates/product.json): title → price → [promo] → installments → options →
                 size finder → size charts (3.4) → buy buttons → delivery estimate (3.6) →
-                accordions → rating. Removed Raed extras unix.sa doesn't have: brand logo,
-                tags, social share, read-more, the second price box (D54).
+                accordions → rating → share (D135). Removed Raed extras unix.sa doesn't have: brand logo,
+                tags, read-more, the second price box (D54). Social share came back for Salla's review (D135).
             #}
             {# plain products get the original's feminine CTA; Salla's own label for preorder/booking/donation/notify (D55) #}
             {% set unix_atc_plain = product.status == 'sale' and product.type not in ['booking', 'donating'] and not product.has_preorder_campaign %}
@@ -428,6 +428,34 @@
                     <salla-rating-stars data-testid="store-product-rating" class="unix-pdp-info__rating"
                                         value="{{ product.rating.stars }}"
                                         reviews="{{ product.rating.count }}"></salla-rating-stars>
+                {% endif %}
+
+                {#
+                    10 · Share (D135, supersedes the share part of D54; Salla UX review 4.1.12–13 asks for
+                    direct link, X/Twitter and WhatsApp on the PDP). Salla's <salla-social-share> with our
+                    trigger in its documented `widget` slot (it calls the public open()/close()); the
+                    feminine labels go to partials/unix-pdp-share.js as data attributes. Setting
+                    unix_pdp_share, on until the merchant turns it off.
+                #}
+                {% if theme.settings.get('unix_pdp_share', true) %}
+                    <div class="unix-pdp-share" data-unix-pdp-share
+                         data-label-whatsapp="{{ trans('blocks.unix.pdp_info.share_whatsapp')|e('html_attr') }}"
+                         data-label-twitter="{{ trans('blocks.unix.pdp_info.share_twitter')|e('html_attr') }}"
+                         data-label-copy_link="{{ trans('blocks.unix.pdp_info.share_copy')|e('html_attr') }}">
+                        <salla-social-share data-testid="store-product-social-share" class="unix-pdp-share__host"
+                                            platforms="whatsapp,twitter,copy_link"
+                                            url="{{ product.url|e('html_attr') }}"
+                                            url-name="{{ product.name|e('html_attr') }}">
+                            <button slot="widget" type="button" class="unix-pdp-share__btn" data-unix-pdp-share-btn aria-expanded="false">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none"
+                                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/>
+                                    <path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/>
+                                </svg>
+                                <span>{{ trans('blocks.unix.pdp_info.share') }}</span>
+                            </button>
+                        </salla-social-share>
+                    </div>
                 {% endif %}
             </div>
         </div>

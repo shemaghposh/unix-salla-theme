@@ -551,6 +551,17 @@
             "selected": true
         },
         {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "إظهار أزرار المشاركة في صفحة المنتج",
+            "description": "واتساب وإكس ونسخ الرابط تحت معلومات المنتج. مفعَّل افتراضيًا (Show WhatsApp, X and copy-link sharing on the product page; on by default).",
+            "id": "unix_pdp_share",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
             "id": "slider_background_size",
             "type": "items",
             "format": "dropdown-list",

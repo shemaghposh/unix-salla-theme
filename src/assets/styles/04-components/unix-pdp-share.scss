@@ -1,0 +1,90 @@
+/*
+ * UNIX PDP share (ROADMAP 6.6 · D135 · DS §8.21)
+ * Salla's <salla-social-share> (no shadow DOM, so its .s-social-share-* classes are styled here).
+ * Quiet: a text trigger «شاركي المنتج» with a line icon; the three platforms open inline next to it
+ * as 44px icon buttons in the action colour. No brand colours, no bounce (Salla's 1.4s item
+ * animation is switched off), no layout shift (the row height is the 44px tap target either way).
+ */
+.unix-pdp-share {
+  display: flex;
+  justify-content: center;
+  margin-block-start: var(--s-2);
+
+  .s-social-share-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-1);
+  }
+
+  // Salla's fallback trigger (English "Share" icon button) in case the slot polyfill renders it too.
+  salla-button.s-social-share-btn { display: none; }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-block-size: var(--tap);
+    padding-inline: var(--s-2);
+    border: 0;
+    border-radius: var(--r-sm);
+    background: transparent;
+    color: var(--c-text-muted);
+    font: inherit;
+    font-size: var(--t-small);
+    cursor: pointer;
+    transition: color var(--d-fast) var(--ease-out), background-color var(--d-fast) var(--ease-out);
+
+    svg {
+      inline-size: var(--icon-sm);
+      block-size: var(--icon-sm);
+      flex: none;
+    }
+
+    &:hover { color: var(--c-action); background: var(--c-hover-tint); }
+    &:active { background: var(--c-press-tint); }
+    &:disabled { opacity: var(--o-disabled); cursor: default; }
+    &[aria-expanded="true"] { color: var(--c-action); }
+  }
+
+  .s-social-share-list {
+    display: none;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    &.opened { display: flex; }
+  }
+
+  // Salla sets inline end-state opacity/transform when opening; only the keyframes are dropped.
+  .s-social-share-list-animate,
+  .s-social-share-item-animate { animation: none; }
+
+  .s-social-share-list a {
+    display: grid;
+    place-items: center;
+    inline-size: var(--tap);
+    block-size: var(--tap);
+    border-radius: var(--r-pill);
+    color: var(--c-action);
+    cursor: pointer;
+    transition: background-color var(--d-fast) var(--ease-out);
+
+    &:hover { background: var(--c-hover-tint); }
+    &:active { background: var(--c-press-tint); }
+  }
+
+  .s-social-share-icon {
+    display: grid;
+    place-items: center;
+    line-height: 0;
+
+    svg {
+      inline-size: var(--icon-sm);
+      block-size: var(--icon-sm);
+      fill: currentColor;
+    }
+  }
+}

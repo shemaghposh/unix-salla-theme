@@ -213,7 +213,10 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
                     {% endif %}
 
                     {% hook 'cart:summary-card.start' %}
+                    {# 6.6 (SALLA-TWILIGHT R7, HOOKS): the checkout button lives inside the summary card #}
+                    {% hook 'cart:submit.start' %}
                     <salla-cart-summary-card data-testid="store-cart-summary"></salla-cart-summary-card>
+                    {% hook 'cart:submit.end' %}
                     {% hook 'cart:summary-card.end' %}
                     {# ROADMAP 3.7: unix.sa cashback note, after the subtotal + checkout (SPEC §7.2 cashback-note-section) #}
                     {% include 'components.cart.unix-cashback-note' %}

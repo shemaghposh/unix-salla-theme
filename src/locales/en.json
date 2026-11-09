@@ -234,6 +234,10 @@
         "table": "Table, scroll to view"
       },
       "pdp_info": {
+        "share": "Share",
+        "share_whatsapp": "Share on WhatsApp",
+        "share_twitter": "Share on X",
+        "share_copy": "Copy product link",
         "shipping_note": "Shipping calculated at checkout.",
         "tax_shipping_note": "Tax included. Shipping calculated at checkout.",
         "add_to_cart": "Add to cart",

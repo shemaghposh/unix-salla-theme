@@ -7,6 +7,7 @@ import initSizeCharts from './partials/unix-size-charts'; // ROADMAP 3.4 (DS §8
 import initDeliveryEstimate from './partials/unix-delivery-estimate'; // ROADMAP 3.6 (DS §8.24)
 import initPdpRelated from './partials/unix-pdp-related'; // ROADMAP 3.9 (DS §8.27)
 import initBuyNow from './partials/unix-buy-now'; // ROADMAP 6.4 (D117, DS §8.21)
+import initPdpShare from './partials/unix-pdp-share'; // ROADMAP 6.6 (D135, DS §8.21)
 
 class Product extends BasePage {
     onReady() {
@@ -30,6 +31,8 @@ class Product extends BasePage {
         initDeliveryEstimate();
         // ROADMAP 3.9: «أكملي الإطلالة» + «قد يعجبك أيضًا» below the main section
         initPdpRelated();
+        // ROADMAP 6.6 (D135): Salla share menu with our trigger and labels
+        initPdpShare();
     }
 
     initProductOptionValidations() {
