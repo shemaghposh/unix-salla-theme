@@ -425,7 +425,8 @@ dashboard are not used (the status name carries the meaning).
                 <section class="unix-account-panel unix-order__rating">
                     <div class="unix-order__rating-body">
                         <h2 class="unix-order__h2">{{ unix_rating_type == 'store' ? trans('pages.rating.rate_the_store') : trans('pages.rating.rate_shipping') }}</h2>
-                        {% if unix_rating.content %}<div class="unix-order__rating-text">{{ unix_rating.content|raw }}</div>{% endif %}
+                        {# 6.1: shopper-written review text, so tags are stripped before |raw (entities stay readable; SALLA-TWILIGHT R5) #}
+                        {% if unix_rating.content %}<div class="unix-order__rating-text">{{ unix_rating.content|striptags|raw }}</div>{% endif %}
                         <salla-rating-stars with-label value="{{ unix_rating.stars }}"></salla-rating-stars>
                     </div>
                     {% if store.settings.rating.allow_update %}

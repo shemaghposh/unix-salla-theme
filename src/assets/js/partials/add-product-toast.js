@@ -1,3 +1,8 @@
+// Theme strings are bundled (salla.lang has no theme keys in the browser, LESSONS 2); static member
+// chains so webpack keeps only the strings used here.
+import arLocale from '../../../locales/ar.json';
+import enLocale from '../../../locales/en.json';
+
 class AddToCartToast extends HTMLElement {
   constructor() {
     super();
@@ -150,6 +155,11 @@ class AddToCartToast extends HTMLElement {
   }
 
 
+  getCloseLabel() {
+    const isEn = (document.documentElement.lang || 'ar').toLowerCase().startsWith('en');
+    return (isEn ? enLocale.blocks.unix.toast.close : arLocale.blocks.unix.toast.close) || 'Close';
+  }
+
   escapeHTML(str = "") {
     return String(str ?? "")
       .replace(/&/g, "&amp;")
@@ -183,7 +193,7 @@ class AddToCartToast extends HTMLElement {
           <img src="${this.escapeHTML(this.checkIconUrl)}" alt="" width="16" height="16" class="s-add-product-toast__icon" />
           <span class="s-add-product-toast__title">${this.successMessage}</span>
         </div>
-        <button type="button" class="s-add-product-toast__close" aria-label="Close"><i class="sicon-cancel"></i></button>
+        <button type="button" class="s-add-product-toast__close" aria-label="${this.escapeHTML(this.getCloseLabel())}"><i class="sicon-cancel" aria-hidden="true"></i></button>
       </div>
       <div class="s-add-product-toast__divider"></div>
       <div class="s-add-product-toast__body">

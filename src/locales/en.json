@@ -15,6 +15,9 @@
         "wishlist": "Save :name",
         "sold_out": "Sold out"
       },
+      "toast": {
+        "close": "Close notification"
+      },
       "announcement": {
         "label": "Store announcements",
         "pause": "Pause announcements",

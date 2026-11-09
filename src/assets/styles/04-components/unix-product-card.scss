@@ -12,6 +12,13 @@
 // Secondary image (product-card.js renders it only inside .unix-products): never shown elsewhere.
 .s-product-card-image-secondary { display: none; }
 
+// 6.1 (LESSONS 23): on every card (UNIX rows, brand page, wishlist…) badges sit next to the
+// aria-hidden image link, not inside it, so screen readers still hear «نفدت الكمية»; clicks pass
+// through to the link underneath.
+.s-product-card-entry :is(.s-product-card-promotion-title, .s-product-card-quantity, .s-product-card-out-badge) {
+  pointer-events: none;
+}
+
 .unix-products {
   // Gap between the --tap hit area and the visible --s-5 chip of the touch quick add (6.4)
   --_chip-inset: calc((var(--tap) - var(--s-5)) / 2);
@@ -91,12 +98,6 @@
     line-height: var(--s-5);
     white-space: nowrap;
     text-overflow: ellipsis;
-  }
-
-  // 6.1 (LESSONS 23): badges sit next to the aria-hidden image link, not inside it, so screen readers
-  // still hear «نفدت الكمية»; clicks pass through to the link underneath.
-  .s-product-card-entry :is(.s-product-card-promotion-title, .s-product-card-quantity, .s-product-card-out-badge) {
-    pointer-events: none;
   }
 
   // Out of quiet scope on the card (DS §8.3: no stars; one calm line of price)
