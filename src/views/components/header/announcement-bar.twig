@@ -3,7 +3,8 @@
   Matches unix.sa (reference/shopify-theme/sections/announcement-bar.liquid + header-group.json):
   fixed 40px, messages slide vertically (next enters from below, current exits upward),
   4s dwell (--d-announce), 0.8s slide (--d-announce-slide), loop. Driven by
-  src/assets/js/partials/unix-announcement.js; pauses on hover, focus and hidden tab (DS §12).
+  src/assets/js/partials/unix-announcement.js; a visible pause/play button (WCAG 2.2.2) stops it
+  until pressed again, and it also pauses on hover, focus and hidden tab (DS §8.6, §12).
   Settings (twilight.json):
     unix_announcement_enabled          boolean  show/hide the bar (true until saved)
     unix_announcement_{1,2}_text       string   multilanguage, one line
@@ -52,11 +53,8 @@
   {% set rotates = announcement_items|length > 1 %}
   <div class="unix-announcement" role="region"
        aria-label="{{ trans('blocks.unix.announcement.label') }}"
-       {% if rotates %}data-unix-announcement tabindex="0" aria-describedby="unix-announcement-hint"{% endif %}>
-    {% if rotates %}
-      <span id="unix-announcement-hint" class="sr-only">{{ trans('blocks.unix.announcement.pause_hint') }}</span>
-    {% endif %}
-    <div class="unix-container">
+       {% if rotates %}data-unix-announcement{% endif %}>
+    <div class="unix-container unix-announcement__inner">
       <ul class="unix-announcement__track" role="list">
         {% for item in announcement_items %}
           <li class="unix-announcement__item{{ loop.first ? ' is-active' }}">
@@ -68,6 +66,21 @@
           </li>
         {% endfor %}
       </ul>
+      {# WCAG 2.2.2 (A11Y R18.1): a visible pause control, fixed name + aria-pressed (R15.2).
+         Hidden until unix-announcement.js wires it, so no dead button without JS. #}
+      {% if rotates %}
+        <button type="button" class="unix-announcement__toggle" data-unix-announcement-toggle hidden
+                aria-label="{{ trans('blocks.unix.announcement.pause') }}" aria-pressed="false">
+          <svg class="unix-announcement__toggle-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+               fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M9 6v12M15 6v12"/>
+          </svg>
+          <svg class="unix-announcement__toggle-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+               fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+            <path d="M8 5.5v13l10.5-6.5z"/>
+          </svg>
+        </button>
+      {% endif %}
     </div>
   </div>
 {% endif %}

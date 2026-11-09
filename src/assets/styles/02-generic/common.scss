@@ -1,5 +1,15 @@
 html {
   scroll-behavior: smooth;
+  // WCAG 2.4.11 Focus Not Obscured (A11Y §1, technique C43): an element scrolled into view by focus
+  // or an anchor never lands under the fixed header (unix-header.scss, --header-h) or, on the PDP
+  // below 576, under the sticky add-to-cart bar (unix-sticky-atc.scss, --sticky-atc-h).
+  scroll-padding-block-start: var(--header-h);
+
+  @media (max-width: 575px) {
+    &:has(.unix-sticky-atc) { scroll-padding-block-end: var(--sticky-atc-h); }
+  }
+
+  @media (prefers-reduced-motion: reduce) { scroll-behavior: auto; }
 }
 
 // using salla.document.onClick(...), become effective when all children are none pointer events.
@@ -295,21 +305,28 @@ salla-modal {
   }
 }
 
-// Collapse component using CSS Grid
+// Collapse component using CSS Grid (PDP add-note / upload-file, .btn--collapse in app.js).
+// Closed = visibility hidden too, so the textarea and upload aren't tab stops while invisible
+// (6.3, WCAG 2.4.7 / 4.1.2). Tokens and logical sizes (LESSONS 21).
 .collapse-content {
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transition: grid-template-rows 225ms ease-out, opacity 225ms ease-out;
+  visibility: hidden;
+  transition: grid-template-rows var(--d-base) var(--ease-out),
+              opacity var(--d-base) var(--ease-out),
+              visibility 0s linear var(--d-base);
 
   > * {
     overflow: hidden;
-    min-height: 0;
+    min-block-size: 0;
   }
 
   &.is-opened {
     grid-template-rows: 1fr;
     opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
   }
 }
 

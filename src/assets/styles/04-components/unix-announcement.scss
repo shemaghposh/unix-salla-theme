@@ -4,6 +4,8 @@
  * Messages share one grid cell and slide vertically like unix.sa: waiting messages sit one
  * bar-height below, the active one at 0, the leaving one one bar-height above. The track clips
  * them; all stay in the a11y tree (the JS brings a focused link's message into view).
+ * The pause/play toggle (WCAG 2.2.2) sits at the inline end; its hit area is --tap × --tap (D114),
+ * reaching below the 40px bar, so the bar itself doesn't clip (the track does).
  */
 .unix-announcement {
   block-size: var(--announce-h);
@@ -11,11 +13,63 @@
   color: var(--c-announce-text);
   font-size: var(--t-small);
   line-height: var(--announce-h);
-  overflow: hidden;
+  position: relative;
+  z-index: 1; // keeps the toggle's hit area above the header bar's top edge
 
-  &:focus-visible {
-    outline: var(--ring-w) solid currentColor;
-    outline-offset: calc(var(--ring-w) * -1);
+  &__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  // From 576 the track gets a matching start inset so the message stays truly centred.
+  @media (min-width: 576px) {
+    &:has(.unix-announcement__toggle:not([hidden])) .unix-announcement__track {
+      padding-inline-start: var(--tap);
+    }
+  }
+
+  &__toggle {
+    position: relative;
+    display: grid;
+    place-items: center;
+    inline-size: var(--tap);
+    block-size: var(--announce-h);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: opacity var(--d-fast) var(--ease-out);
+
+    // 44 × 44 hit area (D114): the bar is 40px, so the target reaches down past it.
+    &::before {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      inset-block: 0 calc(var(--announce-h) - var(--tap));
+    }
+
+    &[hidden] { display: none; }
+    &:hover { opacity: var(--o-muted); }
+    &:active { opacity: var(--o-disabled); }
+    &:disabled { opacity: var(--o-disabled); cursor: default; }
+    &:focus-visible {
+      outline: var(--ring-w) solid currentColor;
+      outline-offset: calc(var(--ring-w) * -1);
+    }
+
+    svg {
+      inline-size: var(--icon-sm);
+      block-size: var(--icon-sm);
+    }
+
+    .unix-announcement__toggle-play { display: none; }
+    // Fixed name, aria-pressed="true" while paused: only the icon swaps (A11Y R15.2).
+    &[aria-pressed="true"] {
+      .unix-announcement__toggle-pause { display: none; }
+      .unix-announcement__toggle-play { display: block; }
+    }
   }
 
   &__track {

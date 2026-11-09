@@ -217,10 +217,14 @@ isElementLoaded(selector){
         if (!content) return;
 
         const state = { isOpen: false }
+        // WCAG 4.1.2 (A11Y R9.1): the trigger announces what it controls and whether it is open.
+        trigger.setAttribute('aria-controls', content.id);
+        trigger.setAttribute('aria-expanded', 'false');
 
         const toggleState = (isOpen) => {
           state.isOpen = !isOpen;
           this.toggleElementClassIf([content, trigger], 'is-closed', 'is-opened', () => isOpen);
+          trigger.setAttribute('aria-expanded', String(state.isOpen));
         }
 
         trigger.addEventListener('click', () => {

@@ -139,6 +139,8 @@
   --header-h: 60px;   /* every width, like unix.sa .header min-height 6rem (6.4; was 72px from lg) */
   --logo-w: 100px;  /* < 576: unix.sa .header__heading-logo max-width 10rem (6.4); 120px from 576 */
   --tap: 44px;
+  /* mobile sticky add-to-cart bar (< 576, DS §8.21): button + its block padding + top border; scroll-padding-block-end (6.3, WCAG 2.4.11) */
+  --sticky-atc-h: calc(var(--btn-h) + 2 * var(--s-4) + var(--line-w));
   --swatch-size: 48px; /* colour swatch target, unix.sa mpg-swatch outer circle (DS §8.28, D133) */
   --swatch-dot: 42px;  /* colour circle inside it (DS §8.28, D133) */
   --icon-sm: 20px;

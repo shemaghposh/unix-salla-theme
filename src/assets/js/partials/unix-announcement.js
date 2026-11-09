@@ -3,8 +3,10 @@
  * Matches unix.sa (Swiper vertical, 4s delay, 0.8s speed, loop) in vanilla JS + CSS:
  * the next message enters from below while the current one exits upward.
  * Dwell = --d-announce, slide = --d-announce-slide (unix-tokens.scss; the slide is 0ms under
- * prefers-reduced-motion, so messages swap instantly). Pauses while the bar is hovered, while
- * focus is inside it and while the tab is hidden (DS §12).
+ * prefers-reduced-motion, so messages swap instantly). A visible pause/play button
+ * ([data-unix-announcement-toggle], fixed name + aria-pressed) stops rotation until it is pressed
+ * again, for as long as the page is open (WCAG 2.2.2, A11Y R18.1). It also pauses while the bar is
+ * hovered, while focus is inside it and while the tab is hidden (DS §8.6, §12).
  */
 const toMs = value => {
   const n = parseFloat(value);
@@ -26,6 +28,7 @@ export default function initAnnouncement(root = document.querySelector('[data-un
   let timer = null;
   let hovered = false;
   let focused = false;
+  let paused = false; // set by the toggle button only; survives hover/focus/visibility changes
 
   const show = next => {
     if (next === index || next < 0) return;
@@ -46,7 +49,7 @@ export default function initAnnouncement(root = document.querySelector('[data-un
   // (hover, focus, hidden tab) waits a full `dwell` again, like Swiper's autoplay resume.
   const schedule = (afterSlide = false) => {
     stop();
-    if (hovered || focused || document.hidden) return;
+    if (paused || hovered || focused || document.hidden) return;
     timer = setTimeout(() => {
       show((index + 1) % items.length);
       schedule(true);
@@ -68,6 +71,16 @@ export default function initAnnouncement(root = document.querySelector('[data-un
     schedule();
   });
   document.addEventListener('visibilitychange', () => schedule());
+
+  const toggle = root.querySelector('[data-unix-announcement-toggle]');
+  if (toggle) {
+    toggle.hidden = false;
+    toggle.addEventListener('click', () => {
+      paused = !paused;
+      toggle.setAttribute('aria-pressed', String(paused));
+      schedule(); // stops when paused; resumes after a full dwell otherwise (focus still pauses it)
+    });
+  }
 
   schedule();
 }

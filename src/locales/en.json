@@ -17,7 +17,7 @@
       },
       "announcement": {
         "label": "Store announcements",
-        "pause_hint": "Announcements rotate automatically. Move focus to this bar to pause them.",
+        "pause": "Pause announcements",
         "default_1": "Our new collection has arrived: Sailor, Halo Back and Soft Angle",
         "default_2": "Free shipping across Saudi Arabia on orders over SAR :amount"
       },
