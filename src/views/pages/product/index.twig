@@ -40,7 +40,7 @@
 	{% set has_category = category is defined and category and category.name|default('') %}
 	{% set banner_desc = '' %}
 	{% if has_category and theme.settings.get('unix_collection_show_description', true) %}
-		{% set banner_desc = category.description|default('')|trim %}
+		{% set banner_desc = category.description|default('')|replace({'<h1': '<h2', '<H1': '<h2', '</h1>': '</h2>', '</H1>': '</h2>'})|trim %}{# 6.3: keep the category name the only h1 #}
 	{% endif %}
 	{% set banner_img = '' %}
 	{% if has_category and theme.settings.get('unix_collection_show_image', false) %}

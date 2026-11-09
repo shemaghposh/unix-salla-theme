@@ -38,9 +38,10 @@ is the page's single h1; its description is body text (Raed had it in an h2).
             {# decorative next to the h1 brand name; it is the LCP image when there is no banner #}
             <img class="unix-brands__logo w-40 h-24 object-contain p-4 shrink-0" src="{{ brand.logo }}" width="160" height="96"
                  {% if brand.banner %}loading="lazy"{% else %}loading="eager"{% endif %} alt="">
-            <div class="px-5 pt-3 rtl:text-right">
+            <div class="px-5 pt-3 text-start">
                 <h1 class="unix-brands__title">{{ brand.name }}</h1>
-                <div class="unix-brands__desc">{{ brand.description|raw }}</div>
+                {# 6.3: an h1 in the merchant's brand description becomes h2 (single h1) #}
+                <div class="unix-brands__desc">{{ brand.description|default('')|replace({'<h1': '<h2', '<H1': '<h2', '</h1>': '</h2>', '</H1>': '</h2>'})|raw }}</div>
             </div>
         </header>
 
