@@ -187,17 +187,19 @@ class AddToCartToast extends HTMLElement {
       </div>
       <div class="s-add-product-toast__divider"></div>
       <div class="s-add-product-toast__body">
-        <a href="${this.product.url}" class="s-add-product-toast__image">
-          <img src="${this.product.image}" alt="${this.escapeHTML(this.product.name)}" loading="lazy" />
+        <a href="${this.escapeHTML(this.product.url)}" class="s-add-product-toast__image">
+          <img src="${this.escapeHTML(this.product.image)}" alt="${this.escapeHTML(this.product.name)}" loading="lazy" />
         </a>
         <div class="s-add-product-toast__details">
-          <a href="${this.product.url}" class="s-add-product-toast__name">${this.escapeHTML(this.product.name)}</a>
+          <a href="${this.escapeHTML(this.product.url)}" class="s-add-product-toast__name">${this.escapeHTML(this.product.name)}</a>
           ${visibleOptions.length ? `
             <div class="s-add-product-toast__options">
               ${visibleOptions.map(opt => 
-                opt.hideValue ? `<span>${opt.name}</span>` : `<span>${opt.name}: ${opt.value}</span>`
+                opt.hideValue
+                  ? `<span>${this.escapeHTML(opt.name)}</span>`
+                  : `<span>${this.escapeHTML(opt.name)}: ${this.escapeHTML(opt.value)}</span>`
               ).join("")}
-              ${showMoreButton ? `<a href="${this.cartUrl}" class="s-add-product-toast__show-more">${this.showMoreText}</a>` : ""}
+              ${showMoreButton ? `<a href="${this.escapeHTML(this.cartUrl)}" class="s-add-product-toast__show-more">${this.showMoreText}</a>` : ""}
             </div>
           ` : ""}
         </div>

@@ -11,6 +11,7 @@ Format: what went wrong · the rule now · how to check · commit.
 4. **Carousel navigation didn't attach when a tab rendered late.** · Rule: wait for `componentOnReady()` and retry once per instance; never assume a web component is upgraded at `DOMContentLoaded`. · ebc5464, bfa39b0
 5. **Checkout button could stay locked.** Listeners were added on every render, and a failed request never released the lock. · Rule: register listeners once, release on `.catch`, add a timeout (15s), and release on `pageshow` (bfcache). · fc06a49, b058ba7
 6. **Product card heart styled the outer host, not the real button.** · Rule: style and set `aria-pressed` on the inner `<button>` that receives focus, and revert the state if the API call fails. · e465d64
+22. **Merchant text went into `innerHTML` unescaped.** The add-to-cart toast printed option names and values (`${opt.name}: ${opt.value}`), and the product card printed the name, subtitle, preorder label and promotion title raw, so a merchant-entered `<img onerror>` would run (Salla TECH 2.4). · Rule: every API string or URL interpolated into a JS template goes through the component's `escapeHTML()`, attributes included; only theme-owned strings and `salla.money()` output skip it. · Check: `grep -n '\${this.product\|\${opt' src/assets/js/partials/*.js` and confirm each hit is wrapped. · 6.1 KB audit (2026-11-09)
 
 ## Twig
 7. **A nested Twig comment turned a usage example into a live self-include.** Twig comments don't nest; `{# … {# … #} … #}` closes early. · Rule: never put `{# #}` inside a comment. · Check: `pnpm twig:check`. · d9d4a01, 51f192e
@@ -30,6 +31,7 @@ Format: what went wrong · the rule now · how to check · commit.
 ## Accessibility
 16. **Touch targets under 44px on cards and filters.** · Rule: 44×44px minimum hit area in AR and EN (D114). · ebb078c
 17. **Sold-out state was shown with opacity and greyscale only.** Low contrast, and colour isn't enough. · Rule: sold-out uses `--c-text-muted` plus text («نفدت الكمية»), never opacity. · 35a6e31, 0c2f657
+23. **Product card had two or three tab stops to the same URL, and the first was named by the merchant's image alt** («IMG_2041»). · Rule: one focusable link per card, named by the product name (the title link); the image link and the full-image overlay link are `tabindex="-1" aria-hidden="true"` (A11Y R17.1–17.2). · Check: `grep -n 'href="\${' src/assets/js/partials/product-card.js`. · 6.1 KB audit (2026-11-09)
 
 ## Performance
 18. **The LCP image path pointed to a size Salla's CDN didn't serve well.** · Rule: images go through `|cdn(width)` with a real `srcset`; preconnects come before stylesheets in `master.twig`. · 27abcc0

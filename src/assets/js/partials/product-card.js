@@ -63,11 +63,11 @@ class ProductCard extends HTMLElement {
     }
 
     if (this.product?.preorder?.label) {
-      return `<div class="s-product-card-promotion-title">${this.product.preorder.label}</div>`
+      return `<div class="s-product-card-promotion-title">${this.escapeHTML(this.product.preorder.label)}</div>`
     }
 
     if (this.product.promotion_title) {
-      return `<div class="s-product-card-promotion-title">${this.product.promotion_title}</div>`
+      return `<div class="s-product-card-promotion-title">${this.escapeHTML(this.product.promotion_title)}</div>`
     }
     if (this.showQuantity && this.product?.quantity) {
       return `<div
@@ -268,21 +268,21 @@ class ProductCard extends HTMLElement {
       : this.product.status;
       this.innerHTML = `
         <div class="${!this.fullImage ? 's-product-card-image' : 's-product-card-image-full'}">
-          <a href="${this.product?.url}" aria-label="${this.escapeHTML(this.product?.image?.alt || this.product.name)}">
+          <a href="${this.escapeHTML(this.product?.url)}" tabindex="-1" aria-hidden="true">
            <img 
               class="s-product-card-image-${salla.url.is_placeholder(this.product?.image?.url)
                 ? 'contain'
                 : this.fitImageHeight
                 ? this.fitImageHeight
                 : 'cover'}"
-              src="${this.product?.image?.url || this.product?.thumbnail || this.placeholder || ''}"
+              src="${this.escapeHTML(this.product?.image?.url || this.product?.thumbnail || this.placeholder || '')}"
               alt="${this.escapeHTML(this.product?.image?.alt || this.product.name)}"
               loading="lazy"
             />
             ${this.getSecondaryImage()}
             ${!this.fullImage && !this.minimal ? this.getProductBadge() : ''}
           </a>
-          ${this.fullImage ? `<a href="${this.product?.url}" aria-label="${this.escapeHTML(this.product.name)}" class="s-product-card-overlay"></a>`:''}
+          ${this.fullImage ? `<a href="${this.escapeHTML(this.product?.url)}" tabindex="-1" aria-hidden="true" class="s-product-card-overlay"></a>`:''}
           ${!this.horizontal && !this.fullImage ?
             `<salla-button
               shape="icon"
@@ -314,11 +314,11 @@ class ProductCard extends HTMLElement {
           <div class="s-product-card-content-main ${this.isSpecial ? 's-product-card-content-extra-padding' : ''}">
             ${this.getVendor()}
             <h3 class="s-product-card-content-title">
-              <a href="${this.product?.url}">${this.product?.name}</a>
+              <a href="${this.escapeHTML(this.product?.url)}">${this.escapeHTML(this.product?.name)}</a>
             </h3>
 
             ${this.product?.subtitle && !this.minimal ?
-              `<p class="s-product-card-content-subtitle opacity-80">${this.product?.subtitle}</p>`
+              `<p class="s-product-card-content-subtitle opacity-80">${this.escapeHTML(this.product?.subtitle)}</p>`
               : ``}
           </div>
           ${this.product?.donation && !this.minimal && !this.fullImage ?
