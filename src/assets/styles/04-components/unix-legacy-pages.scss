@@ -65,6 +65,9 @@
 }
 
 // ── Loyalty ────────────────────────────────────────
+/* 6.1: the decorative darkening over the loyalty banner image (was Raed's bg-black opacity-50) */
+.unix-loyalty-overlay { background-color: var(--c-backdrop); }
+
 .unix-loyalty {
   .loyalty__banner { border-radius: var(--r-md); }
 

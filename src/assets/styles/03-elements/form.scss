@@ -11,8 +11,7 @@ input[type="radio"] {
 }
 
 input[type="text"]:disabled {
-  //background: #f9f9f9;
-  color: #838383;
+  color: var(--c-text-muted);
 }
 
 .form-label {

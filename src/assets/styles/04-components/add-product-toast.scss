@@ -1,11 +1,12 @@
 .s-add-product-toast {
-  @apply fixed z-[9999] flex flex-col gap-4 bg-white shadow-default overflow-hidden w-screen p-5;
-  top: 0;
-  left: 0;
-  right: 0;
+  @apply fixed z-[9999] flex flex-col gap-4 overflow-hidden w-screen p-5;
+  inset-block-start: 0;
+  inset-inline: 0;
+  background-color: var(--c-bg);
+  box-shadow: var(--e-2);
   opacity: 0;
   transform: translateY(-100%);
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  transition: opacity var(--d-base) var(--ease-out), transform var(--d-base) var(--ease-out);
 
   &.s-add-product-toast--visible {
     opacity: 1;
@@ -13,13 +14,14 @@
   }
 
   @media (min-width: 768px) {
-    @apply w-[400px] rounded-lg;
-    top: 1rem;
-    left: auto;
-    right: auto;
+    @apply w-[400px];
+    border-radius: var(--r-sm);
+    inset-block-start: var(--s-4);
+    inset-inline-start: auto;
+    inset-inline-end: var(--s-4);
 
+    // slides in from the inline-end edge (transform has no logical form, so the sign follows dir)
     [dir="rtl"] & {
-      left: 1rem;
       transform: translateX(-100%);
 
       &.s-add-product-toast--visible {
@@ -28,7 +30,6 @@
     }
 
     [dir="ltr"] & {
-      right: 1rem;
       transform: translateX(100%);
 
       &.s-add-product-toast--visible {
@@ -38,11 +39,13 @@
   }
 
   &__progress {
-    @apply h-2 w-full bg-gray-100;
+    @apply h-2 w-full;
+    background-color: var(--c-surface-muted);
   }
 
   &__progress-bar {
-    @apply h-full bg-green-500;
+    @apply h-full;
+    background-color: var(--c-success);
     transition: width 50ms linear;
   }
 

@@ -38,9 +38,9 @@ unix-legacy-pages.scss); the decorative stars are hidden from screen readers.
 {% extends "layouts.master" %}
 
 {% block content %}
-    <div class="h-62 -mb-52 w-full bg-primary rtl:right-0 ltr:left-0 relative -z-1 bg-cover bg-no-repeat bg-center"
+    <div class="h-62 -mb-52 w-full bg-primary start-0 relative -z-1 bg-cover bg-no-repeat bg-center"
          style="background-image:url({{ loyalty.image }})">
-        <div class="overlay h-full w-full bg-black opacity-50 absolute top-0 left-0"></div>
+        <div class="overlay unix-loyalty-overlay absolute inset-0"></div>
     </div>
     <div class="container space-y-8 lg:space-y-16 unix-loyalty">
         {# Breadcrumbs #}
@@ -101,12 +101,12 @@ unix-legacy-pages.scss); the decorative stars are hidden from screen readers.
                         {% if user.type == 'user' %}
                             <div class="way-item__action">
                                 {% if point.type == 'share' %}
-                                    <div class="border relative border-primary rounded-3xl h-[34px] text-center pr-14 pl-5">
+                                    <div class="border relative border-primary rounded-3xl h-[34px] text-center ps-14 pe-5">
                                         <salla-button
                                                 onclick="app.copyToClipboard(event)"
                                                 shape="link"
                                                 data-content="{{ point.url }}"
-                                                class="absolute w-12 top-0 right-0 h-full px-3 !pt-1 border-l border-primary hover:opacity-80"
+                                                class="absolute w-12 top-0 start-0 h-full px-3 !pt-1 border-e border-primary hover:opacity-80"
                                                 title="{{ trans('pages.loyalty_program.copy_link') }}">
                                             <i class="copy-icon sicon-swap-fill"></i>
                                         </salla-button>

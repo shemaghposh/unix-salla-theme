@@ -19,7 +19,9 @@
 }
 
 .s-file-upload-profile-image .s-file-upload-has-error .filepond--file-status{
-  @apply ltr:-left-1/2 rtl:right-1/2;
+  // Raed's offsets kept as they were (LTR -50%, RTL +50% from the inline-start edge), now logical
+  [dir=ltr] & { inset-inline-start: -50%; }
+  [dir=rtl] & { inset-inline-start: 50%; }
 }
 
 /* Profile additional fields */
@@ -31,14 +33,17 @@
     }
     .filepond--drop-label {
       min-height: 120px !important;
-      @apply bg-white cursor-pointer border-dashed rounded-md border border-gray-200;
+      @apply cursor-pointer;
+      background-color: var(--c-bg);
+      border: var(--line-w) dashed var(--c-border);
+      border-radius: var(--r-sm);
     }
     .profile-filepond-placholder{
       @apply flex flex-col justify-center items-center;
       &-icon {
         @apply mb-1;
         i {
-          color: #7c8082;
+          color: var(--c-text-muted);
           @apply text-xl;
         }
       }

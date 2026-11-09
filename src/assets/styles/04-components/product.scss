@@ -44,7 +44,7 @@
 // Digital Rating(SVG)---------------------------
 .s-product-card-content-pie-svg-base{ 
   transition: stroke-dashoffset 1s linear;
-  stroke: #E8EDF2;
+  stroke: var(--c-border);
   stroke-width: 2px;
   stroke-linecap: round;
   fill: none;
@@ -109,14 +109,17 @@
     }
     .filepond--drop-label {
       min-height: 120px !important;
-      @apply bg-white cursor-pointer border-dashed rounded-md border border-gray-200;
+      @apply cursor-pointer;
+      background-color: var(--c-bg);
+      border: var(--line-w) dashed var(--c-border);
+      border-radius: var(--r-sm);
     }
     .product-option-uploader-placholder{
       @apply flex flex-col justify-center items-center;
       &-icon {
         @apply mb-1;
         i {
-          color: #7c8082;
+          color: var(--c-text-muted);
           @apply text-xl;
         }
       }

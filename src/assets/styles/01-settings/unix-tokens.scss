@@ -371,8 +371,7 @@ html[lang="en"] .theme-unix :is(h1, h2, h3, h4) { letter-spacing: -.01em; }
 
 /* Cards & media (DS §4, §8.3): radius, no shadows on images */
 .theme-unix .s-product-card-entry,
-.theme-unix .s-product-card-image,
-.theme-unix .banner-entry {
+.theme-unix .s-product-card-image {
   border-radius: var(--r-md);
   overflow: hidden;
   box-shadow: var(--e-0);

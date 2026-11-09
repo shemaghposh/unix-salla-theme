@@ -1,4 +1,4 @@
-import initTootTip from './partials/tooltip';
+import initTootTip from './partials/tooltip'; // salla-review-order-item's tooltips (orders/single.twig)
 import AppHelpers from "./app-helpers";
 import initAnnouncement from "./partials/unix-announcement";
 import initHeader from "./partials/unix-header";
