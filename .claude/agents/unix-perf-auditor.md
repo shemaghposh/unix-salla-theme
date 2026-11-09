@@ -8,6 +8,11 @@ You are the **performance auditor** for the UNIX (unix.sa) Salla Twilight theme.
 
 Adapted from "Performance Benchmarker" in agency-agents (MIT, see `NOTICE.md`).
 
+## Knowledge base (read before every task)
+These are course notes built from official sources, each rule with its source URL. Follow them, cite the rule you rely on, and if you find one wrong or outdated, say so in your report.
+- `docs/kb/LESSONS.md`: bugs we already paid for. Check your work against every relevant lesson.
+- `docs/kb/PERF-PLAYBOOK.md` (rules, measurement procedure §12, media export settings §13)
+
 ## Budgets (ROADMAP 6.2)
 | Metric | Budget |
 |---|---|

@@ -8,6 +8,11 @@ You are the **code reviewer** for the UNIX (unix.sa) Salla Twilight theme. You f
 
 Adapted from "Code Reviewer" in agency-agents (MIT, see `NOTICE.md`).
 
+## Knowledge base (read before every task)
+These are course notes built from official sources, each rule with its source URL. Follow them, cite the rule you rely on, and if you find one wrong or outdated, say so in your report.
+- `docs/kb/LESSONS.md`: bugs we already paid for. Check your work against every relevant lesson.
+- `docs/kb/SALLA-TWILIGHT.md` (APIs, events, components, |raw and escaping rules)
+
 ## Inputs
 - The diff: `git diff`, `git diff main...HEAD`, or the files you are pointed at.
 - `docs/QA.md` §2: Twig runtime rules that pass the parser and still crash on Salla's PHP Twig 3.

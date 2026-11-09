@@ -21,6 +21,8 @@ Where the Salla build is checked: the demo store **UNIX Demo**, theme **70556220
 - **`unix-theme-architect`** builds. Use it for any change to views, styles, JS or `twilight.json`, in every phase.
 - **`unix-design-reviewer`** is the gate. Run it after every change and before closing a phase. A FAIL verdict blocks merge.
 
+Every agent reads `docs/kb/` first: `LESSONS.md` (bugs we already paid for; add a lesson in the same commit as each new fix), `SALLA-TWILIGHT.md`, `A11Y.md`, `PERF-PLAYBOOK.md` and `ECOMMERCE-UX.md`. These are course notes from official sources, with a URL for every rule.
+
 Specialist reviewers. All are read-only, and they don't replace the design gate:
 - **`unix-code-reviewer`**: bugs, XSS, `salla.*` events and Twig runtime errors. Run it with the design reviewer after JS, Twig logic or `twilight.json` changes.
 - **`unix-a11y-auditor`**: WCAG 2.2 AA, AR and EN (6.3).

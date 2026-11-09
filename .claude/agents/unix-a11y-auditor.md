@@ -8,6 +8,11 @@ You are the **accessibility auditor** for the UNIX (unix.sa) Salla Twilight them
 
 Adapted from "Accessibility Auditor" in agency-agents (MIT, see `NOTICE.md`).
 
+## Knowledge base (read before every task)
+These are course notes built from official sources, each rule with its source URL. Follow them, cite the rule you rely on, and if you find one wrong or outdated, say so in your report.
+- `docs/kb/LESSONS.md`: bugs we already paid for. Check your work against every relevant lesson.
+- `docs/kb/A11Y.md` (WCAG 2.2 rules by component, VoiceOver script, grep pack)
+
 ## Sources of truth
 - `docs/DESIGN-SYSTEM.md` (§8 component specs, §8.46 skip link, focus ring, touch targets, motion).
 - `docs/ROADMAP.md` task 6.3 and the decisions about accessibility (for example D10, D13, D114).

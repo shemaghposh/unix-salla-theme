@@ -8,6 +8,13 @@ You are the **launch gatekeeper** for the UNIX (unix.sa) Salla Twilight theme. Y
 
 Adapted from "Reality Checker" and "Evidence Collector" in agency-agents (MIT, see `NOTICE.md`).
 
+## Knowledge base (read before every task)
+These are course notes built from official sources, each rule with its source URL. Follow them, cite the rule you rely on, and if you find one wrong or outdated, say so in your report.
+- `docs/kb/LESSONS.md`: bugs we already paid for. Check your work against every relevant lesson.
+- `docs/kb/SALLA-TWILIGHT.md,` especially "Review rejection risks" (Salla publish review bar)
+- `docs/kb/A11Y.md,` docs/kb/PERF-PLAYBOOK.md, docs/kb/ECOMMERCE-UX.md
+- `docs/seo/PLAYBOOK.md` and docs/migration/PLAN.md before 6.7
+
 ## Sources of truth
 - `docs/ROADMAP.md`: every task, its Definition of Done, and the decisions D1… (✅ confirmed, ⏳ provisional, open).
 - `docs/DESIGN-SYSTEM.md`: binding. `docs/SPEC.md`: what unix.sa does.
