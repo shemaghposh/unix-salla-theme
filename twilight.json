@@ -1216,8 +1216,8 @@
         {
             "key": "7c1e4b2a-9f3d-4e6a-b8c5-2d1f0a9e3b71",
             "title": {
-                "en": "UNIX hero",
-                "ar": "يونكس: الواجهة الرئيسية (Hero)"
+                "en": "UNIX · Hero",
+                "ar": "يونكس · الواجهة الرئيسية"
             },
             "icon": "sicon-image",
             "path": "home.unix-hero",
@@ -1476,8 +1476,8 @@
         {
             "key": "e3a95d40-6b2c-4f18-9a7e-5c0d8b1f2a64",
             "title": {
-                "en": "UNIX offer strip",
-                "ar": "يونكس: شريط العرض"
+                "en": "UNIX · Offer strip",
+                "ar": "يونكس · شريط العرض"
             },
             "icon": "sicon-format-text-alt",
             "path": "home.unix-offer-strip",
@@ -1631,8 +1631,8 @@
         {
             "key": "7d1f3c52-8a4e-4b6f-9c21-5e0a7b1d2c43",
             "title": {
-                "en": "UNIX · Products with tabs",
-                "ar": "يونكس · منتجات بتبويبات (المفضلة دائما)"
+                "en": "UNIX · Products in tabs",
+                "ar": "يونكس · منتجات في تبويبات"
             },
             "icon": "sicon-list-play",
             "path": "home.unix-products-tabs",
@@ -1910,8 +1910,8 @@
         {
             "key": "c7a1e2d4-3b5f-4e8a-9c21-5d4f0a7b2e14",
             "title": {
-                "en": "UNIX · Collection over image (New from UNIX)",
-                "ar": "يونكس · تصنيف فوق صورة (جديد من يونكس)"
+                "en": "UNIX · Collection on an image",
+                "ar": "يونكس · تصنيف على صورة"
             },
             "icon": "sicon-image",
             "path": "home.unix-collection-overlay",
@@ -2025,8 +2025,8 @@
         {
             "key": "e3b9d6f1-8a2c-4f7e-b5d0-1c6a9e4f7b38",
             "title": {
-                "en": "UNIX · Collections grid (Move. Train. Unwind.)",
-                "ar": "يونكس · بطاقات التصنيفات (حركة. رياضة. استرخاء.)"
+                "en": "UNIX · Collection cards",
+                "ar": "يونكس · بطاقات التصنيفات"
             },
             "icon": "sicon-layout-grid-rearrange",
             "path": "home.unix-collections-grid",
@@ -2232,7 +2232,7 @@
         {
             "key": "3b9e6a1d-2f47-4c8e-b5d0-8a6c4e2f1b97",
             "title": {
-                "en": "UNIX · Featured products with lifestyle images",
+                "en": "UNIX · Featured products with images",
                 "ar": "يونكس · منتجات مختارة مع صور"
             },
             "icon": "sicon-image",
@@ -2306,8 +2306,8 @@
         {
             "key": "3e8a1f5c-7b2d-4c9e-a6f4-1d0b9c8e2a73",
             "title": {
-                "en": "UNIX video tiles",
-                "ar": "يونكس: فيديوهين جنب بعض"
+                "en": "UNIX · Two videos side by side",
+                "ar": "يونكس · مقطعا فيديو متجاوران"
             },
             "icon": "sicon-camera",
             "path": "home.unix-video-tiles",
@@ -2473,8 +2473,8 @@
         {
             "key": "7c1e2b8a-28a0-4b6e-9f3d-5a1b0c2d8e01",
             "title": {
-                "en": "UNIX · From the world of UNIX (blog)",
-                "ar": "يونكس · من عالم UNIX (المدونة)"
+                "en": "UNIX · Blog",
+                "ar": "يونكس · المدونة"
             },
             "icon": "sicon-list-play",
             "path": "home.unix-blog",
@@ -2638,8 +2638,8 @@
         {
             "key": "9b4d2e6f-1a3c-4f8b-b7e2-5c0a8d1f4e96",
             "title": {
-                "en": "UNIX FAQ",
-                "ar": "يونكس: الأسئلة الشائعة"
+                "en": "UNIX · FAQ",
+                "ar": "يونكس · الأسئلة الشائعة"
             },
             "icon": "sicon-chat-conversation-alt",
             "path": "home.unix-faq",

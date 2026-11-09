@@ -102,15 +102,15 @@
 
 احذفي أو أخفي أي عناصر رائد الافتراضية اللي في الرئيسية (**إخفاء/حذف من الصفحة الرئيسية بس، مش حذف بيانات من المتجر**)، وضيفي عناصر يونكس بالترتيب:
 
-1. يونكس: الواجهة الرئيسية (Hero) — `home.unix-hero`
-2. يونكس: شريط العرض — `home.unix-offer-strip`
-3. يونكس · منتجات بتبويبات (المفضلة دائما) — `home.unix-products-tabs`
-4. يونكس · تصنيف فوق صورة (جديد من يونكس) — `home.unix-collection-overlay`
-5. يونكس · بطاقات التصنيفات (حركة. رياضة. استرخاء.) — `home.unix-collections-grid`
+1. يونكس · الواجهة الرئيسية — `home.unix-hero`
+2. يونكس · شريط العرض — `home.unix-offer-strip`
+3. يونكس · منتجات في تبويبات — `home.unix-products-tabs` (قسم «المفضلة دائما»)
+4. يونكس · تصنيف على صورة — `home.unix-collection-overlay` (قسم «جديد من يونكس»)
+5. يونكس · بطاقات التصنيفات — `home.unix-collections-grid` (قسم «حركة. رياضة. استرخاء.»)
 6. يونكس · منتجات مختارة مع صور — `home.unix-featured-products`
-7. يونكس: فيديوهين جنب بعض — `home.unix-video-tiles`
-8. يونكس · من عالم UNIX (المدونة) — `home.unix-blog`
-9. يونكس: الأسئلة الشائعة — `home.unix-faq`
+7. يونكس · مقطعا فيديو متجاوران — `home.unix-video-tiles`
+8. يونكس · المدونة — `home.unix-blog` (قسم «من عالم UNIX»)
+9. يونكس · الأسئلة الشائعة — `home.unix-faq`
 
 ### 1) Hero (`home.unix-hero`)
 | الحقل (id) | القيمة |
