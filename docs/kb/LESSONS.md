@@ -54,3 +54,6 @@ Format: what went wrong · the rule now · how to check · commit.
 ## Process
 20. **The CLI asked to commit while an agent was mid-edit,** and a preview requested an unpushed commit ("Tag already exists"). · Rule: `salla theme preview` only after a clean, pushed tree, and only from the project folder. · Session 2026-11-09
 21. **Inherited Raed CSS used raw colours and physical properties** and failed the design gate late. · Rule: any file touched from Raed is converted to tokens and logical properties in the same commit. · 52ec05b
+
+## Owner decisions
+38. **A visible contrast fix was rejected by the owner.** Dark plates and scrims behind cream text on home photos (40533e6) passed AA but changed the unix.sa look, and the owner reverted it (9a0f952). · Rule: on the storefront, unix.sa's look wins over a Lighthouse point when the score already clears Salla's bar (accessibility ≥ 90). Propose a visual change as an option with a screenshot first; never ship it as a "fix". · D122.
