@@ -103,7 +103,7 @@ Source keys used below:
     **Why:** It is a technical-review item, so it can cause rejection.
     **Check:** `grep -o '"maxLength": *[0-9]*' twilight.json | sort | uniq -c`.
     **Source:** TECH.
-    - **Possible violation:** 7 settings declare more than 1000: `twilight.json:606` (`unix_colour_links`, 20000), `:630` (`unix_size_finder_data`, 20000), `:680`, `:708`, `:764` (delivery cities, 2000), `:736` (4000) and `:816` (`unix_complete_look_data`, 20000). The wording is ambiguous: it may mean the `maxLength` we declare or the length of the saved value. Treat both as a risk.
+    - **Possible violation:** 7 settings declare more than 1000 (line numbers refreshed 2026-11-10): `twilight.json:745` (`unix_colour_links`, 20000), `:769` (`unix_size_finder_data`, 20000), `:855`, `:883`, `:939` (delivery cities and countries, 2000), `:911` (tier-3 cities, 4000) and `:991` (`unix_complete_look_data`, 20000). New fields stay at 1000 or less (`unix_pdp_model_info` is 1000, 3.12 review). The wording is ambiguous: it may mean the `maxLength` we declare or the length of the saved value. Treat both as a risk.
 11. **Rule:** Multilingual text fields use `"multilanguage": true` (Raed uses it on 10 fields). In Twig, the value can come back as a per-language object. Our code reads `value[language.code]` (`src/views/components/home/unix-faq.twig:43`).
     **Why:** Without the guard, AR/EN content leaks across languages or prints "Array".
     **Check:** `grep -rn "language.code" src/views/components`.
@@ -339,7 +339,7 @@ Ordered by likely impact. Each risk is something a Salla reviewer can point at.
 
 | # | Risk | Evidence (file:line) | Source | Suggested action |
 |---|---|---|---|---|
-| R1 | Twilight length validation (max 1000) exceeded | `twilight.json:606, 630, 680, 708, 736, 764, 816` (`maxLength` 2000–20000) | TECH 1.4 | Ask Salla whether 1.4 means `maxLength`; else split data or move it to JSON files or settings under 1000 |
+| R1 | Twilight length validation (max 1000) exceeded | `twilight.json:745, 769, 855, 883, 911, 939, 991` (`maxLength` 2000–20000; refreshed 2026-11-10) | TECH 1.4 | Ask Salla whether 1.4 means `maxLength`; else split data or move it to JSON files or settings under 1000 |
 | R2 | ~~Social sharing removed from the PDP~~ **Resolved 6a527eb (D135):** `<salla-social-share>` back, setting `unix_pdp_share` on by default | `src/views/pages/product/single.twig:183` comment (D54); no `salla-social-share` in `src/views` (Raed has one) | UX 4.1.12–13 | Record it as a deliberate D-number and be ready to restore `<salla-social-share>` if review insists |
 | R3 | Screenshots break metadata rules (**rules fixed in `docs/PUBLISH.md` §3 by 6a527eb; the screenshots themselves still need redoing**) | `docs/PUBLISH.md` §3: 3 shots at 1366×768 taken from unix.sa (they contain logo and text) | META 4.7, 4.9, 4.10; PUB | Make 4+ shots at the portal size, desktop and mobile, without overlaid text or logos, with AR and EN titles |
 | R4 | Theme size measurement unclear | Built `public/` is 1076.5 KiB (under the 2MB private cap); the tracked repo is about 11.75 MiB with `reference/` | TECH 1.1, MAINREQ 3.8 | Confirm what is measured; consider moving `reference/` out of the synced repo |

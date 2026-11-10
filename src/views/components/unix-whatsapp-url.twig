@@ -1,0 +1,27 @@
+{#-
+  WhatsApp link builder (ROADMAP 3.12 · DS §8.51 · D138). Prints a https://wa.me/… URL or nothing.
+  Shared by the footer trust strip, the product page size help and home.unix-size-help.
+
+  Usage (capture the output, then trim):
+    {% set wa_url %}{% include 'components.unix-whatsapp-url' with { wa_raw: number, wa_text: message } only %}{% endset %}
+    {% set wa_url = wa_url|trim %}
+
+  wa_raw   the number as typed (setting or store contact): any spaces, +, -, brackets, Arabic-Indic
+           digits, or a full wa.me / api.whatsapp.com link; only its digits are kept.
+  wa_text  optional prefilled message (URL-encoded here).
+  Rules: Arabic-Indic digits → 0-9; a leading 00 is dropped; a leading single 0 becomes 966 (a local
+  Saudi number); fewer than 8 digits → no link. A link without a number (wa.me/message/…) → no link.
+-#}
+{%- set wa_map = {'٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4', '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9', '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4', '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9'} -%}
+{%- set wa_digits = '' -%}
+{%- for wa_ch in (wa_raw is iterable ? '' : wa_raw|default('') ~ '')|replace(wa_map)|split('') -%}
+  {%- if wa_ch in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] -%}{%- set wa_digits = wa_digits ~ wa_ch -%}{%- endif -%}
+{%- endfor -%}
+{%- if wa_digits starts with '00' -%}
+  {%- set wa_digits = wa_digits|slice(2) -%}
+{%- elseif wa_digits starts with '0' -%}
+  {%- set wa_digits = '966' ~ wa_digits|slice(1) -%}
+{%- endif -%}
+{%- if wa_digits|length >= 8 -%}
+  https://wa.me/{{ wa_digits }}{{ wa_text|default('') ? '?text=' ~ wa_text|url_encode : '' }}
+{%- endif -%}

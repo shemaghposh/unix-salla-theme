@@ -7,15 +7,15 @@
     {% include 'components.product.unix-pdp-assure' %}
 
   Settings (twilight.json):
-    unix_pdp_delivery_line  boolean  on   the delivery line
+    unix_pdp_delivery_line  boolean  OFF  the delivery line (off until the owner confirms the days, D136)
     unix_pdp_delivery_text  text     null → blocks.unix.pdp_assure.delivery_default (multilanguage)
     unix_pdp_returns_line   boolean  on   the returns line
     unix_pdp_returns_days   integer  null → neutral «استبدال واسترجاع سهل»; a number → «استبدال سهل خلال X أيام»
-    unix_pdp_returns_link   link     null → the line is plain text
+    unix_pdp_returns_link   link     null (or not http(s) / a /path) → the line is plain text
   No JS.
 #}
 {% set as_lang = language.code|default('ar') %}
-{% set as_delivery = theme.settings.get('unix_pdp_delivery_line', true) %}
+{% set as_delivery = theme.settings.get('unix_pdp_delivery_line', false) %}
 {% set as_returns = theme.settings.get('unix_pdp_returns_line', true) %}
 
 {% if as_delivery or as_returns %}
@@ -43,6 +43,10 @@
   {% set as_returns_url = theme.settings.get('unix_pdp_returns_link') %}
   {% if as_returns_url is iterable %}{% set as_returns_url = as_returns_url.url|default('') %}{% endif %}
   {% set as_returns_url = as_returns_url|default('')|trim %}
+  {# only http(s) or a same-site path (one leading slash); anything else (javascript:, //host) → no link #}
+  {% if not (as_returns_url starts with 'https://' or as_returns_url starts with 'http://' or (as_returns_url starts with '/' and not (as_returns_url starts with '//'))) %}
+    {% set as_returns_url = '' %}
+  {% endif %}
 
   <ul class="unix-pdp-assure" aria-label="{{ trans('blocks.unix.pdp_assure.label') }}">
     {% if as_delivery %}

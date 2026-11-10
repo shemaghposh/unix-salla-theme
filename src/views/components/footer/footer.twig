@@ -52,7 +52,9 @@
 {% set whatsapp = theme.settings.get('unix_contact_whatsapp')|default(store.contacts.whatsapp|default(store.social.whatsapp))|trim %}
 {% set instagram = theme.settings.get('unix_social_instagram')|default(store.social.instagram)|trim %}
 {% set tiktok = theme.settings.get('unix_social_tiktok')|default(store.social.tiktok)|trim %}
-{% set whatsapp_url = whatsapp starts with 'http' ? whatsapp : 'https://wa.me/' ~ whatsapp|replace({'+': '', ' ': '', '-': ''}) %}
+{# 3.12 (D138): one shared builder; digits only, 00 / 0 prefixes normalised, no link under 8 digits #}
+{% set whatsapp_url %}{% include 'components.unix-whatsapp-url' with { wa_raw: whatsapp } only %}{% endset %}
+{% set whatsapp_url = whatsapp_url|trim %}
 {# Accept a bare handle ("unix_theclub" or "@unix_theclub") as well as a full URL. #}
 {% set instagram_url = instagram starts with 'http' ? instagram : 'https://instagram.com/' ~ instagram|trim('@', 'left') %}
 {% set tiktok_url = tiktok starts with 'http' ? tiktok : 'https://www.tiktok.com/@' ~ tiktok|trim('@', 'left') %}
@@ -124,7 +126,7 @@
   <div class="unix-trust">
     <div class="unix-trust__inner">
 
-      {% if phone or whatsapp or instagram or tiktok %}
+      {% if phone or whatsapp_url or instagram or tiktok %}
         <ul class="unix-trust__icons">
           {% if phone %}
             <li>
@@ -133,7 +135,7 @@
               </a>
             </li>
           {% endif %}
-          {% if whatsapp %}
+          {% if whatsapp_url %}
             <li>
               <a class="unix-trust__icon" href="{{ whatsapp_url }}" target="_blank" rel="noopener" aria-label="{{ trans('blocks.unix.footer.whatsapp') }}">
                 <i class="sicon-whatsapp" aria-hidden="true"></i>

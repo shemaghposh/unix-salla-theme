@@ -188,11 +188,13 @@
             {# 3.12 (D138): WhatsApp size help, under the size picker and inside the size-chart dialog.
                Same number as the footer (unix_contact_whatsapp, else the store's WhatsApp), with a
                prefilled message naming the product. '' when the setting is off or there is no number. #}
-            {% set unix_wa = theme.settings.get('unix_pdp_whatsapp_help', true) ? theme.settings.get('unix_contact_whatsapp')|default(store.contacts.whatsapp|default(store.social.whatsapp))|default('')|trim : '' %}
             {% set unix_wa_help_url = '' %}
-            {% if unix_wa %}
-                {% set unix_wa_msg = trans('blocks.unix.size_help.wa_message', {'name': product.name}) ~ ' ' ~ product.url %}
-                {% set unix_wa_help_url = unix_wa starts with 'http' ? unix_wa : 'https://wa.me/' ~ unix_wa|replace({'+': '', ' ': '', '-': ''}) ~ '?text=' ~ unix_wa_msg|url_encode %}
+            {% if theme.settings.get('unix_pdp_whatsapp_help', true) %}
+                {% set unix_wa_help_url %}{% include 'components.unix-whatsapp-url' with {
+                    wa_raw: theme.settings.get('unix_contact_whatsapp')|default(store.contacts.whatsapp|default(store.social.whatsapp)),
+                    wa_text: trans('blocks.unix.size_help.wa_message', {'name': product.name}) ~ ' ' ~ product.url
+                } only %}{% endset %}
+                {% set unix_wa_help_url = unix_wa_help_url|trim %}
             {% endif %}
 
             <div class="main-content unix-pdp-info">
