@@ -3,6 +3,7 @@ import {validateProductOptions} from './partials/validate-product-options';
 import initCashbackNote from './partials/unix-cashback-note'; // ROADMAP 3.7 (DS §8.25)
 import initFreeShipping from './partials/unix-free-shipping'; // ROADMAP 4.3/4.4 (DS §8.34)
 import initProductsTabs from './partials/unix-products-tabs'; // ROADMAP 4.4: «اختيارات تناسبك» reuses the 2.3 section
+import initCartInstallment from './partials/unix-cart-installment'; // ROADMAP 4.6 (D139, DS §8.22)
 class Cart extends BasePage {
     onReady() {
         // keep update the dom base in the events
@@ -25,6 +26,8 @@ class Cart extends BasePage {
         // ROADMAP 4.4: the drawer's free-shipping bar replaces Raed's #free-shipping card (D88)
         initFreeShipping();
         initProductsTabs();
+        // ROADMAP 4.6: Tabby / Tamara follow the cart total
+        initCartInstallment();
     }
 
     /**

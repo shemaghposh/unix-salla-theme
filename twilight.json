@@ -1241,6 +1241,17 @@
             "selected": true
         },
         {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "التقسيط (تابي وتمارا) في صفحة السلة",
+            "description": "يظهر تحت ملخص الطلب بمبلغ السلة، ويتحدّث مع كل تعديل. مفعَّل افتراضيًا (Tabby / Tamara for the cart total; on by default).",
+            "id": "unix_cart_installments",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
             "type": "string",
             "icon": "sicon-format-text-alt",
             "label": "عنوان السلة الفارغة",

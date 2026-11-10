@@ -597,6 +597,7 @@ unix.sa بيلوّن الزرار الأساسي حسب scheme السكشن (`co
 الكود: `<salla-installment class="unix-pdp-installment">` في `single.twig` و `04-components/unix-installment.scss` (SPEC §5.2 البلوكات 5–6، §9).
 - `salla-installment` الأصلي بتاع سلة هو اللي بيحمّل سكربت تمارا v2 وتابي بمفاتيح المتجر من إعدادات سلة؛ إحنا مابنحمّلش أي سكربت ولا مفتاح. مكانه بعد السعر وقبل الخيارات، زي `unix_tamara` و Tabby في الأصل، وترتيبهم (تمارا ثم تابي) زي الأصل.
 - ويدجت تمارا v2 جوه shadow DOM: بنوصّل له خط الثيم بس عن طريق `--font-primary` / `--font-secondary` على `tamara-widget` (نفس اللي الأصل بيعمله في `tamaraWidgetConfig.css`).
+- **صفحة السلة (4.6، D139):** نفس الكومبوننت بنفس الـ class تحت `salla-cart-summary-card` بمبلغ `cart.total`، ورا إعداد `unix_cart_installments` (مفعّل). `salla-installment` بيسمع `product::price.updated` بس، فـ `js/partials/unix-cart-installment.js` بيحط عنصر جديد بالمبلغ الجديد مع `cart::updated` (توثيق تابي: إعادة التحميل لما المبلغ يتغير). **مش في درج السلة:** الدرج موجود في صفحة المنتج كمان، ونسخة تانية هناك كانت هتكرر id `#tabbyPromo` بتاع تابي وتسمع أحداث سعر المنتج.
 - الـ wrappers اللي برا الـ shadow (تابي، تمارا v1، Spotii، ميس باي، مدفوع، إمكان، الراجحي، كلارنا): خلفية `--c-surface`، بوردر `--line-w` `--c-border`، `--r-sm`، padding `--s-3` `--s-4` (تابي `padding-inline: --s-4` بس، لأن مسافته العمودية جوه الـ shadow root)، من غير ظل ولا hover، نص `--t-small` `--c-text` على البداية. المسافة بينهم `--s-2`. لو مافيش طريقة تقسيط مفعّلة العنصر مابيظهرش (`:empty`).
 
 ### 8.23 Size Charts (جداول المقاسات) — *المرحلة 3.4*
