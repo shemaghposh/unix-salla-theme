@@ -1,5 +1,5 @@
 /**
- * UNIX home reviews «آراء العميلات» (ROADMAP 2.11 · DS §8.53 · D141) for
+ * UNIX home reviews «آراء العميلات» (ROADMAP 2.10 · DS §8.53 · D141) for
  * views/components/home/unix-reviews.twig.
  * Same data as Salla's <salla-reviews>: salla.api.request('reviews', { params }, 'get'), with the
  * same params. Only the presentation is ours (no <h1>, no auto-play slider). The section stays

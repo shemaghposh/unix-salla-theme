@@ -1,5 +1,5 @@
 {#
-  UNIX customer reviews «آراء العميلات» (ROADMAP 2.11 · DS §8.53 · D141).
+  UNIX customer reviews «آراء العميلات» (ROADMAP 2.10 · DS §8.53 · D141).
   ECOMMERCE-UX D6 / L7: real reviews only, never typed or invented. unix.sa has no home reviews
   section; optional (is_default false).
 
@@ -18,6 +18,8 @@
   call salla-reviews makes, salla.api.request('reviews', { params }, 'get'), in
   src/assets/js/partials/unix-reviews-home.js. The section is server-rendered `hidden` and only
   shown when that call returns at least one review; a failed call keeps it hidden.
+  Review text is clamped to 5 lines visually (the full text stays in the DOM for screen readers);
+  accepted in D141 instead of a «اقرئي المزيد» toggle.
 #}
 {% set rv_uid = 'unix-reviews-' ~ position %}
 {% set rv_lang = language.code|default('ar') %}

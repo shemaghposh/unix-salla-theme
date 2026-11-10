@@ -5,7 +5,8 @@
 
   | Variable                 | Type      | Description                                                         |
   |--------------------------|-----------|---------------------------------------------------------------------|
-  | component.title          | ?string   | Visible heading; empty → the default, read by screen readers only    |
+  | component.title          | ?string   | Heading; empty → «مزايا التسوّق من يونكس»                             |
+| component.show_title     | ?bool     | Show the heading (on); off → kept for screen readers only (sr-only) |
   | component.items          | object[]  | Up to 4: icon (key), title, text (multilanguage)                     |
   | component.show_payments  | ?bool     | Row of Salla payment marks (salla-payments) under the items (off)    |
   | position                 | int       | Sorting number, starts from zero                                     |
@@ -20,7 +21,8 @@
 
 {% set pk_title = component.title %}
 {% if pk_title is iterable %}{% set pk_title = pk_title[pk_lang]|default('') %}{% endif %}
-{% set pk_title = pk_title|default('')|trim %}
+{% set pk_title = pk_title|default('')|trim ?: trans('blocks.unix.perks.default_title') %}
+{% set pk_show_title = component.show_title is not defined or component.show_title is null or component.show_title %}
 
 {% set pk_items = [] %}
 {% for item in component.items|default([]) %}
@@ -51,7 +53,7 @@
 
 <section component-id="{{ componentId }}" class="s-block unix-perks" aria-labelledby="{{ pk_uid }}-title">
   <div class="unix-container">
-    <h2 id="{{ pk_uid }}-title" class="unix-perks__title{{ pk_title ? '' : ' sr-only' }}">{{ pk_title ?: trans('blocks.unix.perks.default_title') }}</h2>
+    <h2 id="{{ pk_uid }}-title" class="unix-perks__title{{ pk_show_title ? '' : ' sr-only' }}">{{ pk_title }}</h2>
     <ul class="unix-perks__list" role="list">
       {% for item in pk_items %}
         <li class="unix-perks__item">

@@ -388,7 +388,7 @@
         "whatsapp": "Message us on WhatsApp",
         "new_tab": "(opens WhatsApp in a new window)",
         "wa_message": "Hi, I need help choosing my size: :name",
-        "default_title": "Found your size?",
+        "default_title": "Not sure about your size?",
         "default_text": "Every piece has a size chart in centimetres, and our team can help you on WhatsApp.",
         "default_button_label": "Size guide",
         "wa_message_home": "Hi, I need help choosing my size"
@@ -410,7 +410,8 @@
       },
       "shop_look": {
         "default_title": "Shop the look",
-        "spot": "Item :n"
+        "spot": "Item :n",
+        "close": "Close the item card"
       }
     }
   },

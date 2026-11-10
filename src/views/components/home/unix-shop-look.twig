@@ -1,12 +1,12 @@
 {#
-  UNIX shop the look «تسوّقي اللوك» (ROADMAP 2.12 · DS §8.54 · D142). ECOMMERCE-UX H9.
+  UNIX shop the look «تسوّقي الإطلالة» (ROADMAP 2.10 · DS §8.54 · D142). ECOMMERCE-UX H9.
   A lifestyle image with 2–4 product hotspots; each hotspot is a button that shows that product's
   small card (image, name, price, link, add to cart via salla-add-product-button).
   unix.sa has no such section; optional (is_default false).
 
   | Variable                     | Type     | Description                                                       |
   |------------------------------|----------|-------------------------------------------------------------------|
-  | component.title              | ?string  | Heading; empty → «تسوّقي اللوك»                                     |
+  | component.title              | ?string  | Heading; empty → «تسوّقي الإطلالة»                                  |
   | component.image              | string   | Desktop image (16:9). Empty → the section doesn't render           |
   | component.image_mobile       | ?string  | Mobile image (4:5) below 576px; empty → the desktop image, uncropped |
   | component.alt                | ?string  | Image description; empty → the heading                            |
@@ -16,11 +16,14 @@
 
   Positions (RTL-safe, logical properties only): x is measured from the image's right edge, the
   start edge in Arabic. The image doesn't mirror, so in RTL `inset-inline-start: x%` and in LTR
-  `inset-inline-start: calc(100% - x%)` (unix-shop-look.scss). Hotspots with no product are skipped;
+  `inset-inline-start: calc(100% - x%)`, clamped so the 44px hit area stays inside the image
+  (unix-home-sales.scss). From md the open card sits over the image's bottom-LEFT corner in both
+  languages (DS §7: overlays on a non-mirrored image keep their physical corner). Hotspots with no product are skipped;
   fewer than one → no hotspots, the image still renders.
   Cards render from the picker object when Salla sends it, else by id and
   src/assets/js/partials/unix-shop-look.js fills them with one salla.product.api.fetch; a product the
-  API no longer returns loses its hotspot. The first hotspot's card is open by default.
+  API no longer returns loses its hotspot. The first hotspot's card is open by default; a click
+  outside the section's spots and cards, the card's × button or Escape closes it.
 #}
 {% set lk_uid = 'unix-look-' ~ position %}
 {% set lk_lang = language.code|default('ar') %}
@@ -67,7 +70,8 @@
 
 {% if lk_img %}
 <section component-id="{{ componentId }}" class="s-block unix-look{{ lk_img_m ? ' has-mobile' : '' }}"
-         data-unix-look aria-labelledby="{{ lk_uid }}-title">
+         data-unix-look data-label-add="{{ trans('blocks.unix.pdp_info.add_to_cart')|e('html_attr') }}"
+         aria-labelledby="{{ lk_uid }}-title">
   <div class="unix-container">
     <h2 id="{{ lk_uid }}-title" class="unix-look__title">{{ lk_title }}</h2>
     <div class="unix-look__stage">
@@ -106,8 +110,13 @@
             <article class="unix-look__card" id="{{ lk_uid }}-card-{{ loop.index }}"
                      data-unix-look-card="{{ spot.id }}" {% if not p %}data-unix-look-pending{% endif %}
                      {% if not loop.first %}hidden{% endif %}>
+              <button type="button" class="unix-icon-btn unix-look__close" data-unix-look-close
+                      aria-label="{{ trans('blocks.unix.shop_look.close') }}">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              </button>
               <span class="unix-look__thumb">
-                <img {% if thumb %}src="{{ thumb|cdn(160) }}"{% else %}hidden{% endif %} alt="" width="80" height="120" loading="lazy" decoding="async">
+                <img {% if thumb %}src="{{ thumb|cdn(192) }}" srcset="{{ thumb|cdn(96) }} 96w, {{ thumb|cdn(192) }} 192w" sizes="96px"{% else %}hidden{% endif %}
+                     alt="" width="96" height="144" loading="lazy" decoding="async">
               </span>
               <div class="unix-look__info">
                 <h3 class="unix-look__name">
@@ -123,10 +132,13 @@
                     {%- endif -%}
                   {%- endif -%}
                 </p>
+                {# the feminine label only for a plain product on sale; Salla's own label otherwise
+                   (sold out, preorder, booking, donation), like the PDP (D55). Pending cards get theirs in JS. #}
+                {% set lk_plain = p and p.status|default('') == 'sale' and p.type|default('product') not in ['booking', 'donating'] %}
                 <salla-add-product-button class="unix-look__add" fill="outline" width="wide"
                         product-id="{{ spot.id }}"
                         {% if p %}product-status="{{ p.status|default('sale') }}" product-type="{{ p.type|default('product') }}"{% endif %}>
-                  {{- trans('blocks.unix.pdp_info.add_to_cart') -}}
+                  {%- if lk_plain %}{{ trans('blocks.unix.pdp_info.add_to_cart') }}{% endif -%}
                 </salla-add-product-button>
               </div>
             </article>

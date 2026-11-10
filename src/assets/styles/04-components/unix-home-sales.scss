@@ -145,6 +145,7 @@
 
 .unix-look__stage {
   position: relative;
+  isolation: isolate; // hotspots (z 2) stay above the card (z 1) over the image (DS §8.54)
 }
 
 .unix-look__media {
@@ -169,14 +170,17 @@
 }
 
 /* hotspot: a --tap hit area with a --s-5 dot; x is from the image's right edge (start in RTL).
-   The image never mirrors, so LTR measures inline-start from the left: 100% - x. */
+   The image never mirrors, so LTR measures inline-start from the left: 100% - x. Both axes are
+   clamped half a --tap from the edges, so the hit area is never cut by the media's overflow. */
 .unix-look__spot {
   --spot-x: var(--x);
   --spot-y: var(--y);
+  --spot-min: calc(var(--tap) / 2);
 
   position: absolute;
-  inset-block-start: var(--spot-y);
-  inset-inline-start: calc(100% - var(--spot-x));
+  z-index: 2;
+  inset-block-start: clamp(var(--spot-min), var(--spot-y), calc(100% - var(--spot-min)));
+  inset-inline-start: clamp(var(--spot-min), calc(100% - var(--spot-x)), calc(100% - var(--spot-min)));
   display: grid;
   place-items: center;
   inline-size: var(--tap);
@@ -189,7 +193,7 @@
   background: none;
   cursor: pointer;
 
-  [dir="rtl"] & { inset-inline-start: var(--spot-x); }
+  [dir="rtl"] & { inset-inline-start: clamp(var(--spot-min), var(--spot-x), calc(100% - var(--spot-min))); }
 
   &::before {
     content: "";
@@ -218,10 +222,13 @@
   }
 }
 
-/* card: below the image on phones; over its bottom inline-end corner from md */
+/* card: below the image on phones; from md over the image's bottom-LEFT corner in both languages
+   (the image doesn't mirror, so the card keeps its physical corner, DS §7): inline-end in RTL,
+   inline-start in LTR. Merchant help text asks to keep hotspots out of that corner. */
 .unix-look__cards { margin-block-start: var(--s-4); }
 
 .unix-look__card {
+  position: relative;
   display: flex;
   gap: var(--s-4);
   padding: var(--s-4);
@@ -235,10 +242,16 @@
 @screen md {
   .unix-look__cards {
     position: absolute;
+    z-index: 1;
     inset-block-end: var(--s-5);
     inset-inline-end: var(--s-5);
-    inline-size: var(--look-card-w);
+    inline-size: min(calc(100% - 2 * var(--s-5)), var(--overlay-card-max)); // same card width as §8.16
     margin: 0;
+
+    [dir="ltr"] & {
+      inset-inline-end: auto;
+      inset-inline-start: var(--s-5);
+    }
   }
 
   .unix-look__card { box-shadow: var(--e-2); }
@@ -246,7 +259,7 @@
 
 .unix-look__thumb {
   flex: none;
-  inline-size: var(--s-9);
+  inline-size: var(--s-9); // 96px; matches the img sizes="96px"
   aspect-ratio: var(--ratio-product);
   overflow: hidden;
   border-radius: var(--r-sm);
@@ -271,7 +284,18 @@
   line-height: 1.6;
 }
 
+.unix-look__close {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+}
+
+.unix-look__info { padding-inline-end: var(--tap); } // room for the ×
+
 .unix-look__link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap);
   color: var(--c-text);
   text-decoration: none;
 
