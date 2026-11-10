@@ -276,6 +276,7 @@ unix.sa بيلوّن الزرار الأساسي حسب scheme السكشن (`co
 | `--pdp-top` | 40px | المسافة بين الهيدر وصفحة المنتج من md (unix.sa ~41px مقاسة)؛ تحت md صفر (§8.20) *(6.4)* |
 | `--cart-empty-max` | 596px | عرض panel السلة الفاضية (unix.sa 59.7rem) (§8.35) *(6.4)* |
 | `--panel-pad-lg` | 40px | padding الـ panel الرمادي من 576 (unix.sa 4rem) (§8.35) *(6.4)* |
+| `--look-card-w` | 320px | عرض كارت المنتج فوق صورة «تسوّقي اللوك» من md (§8.54) *(2.10)* |
 
 ---
 
@@ -884,6 +885,28 @@ ECOMMERCE-UX §0 القاعدة 2 و 6 (D9، D10، T6): مدة توصيل (مش 
 ECOMMERCE-UX A2، S1 بند 9 و 10، T5. الكود: `components/product/unix-pdp-fit-help.twig` (بعد جداول المقاسات §8.23) ونفس `unix-pdp-assure.scss`.
 - **معلومات العارضة (D137):** سطر `--t-small` `--c-text-muted` من غير أيقونة («العارضة طولها 170 سم وتلبس مقاس S»). سلة مابتديش الثيم حقل نص لكل منتج في Twig (الحقول المخصصة بتظهر كلها مرة واحدة في `salla-metadata`، D56)، فالمصدر textarea `unix_pdp_model_info`: سطر لكل منتج أو موديل `المفتاح | النص`، والمفتاح رقم المنتج أو رابطه أو اسم الموديل في `unix_colour_links` (كل ألوانه). أول تطابق بيكسب، والنص plain بحد 160 حرف.
 - **واتساب (D138):** سطر «محتارة في المقاس؟ **كلّمينا واتساب**» (أيقونة فقاعة خطّية، واللينك زي لينك §8.50) تحت المقاسات (بس لو المنتج ليه خيارات أو دليل مقاسات)، ونفس السطر **جوه دايلوج «دليل المقاسات»** بعد الجداول بخط فوقه `--line-w` `--c-border` و `--s-4` / `--s-3`. الرقم نفس الفوتر (`unix_contact_whatsapp`، وإلا واتساب المتجر)، والرسالة جاهزة باسم المنتج ورابطه (`?text=`)، و `target="_blank"` مع نص `sr-only` «يفتح واتساب في نافذة جديدة». **لينك جوه السطر، مش فقاعة عايمة** (§11 L6). الإعداد `unix_pdp_whatsapp_help` (مفعّل).
+
+### 8.52 مزايا التسوّق (`home.unix-perks`) — *المرحلة 2.10*
+ECOMMERCE-UX §0 القاعدة 1، T2، T3، T6. الكود: `components/home/unix-perks.twig` و `04-components/unix-home-sales.scss`. *(قرار مؤقت D140)*
+- شريط `--section-sm` على `--c-bg` بخط فوق وتحت `--line-w` `--c-border`. 2 × 2 تحت lg، وصف واحد من lg. كل ميزة في النص: أيقونة خطّية `--icon-md` `--c-text` (شحن، دفع آمن، تقسيط، استبدال `.icon-dir`، دعم، جودة)، والعنوان `--t-body` 500، والسطر `--t-small` `--c-text-muted`.
+- العنوان اختياري: الفاضي = `h2` `sr-only` «مزايا التسوّق من يونكس». الافتراضي لما المزايا فاضية: «شحن مجاني فوق 500 ر.س» (من `unix_free_shipping_threshold`) و«دفع آمن» و«قسّطي مع تابي وتمارا» و«استبدال سهل».
+- `salla-payments` اختياري (`show_payments`، مقفول لأنه في الفوتر)، بنفس مربعات §8.8.
+
+### 8.53 آراء العميلات (`home.unix-reviews`) — *المرحلة 2.10*
+ECOMMERCE-UX D6، L7. الكود: `components/home/unix-reviews.twig` و `js/partials/unix-reviews-home.js`. *(قرار مؤقت D141)*
+- **البيانات** من نفس طلب `salla-reviews`: `salla.api.request('reviews', { params }, 'get')` (النوع والترتيب والعدد وإخفاء الاسم من الـ fields). القسم `hidden` من السيرفر وبيظهر بس لو رجع تقييم واحد على الأقل فيه نص. مافيش تقييمات مكتوبة باليد.
+- **ليه مش `salla-reviews` / `testimonials.twig` بتاع رائد:** بيطبع `h1` (تاني h1 في الهوم، D129) وسلايدر auto-play من غير زرار إيقاف (WCAG 2.2.2، LESSONS 24). الشكل بس اتغيّر، والداتا من نفس الـ API.
+- **الشكل:** `--section-md` على `--c-bg-cream`، العنوان `--t-section` في النص. كروت `--c-bg` ببوردر `--line-w` `--c-border` و `--r-md` و padding `--s-5`: النجوم (`salla-rating-stars` small، و `sr-only` «التقييم X من 5»)، والنص `--t-body` `--c-text` (5 سطور بالكتير)، والاسم `--t-small` `--c-text-muted`. عمود واحد (أول 3 بس) تحت md، و 2 من md، و 3 من lg. النص بيتحط `textContent` بس.
+
+### 8.54 تسوّقي اللوك (`home.unix-shop-look`) — *المرحلة 2.10*
+ECOMMERCE-UX H9. الكود: `components/home/unix-shop-look.twig` و `js/partials/unix-shop-look.js`. *(قرار مؤقت D142)*
+- **الصورة:** `--banner-ratio-wide` (16:9)، و `--banner-ratio` (4:5) تحت 576 لو فيه صورة جوال؛ من غيرها صورة الديسكتوب كاملة بنفس النقاط. `--r-md`، و `|cdn` 800/1440/1920 (الجوال 480/800/1200)، و lazy.
+- **النقط:** 2–4 `<button>` بـ `aria-expanded` و `aria-controls` واسم «القطعة 1: اسم المنتج». مساحة لمس `--tap` ودايرة `--s-5` `--c-action` ببوردر `--ring-w` `--c-bg` (المفتوحة `--c-bg`)، hover `--c-action-hover`، active `--press-y`، focus-visible حلقة `--c-accent`. **المكان:** x من **يمين** الصورة و y من فوق (%). الصورة مابتتعكسش، فـ RTL `inset-inline-start: x%` و LTR `inset-inline-start: calc(100% - x%)`؛ والتوسيط بـ `margin-inline-start` / `margin-block-start` سالب نص `--tap`. للجوال x / y اختيارية.
+- **الكارت:** واحد ظاهر في كل مرة (الأول مفتوح افتراضيًا)؛ الضغط على نفس النقطة بيقفله، و Esc بيقفل ويرجّع الفوكس. تحت الصورة على الموبايل، ومن md فوق ركنها تحت ناحية النهاية بعرض `--look-card-w` و `--e-2`. `--c-bg` ببوردر `--line-w` و `--r-md` و padding `--s-4`: صورة `--s-9` بنسبة `--ratio-product`، والاسم `h3` لينك `--t-small` 500، والسعر (المخصوم `--c-price-sale` والقديم `--c-price-old`)، و `salla-add-product-button` outline بعرض كامل بنص «أضيفي إلى السلة».
+
+### 8.55 مساعدة المقاس (`home.unix-size-help`) — *المرحلة 2.10*
+ECOMMERCE-UX §4 (S1 بند 7 و 9)، T5. الكود: `components/home/unix-size-help.twig`. *(قرار مؤقت D143)*
+- شريط `--section-sm` على `--c-bg-cream` في النص: العنوان «لقيتي مقاسك؟» (`--t-section`)، والسطر `--t-body` `--c-text-muted` (65ch)، وتحته زرار `.unix-btn` primary لصفحة دليل المقاسات (`button_link`، الفاضي = مافيش زرار) ولينك «كلّمينا واتساب» زي §8.51 برسالة جاهزة. الصفحة الرئيسية مافيهاش «اعرفي مقاسك» ولا جداول المقاسات (دول لكل منتج)، فالزرار لينك. من غير لينك ومن غير رقم واتساب القسم مابيظهرش.
 
 ---
 

@@ -1,0 +1,84 @@
+{#
+  UNIX shopping perks «مزايا التسوّق» (ROADMAP 2.10 · DS §8.52 · D140).
+  ECOMMERCE-UX §0 rule 1 and §8 T2/T3/T6: the free-shipping threshold, payment and installments,
+  and the exchange promise early on the page. unix.sa has no such strip; optional (is_default false).
+
+  | Variable                 | Type      | Description                                                         |
+  |--------------------------|-----------|---------------------------------------------------------------------|
+  | component.title          | ?string   | Visible heading; empty → the default, read by screen readers only    |
+  | component.items          | object[]  | Up to 4: icon (key), title, text (multilanguage)                     |
+  | component.show_payments  | ?bool     | Row of Salla payment marks (salla-payments) under the items (off)    |
+  | position                 | int       | Sorting number, starts from zero                                     |
+
+  No item with a title (never saved, or emptied) → the 4 UNIX defaults from the locale files
+  (free shipping over the unix_free_shipping_threshold setting, secure payment, Tabby / Tamara,
+  easy exchange). Icons are line SVGs (DS §6) picked by key: shipping, secure, installments,
+  exchange, support, quality. No JS.
+#}
+{% set pk_uid = 'unix-perks-' ~ position %}
+{% set pk_lang = language.code|default('ar') %}
+
+{% set pk_title = component.title %}
+{% if pk_title is iterable %}{% set pk_title = pk_title[pk_lang]|default('') %}{% endif %}
+{% set pk_title = pk_title|default('')|trim %}
+
+{% set pk_items = [] %}
+{% for item in component.items|default([]) %}
+  {% set pk_row = {} %}
+  {% for key in ['title', 'text'] %}
+    {% set value = attribute(item, key) %}
+    {% if value is iterable %}{% set value = value[pk_lang] is defined ? value[pk_lang] : null %}{% endif %}
+    {% set pk_row = pk_row|merge({ (key): value|default('')|trim }) %}
+  {% endfor %}
+  {% set pk_icon = item.icon %}
+  {% if pk_icon is iterable %}{% set pk_icon = pk_icon.value is defined ? pk_icon.value : (pk_icon[0] is defined ? pk_icon[0] : '') %}{% endif %}
+  {% if pk_icon is iterable %}{% set pk_icon = pk_icon.value|default('') %}{% endif %}
+  {% if pk_row.title and pk_items|length < 4 %}
+    {% set pk_items = pk_items|merge([pk_row|merge({ 'icon': pk_icon|default('')|trim })]) %}
+  {% endif %}
+{% endfor %}
+
+{% if not pk_items|length %}
+  {% set pk_threshold = theme.settings.get('unix_free_shipping_threshold', 500)|default(500) %}
+  {% for key in ['shipping', 'secure', 'installments', 'exchange'] %}
+    {% set pk_items = pk_items|merge([{
+      'icon': key,
+      'title': trans('blocks.unix.perks.' ~ key ~ '_title', {'amount': pk_threshold|number_format(0, '.', ',')}),
+      'text': trans('blocks.unix.perks.' ~ key ~ '_text')
+    }]) %}
+  {% endfor %}
+{% endif %}
+
+<section component-id="{{ componentId }}" class="s-block unix-perks" aria-labelledby="{{ pk_uid }}-title">
+  <div class="unix-container">
+    <h2 id="{{ pk_uid }}-title" class="unix-perks__title{{ pk_title ? '' : ' sr-only' }}">{{ pk_title ?: trans('blocks.unix.perks.default_title') }}</h2>
+    <ul class="unix-perks__list" role="list">
+      {% for item in pk_items %}
+        <li class="unix-perks__item">
+          <svg class="unix-perks__icon{{ item.icon == 'exchange' ? ' icon-dir' : '' }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            {%- if item.icon == 'secure' -%}
+              <rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><path d="M12 14.5v2"/>
+            {%- elseif item.icon == 'installments' -%}
+              <rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3 9.5h18M7 14.5h3"/>
+            {%- elseif item.icon == 'exchange' -%}
+              <path d="M4 9h12a4 4 0 0 1 0 8h-4"/><path d="M8 5L4 9l4 4"/>
+            {%- elseif item.icon == 'support' -%}
+              <path d="M4.5 19.5l1.2-3.6A7.5 7.5 0 1 1 8.4 18.6z"/>
+            {%- elseif item.icon == 'quality' -%}
+              <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>
+            {%- else -%}
+              <path d="M3 7h11v10H3z"/><path d="M14 10h4l3 3v4h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/>
+            {%- endif -%}
+          </svg>
+          <p class="unix-perks__name">{{ item.title }}</p>
+          {% if item.text %}<p class="unix-perks__text">{{ item.text }}</p>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    {% if component.show_payments|default(false) %}
+      <div class="unix-perks__payments">
+        <salla-payments></salla-payments>
+      </div>
+    {% endif %}
+  </div>
+</section>

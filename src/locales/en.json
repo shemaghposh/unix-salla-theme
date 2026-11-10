@@ -387,7 +387,30 @@
         "question": "Not sure about your size?",
         "whatsapp": "Message us on WhatsApp",
         "new_tab": "(opens WhatsApp in a new window)",
-        "wa_message": "Hi, I need help choosing my size: :name"
+        "wa_message": "Hi, I need help choosing my size: :name",
+        "default_title": "Found your size?",
+        "default_text": "Every piece has a size chart in centimetres, and our team can help you on WhatsApp.",
+        "default_button_label": "Size guide",
+        "wa_message_home": "Hi, I need help choosing my size"
+      },
+      "perks": {
+        "default_title": "Why shop with UNIX",
+        "shipping_title": "Free shipping over SAR :amount",
+        "shipping_text": "On orders within Saudi Arabia",
+        "secure_title": "Secure payment",
+        "secure_text": "Mada, Apple Pay and cards",
+        "installments_title": "Split it with Tabby and Tamara",
+        "installments_text": "Pay in instalments",
+        "exchange_title": "Easy exchanges",
+        "exchange_text": "Our team is with you every step"
+      },
+      "reviews_home": {
+        "default_title": "What our customers say",
+        "rating": "Rated :stars out of 5"
+      },
+      "shop_look": {
+        "default_title": "Shop the look",
+        "spot": "Item :n"
       }
     }
   },

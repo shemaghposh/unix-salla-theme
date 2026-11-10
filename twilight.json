@@ -2941,6 +2941,556 @@
                     "selected": true
                 }
             ]
+        },
+        {
+            "key": "6f1c2a9e-3b7d-4e05-9a41-0d8e5b2c7f13",
+            "title": {
+                "en": "UNIX · Shopping perks",
+                "ar": "يونكس · مزايا التسوّق"
+            },
+            "icon": "sicon-shield-check",
+            "path": "home.unix-perks",
+            "is_default": false,
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-perks-desc",
+                    "value": "<div><small>شريط هادئ من 3 أو 4 مزايا (أيقونة وعنوان وسطر). اتركي المزايا فارغة لعرض مزايا يونكس الافتراضية: شحن مجاني فوق حد الشحن المجاني في الإعدادات، ودفع آمن، والتقسيط مع تابي وتمارا، واستبدال سهل. اكتبي فقط ما يقدّمه المتجر فعلًا.</small></div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان (اختياري)",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "إذا تُرك فارغًا لا يظهر عنوان، ويقرأ قارئ الشاشة «مزايا التسوّق من يونكس»",
+                    "placeholder": "مزايا التسوّق من يونكس",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "id": "items",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "المزايا",
+                    "item_label": "ميزة",
+                    "icon": "sicon-list-add",
+                    "required": false,
+                    "minLength": 0,
+                    "maxLength": 4,
+                    "value": [],
+                    "fields": [
+                        {
+                            "type": "items",
+                            "icon": "sicon-list",
+                            "label": "الأيقونة",
+                            "description": null,
+                            "id": "items.icon",
+                            "format": "dropdown-list",
+                            "source": "Manual",
+                            "required": false,
+                            "options": [
+                                {
+                                    "label": "شحن",
+                                    "value": "shipping",
+                                    "key": "184f4cb0-7e93-5b88-94cd-38abf820c671"
+                                },
+                                {
+                                    "label": "دفع آمن",
+                                    "value": "secure",
+                                    "key": "7e863fc9-a9fb-5ac7-a7b5-17d89f8de82b"
+                                },
+                                {
+                                    "label": "تقسيط",
+                                    "value": "installments",
+                                    "key": "5ea1eec4-3cc8-5d2d-a61b-e0da103f0c44"
+                                },
+                                {
+                                    "label": "استبدال",
+                                    "value": "exchange",
+                                    "key": "74d2b9dd-b3f9-5fbb-8719-40676c9ca595"
+                                },
+                                {
+                                    "label": "دعم وتواصل",
+                                    "value": "support",
+                                    "key": "f9700072-33c7-55af-8496-b8f19f15d546"
+                                },
+                                {
+                                    "label": "جودة",
+                                    "value": "quality",
+                                    "key": "1d1bb48d-bc58-528e-8fa2-a4a43c24d603"
+                                }
+                            ],
+                            "selected": [
+                                {
+                                    "label": "شحن",
+                                    "value": "shipping",
+                                    "key": "184f4cb0-7e93-5b88-94cd-38abf820c671"
+                                }
+                            ],
+                            "value": "shipping"
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "العنوان",
+                            "multilanguage": true,
+                            "id": "items.title",
+                            "value": null,
+                            "required": true,
+                            "format": "text",
+                            "description": null,
+                            "placeholder": "شحن مجاني فوق 500 ر.س",
+                            "minLength": 1,
+                            "maxLength": 60
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "السطر",
+                            "multilanguage": true,
+                            "id": "items.text",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": null,
+                            "placeholder": "للطلبات داخل السعودية",
+                            "minLength": 0,
+                            "maxLength": 90
+                        }
+                    ]
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "شعارات طرق الدفع تحت المزايا",
+                    "description": "من إعدادات الدفع في سلة. تظهر أصلًا في الفوتر، فهي متوقفة افتراضيًا",
+                    "id": "show_payments",
+                    "format": "switch",
+                    "required": false,
+                    "value": false,
+                    "selected": false
+                }
+            ]
+        },
+        {
+            "key": "a3d9e6b1-7c24-4f8a-b0e5-2f6c1d9a8e47",
+            "title": {
+                "en": "UNIX · Customer reviews",
+                "ar": "يونكس · آراء العميلات"
+            },
+            "icon": "sicon-star2",
+            "path": "home.unix-reviews",
+            "is_default": false,
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-reviews-desc",
+                    "value": "<div><small>تقييمات حقيقية من المتجر ومنتجاته (من تقييمات سلة)، بدون أي نص مكتوب يدويًا. لا يظهر القسم إذا لم توجد تقييمات.</small></div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "إذا تُرك فارغًا: «آراء العميلات»",
+                    "placeholder": "آراء العميلات",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-list",
+                    "label": "مصدر التقييمات",
+                    "description": null,
+                    "id": "type",
+                    "format": "dropdown-list",
+                    "source": "Manual",
+                    "required": false,
+                    "options": [
+                        {
+                            "label": "الكل",
+                            "value": "all",
+                            "key": "c0736d02-86b4-5f7a-a2d1-be8bd2db6e80"
+                        },
+                        {
+                            "label": "تقييمات المتجر",
+                            "value": "store",
+                            "key": "4e408831-2157-5120-be07-aacc4426d6a8"
+                        },
+                        {
+                            "label": "تقييمات المنتجات",
+                            "value": "products",
+                            "key": "a2897867-3261-54e9-82e3-45115252d9b7"
+                        }
+                    ],
+                    "selected": [
+                        {
+                            "label": "الكل",
+                            "value": "all",
+                            "key": "c0736d02-86b4-5f7a-a2d1-be8bd2db6e80"
+                        }
+                    ],
+                    "value": "all"
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-list",
+                    "label": "الترتيب",
+                    "description": null,
+                    "id": "sort",
+                    "format": "dropdown-list",
+                    "source": "Manual",
+                    "required": false,
+                    "options": [
+                        {
+                            "label": "الأعلى تقييمًا",
+                            "value": "top_rating",
+                            "key": "37e9efc2-778a-5c98-82a1-dcfc97fdb3fe"
+                        },
+                        {
+                            "label": "الأحدث",
+                            "value": "latest",
+                            "key": "ce1f0379-6fe8-52da-a068-35dc9002bdbd"
+                        },
+                        {
+                            "label": "عشوائي",
+                            "value": "random",
+                            "key": "299cd8fc-c3a0-50ea-8d35-3a810452a7c8"
+                        }
+                    ],
+                    "selected": [
+                        {
+                            "label": "الأعلى تقييمًا",
+                            "value": "top_rating",
+                            "key": "37e9efc2-778a-5c98-82a1-dcfc97fdb3fe"
+                        }
+                    ],
+                    "value": "top_rating"
+                },
+                {
+                    "type": "number",
+                    "icon": "sicon-pencil-ruler",
+                    "label": "عدد التقييمات",
+                    "description": "من 3 إلى 12. تظهر 3 على الجوال",
+                    "id": "limit",
+                    "format": "integer",
+                    "value": 6,
+                    "required": false,
+                    "minimum": 3,
+                    "maximum": 12,
+                    "placeholder": "6"
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "إخفاء أسماء العميلات",
+                    "description": null,
+                    "id": "hide_customer_info",
+                    "format": "switch",
+                    "required": false,
+                    "value": false,
+                    "selected": false
+                }
+            ]
+        },
+        {
+            "key": "c8b4f2d7-1e9a-4c36-8d70-5a2e9f1b6c84",
+            "title": {
+                "en": "UNIX · Shop the look",
+                "ar": "يونكس · تسوّقي اللوك"
+            },
+            "icon": "sicon-image",
+            "path": "home.unix-shop-look",
+            "is_default": false,
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-look-desc",
+                    "value": "<div><small>صورة لايف ستايل عليها نقاط للقطع (2 إلى 4). الضغط على نقطة يُظهر بطاقة القطعة (الصورة والاسم والسعر وزر الإضافة للسلة). مكان النقطة نسبة مئوية من يمين الصورة ومن أعلاها، مثل 30 و 60. لا يظهر القسم دون صورة.</small></div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "إذا تُرك فارغًا: «تسوّقي اللوك»",
+                    "placeholder": "تسوّقي اللوك",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-image",
+                    "label": "الصورة (الشاشات الكبيرة)",
+                    "id": "image",
+                    "format": "image",
+                    "value": null,
+                    "required": false,
+                    "placeholder": null,
+                    "description": "* المقاس المناسب 1920×1080 بكسل (16:9)"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-image",
+                    "label": "صورة الجوال (اختياري)",
+                    "id": "image_mobile",
+                    "format": "image",
+                    "value": null,
+                    "required": false,
+                    "placeholder": null,
+                    "description": "* المقاس المناسب 1200×1500 بكسل (4:5). إذا تُركت فارغة تظهر الصورة الكبيرة كاملة، بالنقاط نفسها"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "وصف الصورة",
+                    "multilanguage": true,
+                    "id": "alt",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "لقارئ الشاشة، مثل «عارضة ترتدي طقم سكالبتنج بلون فانيليا». إذا تُرك فارغًا يُستخدم العنوان",
+                    "placeholder": "",
+                    "minLength": 0,
+                    "maxLength": 150
+                },
+                {
+                    "id": "hotspots",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "القطع على الصورة",
+                    "item_label": "قطعة",
+                    "icon": "sicon-list-add",
+                    "required": false,
+                    "minLength": 0,
+                    "maxLength": 4,
+                    "value": [],
+                    "fields": [
+                        {
+                            "type": "items",
+                            "icon": "sicon-keyboard_arrow_down",
+                            "label": "المنتج",
+                            "id": "hotspots.product",
+                            "format": "dropdown-list",
+                            "description": null,
+                            "selected": [],
+                            "options": [],
+                            "source": "products",
+                            "multichoice": false,
+                            "searchable": true,
+                            "required": true,
+                            "value": []
+                        },
+                        {
+                            "type": "number",
+                            "icon": "sicon-pencil-ruler",
+                            "label": "المسافة من يمين الصورة (%)",
+                            "description": "0 = الحافة اليمنى، 100 = الحافة اليسرى",
+                            "id": "hotspots.x",
+                            "format": "integer",
+                            "value": 50,
+                            "required": false,
+                            "minimum": 0,
+                            "maximum": 100,
+                            "placeholder": "50"
+                        },
+                        {
+                            "type": "number",
+                            "icon": "sicon-pencil-ruler",
+                            "label": "المسافة من أعلى الصورة (%)",
+                            "description": "0 = الأعلى، 100 = الأسفل",
+                            "id": "hotspots.y",
+                            "format": "integer",
+                            "value": 50,
+                            "required": false,
+                            "minimum": 0,
+                            "maximum": 100,
+                            "placeholder": "50"
+                        },
+                        {
+                            "type": "number",
+                            "icon": "sicon-pencil-ruler",
+                            "label": "على صورة الجوال: من اليمين (%)",
+                            "description": "اختياري، إذا اختلف مكان القطعة في صورة الجوال",
+                            "id": "hotspots.x_mobile",
+                            "format": "integer",
+                            "value": null,
+                            "required": false,
+                            "minimum": 0,
+                            "maximum": 100,
+                            "placeholder": null
+                        },
+                        {
+                            "type": "number",
+                            "icon": "sicon-pencil-ruler",
+                            "label": "على صورة الجوال: من الأعلى (%)",
+                            "description": "اختياري",
+                            "id": "hotspots.y_mobile",
+                            "format": "integer",
+                            "value": null,
+                            "required": false,
+                            "minimum": 0,
+                            "maximum": 100,
+                            "placeholder": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "e2a7c5f9-4d18-4b63-9f02-7c3b8e1d5a26",
+            "title": {
+                "en": "UNIX · Size help",
+                "ar": "يونكس · مساعدة المقاس"
+            },
+            "icon": "sicon-pencil-ruler",
+            "path": "home.unix-size-help",
+            "is_default": false,
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "unix-size-help-desc",
+                    "value": "<div><small>شريط هادئ: عنوان وسطر وزر لصفحة دليل المقاسات ورابط واتساب. لا يظهر دون رابط للزر ودون رقم واتساب.</small></div>"
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "العنوان",
+                    "multilanguage": true,
+                    "id": "title",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "إذا تُرك فارغًا: «لقيتي مقاسك؟»",
+                    "placeholder": "لقيتي مقاسك؟",
+                    "minLength": 0,
+                    "maxLength": 80
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-typography",
+                    "label": "السطر",
+                    "multilanguage": true,
+                    "id": "text",
+                    "value": null,
+                    "required": false,
+                    "format": "textarea",
+                    "description": "إذا تُرك فارغًا يظهر السطر الافتراضي",
+                    "placeholder": "جداول مقاساتنا بالسنتيمتر في صفحة كل قطعة…",
+                    "minLength": 0,
+                    "maxLength": 160
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "label": "نص الزر",
+                    "multilanguage": true,
+                    "id": "button_label",
+                    "value": null,
+                    "required": false,
+                    "format": "text",
+                    "description": "إذا تُرك فارغًا: «دليل المقاسات»",
+                    "placeholder": "دليل المقاسات",
+                    "minLength": 0,
+                    "maxLength": 40
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-link",
+                    "label": "رابط الزر",
+                    "id": "button_link",
+                    "value": null,
+                    "description": "صفحة دليل المقاسات (صفحة تعريفية مثلًا). إذا تُرك فارغًا لا يظهر الزر",
+                    "required": false,
+                    "format": "variable-list",
+                    "searchable": true,
+                    "source": "custom",
+                    "sources": [
+                        {
+                            "label": "منتج",
+                            "key": "products",
+                            "value": "products"
+                        },
+                        {
+                            "label": "منتجات مع وسم",
+                            "key": "products_tags",
+                            "value": "products_tags"
+                        },
+                        {
+                            "label": "تصنيف",
+                            "key": "categories",
+                            "value": "categories"
+                        },
+                        {
+                            "label": "ماركة تجارية",
+                            "key": "brands",
+                            "value": "brands"
+                        },
+                        {
+                            "label": "صفحة تعريفية",
+                            "key": "pages",
+                            "value": "pages"
+                        },
+                        {
+                            "label": "مقالة",
+                            "key": "blog_articles",
+                            "value": "blog_articles"
+                        },
+                        {
+                            "label": "تصنيف ضمن المدونة",
+                            "key": "blog_categories",
+                            "value": "blog_categories"
+                        },
+                        {
+                            "label": "التخفيضات",
+                            "key": "offers_link",
+                            "value": "offers_link"
+                        },
+                        {
+                            "label": "الماركات التجارية",
+                            "key": "brands_link",
+                            "value": "brands_link"
+                        },
+                        {
+                            "label": "المدونة",
+                            "key": "blog_link",
+                            "value": "blog_link"
+                        },
+                        {
+                            "label": "رابط خارجي",
+                            "key": "custom",
+                            "value": "custom"
+                        }
+                    ]
+                },
+                {
+                    "type": "boolean",
+                    "icon": "sicon-toggle-off",
+                    "label": "رابط واتساب",
+                    "description": "رقم واتساب شريط الثقة، وإلا واتساب المتجر",
+                    "id": "show_whatsapp",
+                    "format": "switch",
+                    "required": false,
+                    "value": true,
+                    "selected": true
+                }
+            ]
         }
     ],
     "support_url": "https://unix.sa",

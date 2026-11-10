@@ -1,0 +1,139 @@
+{#
+  UNIX shop the look «تسوّقي اللوك» (ROADMAP 2.12 · DS §8.54 · D142). ECOMMERCE-UX H9.
+  A lifestyle image with 2–4 product hotspots; each hotspot is a button that shows that product's
+  small card (image, name, price, link, add to cart via salla-add-product-button).
+  unix.sa has no such section; optional (is_default false).
+
+  | Variable                     | Type     | Description                                                       |
+  |------------------------------|----------|-------------------------------------------------------------------|
+  | component.title              | ?string  | Heading; empty → «تسوّقي اللوك»                                     |
+  | component.image              | string   | Desktop image (16:9). Empty → the section doesn't render           |
+  | component.image_mobile       | ?string  | Mobile image (4:5) below 576px; empty → the desktop image, uncropped |
+  | component.alt                | ?string  | Image description; empty → the heading                            |
+  | component.hotspots[]         | object[] | product (picker), x / y (% from the RIGHT / TOP edge of the desktop image), |
+  |                              |          | x_mobile / y_mobile (same on the mobile image; empty → x / y)      |
+  | position                     | int      | Sorting number, starts from zero                                  |
+
+  Positions (RTL-safe, logical properties only): x is measured from the image's right edge, the
+  start edge in Arabic. The image doesn't mirror, so in RTL `inset-inline-start: x%` and in LTR
+  `inset-inline-start: calc(100% - x%)` (unix-shop-look.scss). Hotspots with no product are skipped;
+  fewer than one → no hotspots, the image still renders.
+  Cards render from the picker object when Salla sends it, else by id and
+  src/assets/js/partials/unix-shop-look.js fills them with one salla.product.api.fetch; a product the
+  API no longer returns loses its hotspot. The first hotspot's card is open by default.
+#}
+{% set lk_uid = 'unix-look-' ~ position %}
+{% set lk_lang = language.code|default('ar') %}
+
+{% set lk_title = component.title %}
+{% if lk_title is iterable %}{% set lk_title = lk_title[lk_lang]|default('') %}{% endif %}
+{% set lk_title = lk_title|default('')|trim ?: trans('blocks.unix.shop_look.default_title') %}
+{% set lk_alt = component.alt %}
+{% if lk_alt is iterable %}{% set lk_alt = lk_alt[lk_lang]|default('') %}{% endif %}
+{% set lk_alt = lk_alt|default('')|trim ?: lk_title %}
+
+{% set lk_img = component.image %}
+{% if lk_img is iterable %}{% set lk_img = lk_img.url|default('') %}{% endif %}
+{% set lk_img = lk_img|default('')|trim %}
+{% set lk_img_m = component.image_mobile %}
+{% if lk_img_m is iterable %}{% set lk_img_m = lk_img_m.url|default('') %}{% endif %}
+{% set lk_img_m = lk_img_m|default('')|trim %}
+
+{# a percentage 0–100, or null when empty / not a number #}
+{% set lk_spots = [] %}
+{% for spot in component.hotspots|default([]) %}
+  {% set prod = spot.product %}
+  {% if prod is iterable and prod[0] is defined %}{% set prod = prod[0] %}{% endif %}
+  {% set pid = prod.id is defined ? prod.id : (prod.value is defined ? prod.value : (prod is iterable ? null : prod)) %}
+  {% if pid and lk_spots|length < 4 %}
+    {% set lk_pos = {} %}
+    {% for key in ['x', 'y', 'x_mobile', 'y_mobile'] %}
+      {% set v = attribute(spot, key) %}
+      {% set v = (v is iterable or v is null or v == '') ? null : v|number_format(2, '.', '') + 0 %}
+      {% set v = v is null ? null : (v < 0 ? 0 : (v > 100 ? 100 : v)) %}
+      {% set lk_pos = lk_pos|merge({ (key): v }) %}
+    {% endfor %}
+    {% set lk_x = lk_pos.x is null ? 50 : lk_pos.x %}
+    {% set lk_y = lk_pos.y is null ? 50 : lk_pos.y %}
+    {% set lk_spots = lk_spots|merge([{
+      'id': pid,
+      'product': (prod.name is defined and prod.url is defined) ? prod : null,
+      'x': lk_x, 'y': lk_y,
+      'xm': lk_img_m and lk_pos.x_mobile is not null ? lk_pos.x_mobile : lk_x,
+      'ym': lk_img_m and lk_pos.y_mobile is not null ? lk_pos.y_mobile : lk_y
+    }]) %}
+  {% endif %}
+{% endfor %}
+
+{% if lk_img %}
+<section component-id="{{ componentId }}" class="s-block unix-look{{ lk_img_m ? ' has-mobile' : '' }}"
+         data-unix-look aria-labelledby="{{ lk_uid }}-title">
+  <div class="unix-container">
+    <h2 id="{{ lk_uid }}-title" class="unix-look__title">{{ lk_title }}</h2>
+    <div class="unix-look__stage">
+      <div class="unix-look__media">
+        <picture>
+          {% if lk_img_m %}
+            <source media="(max-width: 575.98px)"
+                    srcset="{{ lk_img_m|cdn(480) }} 480w, {{ lk_img_m|cdn(800) }} 800w, {{ lk_img_m|cdn(1200) }} 1200w"
+                    sizes="100vw" width="800" height="1000">
+          {% endif %}
+          <img class="unix-look__img" src="{{ lk_img|cdn(1440) }}"
+               srcset="{{ lk_img|cdn(800) }} 800w, {{ lk_img|cdn(1440) }} 1440w, {{ lk_img|cdn(1920) }} 1920w"
+               sizes="(min-width: 1440px) 1440px, 100vw"
+               alt="{{ lk_alt|e('html_attr') }}" width="1600" height="900" loading="lazy" decoding="async">
+        </picture>
+
+        {% for spot in lk_spots %}
+          <button type="button" class="unix-look__spot"
+                  style="--x: {{ spot.x }}%; --y: {{ spot.y }}%; --xm: {{ spot.xm }}%; --ym: {{ spot.ym }}%"
+                  data-unix-look-spot="{{ spot.id }}"
+                  aria-expanded="{{ loop.first ? 'true' : 'false' }}"
+                  aria-controls="{{ lk_uid }}-card-{{ loop.index }}">
+            {% set lk_spot_label = trans('blocks.unix.shop_look.spot', {'n': loop.index}) %}
+            <span class="sr-only" data-unix-look-spot-name="{{ lk_spot_label|e('html_attr') }}">
+              {{- lk_spot_label }}{{ spot.product ? ': ' ~ spot.product.name : '' -}}
+            </span>
+          </button>
+        {% endfor %}
+      </div>
+
+      {% if lk_spots|length %}
+        <div class="unix-look__cards">
+          {% for spot in lk_spots %}
+            {% set p = spot.product %}
+            {% set thumb = p and p.image.url is defined ? p.image.url|default('') : '' %}
+            <article class="unix-look__card" id="{{ lk_uid }}-card-{{ loop.index }}"
+                     data-unix-look-card="{{ spot.id }}" {% if not p %}data-unix-look-pending{% endif %}
+                     {% if not loop.first %}hidden{% endif %}>
+              <span class="unix-look__thumb">
+                <img {% if thumb %}src="{{ thumb|cdn(160) }}"{% else %}hidden{% endif %} alt="" width="80" height="120" loading="lazy" decoding="async">
+              </span>
+              <div class="unix-look__info">
+                <h3 class="unix-look__name">
+                  <a class="unix-look__link" href="{{ p ? p.url : '#' }}" {% if not p %}aria-busy="true" tabindex="-1"{% endif %} data-unix-look-name>{{ p ? p.name : '' }}</a>
+                </h3>
+                <p class="unix-look__price" data-unix-look-price>
+                  {%- if p -%}
+                    {%- if p.is_on_sale and p.sale_price|default(0) > 0 -%}
+                      <span class="unix-look__price-sale">{{ p.sale_price|money }}</span>
+                      <s class="unix-look__price-old">{{ p.regular_price|money }}</s>
+                    {%- elseif p.price|default(0) > 0 -%}
+                      {{ p.price|money }}
+                    {%- endif -%}
+                  {%- endif -%}
+                </p>
+                <salla-add-product-button class="unix-look__add" fill="outline" width="wide"
+                        product-id="{{ spot.id }}"
+                        {% if p %}product-status="{{ p.status|default('sale') }}" product-type="{{ p.type|default('product') }}"{% endif %}>
+                  {{- trans('blocks.unix.pdp_info.add_to_cart') -}}
+                </salla-add-product-button>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}

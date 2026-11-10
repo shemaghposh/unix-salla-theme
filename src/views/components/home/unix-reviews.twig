@@ -1,0 +1,53 @@
+{#
+  UNIX customer reviews «آراء العميلات» (ROADMAP 2.11 · DS §8.53 · D141).
+  ECOMMERCE-UX D6 / L7: real reviews only, never typed or invented. unix.sa has no home reviews
+  section; optional (is_default false).
+
+  | Variable                     | Type    | Description                                                    |
+  |------------------------------|---------|----------------------------------------------------------------|
+  | component.title              | ?string | Heading; empty → «آراء العميلات»                                |
+  | component.type               | ?string | all (default) / store / products                               |
+  | component.sort               | ?string | top_rating (default) / latest / random                          |
+  | component.limit              | ?int    | 3–12, default 6                                                 |
+  | component.hide_customer_info | ?bool   | hide the shopper's name (off)                                   |
+  | position                     | int     | Sorting number, starts from zero                               |
+
+  Why not Raed's components/home/testimonials.twig (salla-reviews): that component prints an <h1>
+  (a second h1 on the home page, D129) and an auto-playing slider with no pause control (WCAG 2.2.2,
+  LESSONS 24). Presentation only is replaced (CLAUDE.md rule, D141): the data comes from the same
+  call salla-reviews makes, salla.api.request('reviews', { params }, 'get'), in
+  src/assets/js/partials/unix-reviews-home.js. The section is server-rendered `hidden` and only
+  shown when that call returns at least one review; a failed call keeps it hidden.
+#}
+{% set rv_uid = 'unix-reviews-' ~ position %}
+{% set rv_lang = language.code|default('ar') %}
+
+{% set rv_title = component.title %}
+{% if rv_title is iterable %}{% set rv_title = rv_title[rv_lang]|default('') %}{% endif %}
+{% set rv_title = rv_title|default('')|trim ?: trans('blocks.unix.reviews_home.default_title') %}
+
+{# manual dropdowns may arrive as a string, {value} or [{value}] #}
+{% set rv_opts = {} %}
+{% for key, fallback in { 'type': 'all', 'sort': 'top_rating' } %}
+  {% set value = attribute(component, key) %}
+  {% if value is iterable %}{% set value = value.value is defined ? value.value : (value[0] is defined ? value[0] : '') %}{% endif %}
+  {% if value is iterable %}{% set value = value.value|default('') %}{% endif %}
+  {% set rv_opts = rv_opts|merge({ (key): value|default('')|trim ?: fallback }) %}
+{% endfor %}
+{% set rv_type = rv_opts.type in ['all', 'store', 'products'] ? rv_opts.type : 'all' %}
+{% set rv_sort = rv_opts.sort in ['top_rating', 'latest', 'random'] ? rv_opts.sort : 'top_rating' %}
+{% set rv_limit = component.limit|default(6) %}
+{% set rv_limit = rv_limit is iterable ? 6 : rv_limit|number_format(0, '.', '') + 0 %}
+{% set rv_limit = rv_limit < 3 ? 3 : (rv_limit > 12 ? 12 : rv_limit) %}
+
+<section component-id="{{ componentId }}" class="s-block unix-reviews-home" hidden
+         data-unix-reviews-home
+         data-type="{{ rv_type }}" data-sort="{{ rv_sort }}" data-limit="{{ rv_limit }}"
+         {% if component.hide_customer_info|default(false) %}data-hide-name{% endif %}
+         data-label-rating="{{ trans('blocks.unix.reviews_home.rating', {'stars': '__STARS__'}) }}"
+         aria-labelledby="{{ rv_uid }}-title">
+  <div class="unix-container">
+    <h2 id="{{ rv_uid }}-title" class="unix-reviews-home__title">{{ rv_title }}</h2>
+    <ul class="unix-reviews-home__list" role="list" data-unix-reviews-list></ul>
+  </div>
+</section>

@@ -1,0 +1,57 @@
+{#
+  UNIX size help band «لقيتي مقاسك؟» (ROADMAP 2.13 · DS §8.55 · D143). ECOMMERCE-UX §4 (S1 items 7, 9),
+  T5. A quiet band: heading, one line, a size-guide button and an inline WhatsApp link.
+  unix.sa has no such section; optional (is_default false).
+
+  | Variable                 | Type     | Description                                                          |
+  |--------------------------|----------|----------------------------------------------------------------------|
+  | component.title          | ?string  | Heading; empty → «لقيتي مقاسك؟»                                       |
+  | component.text           | ?string  | One line; empty → the default line                                    |
+  | component.button_label   | ?string  | Button text; empty → «دليل المقاسات»                                  |
+  | component.button_link    | ?link    | Size-guide page (variable-list); empty → no button                    |
+  | component.show_whatsapp  | ?bool    | WhatsApp link (on): unix_contact_whatsapp, else the store's WhatsApp |
+  | position                 | int      | Sorting number, starts from zero                                     |
+
+  The home page has no size finder or size charts (they are per product, 3.3 / 3.4), so the button
+  is a link to a page the merchant picks. Neither a link nor a WhatsApp number → the band doesn't
+  render (nothing to act on). No JS.
+#}
+{% set sh_uid = 'unix-size-help-' ~ position %}
+{% set sh = {} %}
+{% for key in ['title', 'text', 'button_label'] %}
+  {% set value = attribute(component, key) %}
+  {% if value is iterable %}{% set value = value[language.code] is defined ? value[language.code] : null %}{% endif %}
+  {% set sh = sh|merge({ (key): value|default('')|trim ?: trans('blocks.unix.size_help.default_' ~ key) }) %}
+{% endfor %}
+
+{# link picker (variable-list) returns an object with .url; tolerate a plain string too #}
+{% set sh_url = component.button_link %}
+{% if sh_url is iterable %}{% set sh_url = sh_url.url|default('') %}{% endif %}
+{% set sh_url = sh_url|default('')|trim %}
+
+{% set sh_show_wa = component.show_whatsapp is not defined or component.show_whatsapp is null or component.show_whatsapp %}
+{% set sh_wa = sh_show_wa ? theme.settings.get('unix_contact_whatsapp')|default(store.contacts.whatsapp|default(store.social.whatsapp))|default('')|trim : '' %}
+{% set sh_wa_url = '' %}
+{% if sh_wa %}
+  {% set sh_wa_url = sh_wa starts with 'http' ? sh_wa : 'https://wa.me/' ~ sh_wa|replace({'+': '', ' ': '', '-': ''}) ~ '?text=' ~ trans('blocks.unix.size_help.wa_message_home')|url_encode %}
+{% endif %}
+
+{% if sh_url or sh_wa_url %}
+<section component-id="{{ componentId }}" class="s-block unix-size-help" aria-labelledby="{{ sh_uid }}-title">
+  <div class="unix-container unix-size-help__inner">
+    <h2 id="{{ sh_uid }}-title" class="unix-size-help__title">{{ sh.title }}</h2>
+    <p class="unix-size-help__text">{{ sh.text }}</p>
+    <div class="unix-size-help__actions">
+      {% if sh_url %}
+        <a class="unix-btn" href="{{ sh_url }}">{{ sh.button_label }}</a>
+      {% endif %}
+      {% if sh_wa_url %}
+        <a class="unix-pdp-help__link" href="{{ sh_wa_url }}" target="_blank" rel="noopener">
+          {{- trans('blocks.unix.size_help.whatsapp') -}}
+          <span class="sr-only"> {{ trans('blocks.unix.size_help.new_tab') }}</span>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}

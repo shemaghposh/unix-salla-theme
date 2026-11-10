@@ -9,6 +9,8 @@ import initFaqs from "./partials/unix-faq";
 import initCollectionOverlays from "./partials/unix-collection-overlay";
 import initCollectionsGrids from "./partials/unix-collections-grid";
 import initUnixBlog from "./partials/unix-blog";
+import initReviewsHome from "./partials/unix-reviews-home"; // ROADMAP 2.10 (D141)
+import initShopLook from "./partials/unix-shop-look"; // ROADMAP 2.10 (D142)
 
 class Home extends BasePage {
     onReady() {
@@ -20,6 +22,8 @@ class Home extends BasePage {
         initProductsTabs();
         initFeaturedProducts();
         initUnixBlog(); // views/components/home/unix-blog.twig (ROADMAP 2.8)
+        initReviewsHome(); // views/components/home/unix-reviews.twig (ROADMAP 2.10)
+        initShopLook(); // views/components/home/unix-shop-look.twig (ROADMAP 2.10)
     }
 }
 
