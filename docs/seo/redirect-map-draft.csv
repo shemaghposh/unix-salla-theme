@@ -1,0 +1,460 @@
+old_path,type,status,proposed_target_type,salla_target_url,notes,target_ref,target_lang
+/products/soft-shirt,product,active,product,,,product:soft-shirt,ar
+/products/soft-shorts,product,active,product,,,product:soft-shorts,ar
+/products/comfy-lounge-pants-sky-blue,product,active,product,,,product:comfy-lounge-pants-sky-blue,ar
+/products/comfy-lounge-shirt-sky-blue,product,active,product,,,product:comfy-lounge-shirt-sky-blue,ar
+/products/comfy-lounge-shorts-whip-pink,product,active,product,,,product:comfy-lounge-shorts-whip-pink,ar
+/products/comfy-boyfriend-shirt-sky-blue,product,active,product,,,product:comfy-boyfriend-shirt-sky-blue,ar
+/products/comfy-relax-robe,product,draft,category,,"Not public on Shopify. DRAFT, 404 on live Shopify today; robe not migrating. Closest category = بيجامات كومفي (home-wear).",category:home-wear,ar
+/products/grip-go-hair-clip,product,active,product,,,product:grip-go-hair-clip,ar
+/products/sculpting-bra-top-chocolate,product,active,product,,,product:sculpting-bra-top-chocolate,ar
+/products/sculpting-leggings-vanilla,product,active,product,,,product:sculpting-leggings-vanilla,ar
+/products/core-control-bra-top-midnight-blue,product,active,product,,,product:core-control-bra-top-midnight-blue,ar
+/products/core-control-leggings-black,product,active,product,,,product:core-control-leggings-black,ar
+/products/curve-enhance-bra-top-whip-pink,product,active,product,,,product:curve-enhance-bra-top-whip-pink,ar
+/products/curve-enhance-pockets-leggings-whip-pink,product,active,product,,,product:curve-enhance-pockets-leggings-whip-pink,ar
+/products/your-everyday-water-bottle-470ml,product,active,product,,,product:your-everyday-water-bottle-470ml,ar
+/products/your-everyday-water-bottle-700ml,product,active,product,,,product:your-everyday-water-bottle-700ml,ar
+/products/timeless-gym-bag-powder-pink,product,draft,category,,Not public on Shopify. DRAFT colour of the gym bag. Closest category = accessories (same as the existing /products/timeless-gym-bag redirect).,category:accessories,ar
+/products/timeless-gym-blue-bag,product,unlisted,product,,"UNLISTED on Shopify (direct link only). Migrate as a hidden product (PLAN); if Salla cannot hide it, fall back to category:accessories.",product:timeless-gym-blue-bag,ar
+/products/curve-enhance-pockets-leggings-black,product,active,product,,,product:curve-enhance-pockets-leggings-black,ar
+/products/curve-enhance-pockets-leggings-toffee,product,active,product,,,product:curve-enhance-pockets-leggings-toffee,ar
+/products/curve-enhance-bra-top-toffee,product,active,product,,,product:curve-enhance-bra-top-toffee,ar
+/products/core-control-leggings-midnight-blue,product,active,product,,,product:core-control-leggings-midnight-blue,ar
+/products/core-control-bra-top-black,product,active,product,,,product:core-control-bra-top-black,ar
+/products/sculpting-leggings-chocolate,product,active,product,,,product:sculpting-leggings-chocolate,ar
+/products/sculpting-bra-top-vanilla,product,active,product,,,product:sculpting-bra-top-vanilla,ar
+/products/comfy-boyfriend-shirt-whip-pink,product,active,product,,,product:comfy-boyfriend-shirt-whip-pink,ar
+/products/comfy-lounge-shirt-whip-pink,product,active,product,,,product:comfy-lounge-shirt-whip-pink,ar
+/products/comfy-lounge-pants-whip-pink,product,active,product,,,product:comfy-lounge-pants-whip-pink,ar
+/products/amalfi-scented-candle-light-grey,product,active,product,,,product:amalfi-scented-candle-light-grey,ar
+/products/waist-tone-hoodie-grey,product,active,product,,,product:waist-tone-hoodie-grey,ar
+/products/waist-tone-hoodie-off-white,product,active,product,,,product:waist-tone-hoodie-off-white,ar
+/products/waist-tone-pants-grey,product,active,product,,,product:waist-tone-pants-grey,ar
+/products/waist-tone-pants-off-white,product,active,product,,,product:waist-tone-pants-off-white,ar
+/products/femme-scoop-long-sleeves-top-black,product,active,product,,,product:femme-scoop-long-sleeves-top-black,ar
+/products/femme-scoop-long-sleeves-top-cream-white,product,active,product,,,product:femme-scoop-long-sleeves-top-cream-white,ar
+/products/sculpting-set-vanilla,product,active,product,,,product:sculpting-set-vanilla,ar
+/products/comfy-pants-lounge-set-sky-blue,product,active,product,,,product:comfy-pants-lounge-set-sky-blue,ar
+/products/core-control-set-black,product,active,product,,,product:core-control-set-black,ar
+/products/curve-enhance-set-toffee,product,active,product,,,product:curve-enhance-set-toffee,ar
+/products/comfy-lounge-shorts-set-whip-pink,product,active,product,,,product:comfy-lounge-shorts-set-whip-pink,ar
+/products/curve-enhance-set-whip-pink,product,active,product,,,product:curve-enhance-set-whip-pink,ar
+/products/core-control-set-midnight-blue,product,active,product,,,product:core-control-set-midnight-blue,ar
+/products/sculpting-set-chocolate,product,active,product,,,product:sculpting-set-chocolate,ar
+/products/comfy-pants-lounge-set-whip-pink,product,active,product,,,product:comfy-pants-lounge-set-whip-pink,ar
+/products/soft-pyjama-set,product,active,product,,,product:soft-pyjama-set,ar
+/products/bag-charm,product,unlisted,product,,"UNLISTED on Shopify (direct link only). Migrate as a hidden product (PLAN); if Salla cannot hide it, fall back to category:accessories.",product:bag-charm,ar
+/products/unix-gift-card,product,active,product,,,product:unix-gift-card,ar
+/products/sheer-scented-candle-powder-pink,product,active,product,,,product:sheer-scented-candle-powder-pink,ar
+/products/waist-tone-set-grey,product,active,product,,,product:waist-tone-set-grey,ar
+/products/waist-tone-set-off-white,product,active,product,,,product:waist-tone-set-off-white,ar
+/products/timeless-gym-bag-with-charm-stray-night-blue,product,active,product,,,product:timeless-gym-bag-with-charm-stray-night-blue,ar
+/products/bamboo-t-shirt-cream,product,active,product,,,product:bamboo-t-shirt-cream,ar
+/products/bamboo-t-shirt-espresso-foam,product,active,product,,,product:bamboo-t-shirt-espresso-foam,ar
+/products/bamboo-t-shirt-cold-blue,product,active,product,,,product:bamboo-t-shirt-cold-blue,ar
+/products/bamboo-tank-top-cream,product,active,product,,,product:bamboo-tank-top-cream,ar
+/products/bamboo-tank-top-espresso-foam,product,active,product,,,product:bamboo-tank-top-espresso-foam,ar
+/products/bamboo-tank-top-cold-blue,product,active,product,,,product:bamboo-tank-top-cold-blue,ar
+/products/bamboo-lounge-pants-cold-blue,product,active,product,,,product:bamboo-lounge-pants-cold-blue,ar
+/products/bamboo-lounge-pants-espresso-foam,product,active,product,,,product:bamboo-lounge-pants-espresso-foam,ar
+/products/bamboo-lounge-pants-cream,product,active,product,,,product:bamboo-lounge-pants-cream,ar
+/products/sailor-collar-hoodie-cloudy-grey,product,active,product,,,product:sailor-collar-hoodie-cloudy-grey,ar
+/products/sailor-collar-hoodie-black,product,active,product,,,product:sailor-collar-hoodie-black,ar
+/products/sailor-wide-pants-black,product,active,product,,,product:sailor-wide-pants-black,ar
+/products/sailor-wide-pants-cloudy-grey,product,active,product,,,product:sailor-wide-pants-cloudy-grey,ar
+/products/soft-angle-top-vanilla,product,active,product,,,product:soft-angle-top-vanilla,ar
+/products/soft-angle-top-chocolate,product,active,product,,,product:soft-angle-top-chocolate,ar
+/products/flexy-bra-top-ice-blue,product,draft,category,,"Not public on Shopify. DRAFT, never public. Closest category = توبات رياضية (tops). Re-point to the product if Flexy launches.",category:tops,ar
+/products/flexy-bra-top-earthy-berries,product,draft,category,,"Not public on Shopify. DRAFT, never public. Closest category = توبات رياضية (tops). Re-point to the product if Flexy launches.",category:tops,ar
+/products/flexy-wide-pants-black,product,draft,category,,"Not public on Shopify. DRAFT, never public. No sport-pants category; closest = ملابس رياضية (sport). Re-point if Flexy launches.",category:sport,ar
+/products/flexy-wide-pants-ice-blue,product,draft,category,,"Not public on Shopify. DRAFT, never public. No sport-pants category; closest = ملابس رياضية (sport). Re-point if Flexy launches.",category:sport,ar
+/products/flexy-wide-pants-earthy-berries,product,draft,category,,"Not public on Shopify. DRAFT, never public. No sport-pants category; closest = ملابس رياضية (sport). Re-point if Flexy launches.",category:sport,ar
+/products/air-flexy-jacket-earthy-berries,product,draft,category,,"Not public on Shopify. DRAFT, never public. Closest = ملابس رياضية (sport); a jackets category only if Air Flexy launches.",category:sport,ar
+/products/air-flexy-jacket-black,product,draft,category,,"Not public on Shopify. DRAFT, never public. Closest = ملابس رياضية (sport); a jackets category only if Air Flexy launches.",category:sport,ar
+/products/air-flexy-jacket-stray-night-blue,product,draft,category,,"Not public on Shopify. DRAFT, never public. Closest = ملابس رياضية (sport); a jackets category only if Air Flexy launches.",category:sport,ar
+/products/halo-back-top-cream,product,active,product,,,product:halo-back-top-cream,ar
+/products/halo-back-top-smokey,product,active,product,,,product:halo-back-top-smokey,ar
+/products/halo-back-top-stray-night-blue,product,active,product,,,product:halo-back-top-stray-night-blue,ar
+/products/flow-bra-top-stray-night-blue,product,draft,category,,"Not public on Shopify. DRAFT, never public. Closest category = tops.",category:tops,ar
+/products/flow-bra-top-row-coal,product,draft,category,,"Not public on Shopify. DRAFT, never public. Closest category = tops.",category:tops,ar
+/products/flow-leggings-row-coal,product,draft,category,,"Not public on Shopify. DRAFT, never public. Closest category = ليقنز (legging).",category:legging,ar
+/products/flow-leggings-stray-night-blue,product,draft,category,,"Not public on Shopify. DRAFT, never public. Closest category = ليقنز (legging).",category:legging,ar
+/products/twist-top-row-coal,product,active,product,,,product:twist-top-row-coal,ar
+/products/twist-top-silver,product,active,product,,,product:twist-top-silver,ar
+/products/soft-touch-microfiber-towel-navy-velvet,product,active,product,,,product:soft-touch-microfiber-towel-navy-velvet,ar
+/products/pearla-lounge-shirt-pearl,product,active,product,,,product:pearla-lounge-shirt-pearl,ar
+/products/pearla-lounge-shorts-pearl,product,active,product,,,product:pearla-lounge-shorts-pearl,ar
+/products/pearla-lounge-pants-pearl,product,active,product,,,product:pearla-lounge-pants-pearl,ar
+/products/flexy-bra-top-black,product,draft,category,,"Not public on Shopify. DRAFT, never public. Closest category = توبات رياضية (tops). Re-point to the product if Flexy launches.",category:tops,ar
+/products/soft-touch-microfiber-towel-blush-dust,product,active,product,,,product:soft-touch-microfiber-towel-blush-dust,ar
+/products/untitled-jun21_00-21-47,product,archived,none-404,,"Not public on Shopify. ARCHIVED empty placeholder, no content, no replacement. Let it 404 (Google: 404/410 for content not moved). Do not add a custom link.",none,ar
+/products/sailor-set-cloudy-grey,product,active,product,,,product:sailor-set-cloudy-grey,ar
+/products/sailor-set-black,product,active,product,,,product:sailor-set-black,ar
+/products/pearla-lounge-set-shorts-pearl-old,product,draft,product,,"Not public on Shopify. DRAFT duplicate of the live set. One-to-one equivalent exists, so product, not category.",product:pearla-lounge-set-shorts-pearl,ar
+/products/bamboo-set-with-tshirt-cold-blue,product,draft,category,,"Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: the live bamboo-3-pieces-set in the same colour, if the client sees it as the replacement.)",category:comfy-set,ar
+/products/bamboo-set-with-tank-top-cold-blue,product,draft,category,,"Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: bamboo-3-pieces-set in the same colour.)",category:comfy-set,ar
+/products/bamboo-set-with-tshirt-cream,product,draft,category,,"Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: the live bamboo-3-pieces-set in the same colour, if the client sees it as the replacement.)",category:comfy-set,ar
+/products/bamboo-set-with-tank-top-cream,product,draft,category,,"Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: bamboo-3-pieces-set in the same colour.)",category:comfy-set,ar
+/products/pearla-lounge-set-pants-pearl-old,product,draft,product,,Not public on Shopify. DRAFT duplicate of the live set. One-to-one equivalent exists.,product:pearla-lounge-set-pants-pearl,ar
+/products/bamboo-set-with-tshirt-dusk,product,draft,category,,"Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: the live bamboo-3-pieces-set in the same colour, if the client sees it as the replacement.)",category:comfy-set,ar
+/products/bamboo-set-with-tank-top-dusk,product,draft,category,,"Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: bamboo-3-pieces-set in the same colour.)",category:comfy-set,ar
+/products/bamboo-3-pieces-set-cream-old,product,draft,product,,Not public on Shopify. DRAFT duplicate of the live set. One-to-one equivalent exists.,product:bamboo-3-pieces-set-cream,ar
+/products/bamboo-3-pieces-set-dusk-old,product,draft,product,,Not public on Shopify. DRAFT duplicate of the live set. One-to-one equivalent exists.,product:bamboo-3-pieces-set-dusk,ar
+/products/bamboo-3-pieces-set-cold-blue-old,product,draft,product,,Not public on Shopify. DRAFT duplicate of the live set. One-to-one equivalent exists.,product:bamboo-3-pieces-set-cold-blue,ar
+/products/bamboo-3-pieces-set-cold-blue,product,active,product,,,product:bamboo-3-pieces-set-cold-blue,ar
+/products/bamboo-3-pieces-set-dusk,product,active,product,,,product:bamboo-3-pieces-set-dusk,ar
+/products/bamboo-3-pieces-set-cream,product,active,product,,,product:bamboo-3-pieces-set-cream,ar
+/products/pearla-lounge-set-pants-pearl,product,active,product,,,product:pearla-lounge-set-pants-pearl,ar
+/products/pearla-lounge-set-shorts-pearl,product,active,product,,,product:pearla-lounge-set-shorts-pearl,ar
+/products/soft-touch-towel-set-blush-navy,product,active,product,,,product:soft-touch-towel-set-blush-navy,ar
+/collections/sport,collection,active,category,,,category:sport,ar
+/collections/home-wear,collection,active,category,,,category:home-wear,ar
+/collections/accessories,collection,active,category,,,category:accessories,ar
+/collections/best-sellers,collection,active,category,,,category:best-sellers,ar
+/collections/tops,collection,active,category,,,category:tops,ar
+/collections/legging,collection,active,category,,"Highest-value category (ليقنز 5,400/month, keyword file). Make sure the Salla category is the ليقنز category.",category:legging,ar
+/collections/set,collection,active,category,,,category:set,ar
+/collections/comfy-top,collection,active,category,,,category:comfy-top,ar
+/collections/comfy-bottom,collection,active,category,,,category:comfy-bottom,ar
+/collections/comfy-set,collection,active,category,,,category:comfy-set,ar
+/collections/all-products,collection,active,category,,"If Salla has no all-products listing, choose a category deliberately (sport is the largest); do not use the home page.",category:all-products,ar
+/collections/new-collection,collection,active,category,,Map to the Salla new-arrivals category if recreated; otherwise all-products/sport.,category:new-collection,ar
+/collections/activewear-collection,collection,active,category,,"If not recreated on Salla, map to category:sport (same intent as the old activewear-offer redirect).",category:activewear-collection,ar
+/pages/contact,page,active,contact,,"Salla contact page, or a custom page if Salla has none. Use the real URL.",salla:contact,ar
+/pages/about,page,active,page,,,page:about,ar
+/pages/faq,page,active,page,,,page:faq,ar
+/pages/unix-sport-size-chart,page,active,category,,Size-chart page; charts now live on the PDP. Closest = tops (matches the existing Shopify redirect for the old Arabic SC page).,category:tops,ar
+/pages/unix-bottom-sport-sc,page,active,category,,Size-chart page; charts now on the PDP. Closest = legging.,category:legging,ar
+/pages/unix-top-comfy-sc,page,active,category,,Size-chart page; charts now on the PDP. Closest = comfy-top.,category:comfy-top,ar
+/pages/unix-bottom-comfy-sc,page,active,category,,Size-chart page; charts now on the PDP. Closest = comfy-bottom.,category:comfy-bottom,ar
+/pages/unix-relax-robe-sc,page,active,category,,Robe size chart; robe is DRAFT. Closest = home-wear.,category:home-wear,ar
+/pages/payment-policy,page,active,page,,,page:payment-policy,ar
+/pages/user-content,page,active,page,,,page:user-content,ar
+/pages/intellectual-property,page,active,page,,,page:intellectual-property,ar
+/pages/data-sharing-opt-out,page,draft,page,,Not public on Shopify. UNPUBLISHED Shopify privacy-choices page. Closest = privacy policy page.,page:privacy-policy,ar
+/pages/wishlist,page,active,wishlist,,App page. Salla wishlist (PLAN phase 1). Low SEO value; a 404 would also be acceptable.,salla:wishlist,ar
+/pages/returns,page,active,page,,,page:returns,ar
+/pages/swym-wishlist,page,active,wishlist,,Swym app page. Salla wishlist.,salla:wishlist,ar
+/pages/swym-share-wishlist,page,active,wishlist,,Swym app page. Salla wishlist.,salla:wishlist,ar
+/pages/%D8%B3%D9%8A%D8%A7%D8%B3%D8%A9-%D8%A7%D9%84%D8%B4%D8%AD%D9%86,page,active,page,,Decoded: /pages/سياسة-الشحن. Arabic handle; the row uses the encoded form browsers send. Shopify also has /policies/shipping-policy; both go to the one Salla shipping page.,page:shipping-policy,ar
+/pages/calc-hubcpkzw5z,page,active,blog-post,,"Size calculator app page; the calculator now lives on the PDP. CHANGE vs PLAN (which said home): Google warns against sending pages to the home page, so send it to the size-guide article if published, else page:faq.",blog-post:unix-leggings-size-guide,ar
+/blogs/news,blog,active,blog-index,,Both Shopify blogs merge into the one Salla blog (PLAN phase 1).,blog-index,ar
+/blogs/leggings-blog,blog,active,blog-index,,Both Shopify blogs merge into the one Salla blog (PLAN phase 1).,blog-index,ar
+/blogs/news/the-unix-guide-leggings-for-everyday-movement,article,active,blog-post,,The two published articles cover the same topic (best leggings for everyday movement) in two blogs. Publish ONE merged post on Salla; both old URLs 301 to it (Google allows many-to-one for merged content).,blog-post:best-leggings-everyday,ar
+/blogs/leggings-blog/the-best-leggings-for-everyday-movement-unix-guide,article,active,blog-post,,The two published articles cover the same topic (best leggings for everyday movement) in two blogs. Publish ONE merged post on Salla; both old URLs 301 to it (Google allows many-to-one for merged content).,blog-post:best-leggings-everyday,ar
+/blogs/leggings-blog/unix-leggings-size-guide,article,draft,blog-post,,"Not public on Shopify. UNPUBLISHED on Shopify. If published on Salla (PLAN recommends), point here; otherwise blog-index.",blog-post:unix-leggings-size-guide,ar
+/blogs/leggings-blog/unix-leggings-care-guide,article,draft,blog-post,,"Not public on Shopify. UNPUBLISHED on Shopify. If published on Salla (PLAN recommends), point here; otherwise blog-index.",blog-post:unix-leggings-care-guide,ar
+/en/products/soft-shirt,product,active,product,,EN: target the English Salla URL.,product:soft-shirt,en
+/en/products/soft-shorts,product,active,product,,EN: target the English Salla URL.,product:soft-shorts,en
+/en/products/comfy-lounge-pants-sky-blue,product,active,product,,EN: target the English Salla URL.,product:comfy-lounge-pants-sky-blue,en
+/en/products/comfy-lounge-shirt-sky-blue,product,active,product,,EN: target the English Salla URL.,product:comfy-lounge-shirt-sky-blue,en
+/en/products/comfy-lounge-shorts-whip-pink,product,active,product,,EN: target the English Salla URL.,product:comfy-lounge-shorts-whip-pink,en
+/en/products/comfy-boyfriend-shirt-sky-blue,product,active,product,,EN: target the English Salla URL.,product:comfy-boyfriend-shirt-sky-blue,en
+/en/products/comfy-relax-robe,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, 404 on live Shopify today; robe not migrating. Closest category = بيجامات كومفي (home-wear).",category:home-wear,en
+/en/products/grip-go-hair-clip,product,active,product,,EN: target the English Salla URL.,product:grip-go-hair-clip,en
+/en/products/sculpting-bra-top-chocolate,product,active,product,,EN: target the English Salla URL.,product:sculpting-bra-top-chocolate,en
+/en/products/sculpting-leggings-vanilla,product,active,product,,EN: target the English Salla URL.,product:sculpting-leggings-vanilla,en
+/en/products/core-control-bra-top-midnight-blue,product,active,product,,EN: target the English Salla URL.,product:core-control-bra-top-midnight-blue,en
+/en/products/core-control-leggings-black,product,active,product,,EN: target the English Salla URL.,product:core-control-leggings-black,en
+/en/products/curve-enhance-bra-top-whip-pink,product,active,product,,EN: target the English Salla URL.,product:curve-enhance-bra-top-whip-pink,en
+/en/products/curve-enhance-pockets-leggings-whip-pink,product,active,product,,EN: target the English Salla URL.,product:curve-enhance-pockets-leggings-whip-pink,en
+/en/products/your-everyday-water-bottle-470ml,product,active,product,,EN: target the English Salla URL.,product:your-everyday-water-bottle-470ml,en
+/en/products/your-everyday-water-bottle-700ml,product,active,product,,EN: target the English Salla URL.,product:your-everyday-water-bottle-700ml,en
+/en/products/timeless-gym-bag-powder-pink,product,draft,category,,EN: target the English Salla URL. Not public on Shopify. DRAFT colour of the gym bag. Closest category = accessories (same as the existing /products/timeless-gym-bag redirect).,category:accessories,en
+/en/products/timeless-gym-blue-bag,product,unlisted,product,,"EN: target the English Salla URL. UNLISTED on Shopify (direct link only). Migrate as a hidden product (PLAN); if Salla cannot hide it, fall back to category:accessories.",product:timeless-gym-blue-bag,en
+/en/products/curve-enhance-pockets-leggings-black,product,active,product,,EN: target the English Salla URL.,product:curve-enhance-pockets-leggings-black,en
+/en/products/curve-enhance-pockets-leggings-toffee,product,active,product,,EN: target the English Salla URL.,product:curve-enhance-pockets-leggings-toffee,en
+/en/products/curve-enhance-bra-top-toffee,product,active,product,,EN: target the English Salla URL.,product:curve-enhance-bra-top-toffee,en
+/en/products/core-control-leggings-midnight-blue,product,active,product,,EN: target the English Salla URL.,product:core-control-leggings-midnight-blue,en
+/en/products/core-control-bra-top-black,product,active,product,,EN: target the English Salla URL.,product:core-control-bra-top-black,en
+/en/products/sculpting-leggings-chocolate,product,active,product,,EN: target the English Salla URL.,product:sculpting-leggings-chocolate,en
+/en/products/sculpting-bra-top-vanilla,product,active,product,,EN: target the English Salla URL.,product:sculpting-bra-top-vanilla,en
+/en/products/comfy-boyfriend-shirt-whip-pink,product,active,product,,EN: target the English Salla URL.,product:comfy-boyfriend-shirt-whip-pink,en
+/en/products/comfy-lounge-shirt-whip-pink,product,active,product,,EN: target the English Salla URL.,product:comfy-lounge-shirt-whip-pink,en
+/en/products/comfy-lounge-pants-whip-pink,product,active,product,,EN: target the English Salla URL.,product:comfy-lounge-pants-whip-pink,en
+/en/products/amalfi-scented-candle-light-grey,product,active,product,,EN: target the English Salla URL.,product:amalfi-scented-candle-light-grey,en
+/en/products/waist-tone-hoodie-grey,product,active,product,,EN: target the English Salla URL.,product:waist-tone-hoodie-grey,en
+/en/products/waist-tone-hoodie-off-white,product,active,product,,EN: target the English Salla URL.,product:waist-tone-hoodie-off-white,en
+/en/products/waist-tone-pants-grey,product,active,product,,EN: target the English Salla URL.,product:waist-tone-pants-grey,en
+/en/products/waist-tone-pants-off-white,product,active,product,,EN: target the English Salla URL.,product:waist-tone-pants-off-white,en
+/en/products/femme-scoop-long-sleeves-top-black,product,active,product,,EN: target the English Salla URL.,product:femme-scoop-long-sleeves-top-black,en
+/en/products/femme-scoop-long-sleeves-top-cream-white,product,active,product,,EN: target the English Salla URL.,product:femme-scoop-long-sleeves-top-cream-white,en
+/en/products/sculpting-set-vanilla,product,active,product,,EN: target the English Salla URL.,product:sculpting-set-vanilla,en
+/en/products/comfy-pants-lounge-set-sky-blue,product,active,product,,EN: target the English Salla URL.,product:comfy-pants-lounge-set-sky-blue,en
+/en/products/core-control-set-black,product,active,product,,EN: target the English Salla URL.,product:core-control-set-black,en
+/en/products/curve-enhance-set-toffee,product,active,product,,EN: target the English Salla URL.,product:curve-enhance-set-toffee,en
+/en/products/comfy-lounge-shorts-set-whip-pink,product,active,product,,EN: target the English Salla URL.,product:comfy-lounge-shorts-set-whip-pink,en
+/en/products/curve-enhance-set-whip-pink,product,active,product,,EN: target the English Salla URL.,product:curve-enhance-set-whip-pink,en
+/en/products/core-control-set-midnight-blue,product,active,product,,EN: target the English Salla URL.,product:core-control-set-midnight-blue,en
+/en/products/sculpting-set-chocolate,product,active,product,,EN: target the English Salla URL.,product:sculpting-set-chocolate,en
+/en/products/comfy-pants-lounge-set-whip-pink,product,active,product,,EN: target the English Salla URL.,product:comfy-pants-lounge-set-whip-pink,en
+/en/products/soft-pyjama-set,product,active,product,,EN: target the English Salla URL.,product:soft-pyjama-set,en
+/en/products/bag-charm,product,unlisted,product,,"EN: target the English Salla URL. UNLISTED on Shopify (direct link only). Migrate as a hidden product (PLAN); if Salla cannot hide it, fall back to category:accessories.",product:bag-charm,en
+/en/products/unix-gift-card,product,active,product,,EN: target the English Salla URL.,product:unix-gift-card,en
+/en/products/sheer-scented-candle-powder-pink,product,active,product,,EN: target the English Salla URL.,product:sheer-scented-candle-powder-pink,en
+/en/products/waist-tone-set-grey,product,active,product,,EN: target the English Salla URL.,product:waist-tone-set-grey,en
+/en/products/waist-tone-set-off-white,product,active,product,,EN: target the English Salla URL.,product:waist-tone-set-off-white,en
+/en/products/timeless-gym-bag-with-charm-stray-night-blue,product,active,product,,EN: target the English Salla URL.,product:timeless-gym-bag-with-charm-stray-night-blue,en
+/en/products/bamboo-t-shirt-cream,product,active,product,,EN: target the English Salla URL.,product:bamboo-t-shirt-cream,en
+/en/products/bamboo-t-shirt-espresso-foam,product,active,product,,EN: target the English Salla URL.,product:bamboo-t-shirt-espresso-foam,en
+/en/products/bamboo-t-shirt-cold-blue,product,active,product,,EN: target the English Salla URL.,product:bamboo-t-shirt-cold-blue,en
+/en/products/bamboo-tank-top-cream,product,active,product,,EN: target the English Salla URL.,product:bamboo-tank-top-cream,en
+/en/products/bamboo-tank-top-espresso-foam,product,active,product,,EN: target the English Salla URL.,product:bamboo-tank-top-espresso-foam,en
+/en/products/bamboo-tank-top-cold-blue,product,active,product,,EN: target the English Salla URL.,product:bamboo-tank-top-cold-blue,en
+/en/products/bamboo-lounge-pants-cold-blue,product,active,product,,EN: target the English Salla URL.,product:bamboo-lounge-pants-cold-blue,en
+/en/products/bamboo-lounge-pants-espresso-foam,product,active,product,,EN: target the English Salla URL.,product:bamboo-lounge-pants-espresso-foam,en
+/en/products/bamboo-lounge-pants-cream,product,active,product,,EN: target the English Salla URL.,product:bamboo-lounge-pants-cream,en
+/en/products/sailor-collar-hoodie-cloudy-grey,product,active,product,,EN: target the English Salla URL.,product:sailor-collar-hoodie-cloudy-grey,en
+/en/products/sailor-collar-hoodie-black,product,active,product,,EN: target the English Salla URL.,product:sailor-collar-hoodie-black,en
+/en/products/sailor-wide-pants-black,product,active,product,,EN: target the English Salla URL.,product:sailor-wide-pants-black,en
+/en/products/sailor-wide-pants-cloudy-grey,product,active,product,,EN: target the English Salla URL.,product:sailor-wide-pants-cloudy-grey,en
+/en/products/soft-angle-top-vanilla,product,active,product,,EN: target the English Salla URL.,product:soft-angle-top-vanilla,en
+/en/products/soft-angle-top-chocolate,product,active,product,,EN: target the English Salla URL.,product:soft-angle-top-chocolate,en
+/en/products/flexy-bra-top-ice-blue,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. Closest category = توبات رياضية (tops). Re-point to the product if Flexy launches.",category:tops,en
+/en/products/flexy-bra-top-earthy-berries,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. Closest category = توبات رياضية (tops). Re-point to the product if Flexy launches.",category:tops,en
+/en/products/flexy-wide-pants-black,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. No sport-pants category; closest = ملابس رياضية (sport). Re-point if Flexy launches.",category:sport,en
+/en/products/flexy-wide-pants-ice-blue,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. No sport-pants category; closest = ملابس رياضية (sport). Re-point if Flexy launches.",category:sport,en
+/en/products/flexy-wide-pants-earthy-berries,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. No sport-pants category; closest = ملابس رياضية (sport). Re-point if Flexy launches.",category:sport,en
+/en/products/air-flexy-jacket-earthy-berries,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. Closest = ملابس رياضية (sport); a jackets category only if Air Flexy launches.",category:sport,en
+/en/products/air-flexy-jacket-black,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. Closest = ملابس رياضية (sport); a jackets category only if Air Flexy launches.",category:sport,en
+/en/products/air-flexy-jacket-stray-night-blue,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. Closest = ملابس رياضية (sport); a jackets category only if Air Flexy launches.",category:sport,en
+/en/products/halo-back-top-cream,product,active,product,,EN: target the English Salla URL.,product:halo-back-top-cream,en
+/en/products/halo-back-top-smokey,product,active,product,,EN: target the English Salla URL.,product:halo-back-top-smokey,en
+/en/products/halo-back-top-stray-night-blue,product,active,product,,EN: target the English Salla URL.,product:halo-back-top-stray-night-blue,en
+/en/products/flow-bra-top-stray-night-blue,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. Closest category = tops.",category:tops,en
+/en/products/flow-bra-top-row-coal,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. Closest category = tops.",category:tops,en
+/en/products/flow-leggings-row-coal,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. Closest category = ليقنز (legging).",category:legging,en
+/en/products/flow-leggings-stray-night-blue,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. Closest category = ليقنز (legging).",category:legging,en
+/en/products/twist-top-row-coal,product,active,product,,EN: target the English Salla URL.,product:twist-top-row-coal,en
+/en/products/twist-top-silver,product,active,product,,EN: target the English Salla URL.,product:twist-top-silver,en
+/en/products/soft-touch-microfiber-towel-navy-velvet,product,active,product,,EN: target the English Salla URL.,product:soft-touch-microfiber-towel-navy-velvet,en
+/en/products/pearla-lounge-shirt-pearl,product,active,product,,EN: target the English Salla URL.,product:pearla-lounge-shirt-pearl,en
+/en/products/pearla-lounge-shorts-pearl,product,active,product,,EN: target the English Salla URL.,product:pearla-lounge-shorts-pearl,en
+/en/products/pearla-lounge-pants-pearl,product,active,product,,EN: target the English Salla URL.,product:pearla-lounge-pants-pearl,en
+/en/products/flexy-bra-top-black,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT, never public. Closest category = توبات رياضية (tops). Re-point to the product if Flexy launches.",category:tops,en
+/en/products/soft-touch-microfiber-towel-blush-dust,product,active,product,,EN: target the English Salla URL.,product:soft-touch-microfiber-towel-blush-dust,en
+/en/products/untitled-jun21_00-21-47,product,archived,none-404,,"EN: target the English Salla URL. Not public on Shopify. ARCHIVED empty placeholder, no content, no replacement. Let it 404 (Google: 404/410 for content not moved). Do not add a custom link.",none,en
+/en/products/sailor-set-cloudy-grey,product,active,product,,EN: target the English Salla URL.,product:sailor-set-cloudy-grey,en
+/en/products/sailor-set-black,product,active,product,,EN: target the English Salla URL.,product:sailor-set-black,en
+/en/products/pearla-lounge-set-shorts-pearl-old,product,draft,product,,"EN: target the English Salla URL. Not public on Shopify. DRAFT duplicate of the live set. One-to-one equivalent exists, so product, not category.",product:pearla-lounge-set-shorts-pearl,en
+/en/products/bamboo-set-with-tshirt-cold-blue,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: the live bamboo-3-pieces-set in the same colour, if the client sees it as the replacement.)",category:comfy-set,en
+/en/products/bamboo-set-with-tank-top-cold-blue,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: bamboo-3-pieces-set in the same colour.)",category:comfy-set,en
+/en/products/bamboo-set-with-tshirt-cream,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: the live bamboo-3-pieces-set in the same colour, if the client sees it as the replacement.)",category:comfy-set,en
+/en/products/bamboo-set-with-tank-top-cream,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: bamboo-3-pieces-set in the same colour.)",category:comfy-set,en
+/en/products/pearla-lounge-set-pants-pearl-old,product,draft,product,,EN: target the English Salla URL. Not public on Shopify. DRAFT duplicate of the live set. One-to-one equivalent exists.,product:pearla-lounge-set-pants-pearl,en
+/en/products/bamboo-set-with-tshirt-dusk,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: the live bamboo-3-pieces-set in the same colour, if the client sees it as the replacement.)",category:comfy-set,en
+/en/products/bamboo-set-with-tank-top-dusk,product,draft,category,,"EN: target the English Salla URL. Not public on Shopify. DRAFT 2-piece Bamboo set, discontinued. Closest category = أطقم كومفي. (Alternative: bamboo-3-pieces-set in the same colour.)",category:comfy-set,en
+/en/products/bamboo-3-pieces-set-cream-old,product,draft,product,,EN: target the English Salla URL. Not public on Shopify. DRAFT duplicate of the live set. One-to-one equivalent exists.,product:bamboo-3-pieces-set-cream,en
+/en/products/bamboo-3-pieces-set-dusk-old,product,draft,product,,EN: target the English Salla URL. Not public on Shopify. DRAFT duplicate of the live set. One-to-one equivalent exists.,product:bamboo-3-pieces-set-dusk,en
+/en/products/bamboo-3-pieces-set-cold-blue-old,product,draft,product,,EN: target the English Salla URL. Not public on Shopify. DRAFT duplicate of the live set. One-to-one equivalent exists.,product:bamboo-3-pieces-set-cold-blue,en
+/en/products/bamboo-3-pieces-set-cold-blue,product,active,product,,EN: target the English Salla URL.,product:bamboo-3-pieces-set-cold-blue,en
+/en/products/bamboo-3-pieces-set-dusk,product,active,product,,EN: target the English Salla URL.,product:bamboo-3-pieces-set-dusk,en
+/en/products/bamboo-3-pieces-set-cream,product,active,product,,EN: target the English Salla URL.,product:bamboo-3-pieces-set-cream,en
+/en/products/pearla-lounge-set-pants-pearl,product,active,product,,EN: target the English Salla URL.,product:pearla-lounge-set-pants-pearl,en
+/en/products/pearla-lounge-set-shorts-pearl,product,active,product,,EN: target the English Salla URL.,product:pearla-lounge-set-shorts-pearl,en
+/en/products/soft-touch-towel-set-blush-navy,product,active,product,,EN: target the English Salla URL.,product:soft-touch-towel-set-blush-navy,en
+/en/collections/sport,collection,active,category,,EN: target the English Salla URL.,category:sport,en
+/en/collections/home-wear,collection,active,category,,EN: target the English Salla URL.,category:home-wear,en
+/en/collections/accessories,collection,active,category,,EN: target the English Salla URL.,category:accessories,en
+/en/collections/best-sellers,collection,active,category,,EN: target the English Salla URL.,category:best-sellers,en
+/en/collections/tops,collection,active,category,,EN: target the English Salla URL.,category:tops,en
+/en/collections/legging,collection,active,category,,"EN: target the English Salla URL. Highest-value category (ليقنز 5,400/month, keyword file). Make sure the Salla category is the ليقنز category.",category:legging,en
+/en/collections/set,collection,active,category,,EN: target the English Salla URL.,category:set,en
+/en/collections/comfy-top,collection,active,category,,EN: target the English Salla URL.,category:comfy-top,en
+/en/collections/comfy-bottom,collection,active,category,,EN: target the English Salla URL.,category:comfy-bottom,en
+/en/collections/comfy-set,collection,active,category,,EN: target the English Salla URL.,category:comfy-set,en
+/en/collections/all-products,collection,active,category,,"EN: target the English Salla URL. If Salla has no all-products listing, choose a category deliberately (sport is the largest); do not use the home page.",category:all-products,en
+/en/collections/new-collection,collection,active,category,,EN: target the English Salla URL. Map to the Salla new-arrivals category if recreated; otherwise all-products/sport.,category:new-collection,en
+/en/collections/activewear-collection,collection,active,category,,"EN: target the English Salla URL. If not recreated on Salla, map to category:sport (same intent as the old activewear-offer redirect).",category:activewear-collection,en
+/en/pages/contact,page,active,contact,,"EN: target the English Salla URL. Salla contact page, or a custom page if Salla has none. Use the real URL.",salla:contact,en
+/en/pages/about,page,active,page,,EN: target the English Salla URL.,page:about,en
+/en/pages/faq,page,active,page,,EN: target the English Salla URL.,page:faq,en
+/en/pages/unix-sport-size-chart,page,active,category,,EN: target the English Salla URL. Size-chart page; charts now live on the PDP. Closest = tops (matches the existing Shopify redirect for the old Arabic SC page).,category:tops,en
+/en/pages/unix-bottom-sport-sc,page,active,category,,EN: target the English Salla URL. Size-chart page; charts now on the PDP. Closest = legging.,category:legging,en
+/en/pages/unix-top-comfy-sc,page,active,category,,EN: target the English Salla URL. Size-chart page; charts now on the PDP. Closest = comfy-top.,category:comfy-top,en
+/en/pages/unix-bottom-comfy-sc,page,active,category,,EN: target the English Salla URL. Size-chart page; charts now on the PDP. Closest = comfy-bottom.,category:comfy-bottom,en
+/en/pages/unix-relax-robe-sc,page,active,category,,EN: target the English Salla URL. Robe size chart; robe is DRAFT. Closest = home-wear.,category:home-wear,en
+/en/pages/payment-policy,page,active,page,,EN: target the English Salla URL.,page:payment-policy,en
+/en/pages/user-content,page,active,page,,EN: target the English Salla URL.,page:user-content,en
+/en/pages/intellectual-property,page,active,page,,EN: target the English Salla URL.,page:intellectual-property,en
+/en/pages/data-sharing-opt-out,page,draft,page,,EN: target the English Salla URL. Not public on Shopify. UNPUBLISHED Shopify privacy-choices page. Closest = privacy policy page.,page:privacy-policy,en
+/en/pages/wishlist,page,active,wishlist,,EN: target the English Salla URL. App page. Salla wishlist (PLAN phase 1). Low SEO value; a 404 would also be acceptable.,salla:wishlist,en
+/en/pages/returns,page,active,page,,EN: target the English Salla URL.,page:returns,en
+/en/pages/swym-wishlist,page,active,wishlist,,EN: target the English Salla URL. Swym app page. Salla wishlist.,salla:wishlist,en
+/en/pages/swym-share-wishlist,page,active,wishlist,,EN: target the English Salla URL. Swym app page. Salla wishlist.,salla:wishlist,en
+/en/pages/%D8%B3%D9%8A%D8%A7%D8%B3%D8%A9-%D8%A7%D9%84%D8%B4%D8%AD%D9%86,page,active,page,,EN: target the English Salla URL. Decoded: /en/pages/سياسة-الشحن. Arabic handle; the row uses the encoded form browsers send. Shopify also has /policies/shipping-policy; both go to the one Salla shipping page.,page:shipping-policy,en
+/en/pages/calc-hubcpkzw5z,page,active,blog-post,,"EN: target the English Salla URL. Size calculator app page; the calculator now lives on the PDP. CHANGE vs PLAN (which said home): Google warns against sending pages to the home page, so send it to the size-guide article if published, else page:faq.",blog-post:unix-leggings-size-guide,en
+/en/blogs/news,blog,active,blog-index,,EN: target the English Salla URL. Both Shopify blogs merge into the one Salla blog (PLAN phase 1).,blog-index,en
+/en/blogs/leggings-blog,blog,active,blog-index,,EN: target the English Salla URL. Both Shopify blogs merge into the one Salla blog (PLAN phase 1).,blog-index,en
+/en/blogs/news/the-unix-guide-leggings-for-everyday-movement,article,active,blog-post,,EN: target the English Salla URL. The two published articles cover the same topic (best leggings for everyday movement) in two blogs. Publish ONE merged post on Salla; both old URLs 301 to it (Google allows many-to-one for merged content).,blog-post:best-leggings-everyday,en
+/en/blogs/leggings-blog/the-best-leggings-for-everyday-movement-unix-guide,article,active,blog-post,,EN: target the English Salla URL. The two published articles cover the same topic (best leggings for everyday movement) in two blogs. Publish ONE merged post on Salla; both old URLs 301 to it (Google allows many-to-one for merged content).,blog-post:best-leggings-everyday,en
+/en/blogs/leggings-blog/unix-leggings-size-guide,article,draft,blog-post,,"EN: target the English Salla URL. Not public on Shopify. UNPUBLISHED on Shopify. If published on Salla (PLAN recommends), point here; otherwise blog-index.",blog-post:unix-leggings-size-guide,en
+/en/blogs/leggings-blog/unix-leggings-care-guide,article,draft,blog-post,,"EN: target the English Salla URL. Not public on Shopify. UNPUBLISHED on Shopify. If published on Salla (PLAN recommends), point here; otherwise blog-index.",blog-post:unix-leggings-care-guide,en
+/policies/refund-policy,policy,active,page,,Not in the API inventory; 200 on live unix.sa (curl 2026-11-10). Shopify policy page. Salla returns/refund page (built-in policy page or custom page; use the real URL).,page:returns,ar
+/en/policies/refund-policy,policy,active,page,,EN: target the English Salla URL. Not in the API inventory; 200 on live unix.sa (curl 2026-11-10). Shopify policy page. Salla returns/refund page (built-in policy page or custom page; use the real URL).,page:returns,en
+/policies/privacy-policy,policy,active,page,,Not in the API inventory; 200 on live unix.sa (curl 2026-11-10). Shopify policy page. Salla privacy page.,page:privacy-policy,ar
+/en/policies/privacy-policy,policy,active,page,,EN: target the English Salla URL. Not in the API inventory; 200 on live unix.sa (curl 2026-11-10). Shopify policy page. Salla privacy page.,page:privacy-policy,en
+/policies/terms-of-service,policy,active,page,,Not in the API inventory; 200 on live unix.sa (curl 2026-11-10). Shopify policy page. Salla terms page.,page:terms,ar
+/en/policies/terms-of-service,policy,active,page,,EN: target the English Salla URL. Not in the API inventory; 200 on live unix.sa (curl 2026-11-10). Shopify policy page. Salla terms page.,page:terms,en
+/policies/shipping-policy,policy,active,page,,Not in the API inventory; 200 on live unix.sa (curl 2026-11-10). Shopify policy page. Same target as /pages/سياسة-الشحن.,page:shipping-policy,ar
+/en/policies/shipping-policy,policy,active,page,,EN: target the English Salla URL. Not in the API inventory; 200 on live unix.sa (curl 2026-11-10). Shopify policy page. Same target as /pages/سياسة-الشحن.,page:shipping-policy,en
+/policies/contact-information,policy,active,contact,,Not in the API inventory; 200 on live unix.sa (curl 2026-11-10). Shopify policy page. Salla contact page.,salla:contact,ar
+/en/policies/contact-information,policy,active,contact,,EN: target the English Salla URL. Not in the API inventory; 200 on live unix.sa (curl 2026-11-10). Shopify policy page. Salla contact page.,salla:contact,en
+/collections/all,other,active,category,,Shopify system path. Shopify system collection (200 on live site). Same target as /collections/all-products.,category:all-products,ar
+/en/collections/all,other,active,category,,EN: target the English Salla URL. Shopify system path. Shopify system collection (200 on live site). Same target as /collections/all-products.,category:all-products,en
+/search,other,active,search,,Shopify system path. Salla search URL; low priority.,salla:search,ar
+/en/search,other,active,search,,EN: target the English Salla URL. Shopify system path. Salla search URL; low priority.,salla:search,en
+/cart,other,active,cart,,Shopify system path. Low priority; not indexed normally.,salla:cart,ar
+/en/cart,other,active,cart,,EN: target the English Salla URL. Shopify system path. Low priority; not indexed normally.,salla:cart,en
+/,other,active,home,,"Home. No custom link if Salla serves the home page here with 200; if Salla moves Arabic to /ar/, / must still return 200 or ONE 301 hop.",home,ar
+/en,other,active,home,,"Home. No custom link if Salla serves the home page here with 200; if Salla moves Arabic to /ar/, / must still return 200 or ONE 301 hop.",home,en
+/products/keychain-big-metal-strap-silk,product,deleted,product,,"Existing Shopify 301 (old path no longer exists). Shopify target: /products/bag-charm. UNLISTED on Shopify (direct link only). Migrate as a hidden product (PLAN); if Salla cannot hide it, fall back to category:accessories.",product:bag-charm,ar
+/ar/pages/%d8%a7%d8%aa%d8%b5%d8%a7%d9%84,page,deleted,contact,,"Decoded: /ar/pages/اتصال. Existing Shopify 301 (old path no longer exists). Shopify target: /pages/contact. Salla contact page, or a custom page if Salla has none. Use the real URL.",salla:contact,ar
+/ar/pages/%d8%a7%d9%84%d8%a3%d8%b3%d8%a6%d9%84%d8%a9_%d8%a7%d9%84%d8%b4%d8%a7%d8%a6%d8%b9%d8%a9,page,deleted,page,,Decoded: /ar/pages/الأسئلة_الشائعة. Existing Shopify 301 (old path no longer exists). Shopify target: /pages/faq.,page:faq,ar
+/ar/pages/refund-policy,page,deleted,page,,Existing Shopify 301 (old path no longer exists). Shopify target: /policies/refund-policy. Shopify policy page. Salla returns/refund page (built-in policy page or custom page; use the real URL).,page:returns,ar
+/ar/pages/%d8%b3%d9%8a%d8%a7%d8%b3%d8%a9-%d8%a7%d9%84%d8%af%d9%81%d8%b9,page,deleted,page,,Decoded: /ar/pages/سياسة-الدفع. Existing Shopify 301 (old path no longer exists). CHANGE vs Shopify: Shopify sends the old payment-policy page to the refund policy; the live payment-policy page is the real equivalent.,page:payment-policy,ar
+/ar/pages/%d8%a7%d9%84%d9%85%d9%84%d9%83%d9%8a%d8%a9-%d8%a7%d9%84%d9%81%d9%83%d8%b1%d9%8a%d8%a9,page,deleted,page,,Decoded: /ar/pages/الملكية-الفكرية. Existing Shopify 301 (old path no longer exists). CHANGE vs Shopify: Shopify sends the old intellectual-property page to contact; the live intellectual-property page is the real equivalent.,page:intellectual-property,ar
+/ar/pages/wishlist,page,deleted,wishlist,,Existing Shopify 301 (old path no longer exists). Shopify sends this to the home page; the Salla wishlist is the real equivalent.,salla:wishlist,ar
+/ar/pages/%d9%8a%d9%88%d9%86%d9%83%d8%b3-%d8%a8%d9%88%d8%aa%d9%88%d9%85-%d9%83%d9%88%d9%85%d9%81%d9%8a-%d8%a7%d8%b3-%d8%b3%d9%8a,page,deleted,category,,Decoded: /ar/pages/يونكس-بوتوم-كومفي-اس-سي. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/comfy-bottom.,category:comfy-bottom,ar
+/ar/pages/%d9%8a%d9%88%d9%86%d9%83%d8%b3-%d8%a8%d9%88%d8%aa%d9%88%d9%85-%d8%b3%d8%a8%d9%88%d8%b1%d8%aa-%d8%a7%d8%b3-%d8%b3%d9%8a,page,deleted,category,,"Decoded: /ar/pages/يونكس-بوتوم-سبورت-اس-سي. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/legging. Highest-value category (ليقنز 5,400/month, keyword file). Make sure the Salla category is the ليقنز category.",category:legging,ar
+/ar/pages/%d9%8a%d9%88%d9%86%d9%83%d8%b3-%d8%aa%d9%88%d8%a8-%d9%85%d8%b1%d9%8a%d8%ad-sc,page,deleted,category,,Decoded: /ar/pages/يونكس-توب-مريح-sc. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/comfy-top.,category:comfy-top,ar
+/ar/pages/%d8%b1%d9%88%d8%a8-%d8%a7%d9%84%d8%a7%d8%b3%d8%aa%d8%b1%d8%ae%d8%a7%d8%a1-%d9%8a%d9%88%d9%86%d9%83%d8%b3,page,deleted,category,,"Decoded: /ar/pages/روب-الاسترخاء-يونكس. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-relax-robe. DRAFT, 404 on live Shopify today; robe not migrating. Closest category = بيجامات كومفي (home-wear).",category:home-wear,ar
+/ar/collections/%d8%a7%d9%84%d8%a3%d9%83%d8%ab%d8%b1-%d9%85%d8%a8%d9%8a%d8%b9%d9%8b%d8%a7,collection,deleted,category,,Decoded: /ar/collections/الأكثر-مبيعًا. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/best-sellers.,category:best-sellers,ar
+/ar/collections/%d9%85%d9%84%d8%a7%d8%a8%d8%b3-%d8%a7%d9%84%d9%85%d9%86%d8%b2%d9%84,collection,deleted,category,,Decoded: /ar/collections/ملابس-المنزل. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/home-wear.,category:home-wear,ar
+/ar/collections/%d9%85%d8%b1%d9%8a%d8%ad-%d8%b9%d9%84%d9%88%d9%8a,collection,deleted,category,,Decoded: /ar/collections/مريح-علوي. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/comfy-top.,category:comfy-top,ar
+/ar/collections/%d8%a7%d9%84%d9%82%d9%85%d8%b5%d8%a7%d9%86,collection,deleted,category,,Decoded: /ar/collections/القمصان. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/comfy-top.,category:comfy-top,ar
+/ar/collections/%d8%aa%d8%b9%d9%8a%d9%8a%d9%86,collection,deleted,category,,Decoded: /ar/collections/تعيين. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/set.,category:set,ar
+/ar/products/%d8%b1%d8%af%d8%a7%d8%a1-%d9%85%d8%b1%d9%8a%d8%ad-%d8%a3%d8%a8%d9%8a%d8%b6-%d9%84%d9%84%d8%a7%d8%b3%d8%aa%d8%b1%d8%ae%d8%a7%d8%a1,product,deleted,category,,"Decoded: /ar/products/رداء-مريح-أبيض-للاسترخاء. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-relax-robe. DRAFT, 404 on live Shopify today; robe not migrating. Closest category = بيجامات كومفي (home-wear).",category:home-wear,ar
+/ar/products/%d8%b4%d9%85%d8%b9-%d9%85%d8%b9%d8%b7%d8%b1-%d8%a8%d8%b4%d8%b9%d8%a7%d8%b1-%d9%85%d8%ae%d8%b5%d8%b5-l-1,product,deleted,category,,Decoded: /ar/products/شمع-معطر-بشعار-مخصص-l-1. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/accessories.,category:accessories,ar
+/ar/products/%d8%a8%d9%86%d8%b7%d9%84%d9%88%d9%86-%d8%aa%d9%85%d8%ab%d8%a7%d9%84-%d9%86%d8%ad%d8%aa%d9%8a,product,deleted,product,,Decoded: /ar/products/بنطلون-تمثال-نحتي. Existing Shopify 301 (old path no longer exists). Shopify target: /products/sculpting-leggings-vanilla.,product:sculpting-leggings-vanilla,ar
+/ar/products/%d8%a8%d9%86%d8%b7%d8%a7%d9%84-%d8%b1%d9%85%d8%a7%d8%af%d9%8a,product,deleted,product,,Decoded: /ar/products/بنطال-رمادي. Existing Shopify 301 (old path no longer exists). Shopify target: /products/waist-tone-pants-grey.,product:waist-tone-pants-grey,ar
+/ar/products/%d8%a7%d9%84%d8%b3%d8%aa%d8%b1%d8%a7%d8%aa-%d8%a7%d9%84%d8%b1%d9%85%d8%a7%d8%af%d9%8a%d8%a9,product,deleted,product,,Decoded: /ar/products/السترات-الرمادية. Existing Shopify 301 (old path no longer exists). Shopify target: /products/waist-tone-hoodie-grey.,product:waist-tone-hoodie-grey,ar
+/ar/products/%d9%82%d9%85%d9%8a%d8%b5-%d9%86%d8%a7%d8%b9%d9%85-%d8%a3%d8%a8%d9%8a%d8%b6-%d9%85%d8%b1%d9%8a%d8%ad,product,deleted,product,,Decoded: /ar/products/قميص-ناعم-أبيض-مريح. Existing Shopify 301 (old path no longer exists). Shopify target: /products/soft-shirt.,product:soft-shirt,ar
+/ar/products/%d9%82%d9%85%d9%8a%d8%b5-%d9%88%d8%b1%d8%af%d9%8a-%d9%85%d8%b1%d9%8a%d8%ad-%d8%b3%d8%aa%d8%a7%d9%8a%d9%84-%d8%a8%d9%88%d9%8a%d9%81%d8%b1%d9%8a%d9%86%d8%af-%d8%a8%d8%b1%d8%a8%d8%a7%d8%b7,product,deleted,product,,Decoded: /ar/products/قميص-وردي-مريح-ستايل-بويفريند-برباط. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-boyfriend-shirt-whip-pink.,product:comfy-boyfriend-shirt-whip-pink,ar
+/ar/products/%d8%a8%d9%86%d8%b7%d9%84%d9%88%d9%86-%d8%b6%d9%8a%d9%82-%d8%aa%d8%ad%d9%83%d9%85-%d8%a3%d8%b3%d8%a7%d8%b3%d9%8a-%d8%a8%d9%84%d9%88%d9%86-%d8%a7%d9%84%d8%a3%d8%b2%d8%b1%d9%82-%d8%a7%d9%84%d8%a3%d8%ae%d8%b6%d8%b1,product,deleted,product,,Decoded: /ar/products/بنطلون-ضيق-تحكم-أساسي-بلون-الأزرق-الأخضر. Existing Shopify 301 (old path no longer exists). Shopify target: /products/core-control-leggings-midnight-blue.,product:core-control-leggings-midnight-blue,ar
+/ar/products/soft-pyjama-set-new,product,deleted,product,,Existing Shopify 301 (old path no longer exists). CHAIN in Shopify: /ar/products/soft-pyjama-set-new -> /products/soft-pyjama-set-new -> /products/soft-pyjama-set. Flattened to the final destination.,product:soft-pyjama-set,ar
+/ar/products/core-control-set-black-new,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target core-control-set-black-new is 404 today (verified 2026-11-10); fixed to core-control-set-black.,product:core-control-set-black,ar
+/ar/products/timeless-gym-bag-with-charm-stray-night-blue,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/timeless-gym-bag-with-charm-stray-night-blue.,product:timeless-gym-bag-with-charm-stray-night-blue,ar
+/ar/products/core-control-set,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target core-control-set-black-new is 404 today (verified 2026-11-10); fixed to core-control-set-black.,product:core-control-set-black,ar
+/ar/products/comfy-pink-lounge-sky-blue-set,product,deleted,product,,Existing Shopify 301 (old path no longer exists). CHAIN in Shopify: /ar/products/comfy-pink-lounge-sky-blue-set -> /products/comfy-pants-lounge-set-sky-blue-new -> /products/comfy-pants-lounge-set-sky-blue. Flattened to the final destination.,product:comfy-pants-lounge-set-sky-blue,ar
+/products/curve-enhance-set,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/curve-enhance-set-toffee.,product:curve-enhance-set-toffee,ar
+/products/curve-enhance-set-1,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/curve-enhance-set-toffee.,product:curve-enhance-set-toffee,ar
+/products/core-control-set,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target core-control-set-black-new is 404 today (verified 2026-11-10); fixed to core-control-set-black.,product:core-control-set-black,ar
+/products/core-control-black-set,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target core-control-set-black-new is 404 today (verified 2026-11-10); fixed to core-control-set-black.,product:core-control-set-black,ar
+/products/sculpting-set,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/sculpting-set-vanilla.,product:sculpting-set-vanilla,ar
+/products/sculpting-vanilla-set,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/sculpting-set-vanilla.,product:sculpting-set-vanilla,ar
+/products/comfy-blue-lounge-set,product,deleted,product,,Existing Shopify 301 (old path no longer exists). CHAIN in Shopify: /products/comfy-blue-lounge-set -> /products/comfy-pants-lounge-set-sky-blue-new -> /products/comfy-pants-lounge-set-sky-blue. Flattened to the final destination.,product:comfy-pants-lounge-set-sky-blue,ar
+/products/comfy-sky-blue-pants-lounge-set,product,deleted,product,,Existing Shopify 301 (old path no longer exists). CHAIN in Shopify: /products/comfy-sky-blue-pants-lounge-set -> /products/comfy-pants-lounge-set-sky-blue-new -> /products/comfy-pants-lounge-set-sky-blue. Flattened to the final destination.,product:comfy-pants-lounge-set-sky-blue,ar
+/products/comfy-pink-lounge-sky-blue-set,product,deleted,product,,Existing Shopify 301 (old path no longer exists). CHAIN in Shopify: /products/comfy-pink-lounge-sky-blue-set -> /products/comfy-pants-lounge-set-whip-pink-new -> /products/comfy-pants-lounge-set-whip-pink. Flattened to the final destination.,product:comfy-pants-lounge-set-whip-pink,ar
+/products/comfy-white-soft-pyjama-set,product,deleted,product,,Existing Shopify 301 (old path no longer exists). CHAIN in Shopify: /products/comfy-white-soft-pyjama-set -> /products/soft-pyjama-set-new -> /products/soft-pyjama-set. Flattened to the final destination.,product:soft-pyjama-set,ar
+/blogs/news/%d9%8a%d9%88%d9%86%d9%83%d8%b3-%d9%85%d8%aa%d8%ac%d8%b1-%d8%a7%d9%84%d9%85%d9%84%d8%a7%d8%a8%d8%b3-%d8%a7%d9%84%d8%ac%d8%a7%d9%87%d8%b2%d8%a9-%d8%a7%d9%84%d8%b0%d9%8a-%d9%8a%d8%ac%d9%85%d8%b9-%d8%a7%d9%84%d8%a3%d9%86%d8%a7%d9%82%d8%a9-%d9%88%d8%a7%d9%84%d8%ac%d9%88%d8%af%d8%a9,article,deleted,page,,"Decoded: /blogs/news/يونكس-متجر-الملابس-الجاهزة-الذي-يجمع-الأناقة-والجودة. Existing Shopify 301 (old path no longer exists). Old brand-intro article («يونكس متجر الملابس الجاهزة الذي يجمع الأناقة والجودة»). Shopify sends it to the home page; Google warns against that, so send it to the About page (closest equivalent).",page:about,ar
+/ar/blogs/news/%d9%8a%d9%88%d9%86%d9%83%d8%b3-%d9%85%d8%aa%d8%ac%d8%b1-%d8%a7%d9%84%d9%85%d9%84%d8%a7%d8%a8%d8%b3-%d8%a7%d9%84%d8%ac%d8%a7%d9%87%d8%b2%d8%a9-%d8%a7%d9%84%d8%b0%d9%8a-%d9%8a%d8%ac%d9%85%d8%b9-%d8%a7%d9%84%d8%a3%d9%86%d8%a7%d9%82%d8%a9-%d9%88%d8%a7%d9%84%d8%ac%d9%88%d8%af%d8%a9,article,deleted,page,,"Decoded: /ar/blogs/news/يونكس-متجر-الملابس-الجاهزة-الذي-يجمع-الأناقة-والجودة. Existing Shopify 301 (old path no longer exists). Old brand-intro article («يونكس متجر الملابس الجاهزة الذي يجمع الأناقة والجودة»). Shopify sends it to the home page; Google warns against that, so send it to the About page (closest equivalent).",page:about,ar
+/en/products/curve-enhance-set,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/curve-enhance-set-toffee.,product:curve-enhance-set-toffee,en
+/exchange-other-goods,other,deleted,page,,Existing Shopify 301 (old path no longer exists). Shopify target: /policies/refund-policy. Shopify policy page. Salla returns/refund page (built-in policy page or custom page; use the real URL).,page:returns,ar
+/ar,other,deleted,home,,Existing Shopify 301 (old path no longer exists). Shopify target: /.,home,ar
+/ar/search,other,deleted,search,,Existing Shopify 301 (old path no longer exists). Shopify target: /search.,salla:search,ar
+/products/pant-grey,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/waist-tone-pants-grey.,product:waist-tone-pants-grey,ar
+/products/pant-beige,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/waist-tone-pants-off-white.,product:waist-tone-pants-off-white,ar
+/products/hoodies-grey,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/waist-tone-hoodie-grey.,product:waist-tone-hoodie-grey,ar
+/products/hoodies-beige,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/waist-tone-hoodie-off-white.,product:waist-tone-hoodie-off-white,ar
+/ar/collections/%d9%85%d8%ac%d9%85%d9%88%d8%b9%d8%a9-%d9%85%d8%b1%d9%8a%d8%ad%d8%a9,collection,deleted,category,,Decoded: /ar/collections/مجموعة-مريحة. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/comfy-set.,category:comfy-set,ar
+/products/sculpting-set-chocolate-new,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/sculpting-set-chocolate.,product:sculpting-set-chocolate,ar
+/products/comfy-pants-lounge-set-whip-pink-new,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-pants-lounge-set-whip-pink.,product:comfy-pants-lounge-set-whip-pink,ar
+/products/comfy-lounge-whip-pink-pants,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-lounge-pants-whip-pink.,product:comfy-lounge-pants-whip-pink,ar
+/products/soft-pyjama-set-new,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/soft-pyjama-set.,product:soft-pyjama-set,ar
+/products/comfy-sky-blue-boyfriend-shirt,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-boyfriend-shirt-sky-blue.,product:comfy-boyfriend-shirt-sky-blue,ar
+/products/comfy-short-lounge-set-whip-pink-new,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-lounge-shorts-set-whip-pink.,product:comfy-lounge-shorts-set-whip-pink,ar
+/collections/%d9%84%d9%8a%d8%ba%d9%8a%d9%86%d8%ba,collection,deleted,category,,"Decoded: /collections/ليغينغ. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/legging. Highest-value category (ليقنز 5,400/month, keyword file). Make sure the Salla category is the ليقنز category.",category:legging,ar
+/collections/%d8%b1%d9%8a%d8%a7%d8%b6%d8%a9,collection,deleted,category,,Decoded: /collections/رياضة. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/sport.,category:sport,ar
+/products/%d8%a8%d9%86%d8%b7%d9%84%d9%88%d9%86-%d9%88%d8%b1%d8%af%d9%8a-%d9%85%d8%b1%d9%8a%d8%ad-%d9%84%d9%84%d8%a7%d8%b3%d8%aa%d8%b1%d8%ae%d8%a7%d8%a1-%d8%a8%d8%ae%d8%a7%d9%85%d8%a9-%d8%a7%d9%84%d9%88%d8%b4%d8%a7%d8%ad,product,deleted,product,,Decoded: /products/بنطلون-وردي-مريح-للاسترخاء-بخامة-الوشاح. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-lounge-pants-whip-pink.,product:comfy-lounge-pants-whip-pink,ar
+/collections/%d9%85%d8%b1%d9%8a%d8%ad-%d8%b9%d9%84%d9%88%d9%8a,collection,deleted,category,,Decoded: /collections/مريح-علوي. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/comfy-top.,category:comfy-top,ar
+/collections/%d9%85%d9%84%d8%a7%d8%a8%d8%b3-%d8%a7%d9%84%d9%85%d9%86%d8%b2%d9%84,collection,deleted,category,,Decoded: /collections/ملابس-المنزل. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/home-wear.,category:home-wear,ar
+/products/core-control-set-midnight-blue-new,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/core-control-set-midnight-blue.,product:core-control-set-midnight-blue,ar
+/products/timeless-gym-bag,product,deleted,category,,Existing Shopify 301 (old path no longer exists). Shopify target: /collections/accessories.,category:accessories,ar
+/products/comfy-white-relax-robe,product,deleted,category,,Existing Shopify 301 (old path no longer exists). Shopify target: /collections/home-wear.,category:home-wear,ar
+/products/%d9%82%d9%85%d9%8a%d8%b5-%d8%b5%d8%af%d9%8a%d9%82-%d8%a8%d9%84%d9%88%d9%86-%d8%a3%d8%b2%d8%b1%d9%82-%d8%b3%d9%85%d8%a7%d8%a1-%d9%85%d8%b1%d9%8a%d8%ad,product,deleted,product,,Decoded: /products/قميص-صديق-بلون-أزرق-سماء-مريح. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-boyfriend-shirt-sky-blue.,product:comfy-boyfriend-shirt-sky-blue,ar
+/products/%d8%a8%d9%86%d8%b7%d9%84%d9%88%d9%86-%d8%a8%d9%8a%d8%ac,product,deleted,category,,Decoded: /products/بنطلون-بيج. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/comfy-bottom.,category:comfy-bottom,ar
+/products/%d8%b3%d8%b1%d8%a7%d9%88%d9%8a%d9%84-%d8%b6%d9%8a%d9%82-%d8%a8%d8%aa%d8%b5%d9%85%d9%8a%d9%85-%d8%ac%d9%8a%d9%88%d8%a8-%d9%85%d8%b9%d8%b2%d8%b2%d8%a9-%d9%85%d9%86-%d8%aa%d9%88%d9%81%d9%8a,product,deleted,product,,Decoded: /products/سراويل-ضيق-بتصميم-جيوب-معززة-من-توفي. Existing Shopify 301 (old path no longer exists). Shopify target: /products/curve-enhance-pockets-leggings-toffee.,product:curve-enhance-pockets-leggings-toffee,ar
+/products/curve-enhance-set-whip-pink-new,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/curve-enhance-set-whip-pink.,product:curve-enhance-set-whip-pink,ar
+/collections/%d9%85%d8%b1%d9%8a%d8%ad-%d8%a7%d9%84%d8%a3%d8%b3%d9%81%d9%84,collection,deleted,category,,Decoded: /collections/مريح-الأسفل. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/comfy-bottom.,category:comfy-bottom,ar
+/collections/%d8%a7%d8%b7%d9%82%d9%85,collection,deleted,category,,Decoded: /collections/اطقم. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/set.,category:set,ar
+/products/comfy-whip-pink-lounge-shorts,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-lounge-shorts-set-whip-pink.,product:comfy-lounge-shorts-set-whip-pink,ar
+/products/%d8%b3%d8%b1%d8%a7%d9%88%d9%8a%d9%84-%d8%b6%d9%8a%d9%82-%d8%a8%d8%aa%d8%b5%d9%85%d9%8a%d9%85-%d8%ac%d9%8a%d9%88%d8%a8-%d9%85%d9%86%d8%ad%d9%86%d9%8a,product,deleted,product,,Decoded: /products/سراويل-ضيق-بتصميم-جيوب-منحني. Existing Shopify 301 (old path no longer exists). Shopify target: /products/curve-enhance-pockets-leggings-black.,product:curve-enhance-pockets-leggings-black,ar
+/products/comfy-white-soft-shirt,product,deleted,category,,Existing Shopify 301 (old path no longer exists). Shopify target: /collections/comfy-top.,category:comfy-top,ar
+/en/products/comfy-whip-pink-lounge-shorts,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-lounge-shorts-whip-pink.  NOTE: the AR source /products/comfy-whip-pink-lounge-shorts goes to the shorts SET; this EN one goes to the shorts. Kept as Shopify has it; client may align.,product:comfy-lounge-shorts-whip-pink,en
+/en/products/comfy-lounge-whip-pink-pants,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-lounge-pants-whip-pink.,product:comfy-lounge-pants-whip-pink,en
+/en/products/comfy-pants-lounge-set-sky-blue-new,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-pants-lounge-set-sky-blue.,product:comfy-pants-lounge-set-sky-blue,en
+/en/products/comfy-sky-blue-lounge-pants,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-lounge-pants-sky-blue.,product:comfy-lounge-pants-sky-blue,en
+/en/products/curve-enhance-bra-toffee-top,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/curve-enhance-bra-top-toffee.,product:curve-enhance-bra-top-toffee,en
+/en/products/core-control-bra-black-top,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/core-control-bra-top-black.,product:core-control-bra-top-black,en
+/en/products/comfy-pants-lounge-set-whip-pink-new,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-pants-lounge-set-whip-pink.,product:comfy-pants-lounge-set-whip-pink,en
+/en/products/sculpting-chocolate-leggings,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/sculpting-leggings-chocolate.,product:sculpting-leggings-chocolate,en
+/en/products/comfy-short-lounge-set-whip-pink-new,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-lounge-shorts-set-whip-pink.,product:comfy-lounge-shorts-set-whip-pink,en
+/en/products/comfy-sky-blue-lounge-shirt,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-lounge-shirt-sky-blue.,product:comfy-lounge-shirt-sky-blue,en
+/en/products/comfy-white-relax-robe,product,deleted,category,,"EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-relax-robe. DRAFT, 404 on live Shopify today; robe not migrating. Closest category = بيجامات كومفي (home-wear).",category:home-wear,en
+/en/products/sculpting-bra-vanilla-top,product,deleted,product,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /products/sculpting-bra-top-vanilla.,product:sculpting-bra-top-vanilla,en
+/en/products/sculpting-bra-top,product,deleted,category,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/tops.,category:tops,en
+/en/products/core-control-bra-top,product,deleted,category,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/tops.,category:tops,en
+/en/products/curve-enhance-bra-top,product,deleted,category,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/tops.,category:tops,en
+/en/products/curve-enhance-pockets-leggings,product,deleted,category,,"EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/legging. Highest-value category (ليقنز 5,400/month, keyword file). Make sure the Salla category is the ليقنز category.",category:legging,en
+/en/products/custom-logo-scented-candle-l,product,deleted,category,,EN: target the English Salla URL. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/accessories.,category:accessories,en
+/products/%d8%b5%d8%af%d8%b1%d9%8a%d8%a9-%d8%aa%d8%ad%d9%83%d9%85-%d8%a3%d8%b3%d8%a7%d8%b3%d9%8a%d8%a9-%d8%b3%d9%88%d8%af%d8%a7%d8%a1-%d8%b9%d9%84%d9%88%d9%8a,product,deleted,product,,Decoded: /products/صدرية-تحكم-أساسية-سوداء-علوي. Existing Shopify 301 (old path no longer exists). Shopify target: /products/core-control-bra-top-black.,product:core-control-bra-top-black,ar
+/products/%d8%b1%d8%af%d8%a7%d8%a1-%d9%85%d8%b1%d9%8a%d8%ad-%d8%a3%d8%a8%d9%8a%d8%b6-%d9%84%d9%84%d8%a7%d8%b3%d8%aa%d8%b1%d8%ae%d8%a7%d8%a1,product,deleted,category,,"Decoded: /products/رداء-مريح-أبيض-للاسترخاء. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-relax-robe. DRAFT, 404 on live Shopify today; robe not migrating. Closest category = بيجامات كومفي (home-wear).",category:home-wear,ar
+/products/%d9%82%d9%85%d8%a9-%d8%ad%d9%85%d8%a7%d9%84%d8%a9-%d8%a7%d9%84%d8%b5%d8%af%d8%b1-%d8%a7%d9%84%d8%a3%d8%b3%d8%a7%d8%b3%d9%8a%d8%a9,product,deleted,category,,Decoded: /products/قمة-حمالة-الصدر-الأساسية. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/tops.,category:tops,ar
+/products/%d9%83%d9%85-%d8%b7%d9%88%d9%8a%d9%84-%d9%83%d8%b1%d9%8a%d9%85%d9%8a-%d8%a3%d8%a8%d9%8a%d8%b6,product,deleted,product,,Decoded: /products/كم-طويل-كريمي-أبيض. Existing Shopify 301 (old path no longer exists). Shopify target: /products/femme-scoop-long-sleeves-top-cream-white.,product:femme-scoop-long-sleeves-top-cream-white,ar
+/products/%d9%82%d9%85%d9%8a%d8%b5-%d8%b5%d8%a7%d9%84%d8%a9-%d8%a3%d8%b2%d8%b1%d9%82-%d8%b3%d9%85%d8%a7%d8%a1-%d9%85%d8%b1%d9%8a%d8%ad,product,deleted,product,,Decoded: /products/قميص-صالة-أزرق-سماء-مريح. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-lounge-shirt-sky-blue.,product:comfy-lounge-shirt-sky-blue,ar
+/products/%d9%85%d8%b4%d8%a8%d9%83-%d8%b4%d8%b9%d8%b1-%d9%88%d8%b1%d8%af%d9%8a-%d8%a8%d9%88%d8%af%d8%b1%d8%a9-%d9%85%d8%b1%d9%8a%d8%ad,product,deleted,product,,Decoded: /products/مشبك-شعر-وردي-بودرة-مريح. Existing Shopify 301 (old path no longer exists). Shopify target: /products/grip-go-hair-clip.,product:grip-go-hair-clip,ar
+/products/%d8%ad%d9%82%d9%8a%d8%a8%d8%a9-%d8%a7%d9%84%d8%ac%d9%85%d9%86%d8%a7%d8%b2%d9%8a%d9%88%d9%85-%d8%a7%d9%84%d8%ae%d8%a7%d9%84%d8%af%d8%a9,product,deleted,category,,Decoded: /products/حقيبة-الجمنازيوم-الخالدة. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/accessories.,category:accessories,ar
+/products/%d8%b4%d9%88%d8%b1%d8%aa%d8%a7%d8%aa-%d8%a7%d8%b3%d8%aa%d8%b1%d8%a7%d8%ad%d8%a9-%d9%88%d8%b1%d8%af%d9%8a%d8%a9-%d9%85%d8%b1%d9%8a%d8%ad%d8%a9-%d9%88%d8%ae%d9%81%d8%a9,product,deleted,product,,Decoded: /products/شورتات-استراحة-وردية-مريحة-وخفة. Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-lounge-shorts-whip-pink.,product:comfy-lounge-shorts-whip-pink,ar
+/products/comfy-pants-lounge-set-sky-blue-new,product,deleted,product,,Existing Shopify 301 (old path no longer exists). Shopify target: /products/comfy-pants-lounge-set-sky-blue.,product:comfy-pants-lounge-set-sky-blue,ar
+/products/%d9%82%d9%85%d9%8a%d8%b5-%d9%86%d8%a7%d8%b9%d9%85-%d8%a3%d8%a8%d9%8a%d8%b6-%d9%85%d8%b1%d9%8a%d8%ad,product,deleted,product,,Decoded: /products/قميص-ناعم-أبيض-مريح. Existing Shopify 301 (old path no longer exists). Shopify target: /products/soft-shirt.,product:soft-shirt,ar
+/collections/%d8%a7%d9%84%d8%a3%d9%83%d8%ab%d8%b1-%d9%85%d8%a8%d9%8a%d8%b9%d9%8b%d8%a7,collection,deleted,category,,Decoded: /collections/الأكثر-مبيعًا. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/best-sellers.,category:best-sellers,ar
+/collections/%d9%85%d8%ac%d9%85%d9%88%d8%b9%d8%a9-%d9%86%d8%b4%d8%b7%d8%a9,collection,deleted,category,,Decoded: /collections/مجموعة-نشطة. Existing Shopify 301 (old path no longer exists). Shopify target: /collections/sport.,category:sport,ar
+/collections/activewear-offer,collection,deleted,category,,Existing Shopify 301 (old path no longer exists). Shopify target: /collections/sport.,category:sport,ar
+/en/products/keychain-big-metal-strap-silk,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/keychain-big-metal-strap-silk.",product:bag-charm,en
+/en/products/curve-enhance-set-1,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/curve-enhance-set-1.",product:curve-enhance-set-toffee,en
+/en/products/core-control-set,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/core-control-set.",product:core-control-set-black,en
+/en/products/core-control-black-set,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/core-control-black-set.",product:core-control-set-black,en
+/en/products/sculpting-set,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/sculpting-set.",product:sculpting-set-vanilla,en
+/en/products/sculpting-vanilla-set,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/sculpting-vanilla-set.",product:sculpting-set-vanilla,en
+/en/products/comfy-blue-lounge-set,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/comfy-blue-lounge-set.",product:comfy-pants-lounge-set-sky-blue,en
+/en/products/comfy-sky-blue-pants-lounge-set,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/comfy-sky-blue-pants-lounge-set.",product:comfy-pants-lounge-set-sky-blue,en
+/en/products/comfy-pink-lounge-sky-blue-set,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/comfy-pink-lounge-sky-blue-set.",product:comfy-pants-lounge-set-whip-pink,en
+/en/products/comfy-white-soft-pyjama-set,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/comfy-white-soft-pyjama-set.",product:soft-pyjama-set,en
+/en/blogs/news/%d9%8a%d9%88%d9%86%d9%83%d8%b3-%d9%85%d8%aa%d8%ac%d8%b1-%d8%a7%d9%84%d9%85%d9%84%d8%a7%d8%a8%d8%b3-%d8%a7%d9%84%d8%ac%d8%a7%d9%87%d8%b2%d8%a9-%d8%a7%d9%84%d8%b0%d9%8a-%d9%8a%d8%ac%d9%85%d8%b9-%d8%a7%d9%84%d8%a3%d9%86%d8%a7%d9%82%d8%a9-%d9%88%d8%a7%d9%84%d8%ac%d9%88%d8%af%d8%a9,article,deleted,page,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /blogs/news/يونكس-متجر-الملابس-الجاهزة-الذي-يجمع-الأناقة-والجودة.",page:about,en
+/en/exchange-other-goods,other,deleted,page,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /exchange-other-goods.",page:returns,en
+/en/products/pant-grey,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/pant-grey.",product:waist-tone-pants-grey,en
+/en/products/pant-beige,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/pant-beige.",product:waist-tone-pants-off-white,en
+/en/products/hoodies-grey,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/hoodies-grey.",product:waist-tone-hoodie-grey,en
+/en/products/hoodies-beige,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/hoodies-beige.",product:waist-tone-hoodie-off-white,en
+/en/products/sculpting-set-chocolate-new,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/sculpting-set-chocolate-new.",product:sculpting-set-chocolate,en
+/en/products/soft-pyjama-set-new,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/soft-pyjama-set-new.",product:soft-pyjama-set,en
+/en/products/comfy-sky-blue-boyfriend-shirt,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/comfy-sky-blue-boyfriend-shirt.",product:comfy-boyfriend-shirt-sky-blue,en
+/en/collections/%d9%84%d9%8a%d8%ba%d9%8a%d9%86%d8%ba,collection,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /collections/ليغينغ.",category:legging,en
+/en/collections/%d8%b1%d9%8a%d8%a7%d8%b6%d8%a9,collection,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /collections/رياضة.",category:sport,en
+/en/products/%d8%a8%d9%86%d8%b7%d9%84%d9%88%d9%86-%d9%88%d8%b1%d8%af%d9%8a-%d9%85%d8%b1%d9%8a%d8%ad-%d9%84%d9%84%d8%a7%d8%b3%d8%aa%d8%b1%d8%ae%d8%a7%d8%a1-%d8%a8%d8%ae%d8%a7%d9%85%d8%a9-%d8%a7%d9%84%d9%88%d8%b4%d8%a7%d8%ad,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/بنطلون-وردي-مريح-للاسترخاء-بخامة-الوشاح.",product:comfy-lounge-pants-whip-pink,en
+/en/collections/%d9%85%d8%b1%d9%8a%d8%ad-%d8%b9%d9%84%d9%88%d9%8a,collection,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /collections/مريح-علوي.",category:comfy-top,en
+/en/collections/%d9%85%d9%84%d8%a7%d8%a8%d8%b3-%d8%a7%d9%84%d9%85%d9%86%d8%b2%d9%84,collection,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /collections/ملابس-المنزل.",category:home-wear,en
+/en/products/core-control-set-midnight-blue-new,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/core-control-set-midnight-blue-new.",product:core-control-set-midnight-blue,en
+/en/products/timeless-gym-bag,product,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/timeless-gym-bag.",category:accessories,en
+/en/products/%d9%82%d9%85%d9%8a%d8%b5-%d8%b5%d8%af%d9%8a%d9%82-%d8%a8%d9%84%d9%88%d9%86-%d8%a3%d8%b2%d8%b1%d9%82-%d8%b3%d9%85%d8%a7%d8%a1-%d9%85%d8%b1%d9%8a%d8%ad,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/قميص-صديق-بلون-أزرق-سماء-مريح.",product:comfy-boyfriend-shirt-sky-blue,en
+/en/products/%d8%a8%d9%86%d8%b7%d9%84%d9%88%d9%86-%d8%a8%d9%8a%d8%ac,product,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/بنطلون-بيج.",category:comfy-bottom,en
+/en/products/%d8%b3%d8%b1%d8%a7%d9%88%d9%8a%d9%84-%d8%b6%d9%8a%d9%82-%d8%a8%d8%aa%d8%b5%d9%85%d9%8a%d9%85-%d8%ac%d9%8a%d9%88%d8%a8-%d9%85%d8%b9%d8%b2%d8%b2%d8%a9-%d9%85%d9%86-%d8%aa%d9%88%d9%81%d9%8a,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/سراويل-ضيق-بتصميم-جيوب-معززة-من-توفي.",product:curve-enhance-pockets-leggings-toffee,en
+/en/products/curve-enhance-set-whip-pink-new,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/curve-enhance-set-whip-pink-new.",product:curve-enhance-set-whip-pink,en
+/en/collections/%d9%85%d8%b1%d9%8a%d8%ad-%d8%a7%d9%84%d8%a3%d8%b3%d9%81%d9%84,collection,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /collections/مريح-الأسفل.",category:comfy-bottom,en
+/en/collections/%d8%a7%d8%b7%d9%82%d9%85,collection,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /collections/اطقم.",category:set,en
+/en/products/%d8%b3%d8%b1%d8%a7%d9%88%d9%8a%d9%84-%d8%b6%d9%8a%d9%82-%d8%a8%d8%aa%d8%b5%d9%85%d9%8a%d9%85-%d8%ac%d9%8a%d9%88%d8%a8-%d9%85%d9%86%d8%ad%d9%86%d9%8a,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/سراويل-ضيق-بتصميم-جيوب-منحني.",product:curve-enhance-pockets-leggings-black,en
+/en/products/comfy-white-soft-shirt,product,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/comfy-white-soft-shirt.",category:comfy-top,en
+/en/products/%d8%b5%d8%af%d8%b1%d9%8a%d8%a9-%d8%aa%d8%ad%d9%83%d9%85-%d8%a3%d8%b3%d8%a7%d8%b3%d9%8a%d8%a9-%d8%b3%d9%88%d8%af%d8%a7%d8%a1-%d8%b9%d9%84%d9%88%d9%8a,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/صدرية-تحكم-أساسية-سوداء-علوي.",product:core-control-bra-top-black,en
+/en/products/%d8%b1%d8%af%d8%a7%d8%a1-%d9%85%d8%b1%d9%8a%d8%ad-%d8%a3%d8%a8%d9%8a%d8%b6-%d9%84%d9%84%d8%a7%d8%b3%d8%aa%d8%b1%d8%ae%d8%a7%d8%a1,product,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/رداء-مريح-أبيض-للاسترخاء.",category:home-wear,en
+/en/products/%d9%82%d9%85%d8%a9-%d8%ad%d9%85%d8%a7%d9%84%d8%a9-%d8%a7%d9%84%d8%b5%d8%af%d8%b1-%d8%a7%d9%84%d8%a3%d8%b3%d8%a7%d8%b3%d9%8a%d8%a9,product,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/قمة-حمالة-الصدر-الأساسية.",category:tops,en
+/en/products/%d9%83%d9%85-%d8%b7%d9%88%d9%8a%d9%84-%d9%83%d8%b1%d9%8a%d9%85%d9%8a-%d8%a3%d8%a8%d9%8a%d8%b6,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/كم-طويل-كريمي-أبيض.",product:femme-scoop-long-sleeves-top-cream-white,en
+/en/products/%d9%82%d9%85%d9%8a%d8%b5-%d8%b5%d8%a7%d9%84%d8%a9-%d8%a3%d8%b2%d8%b1%d9%82-%d8%b3%d9%85%d8%a7%d8%a1-%d9%85%d8%b1%d9%8a%d8%ad,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/قميص-صالة-أزرق-سماء-مريح.",product:comfy-lounge-shirt-sky-blue,en
+/en/products/%d9%85%d8%b4%d8%a8%d9%83-%d8%b4%d8%b9%d8%b1-%d9%88%d8%b1%d8%af%d9%8a-%d8%a8%d9%88%d8%af%d8%b1%d8%a9-%d9%85%d8%b1%d9%8a%d8%ad,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/مشبك-شعر-وردي-بودرة-مريح.",product:grip-go-hair-clip,en
+/en/products/%d8%ad%d9%82%d9%8a%d8%a8%d8%a9-%d8%a7%d9%84%d8%ac%d9%85%d9%86%d8%a7%d8%b2%d9%8a%d9%88%d9%85-%d8%a7%d9%84%d8%ae%d8%a7%d9%84%d8%af%d8%a9,product,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/حقيبة-الجمنازيوم-الخالدة.",category:accessories,en
+/en/products/%d8%b4%d9%88%d8%b1%d8%aa%d8%a7%d8%aa-%d8%a7%d8%b3%d8%aa%d8%b1%d8%a7%d8%ad%d8%a9-%d9%88%d8%b1%d8%af%d9%8a%d8%a9-%d9%85%d8%b1%d9%8a%d8%ad%d8%a9-%d9%88%d8%ae%d9%81%d8%a9,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/شورتات-استراحة-وردية-مريحة-وخفة.",product:comfy-lounge-shorts-whip-pink,en
+/en/products/%d9%82%d9%85%d9%8a%d8%b5-%d9%86%d8%a7%d8%b9%d9%85-%d8%a3%d8%a8%d9%8a%d8%b6-%d9%85%d8%b1%d9%8a%d8%ad,product,deleted,product,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /products/قميص-ناعم-أبيض-مريح.",product:soft-shirt,en
+/en/collections/%d8%a7%d9%84%d8%a3%d9%83%d8%ab%d8%b1-%d9%85%d8%a8%d9%8a%d8%b9%d9%8b%d8%a7,collection,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /collections/الأكثر-مبيعًا.",category:best-sellers,en
+/en/collections/%d9%85%d8%ac%d9%85%d9%88%d8%b9%d8%a9-%d9%86%d8%b4%d8%b7%d8%a9,collection,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /collections/مجموعة-نشطة.",category:sport,en
+/en/collections/activewear-offer,collection,deleted,category,,"EN: target the English Salla URL. Derived /en/ variant: Shopify applies root redirects to /en/ (verified with /en/products/pant-grey, 2026-11-10). Same destination as /collections/activewear-offer.",category:sport,en
