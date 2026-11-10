@@ -32,6 +32,8 @@ export default function initCartInstallment(root = document.querySelector('[data
 
   salla.event.cart.onUpdated(cart => {
     pending = toAmount(cart?.total);
+    // nothing to split (empty cart, fully discounted): hide now; a later positive total shows it again
+    root.hidden = !(Number.isFinite(pending) && pending > 0);
     clearTimeout(timer);
     timer = setTimeout(swap, DEBOUNCE_MS);
   });

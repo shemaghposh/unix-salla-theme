@@ -134,7 +134,7 @@
                 </p>
                 {# the feminine label only for a plain product on sale; Salla's own label otherwise
                    (sold out, preorder, booking, donation), like the PDP (D55). Pending cards get theirs in JS. #}
-                {% set lk_plain = p and p.status|default('') == 'sale' and p.type|default('product') not in ['booking', 'donating'] %}
+                {% set lk_plain = p and p.status|default('sale') == 'sale' and p.type|default('product') not in ['booking', 'donating'] %}
                 <salla-add-product-button class="unix-look__add" fill="outline" width="wide"
                         product-id="{{ spot.id }}"
                         {% if p %}product-status="{{ p.status|default('sale') }}" product-type="{{ p.type|default('product') }}"{% endif %}>
