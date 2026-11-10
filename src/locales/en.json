@@ -373,6 +373,21 @@
         "show_results": "Show results",
         "results_updated": "Results updated:",
         "highlight_default": "Size"
+      },
+      "pdp_assure": {
+        "label": "Delivery and exchanges",
+        "delivery_default": "Delivery in 1–4 business days within Saudi Arabia",
+        "returns_default": "Easy exchanges and returns",
+        "returns_days_1": "Easy exchange within 1 day",
+        "returns_days_2": "Easy exchange within 2 days",
+        "returns_days_few": "Easy exchange within :days days",
+        "returns_days_many": "Easy exchange within :days days"
+      },
+      "size_help": {
+        "question": "Not sure about your size?",
+        "whatsapp": "Message us on WhatsApp",
+        "new_tab": "(opens WhatsApp in a new window)",
+        "wa_message": "Hi, I need help choosing my size: :name"
       }
     }
   },

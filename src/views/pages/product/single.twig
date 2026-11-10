@@ -185,6 +185,15 @@
             {# plain products get the original's feminine CTA; Salla's own label for preorder/booking/donation/notify (D55) #}
             {% set unix_atc_plain = product.status == 'sale' and product.type not in ['booking', 'donating'] and not product.has_preorder_campaign %}
             {% set unix_atc_label = unix_atc_plain ? trans('blocks.unix.pdp_info.add_to_cart') : product.add_to_cart_label %}
+            {# 3.12 (D138): WhatsApp size help, under the size picker and inside the size-chart dialog.
+               Same number as the footer (unix_contact_whatsapp, else the store's WhatsApp), with a
+               prefilled message naming the product. '' when the setting is off or there is no number. #}
+            {% set unix_wa = theme.settings.get('unix_pdp_whatsapp_help', true) ? theme.settings.get('unix_contact_whatsapp')|default(store.contacts.whatsapp|default(store.social.whatsapp))|default('')|trim : '' %}
+            {% set unix_wa_help_url = '' %}
+            {% if unix_wa %}
+                {% set unix_wa_msg = trans('blocks.unix.size_help.wa_message', {'name': product.name}) ~ ' ' ~ product.url %}
+                {% set unix_wa_help_url = unix_wa starts with 'http' ? unix_wa : 'https://wa.me/' ~ unix_wa|replace({'+': '', ' ': '', '-': ''}) ~ '?text=' ~ unix_wa_msg|url_encode %}
+            {% endif %}
 
             <div class="main-content unix-pdp-info">
                 {% hook 'product:single.description.start' %}
@@ -258,7 +267,11 @@
                     store's own keys, where unix.sa renders unix_tamara + Tabby (after price, before options).
                     No Tamara CDN script or public key in the theme; styling in unix-installment.scss.
                 #}
-                <salla-installment data-testid="store-product-installment" class="unix-pdp-installment" price="{{ product.price }}"></salla-installment>
+                {# 3.12 (D136): behind unix_pdp_installments (on by default). The component re-renders on
+                   product::price.updated, so a size with another price updates Tabby/Tamara (ECOMMERCE-UX T4). #}
+                {% if theme.settings.get('unix_pdp_installments', true) %}
+                    <salla-installment data-testid="store-product-installment" class="unix-pdp-installment" price="{{ product.price }}"></salla-installment>
+                {% endif %}
 
                 {# Digital Files Settings #}
                 {% if product.digital_files_settings %}
@@ -279,6 +292,8 @@
                     {% include 'components.product.unix-size-finder' %}
                     {# ROADMAP 3.4 · DS §8.23: size charts (Salla size guides) #}
                     {% include 'components.product.unix-size-charts' %}
+                    {# ROADMAP 3.12 · DS §8.51 (D137, D138): model info + «محتارة في المقاس؟ كلّمينا واتساب» #}
+                    {% include 'components.product.unix-pdp-fit-help' %}
 
                     {% hook 'product:single.form.end' %}
 
@@ -344,6 +359,9 @@
                         <salla-gifting data-testid="store-product-gifting" widget-subtitle="{{ gifting_intro }}" product-id="{{ product.id }}" {{ product.is_require_shipping ? 'physical-products' : '' }}></salla-gifting>
                     {% endif %}
                 </form>
+
+                {# ROADMAP 3.12 · DS §8.50 (D136): delivery window + returns line next to the buy box #}
+                {% include 'components.product.unix-pdp-assure' %}
 
                 {# ROADMAP 3.6 · DS §8.24: «متى يصلك طلبك؟» #}
                 {% include 'components.product.unix-delivery-estimate' %}

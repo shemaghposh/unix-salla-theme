@@ -1,0 +1,68 @@
+/* ============================================================
+   UNIX PDP reassurance (ROADMAP 3.12–3.13 · DS §8.50–8.51)
+   Delivery window + returns line under the buy box (D136), model info
+   and the WhatsApp size-help link under the size picker (D137, D138).
+   Quiet lines: --t-small, --c-text-muted, line icons, no boxes, no accent.
+   Semantic tokens only.
+   ============================================================ */
+
+.unix-pdp-assure {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.unix-pdp-assure__item,
+.unix-pdp-help {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-block-size: var(--tap);
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+  line-height: 1.6;
+}
+
+.unix-pdp-assure__icon {
+  flex: none;
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+}
+
+/* text links (returns policy, WhatsApp): underlined like the size-chart buttons (§8.23) */
+.unix-pdp-assure__link,
+.unix-pdp-help__link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap);
+  color: var(--c-text);
+  text-decoration: underline;
+  text-decoration-thickness: var(--line-w);
+  text-underline-offset: var(--s-1);
+  transition: opacity var(--d-fast) var(--ease-out);
+
+  &:active { opacity: var(--o-muted); }
+}
+
+@media (hover: hover) {
+  .unix-pdp-assure__link:hover,
+  .unix-pdp-help__link:hover { opacity: var(--o-muted); }
+}
+
+/* model info (3.13, D137): one plain line, no icon */
+.theme-unix .unix-pdp-fit {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--t-small);
+  line-height: 1.6;
+}
+
+/* WhatsApp help inside the size-chart dialog (3.13, D138): after the charts, a hairline above */
+.unix-sg__help {
+  margin-block-start: var(--s-4);
+  padding-block-start: var(--s-3);
+  border-block-start: var(--line-w) solid var(--c-border);
+}

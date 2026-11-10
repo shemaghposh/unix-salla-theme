@@ -373,6 +373,21 @@
         "show_results": "عرض النتائج",
         "results_updated": "تم تحديث النتائج:",
         "highlight_default": "مقاس"
+      },
+      "pdp_assure": {
+        "label": "التوصيل والاستبدال",
+        "delivery_default": "التوصيل خلال 1–4 أيام عمل داخل السعودية",
+        "returns_default": "استبدال واسترجاع سهل",
+        "returns_days_1": "استبدال سهل خلال يوم واحد",
+        "returns_days_2": "استبدال سهل خلال يومين",
+        "returns_days_few": "استبدال سهل خلال :days أيام",
+        "returns_days_many": "استبدال سهل خلال :days يومًا"
+      },
+      "size_help": {
+        "question": "محتارة في المقاس؟",
+        "whatsapp": "كلّمينا واتساب",
+        "new_tab": "(يفتح واتساب في نافذة جديدة)",
+        "wa_message": "مرحبًا، أحتاج مساعدة في اختيار المقاس: :name"
       }
     }
   },

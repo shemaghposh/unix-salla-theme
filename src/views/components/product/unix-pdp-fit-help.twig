@@ -1,0 +1,60 @@
+{#
+  UNIX model info + WhatsApp size help (ROADMAP 3.12 · DS §8.51 · D137, D138).
+  ECOMMERCE-UX A2 / S1 items 9–10 (model height and size worn next to the size buttons; a service
+  link where size doubt happens) and T5 (WhatsApp inline, never a floating bubble).
+
+  Usage: include ONCE in the product form, right after the size charts (pages/product/single.twig):
+    {% include 'components.product.unix-pdp-fit-help' %}
+  Expects from single.twig: `unix_colours` (3.10 parser, for group keys) and `unix_wa_help_url`
+  ('' when the setting is off or the store has no WhatsApp number).
+
+  Model info (D137): Salla gives the theme no per-product text field in Twig (custom fields only
+  render as a whole through salla-metadata, D56), so it comes from the multilanguage textarea
+  `unix_pdp_model_info`, one line per product or model, same pattern as the colour links (D72):
+      <keys> | <text>
+  <keys> = comma-separated product ids (123456789), product URLs (…/p123456789) or a colour-group
+  key from unix_colour_links (sculpting-leggings → every colour of that model). First match wins.
+  Text is plain (autoescaped), max 160 characters. Empty English falls back to Arabic.
+#}
+{% set fh_text = '' %}
+{% if theme.settings.get('unix_pdp_model_info_enabled', true) %}
+  {% set fh_raw = theme.settings.get('unix_pdp_model_info') %}
+  {% if fh_raw is iterable %}
+    {% set fh_lang = fh_raw[language.code] is defined ? fh_raw[language.code]|default('')|trim : '' %}
+    {% set fh_raw = fh_lang ?: (fh_raw.ar is defined ? fh_raw.ar|default('') : '') %}
+  {% endif %}
+  {% set fh_group = unix_colours is defined ? unix_colours.group|default('') : '' %}
+  {% for fh_line in fh_raw|default('')|replace({"\r": ''})|split("\n") %}
+    {% set fh_cells = fh_line|split('|', 2) %}
+    {% if not fh_text and fh_cells|length == 2 and fh_cells[1]|trim %}
+      {% for fh_key in fh_cells[0]|replace({'،': ','})|split(',') %}
+        {% set fh_key = fh_key|trim %}
+        {% set fh_end = fh_key|split('#')|first|split('?')|first|trim('/', 'right')|split('/')|last %}
+        {% if fh_key and (fh_key == product.id ~ '' or fh_end == 'p' ~ product.id or (fh_group and fh_key|lower == fh_group)) %}
+          {% set fh_text = fh_cells[1]|trim|slice(0, 160) %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if fh_text %}
+  <p class="unix-pdp-fit" data-testid="unix-model-info">{{ fh_text }}</p>
+{% endif %}
+
+{# only where a size choice exists (size options or a size guide), not on one-size items #}
+{% if unix_wa_help_url|default('') and (product.has_size_guide or product.options|default([])|length) %}
+  <p class="unix-pdp-help">
+    {# line chat bubble (DS §6: stroke icons only; sicon-whatsapp is a filled glyph) #}
+    <svg class="unix-pdp-assure__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M4.5 19.5l1.2-3.6A7.5 7.5 0 1 1 8.4 18.6z"/>
+    </svg>
+    <span>
+      {{- trans('blocks.unix.size_help.question') }}
+      <a class="unix-pdp-help__link" href="{{ unix_wa_help_url }}" target="_blank" rel="noopener">
+        {{- trans('blocks.unix.size_help.whatsapp') -}}
+        <span class="sr-only"> {{ trans('blocks.unix.size_help.new_tab') }}</span>
+      </a>
+    </span>
+  </p>
+{% endif %}

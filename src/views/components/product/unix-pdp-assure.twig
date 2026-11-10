@@ -1,0 +1,70 @@
+{#
+  UNIX PDP reassurance lines (ROADMAP 3.12 · DS §8.50 · D136). ECOMMERCE-UX rules 2 and 6 (D9, D10, T6):
+  a delivery window (not a speed) and a returns summary that links to the policy, next to the buy box.
+  unix.sa has neither line, so both are settings toggles, on by default.
+
+  Usage: include ONCE in the product info column, right after the buy form (pages/product/single.twig):
+    {% include 'components.product.unix-pdp-assure' %}
+
+  Settings (twilight.json):
+    unix_pdp_delivery_line  boolean  on   the delivery line
+    unix_pdp_delivery_text  text     null → blocks.unix.pdp_assure.delivery_default (multilanguage)
+    unix_pdp_returns_line   boolean  on   the returns line
+    unix_pdp_returns_days   integer  null → neutral «استبدال واسترجاع سهل»; a number → «استبدال سهل خلال X أيام»
+    unix_pdp_returns_link   link     null → the line is plain text
+  No JS.
+#}
+{% set as_lang = language.code|default('ar') %}
+{% set as_delivery = theme.settings.get('unix_pdp_delivery_line', true) %}
+{% set as_returns = theme.settings.get('unix_pdp_returns_line', true) %}
+
+{% if as_delivery or as_returns %}
+  {% set as_delivery_text = theme.settings.get('unix_pdp_delivery_text') %}
+  {% if as_delivery_text is iterable %}
+    {% set as_delivery_text = as_delivery_text[as_lang] is defined ? as_delivery_text[as_lang] : null %}
+  {% endif %}
+  {% set as_delivery_text = as_delivery_text|default('')|trim ?: trans('blocks.unix.pdp_assure.delivery_default') %}
+
+  {% set as_days = theme.settings.get('unix_pdp_returns_days')|default(0) %}
+  {% set as_days = as_days is iterable ? 0 : as_days|number_format(0, '.', '') + 0 %}
+  {% if as_days == 1 %}
+    {% set as_returns_text = trans('blocks.unix.pdp_assure.returns_days_1') %}
+  {% elseif as_days == 2 %}
+    {% set as_returns_text = trans('blocks.unix.pdp_assure.returns_days_2') %}
+  {% elseif as_days > 2 and as_days <= 10 %}
+    {% set as_returns_text = trans('blocks.unix.pdp_assure.returns_days_few', {'days': as_days}) %}
+  {% elseif as_days > 10 %}
+    {% set as_returns_text = trans('blocks.unix.pdp_assure.returns_days_many', {'days': as_days}) %}
+  {% else %}
+    {% set as_returns_text = trans('blocks.unix.pdp_assure.returns_default') %}
+  {% endif %}
+
+  {# link picker (variable-list) returns an object with .url; tolerate a plain string too #}
+  {% set as_returns_url = theme.settings.get('unix_pdp_returns_link') %}
+  {% if as_returns_url is iterable %}{% set as_returns_url = as_returns_url.url|default('') %}{% endif %}
+  {% set as_returns_url = as_returns_url|default('')|trim %}
+
+  <ul class="unix-pdp-assure" aria-label="{{ trans('blocks.unix.pdp_assure.label') }}">
+    {% if as_delivery %}
+      <li class="unix-pdp-assure__item">
+        {# calendar: a window of days, not the truck of the delivery box below #}
+        <svg class="unix-pdp-assure__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>
+        </svg>
+        <span>{{ as_delivery_text }}</span>
+      </li>
+    {% endif %}
+    {% if as_returns %}
+      <li class="unix-pdp-assure__item">
+        <svg class="unix-pdp-assure__icon icon-dir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M4 9h12a4 4 0 0 1 0 8h-4"/><path d="M8 5L4 9l4 4"/>
+        </svg>
+        {% if as_returns_url %}
+          <a class="unix-pdp-assure__link" href="{{ as_returns_url }}">{{ as_returns_text }}</a>
+        {% else %}
+          <span>{{ as_returns_text }}</span>
+        {% endif %}
+      </li>
+    {% endif %}
+  </ul>
+{% endif %}

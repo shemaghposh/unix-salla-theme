@@ -41,6 +41,18 @@
       {# persistent live region: JS only swaps its text («لحظة…» / error), never re-creates it #}
       <p class="unix-sg__status" role="status" data-sg-status></p>
       <div class="unix-sg__content" data-sg-content></div>
+      {# 3.12 (D138, ECOMMERCE-UX S1 item 9): WhatsApp help inside the guide; unix_wa_help_url comes from single.twig #}
+      {% if unix_wa_help_url|default('') %}
+        <p class="unix-pdp-help unix-sg__help">
+          <span>
+            {{- trans('blocks.unix.size_help.question') }}
+            <a class="unix-pdp-help__link" href="{{ unix_wa_help_url }}" target="_blank" rel="noopener">
+              {{- trans('blocks.unix.size_help.whatsapp') -}}
+              <span class="sr-only"> {{ trans('blocks.unix.size_help.new_tab') }}</span>
+            </a>
+          </span>
+        </p>
+      {% endif %}
     </dialog>
   </div>
 {% endif %}

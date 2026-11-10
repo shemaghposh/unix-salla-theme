@@ -562,6 +562,134 @@
             "selected": true
         },
         {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "التقسيط (تابي وتمارا) تحت السعر",
+            "description": "يظهر ما فعّلتِه من تابي وتمارا في إعدادات المتجر تحت السعر، ويتحدّث مع المقاس. مفعَّل افتراضيًا (Tabby / Tamara under the price; on by default).",
+            "id": "unix_pdp_installments",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "سطر مدة التوصيل تحت زر الإضافة",
+            "description": "سطر قصير بمدة التوصيل داخل السعودية تحت أزرار الشراء. مفعَّل افتراضيًا (Delivery window line; on by default).",
+            "id": "unix_pdp_delivery_line",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "نص مدة التوصيل",
+            "description": "اكتبي مدة (أيام عمل) لا سرعة. إذا تُرك فارغًا: «التوصيل خلال 1–4 أيام عمل داخل السعودية». اجعليه متّسقًا مع مدد «متى يصلك طلبك؟».",
+            "id": "unix_pdp_delivery_text",
+            "format": "text",
+            "multilanguage": true,
+            "value": null,
+            "required": false,
+            "placeholder": "التوصيل خلال 1–4 أيام عمل داخل السعودية",
+            "minLength": 0,
+            "maxLength": 90
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "سطر الاستبدال والاسترجاع تحت زر الإضافة",
+            "description": "سطر قصير عن الاستبدال والاسترجاع يفتح صفحة السياسة. مفعَّل افتراضيًا (Returns line; on by default).",
+            "id": "unix_pdp_returns_line",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "number",
+            "icon": "sicon-calendar",
+            "label": "مدة الاستبدال (بالأيام، اختياري)",
+            "description": "إذا كتبتِ رقمًا يظهر «استبدال سهل خلال X أيام»، وإذا تُرك فارغًا يظهر «استبدال واسترجاع سهل». اكتبي المدة كما في سياسة المتجر بالضبط.",
+            "id": "unix_pdp_returns_days",
+            "format": "integer",
+            "value": null,
+            "required": false,
+            "minimum": 1,
+            "maximum": 90
+        },
+        {
+            "type": "items",
+            "icon": "sicon-link",
+            "label": "صفحة سياسة الاستبدال والاسترجاع",
+            "id": "unix_pdp_returns_link",
+            "value": null,
+            "description": "اختاري الصفحة التعريفية للسياسة. إذا تُرك فارغًا يظهر السطر نصًّا بلا رابط.",
+            "required": false,
+            "format": "variable-list",
+            "searchable": true,
+            "source": "custom",
+            "sources": [
+                {
+                    "label": "منتج",
+                    "key": "products",
+                    "value": "products"
+                },
+                {
+                    "label": "منتجات مع وسم",
+                    "key": "products_tags",
+                    "value": "products_tags"
+                },
+                {
+                    "label": "تصنيف",
+                    "key": "categories",
+                    "value": "categories"
+                },
+                {
+                    "label": "ماركة تجارية",
+                    "key": "brands",
+                    "value": "brands"
+                },
+                {
+                    "label": "صفحة تعريفية",
+                    "key": "pages",
+                    "value": "pages"
+                },
+                {
+                    "label": "مقالة",
+                    "key": "blog_articles",
+                    "value": "blog_articles"
+                },
+                {
+                    "label": "تصنيف ضمن المدونة",
+                    "key": "blog_categories",
+                    "value": "blog_categories"
+                },
+                {
+                    "label": "التخفيضات",
+                    "key": "offers_link",
+                    "value": "offers_link"
+                },
+                {
+                    "label": "الماركات التجارية",
+                    "key": "brands_link",
+                    "value": "brands_link"
+                },
+                {
+                    "label": "المدونة",
+                    "key": "blog_link",
+                    "value": "blog_link"
+                },
+                {
+                    "label": "رابط خارجي",
+                    "key": "custom",
+                    "value": "custom"
+                }
+            ]
+        },
+        {
             "id": "slider_background_size",
             "type": "items",
             "format": "dropdown-list",
@@ -650,6 +778,42 @@
             "required": false,
             "value": true,
             "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "سطر «محتارة في المقاس؟ كلّمينا واتساب»",
+            "description": "رابط واتساب تحت المقاسات وداخل نافذة «دليل المقاسات»، برسالة جاهزة باسم المنتج. يستخدم رقم واتساب شريط الثقة، وإلا واتساب المتجر. مفعَّل افتراضيًا (WhatsApp size help; on by default).",
+            "id": "unix_pdp_whatsapp_help",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "معلومات العارضة تحت المقاسات",
+            "description": "سطر مثل «العارضة طولها 170 سم وتلبس مقاس S» لكل منتج، من الحقل التالي. مفعَّل افتراضيًا ولا يظهر شيء ما دام الحقل فارغًا (Model info; on by default).",
+            "id": "unix_pdp_model_info_enabled",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "string",
+            "icon": "sicon-format-text-alt",
+            "label": "معلومات العارضة لكل منتج",
+            "description": "سطر لكل منتج أو موديل: المفتاح | النص. المفتاح رقم المنتج، أو رابط المنتج الكامل (ينتهي بحرف p ثم الرقم)، أو اسم الموديل نفسه في «روابط ألوان الموديلات» ليشمل كل ألوانه. يمكن كتابة أكثر من مفتاح بينها فاصلة. النص 160 حرفًا بحد أقصى. في خانة الإنجليزية اكتبي الأسطر نفسها بالإنجليزية، وإذا تركتِها فارغة تُستخدم العربية.",
+            "id": "unix_pdp_model_info",
+            "format": "textarea",
+            "multilanguage": true,
+            "required": false,
+            "value": null,
+            "placeholder": "sculpting-leggings | العارضة طولها 170 سم وتلبس مقاس S",
+            "minLength": 0,
+            "maxLength": 20000
         },
         {
             "type": "boolean",
