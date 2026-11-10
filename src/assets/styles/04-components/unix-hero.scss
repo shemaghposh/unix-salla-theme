@@ -42,7 +42,8 @@
   // No image (DS §8.1): cream on sand fails (1.7), so ink text and no scrim until a video plays.
   &--no-media:not(.is-video-playing) {
     color: var(--c-text);
-    .unix-hero__scrim { display: none; }
+    .unix-hero__scrim,
+    .unix-hero__content::before { display: none; }
   }
 
   :focus-visible {
@@ -95,11 +96,36 @@
 }
 
 .unix-hero__content {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--s-3);
+  inline-size: fit-content; /* the scrim below hugs the text, not the 65ch column */
   max-inline-size: 65ch;
+
+  /* 6.3 (D144): --c-hero-scrim fades out at 85% and is only .3 at mid-height, where the eyebrow
+     and the title sit on 16:9, so cream fell to ≈ 1.3:1 on a light photo. A text-block scrim
+     (same technique as «جديد من يونكس», DS §8.13) sits behind the content only:
+     --c-scrim-text-strong alone keeps cream ≈ 5.4:1 on a white frame. Feathered over --s-6;
+     the mask is symmetric, so RTL and LTR match. `black` is the mask's opaque stop (alpha only). */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: calc(-1 * var(--s-6));
+    z-index: -1;
+    background-color: var(--c-scrim-text-strong);
+    pointer-events: none;
+    -webkit-mask-image:
+      linear-gradient(to right, transparent, black var(--s-6), black calc(100% - var(--s-6)), transparent),
+      linear-gradient(to bottom, transparent, black var(--s-6), black calc(100% - var(--s-6)), transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to right, transparent, black var(--s-6), black calc(100% - var(--s-6)), transparent),
+      linear-gradient(to bottom, transparent, black var(--s-6), black calc(100% - var(--s-6)), transparent);
+    mask-composite: intersect;
+  }
 
   > * {
     margin: 0;

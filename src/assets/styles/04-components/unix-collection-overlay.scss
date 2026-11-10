@@ -1,5 +1,5 @@
 /* ── «جديد من يونكس» collection overlay (ROADMAP 2.4 · DS §8.13 · SPEC §4.4) ──
- * Background image + overlay (+ a text-block scrim, 6.6); heading row on top (arrows at its end,
+ * Background image + overlay (+ text scrims: heading block 6.6, card plates and arrow discs 6.3); heading row on top (arrows at its end,
  * unix.sa "info info buttons"); a salla-products-slider of the chosen category
  * at the bottom. The box reserves a minimum ratio of 4:5 at every width, like unix.sa
  * (--mobile-/--desktop-padding-bottom 125%; 6.4 batch 3, D122: was 16:9 from 576px, half as tall),
@@ -152,7 +152,9 @@
     block-size: var(--tap);
     border: var(--line-w) solid currentColor;
     border-radius: var(--r-pill);
-    background: transparent;
+    /* 6.3 (D122): the disc is filled with the text scrim, so the cream chevron keeps ≥ 3:1
+       (≈ 5.1:1, white photo + 30% wash) on any photo; the tints layer on top of it. */
+    background-color: var(--c-scrim-text);
     color: inherit;
     cursor: pointer;
     transition: background-color var(--d-fast) var(--ease-out);
@@ -164,12 +166,12 @@
       block-size: var(--icon-sm);
     }
 
-    &:hover { background-color: var(--c-hover-tint); }
-    &:active { background-color: var(--c-press-tint); }
+    &:hover { background-image: linear-gradient(var(--c-hover-tint), var(--c-hover-tint)); }
+    &:active { background-image: linear-gradient(var(--c-press-tint), var(--c-press-tint)); }
     &:disabled {
       opacity: var(--o-disabled);
       cursor: default;
-      background-color: transparent;
+      background-image: none;
     }
   }
 
@@ -217,6 +219,30 @@
      an ink ring keeps ≥ 3:1 there (cream would be ~1.1:1). */
   .s-product-card-image > a:focus-visible { outline-color: var(--c-text); }
 
+  /* 6.3 (D122, LESSONS 37): the copy sits on its own --c-scrim-text plate, not on the bare wash.
+     A real background-color (not a pseudo or a gradient), so contrast tools compute it too:
+     white photo + 30% wash + plate ≈ 5.1:1; the sand fallback + plate ≈ 4.7:1 even if the tool
+     ignores the wash. The plate starts --s-2 under the image (same gap as before, the --s-3 top
+     padding now sits inside it) and fills the card height, so every plate in the row is equal. */
+  .s-product-card-content {
+    flex: 1 0 auto;
+    margin-block-start: var(--s-2);
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-sm);
+    background-color: var(--c-scrim-text);
+  }
+
+  /* The quick add is placed from the content box's top edge; add the plate's margin back so it
+     still sits --s-3 above the image bottom (unix-product-card.scss, both pointer cases). */
+  .s-product-card-content-footer { inset-block-end: calc(100% + var(--s-2) + var(--s-3)); }
+
+  @media not all and (hover: hover) and (min-width: 1024px) {
+    .s-product-card-content-footer {
+      inset-block-end: calc(100% + var(--s-2) + var(--s-3) - var(--_chip-inset));
+    }
+  }
+
+  .s-product-card-vendor,
   .s-product-card-content-title a,
   .s-product-card-content-title a:hover,
   .s-product-card-price,
@@ -228,11 +254,9 @@
 
   .s-product-card-content-title a:hover { text-decoration: underline; }
 
-  /* Old price: same cream, muted */
-  .s-product-card-sale-price span {
-    color: var(--c-text-inverse);
-    opacity: var(--o-muted);
-  }
+  /* Old price: full cream, told apart by the strike-through and the smaller size. It was cream at
+     --o-muted, which blends to ≈ 3.4:1 on the plate (LESSONS 17: never mute text with opacity). */
+  .s-product-card-sale-price span { color: var(--c-text-inverse); }
 }
 
 html[lang="en"] .unix-collection-overlay__eyebrow {
