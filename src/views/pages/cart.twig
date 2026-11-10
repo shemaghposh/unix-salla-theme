@@ -224,9 +224,12 @@ JS hooks kept for src/assets/js/cart.js: #item-{id} forms, .item-* price spans, 
                     {% hook 'cart:summary-card.end' %}
                     {# ROADMAP 4.6 · DS §8.22 (D139, ECOMMERCE-UX C5): Tabby / Tamara for the cart total, under the
                        summary; js/partials/unix-cart-installment.js swaps in a fresh element when the total changes #}
-                    {% if theme.settings.get('unix_cart_installments', true) and cart.total|default(0) > 0 %}
-                        <div class="unix-cart__installment" data-unix-cart-installment data-total="{{ cart.total }}">
-                            <salla-installment class="unix-pdp-installment" price="{{ cart.total }}"></salla-installment>
+                    {# cart.total is documented as a float; read .amount first in case Salla hands a money object (like item.price.getMoney()) #}
+                    {% set unix_ci_total = cart.total.amount is defined ? cart.total.amount : cart.total %}
+                    {% set unix_ci_total = unix_ci_total is iterable ? 0 : unix_ci_total|default(0) %}
+                    {% if theme.settings.get('unix_cart_installments', true) and unix_ci_total > 0 %}
+                        <div class="unix-cart__installment" data-unix-cart-installment data-total="{{ unix_ci_total }}">
+                            <salla-installment class="unix-pdp-installment" price="{{ unix_ci_total }}"></salla-installment>
                         </div>
                     {% endif %}
                     {# ROADMAP 3.7: unix.sa cashback note, after the subtotal + checkout (SPEC §7.2 cashback-note-section) #}

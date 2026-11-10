@@ -417,3 +417,6 @@
   .unix-cart-item__name a,
   .unix-cart-item__remove { transition: none; }
 }
+
+// 4.6 (D139): no installment provider active → salla-installment renders nothing; drop the wrapper's gap
+.unix-cart__installment:has(> salla-installment:empty) { display: none; }

@@ -10,19 +10,29 @@
  */
 const toAmount = value => Number(value && typeof value === 'object' ? value.amount : value);
 
+const DEBOUNCE_MS = 300; // quantity taps fire several cart::updated; swap once, for the last total
+
 export default function initCartInstallment(root = document.querySelector('[data-unix-cart-installment]')) {
   if (!root || !window.salla?.event?.cart) return;
   let current = toAmount(root.dataset.total);
+  let pending = null;
+  let timer = 0;
 
-  salla.event.cart.onUpdated(cart => {
-    const total = toAmount(cart?.total);
-    if (!Number.isFinite(total) || total <= 0 || total === current) return;
-    current = total;
+  const swap = () => {
+    timer = 0;
+    if (!Number.isFinite(pending) || pending <= 0 || pending === current) return;
+    current = pending;
     const old = root.querySelector('salla-installment');
     const fresh = document.createElement('salla-installment');
     fresh.className = old?.className || 'unix-pdp-installment';
-    fresh.setAttribute('price', String(total));
+    fresh.setAttribute('price', String(current));
     if (old) old.replaceWith(fresh);
     else root.appendChild(fresh);
+  };
+
+  salla.event.cart.onUpdated(cart => {
+    pending = toAmount(cart?.total);
+    clearTimeout(timer);
+    timer = setTimeout(swap, DEBOUNCE_MS);
   });
 }
