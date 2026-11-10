@@ -246,7 +246,6 @@
   --collections-max: 1036px;           /* 2.5 card row max width (unix.sa 103.6rem) */
   --c-hero-scrim: linear-gradient(to top, rgb(36 30 26 / .55), rgb(36 30 26 / .3) 50%, transparent 85%); /* covers the text on 2:3 mobile */
   --c-scrim-text: rgb(36 30 26 / .55); /* «جديد من يونكس»: behind the text block only; over the 30% wash ≥ 4.5:1 on any photo (6.6, D122) */
-  --c-scrim-text-strong: rgb(36 30 26 / .7); /* text block with no ≥ 30% wash under it (hero, video caption, category names): cream ≈ 5.4:1 on a white frame alone (6.3, D144) */
   --hero-ratio: 2 / 3;                 /* hero, mobile (unix.sa mobile_image_ratio) */
   --hero-ratio-wide: 16 / 9;           /* hero, ≥576px (unix.sa desktop_image_ratio) */
   --hero-min-h: 560px;

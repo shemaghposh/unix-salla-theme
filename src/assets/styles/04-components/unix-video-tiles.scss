@@ -87,10 +87,7 @@
   margin: 0;
   padding-block: var(--s-7) var(--s-5);
   padding-inline: var(--s-5) calc(var(--tap) + var(--s-5)); // keep clear of the pause button
-  // 6.3 (D144): solid text scrim from the bottom up to the top of the text, faded over the --s-7
-  // top padding. --c-scrim (.55 → 0 at 60%) left a 2-line caption's top line ≈ 1.5:1 on a light
-  // frame; now ≈ 6.6:1 at worst (white frame + the 20% tile overlay + --c-scrim-text-strong).
-  background: linear-gradient(to top, var(--c-scrim-text-strong) calc(100% - var(--s-7)), transparent);
+  background: var(--c-scrim);
   color: var(--c-text-inverse);
   font-family: var(--f-heading);
   font-size: var(--t-h4);
