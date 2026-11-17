@@ -1,0 +1,9 @@
+[
+ {"name":"01-home","url":"https://unix.sa/"},
+ {"name":"02-plp","url":"https://unix.sa/collections/all"},
+ {"name":"03-pdp-halo","url":"https://unix.sa/products/halo-back-top-cream"},
+ {"name":"04-pdp-set","url":"https://unix.sa/products/sculpting-set-vanilla"},
+ {"name":"05-pdp-candle","url":"https://unix.sa/products/amalfi-scented-candle-light-grey"},
+ {"name":"11-cart","url":"https://unix.sa/cart"},
+ {"name":"12-404","url":"https://unix.sa/xyz-not-found"}
+]

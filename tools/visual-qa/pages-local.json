@@ -1,0 +1,46 @@
+[
+ {
+  "name": "01-home",
+  "url": "http://localhost:5173/yonks"
+ },
+ {
+  "name": "02-plp",
+  "url": "http://localhost:5173/yonks/ملابس-رياضية/c310620479"
+ },
+ {
+  "name": "02b-plp-all",
+  "url": "http://localhost:5173/yonks/products"
+ },
+ {
+  "name": "02c-plp-empty",
+  "url": "http://localhost:5173/yonks/أطقم-كومفي/c2133972992"
+ },
+ {
+  "name": "03-pdp-halo",
+  "url": "http://localhost:5173/yonks/halo-back-top-cream/p476045464"
+ },
+ {
+  "name": "04-pdp-set",
+  "url": "http://localhost:5173/yonks/sculpting-set-vanilla/p358089757"
+ },
+ {
+  "name": "05-pdp-candle",
+  "url": "http://localhost:5173/yonks/amalfi-scented-candle-light-grey/p848199242"
+ },
+ {
+  "name": "06-pdp-top",
+  "url": "http://localhost:5173/yonks/sculpting-bra-top-vanilla/p1442810508"
+ },
+ {
+  "name": "11-cart",
+  "url": "http://localhost:5173/yonks/cart"
+ },
+ {
+  "name": "12-404",
+  "url": "http://localhost:5173/yonks/xyz-not-found"
+ },
+ {
+  "name": "13-blog",
+  "url": "http://localhost:5173/yonks/blog"
+ }
+]
