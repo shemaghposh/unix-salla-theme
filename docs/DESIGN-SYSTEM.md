@@ -737,6 +737,7 @@ unix.sa بيلوّن الزرار الأساسي حسب scheme السكشن (`co
 | `--cart-thumb-w-lg` | 120px | صورة المنتج في صفحة السلة من md |
 | `--ratio-cart-thumb` | `3 / 4` | نسبة صورة السلة (الأصل `cart_image_ratio: 3/4`) |
 | `--cart-aside-w` | 384px | عمود الملخص في صفحة السلة من lg (عرض رائد الأصلي `w-96`) |
+- **«الدفع السريع» (D159، React 6.6):** تحت «إتمام الطلب» في الدرج وتحت ملخص الطلب في صفحة السلة، ويدجت سلة `salla-mini-checkout-widget` بـ `cart-id` (outline، بعرض كامل، ارتفاع `--btn-h` وحواف `--r-pill` من متغيرات `--salla-fast-checkout-button-*`، النص «الدفع السريع» من `blocks.unix.cart_drawer.fast_checkout`). بيظهر بس لو «الشراء السريع» مفعّل في المتجر من غير تحويل، وإعداد `unix_cart_fast_checkout` بيقفله.
 
 ### 8.34 Free Shipping Bar (شريط الشحن المجاني) — *المرحلة 4.3*
 مكانه في هيدر درج السلة (زي `cart-shipping-slider` في الأصل) وأول حاجة في عمود الملخص في صفحة السلة (بدل كارت الشحن بتاع رائد). الكود: `components/cart/unix-free-shipping.twig` و `04-components/unix-free-shipping.scss` و `js/partials/unix-free-shipping.js`.
