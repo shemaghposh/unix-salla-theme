@@ -964,6 +964,12 @@ ECOMMERCE-UX §4 (S1 بند 7 و 9)، T5. الكود: `components/home/unix-size
 
 ---
 
+### 8.57 زر واتساب العائم (D160، React 6.6)
+- `.unix-wa-fab`: `position: fixed`، تحت `--s-4` (+ safe area) وفي ناحية البداية `--s-4` (يمين في العربي)، قطره `--wa-fab` (56px)، `--r-pill`، خلفية `--c-whatsapp` (#25D366، لون واتساب، زي hover الفوتر في unix.sa) وعلامة واتساب بيضا `--c-on-whatsapp` بنسبة 60%، ظل `--e-2`، و focus ring `--ring-w` `--c-accent`.
+- `--z-fab` (35): فوق الشرايط الثابتة (30) وتحت الهيدر (40) والأدراج (60). مع `body.unix-sticky-atc-on` بيطلع لـ `--sticky-atc-h` + `--s-3`.
+- مابيترسمش والأدراج أو نافذة «اختاري الخيارات» مفتوحة، ولا في الطباعة. الحركة scale 1.05 بس، وبتقف مع reduced motion.
+- التوكنز الجديدة: `--unix-whatsapp`، `--c-whatsapp`، `--c-on-whatsapp`، `--wa-fab`، `--z-fab`.
+
 ## 9. نبرة الكلام (Copy)
 
 - **خطاب أنثوي** في العربي: «تسوقي»، «اختاري»، «سلتك».
