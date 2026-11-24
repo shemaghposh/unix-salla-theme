@@ -24,12 +24,12 @@
 - البوابة **مش بتبني مع كل push على GitHub**. هي بتسحب آخر commit على `main` وتبنيه **لما الطلب يتبعت** (بناء «نشر»).
 - بنايات «ترقية» بتعيد بناء آخر نسخة اتبعتت بس.
 - فماتستناش بناء جديد قبل الإرسال، وماتضغطش أي زرار عشان تعمل بناء.
-- بعد ما أنا أضغط الإرسال، افتح «سجلات البناء»، واتأكد إن فيه بناء «نشر» جديد على commit أوله **`ae13022`**، وإنه خلص «تم بنجاح». لو فشل، ابعتلي آخر سطور السجل.
+- بعد ما أنا أضغط الإرسال، افتح «سجلات البناء»، واتأكد إن فيه بناء «نشر» جديد على commit أوله **`de88507`**، وإنه خلص «تم بنجاح». لو فشل، ابعتلي آخر سطور السجل.
 
 ## الخطوة 3: إصدار جديد
 لو البوابة بتطلب إنشاء إصدار جديد أو رقم إصدار:
 - خد الرقم اللي بعد آخر إصدار اتقبل (مثلًا لو آخر واحد 1.0.4 يبقى 1.0.5). لو مش واضح، اسألني.
-- ماتختارش أي build غير الناجح بتاع `ae13022`.
+- ماتختارش أي build غير الناجح بتاع `de88507`.
 
 ## الخطوة 4: سجل التغييرات
 الصق النصين دول زي ما هما، كل واحد في خانته (عربي وإنجليزي). لو فيه خانة واحدة بس، حط العربي الأول وتحته الإنجليزي.
@@ -45,7 +45,7 @@
 - زر إضافة احتياطي في نافذة «اختاري الخيارات» وصفحة المنتج إذا تأخر تحميل زر سلة.
 - خمسة مقاسات في صف واحد، وجدول المقاسات يناسب شاشة الجوال، ورسالة اختيار المقاس بدون تكرار.
 - إعداد لعرض آراء العملاء في صفحات التصنيفات (معطّل افتراضيًا).
-- تحسينات في الهيدر فوق فيديو الرئيسية، وروابط التصنيفات وروابط اللغات وبيانات المنتج لمحركات البحث.
+- الهيدر فوق فيديو الرئيسية: أيقونات فاتحة فوق ظل خفيف لتكون واضحة على كل الكادرات، وتحسين روابط التصنيفات وروابط اللغات وبيانات المنتج لمحركات البحث.
 - إصلاحات في ثبات الصفحة أثناء التحميل والتمرير.
 ```
 
@@ -60,7 +60,7 @@ Theme update:
 - A fallback add-to-cart button in the quick view and on the product page when Salla's button loads late.
 - Five sizes fit one row, the size table fits mobile screens, and the size message no longer repeats a word.
 - A setting to show store reviews on category pages (off by default).
-- Header improvements over the home video, plus category links, language links and product data for search engines.
+- Header over the home video: light icons over a soft top shade, readable on every frame; plus category links, language links and product data for search engines.
 - Layout stability fixes while loading and scrolling.
 ```
 
