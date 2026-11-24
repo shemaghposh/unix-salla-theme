@@ -519,7 +519,7 @@ grep -rn "'unload'\|no-store" src/assets/js                # bfcache blockers
 | 3 | `src/views/components/home/unix-hero.twig:105-110` | §7.3 no `poster` (**poster from `currentSrc` in JS since 30f2e9b / c8aac70**); image optional | video-only hero has no image LCP | medium (merchant rule mitigates) |
 | 4 | `src/assets/styles/04-components/unix-hero.scss:106` (+ `unix-tokens.scss:129`) | §3.3.7 hero text fades from opacity 0 over 800ms | if the h1 is LCP (no image, or full-viewport image excluded) LCP waits for the fade | medium, verify LCP element in PSI |
 | 5 | `src/views/layouts/master.twig:93` | §8.9 unused render-blocking `theme.font.path` CSS | one blocking request | low–medium, pending 6.6 |
-| 6 | `src/views/layouts/master.twig:99,101` | §8.2 third-party render-blocking font CSS | 1 extra origin + blocking CSS | low–medium, A/B self-hosting |
+| 6 | ~~`src/views/layouts/master.twig:99,101`~~ **closed by D166 (React 6.6, ~/unix 0c45f32)** | §8.2 third-party render-blocking font CSS | 1 extra origin + blocking CSS | closed: IBM Plex Sans Arabic and Open Sans are self-hosted WOFF2 `@font-face` in `app/styles/01-settings/unix-tokens.scss` (same Google slices and `unicode-range`, `swap`); no Google Fonts `<link>` is rendered, which also ended the Cloudflare Fonts #418 re-render (LESSONS 60) |
 | 7 | `src/assets/js/brands.js:13` | §5.5 scroll handler without rAF | class toggles every scroll event | low (brands page only) |
 | 8 | `src/views/components/product/unix-gallery.twig:83,93` | §3.3.3 later slides could take `fetchpriority="low"` | minor contention on PDP | low, only if PSI shows it |
 | 9 | none (bfcache) | §10.3 no `pageshow`/`persisted` handling | stale cart count after Back | low, verify |
